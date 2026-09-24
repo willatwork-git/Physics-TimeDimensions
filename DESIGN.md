@@ -4,6 +4,7 @@
 A scientific instrument, not a sci-fi poster. Think observatory console at night: dark, precise, luminous data. Beauty comes from the simulations themselves, not decoration.
 
 ## Palette (CSS custom properties)
+The region colours below are the original Dimension Map plan; the live token set is at the top of `src/style.css` (camp colours `--c-*`, tag colours `--t-*`).
 | Token | Hex | Use |
 |---|---|---|
 | `--bg` | #0b0d12 | Page background |
@@ -18,7 +19,9 @@ A scientific instrument, not a sci-fi poster. Think observatory console at night
 | `--ultra` | #f2c94c | Ultrahyperbolic region |
 | `--tachyon` | #e36bd0 | Swapped/tachyonic region |
 
-Confidence tags: ESTABLISHED = solid `--elliptic` outline; CONTESTED = `--ultra`; SPECULATIVE = `--unstable`. Tags are small caps pills, always visible next to the claim.
+Confidence tags (tokens `--t-*` in `src/style.css`): ESTABLISHED = teal `--t-est`; CONTESTED = amber `--t-con`; SPECULATIVE = orange `--t-spe`; ANALOGY = pink `--t-ana`; HYPOTHESIS = blue `--t-hyp`, **dashed** outline. Tags are small-caps pills, always visible next to the claim.
+
+Tier pills (Mainstream / Frontier / ◌ Exploratory / Lens) sit beside the tags. Exploratory content is always dashed — outlines, arcs, card borders — so it is visually separable without reading labels (D-017).
 
 ## Typography
 - UI/body: Inter (Google Fonts), fallback system-ui.
@@ -33,7 +36,7 @@ Confidence tags: ESTABLISHED = solid `--elliptic` outline; CONTESTED = `--ultra`
 ## Motion
 - Simulations are the motion. UI transitions ≤ 200ms, ease-out.
 - Particles/trails use additive glow (canvas `globalCompositeOperation = 'lighter'`) sparingly.
-- Respect `prefers-reduced-motion`: pause sims until the user presses play.
+- Respect `prefers-reduced-motion`: each sim opens still and runs once the visitor interacts with it (`Chrono.motion`, D-021).
 
 ## Physics fidelity
 - Integrators: velocity-Verlet (symplectic, time-reversible) for orbits and the harmonic chain.

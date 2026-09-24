@@ -3,8 +3,22 @@
   const KEY = "chronoscope.hypotheses.v1";
   const H = Chrono.hyp = {};
 
+  /* Imported files come from other people: treat them as untrusted data. Keep only known camps and
+     holes, a plain id, and short strings — anything else is dropped rather than rendered. */
+  const str = (v, max) => typeof v === "string" ? v.trim().slice(0, max) : "";
+  function clean(h) {
+    if (!h || typeof h !== "object") return null;
+    const id = str(h.id, 40), name = str(h.name, 120);
+    if (!/^[\w-]+$/.test(id) || !name) return null;
+    const camps = Chrono.CAMPS.filter(c => c.id !== "bench").map(c => c.id);
+    const holes = Array.isArray(h.holes) ? h.holes.filter(x => Chrono.HOLES.some(k => k.id === x)) : [];
+    if (!camps.includes(h.camp) || !holes.length) return null;
+    return { id, name, camp: h.camp, holes, plain: str(h.plain, 2000), pred: str(h.pred, 2000), kill: str(h.kill, 2000), who: str(h.who, 60) || "You" };
+  }
+  const cleanAll = list => Array.isArray(list) ? list.map(clean).filter(Boolean) : [];
+
   H.load = function () {
-    try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; }
+    try { return cleanAll(JSON.parse(localStorage.getItem(KEY) || "[]")); } catch (e) { return []; }
   };
   H.save = function (list) {
     try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) { /* storage blocked: keep in memory only */ }
@@ -36,10 +50,12 @@
     const r = new FileReader();
     r.onload = () => {
       try {
-        const incoming = JSON.parse(r.result);
+        const raw = JSON.parse(r.result);
+        if (!Array.isArray(raw)) return done(false);
         const ids = new Set(H.all.map(h => h.id));
-        incoming.forEach(h => { if (h && h.id && h.name && !ids.has(h.id)) H.all.push(h); });
-        H.save(H.all); done(true);
+        const incoming = cleanAll(raw).filter(h => !ids.has(h.id));
+        H.all.push(...incoming); H.save(H.all);
+        done(true, incoming.length, raw.length - incoming.length);
       } catch (e) { done(false); }
     };
     r.readAsText(file);

@@ -101,7 +101,7 @@ Sliders: k_x (space frequency), k_s (second-time frequency), tiny starting ampli
 - All values from **exact Fourier solutions**, not numerical integration.
 **Tag:** ESTABLISHED maths within the model.
 
-### I.4 Two Films  ← the "aha"
+### I.4 Two Films  ← the "aha"  ✅ built (Build 2, `src/labs.js`)
 Periodic x-strip. Visitor saves everything on the starting slice t = s = 0 (u, ∂ₜu, ∂ₛu) and presses **Predict**. Two films play from the identical frame and diverge.
 - u_A = cos(2x)·cos(2t)
 - u_B = u_A + ε·cos(3x)·[cos(3t) − cos(√5 t)·cos(2s)]
@@ -148,6 +148,7 @@ Each: claim · status · what it would have to predict · what would change our 
 ---
 
 ## Build order
+(Planned steps. Delivery builds in `todo.md` are named separately — "Build 2" there is the tiers/labs release, not step 2 here.)
 0. ✅ Atlas + Test bench + hypotheses (Build 1)
 0b. ✅ Flatland lens (Build 1.1)
 1. Entrance: Boot a Universe + ERR_ORBIT_UNSTABLE demo; later, 'load a theory' from the Atlas into the console

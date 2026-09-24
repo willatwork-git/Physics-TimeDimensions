@@ -221,12 +221,12 @@
     tick(dt) {
       RV.T += dt;
       if (!RV.geo || !dt) return;
-      const cS = 0.9;   // light speed in units of rs per second
-      RV.dots.forEach(d => { const v = cS * Math.sqrt(1 / d.r); d.r -= v * dt * 0.35; if (RV.eddies && Chrono.shows("exploratory")) d.a += dt * 0.3 * Math.sin(d.r * 3 + RV.T) / d.r; if (d.r < 0.08) { d.r = 4 + Math.random() * 1.5; d.a = Math.random() * TAU; } });
+      const cS = 0.9, k = 0.6;   // light speed in units of rs per second; k = shared playback rate for flow and light
+      RV.dots.forEach(d => { const v = cS * Math.sqrt(1 / d.r); d.r -= v * dt * k; if (RV.eddies && Chrono.shows("exploratory")) d.a += dt * 0.3 * Math.sin(d.r * 3 + RV.T) / d.r; if (d.r < 0.08) { d.r = 4 + Math.random() * 1.5; d.a = Math.random() * TAU; } });
       RV.flashes.forEach(f => f.pts.forEach(p => {
         if (p.dead) return;
         const r = Math.hypot(p.x, p.y), ux = p.x / r, uy = p.y / r, v = cS * Math.sqrt(1 / r);
-        p.x += (cS * p.nx - v * ux) * dt * 0.6; p.y += (cS * p.ny - v * uy) * dt * 0.6;
+        p.x += (cS * p.nx - v * ux) * dt * k; p.y += (cS * p.ny - v * uy) * dt * k;
         p.trail.push([p.x, p.y]); if (p.trail.length > 60) p.trail.shift();
         if (r < 0.05 || r > 7) p.dead = true;
       }));

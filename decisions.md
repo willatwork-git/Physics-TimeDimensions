@@ -56,3 +56,12 @@
 
 ## D-019 — Guide overlay and grouped navigation (2026-09-24)
 **Decision:** A "? Guide" overlay (header button or ? key) explains the idea, every section and the tags; it never opens automatically — first-time visitors get a small dismissible hint instead. Navigation is grouped into colour-coded segments (Explore blue, Labs teal, Method amber) with a filled active tab. **Why:** Will wanted help available but not in the way, and the flat menu was hard to scan.
+
+## D-020 — Imported hypotheses are untrusted data (2026-09-24)
+**Decision:** On load and import, keep only known fields: a plain id, a known camp, known hole ids, and length-capped strings. Anything else is dropped. Ids are also escaped where they're written into HTML. **Why:** Export/import exists so friends can swap files. Before this, a crafted file could inject HTML/script into the Atlas, and one with an unknown hole id crashed the idea panel.
+
+## D-021 — Reduced motion pauses, not freezes (2026-09-24)
+**Decision:** With `prefers-reduced-motion`, each sim opens still and starts running once the visitor interacts with it (`Chrono.motion` in `src/lab.js`, shared by Flatland). **Why:** Before this, dt was forced to 0 forever, so buttons like Two Films' Predict did nothing. DESIGN.md already specified pause-until-play.
+
+## D-022 — Licence: MIT code, CC BY 4.0 content; live on GitHub Pages (2026-09-24)
+**Decision:** `index.html` + `src/` (including in-app text and Atlas data) under MIT; Markdown documents and screenshots under CC BY 4.0. Served from `main` via GitHub Pages. **Why:** Will's choice — the permissive, standard pairing for an educational app, so schools and others can reuse and adapt it with credit.

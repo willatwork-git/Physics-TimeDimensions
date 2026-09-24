@@ -59,3 +59,30 @@ Confidence: **E** = established · **C** = contested · **S** = speculative. ☐
 - Sagan, C. *Cosmos*, episode 10, "The Edge of Forever" (1980) — Flatland apple demonstration and tesseract. ☐
 - TED-Ed, "Exploring other dimensions" — Alex Rosenthal & George Zaidan (recommended by Will). ☐ link
 - 4D visualisation video shared by Will: https://www.youtube.com/watch?v=4URVJ3D8e8k — squashed-3D + w-axis diagram, hypersphere and hypercone slices, tesseract cell-by-cell slicing and rotations. ☐ creator name.
+
+## Build 2 — labs, pages and Atlas expansion
+Added 2026-09-24 in the housekeeping pass, from Claude's recall. All ☐ until checked against the primary source.
+- **E** Klein–Gordon equation — standard QFT textbook result (Field Ocean). Higgs boson discovery: ATLAS and CMS, *Phys. Lett. B* 716 (2012), 1 and 30. ☐
+- **E** Hafele, J. C. & Keating, R. E. (1972). *Science* 177, 166 and 168 (flights in 1971). ☐
+- **E** Ashby, N. (2003). "Relativity in the Global Positioning System." *Living Reviews in Relativity* 6, 1. Clock Lab numbers are computed from GM⊕ and orbital radius; they reproduce Ashby's ≈ +45.7 / −7.2 / +38.5 µs per day. ☐
+- **E** Hamilton, A. J. S. & Lisle, J. P. (2008). "The river model of black holes." *Am. J. Phys.* 76, 519. ☐
+- **E** Michelson, A. A. & Morley, E. W. (1887). *Am. J. Sci.* 34, 333. ☐
+- **E** Noether, E. (1918). "Invariante Variationsprobleme." *Nachr. Ges. Wiss. Göttingen*, 235. ☐
+- **E** (refuted idea) Zwicky, F. (1929). *PNAS* 15, 773 — tired light. Wright, E. L., "Errors in tired light cosmology" (UCLA web page). ☐
+- **E** How sure are we? tests: DES Supernova Program time dilation, *MNRAS* 533, 3365 (2024); COBE FIRAS spectrum, Mather et al., *ApJ* 354, L37 (1990); CMB temperature at high z, Srianand et al., *Nature* 408, 931 (2000); Tolman surface-brightness test, Lubin & Sandage, *AJ* 122, 1084 (2001). ☐
+- **S** Wheeler, J. A. (1955). "Geons." *Phys. Rev.* 97, 511 — spacetime foam. ☐
+- **S** Tryon, E. P. (1973). "Is the universe a vacuum fluctuation?" *Nature* 246, 396. ☐
+- **E** Prigogine, I. — dissipative structures; Nobel Prize in Chemistry 1977. ☐
+- **E** (analogue) Unruh, W. G. (1981). *Phys. Rev. Lett.* 46, 1351. Steinhauer, J., *Nature Physics* 12, 959 (2016); *Nature* 569, 688 (2019). ☐
+- **C** Jacobson, T. (1995). "Thermodynamics of spacetime." *Phys. Rev. Lett.* 75, 1260. ☐
+- **S** Arkani-Hamed, N., Dimopoulos, S. & Dvali, G. (1998). *Phys. Lett. B* 429, 263. ☐
+- **S** Randall, L. & Sundrum, R. (1999). *Phys. Rev. Lett.* 83, 3370. ☐
+- **S** Dvali, G., Gabadadze, G. & Porrati, M. (2000). *Phys. Lett. B* 485, 208. ☐
+- **S** Khoury, J., Ovrut, B. A., Steinhardt, P. J. & Turok, N. (2001). *Phys. Rev. D* 64, 123522. ☐
+- **S** Volovik, G. E. (2003). *The Universe in a Helium Droplet*. Oxford University Press. ☐
+- **C** Ambjørn, J., Jurkiewicz, J. & Loll, R. (2005). "Spectral dimension of the universe is scale dependent." *Phys. Rev. Lett.* 95, 171301. ☐
+- **C** Wiltshire, D. L. (2007). "Cosmic clocks, cosmic variance and cosmic averages." *New J. Phys.* 9, 377. 2024–25 supernova analysis: Seifert et al. ☐ details
+- **S** Boyle, L., Finn, K. & Turok, N. (2018). "CPT-symmetric universe." *Phys. Rev. Lett.* 121, 251301. ☐
+- **E** (tension exists) Riess, A. G. et al. (2019). *ApJ* 876, 85; Planck Collaboration (2020). *A&A* 641, A6. ☐
+- **C** DESI Collaboration — BAO results, arXiv:2404.03002 (2024) and DR2, arXiv:2503.14738 (2025). ☐
+- **Lens** Hinton, C. H. (1880). "What is the fourth dimension?" (collected in *Scientific Romances*, 1884). Zöllner, J. C. F. (1878), *Transcendental Physics*. ☐

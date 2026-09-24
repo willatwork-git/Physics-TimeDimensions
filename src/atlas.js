@@ -219,7 +219,7 @@
   }
   function holeHTML(h) {
     const ideas = allIdeas().filter(visible).filter(i => i.holes.includes(h.id)).sort((a, b) => a.year - b.year);
-    const list = ideas.map(i => `<div class="barrow" style="grid-template-columns:44px 1fr" data-go-idea="${i.id}"><span>${i.year}</span><span style="color:var(--text)"><i class="camp-dot" style="background:${campColor(i.camp)}"></i>${esc(i.name)}</span></div>`).join("");
+    const list = ideas.map(i => `<div class="barrow" style="grid-template-columns:44px 1fr" data-go-idea="${esc(i.id)}"><span>${i.year}</span><span style="color:var(--text)"><i class="camp-dot" style="background:${campColor(i.camp)}"></i>${esc(i.name)}</span></div>`).join("");
     return `
       <button class="btn" data-back>← Atlas</button>
       <div class="eyebrow" style="margin-top:14px">Hole ${h.id}</div>
@@ -234,7 +234,7 @@
   }
   function ideaHTML(i) {
     const camp = campOf(i.camp);
-    const holes = i.holes.map(h => `<span class="holepill" data-go-hole="${h}">${h} · ${esc(holeOf(h).name)}</span>`).join("");
+    const holes = i.holes.filter(holeOf).map(h => `<span class="holepill" data-go-hole="${esc(h)}">${esc(h)} · ${esc(holeOf(h).name)}</span>`).join("");
     const bench = Chrono.CONSTRAINTS.map(c => `<tr><td>${c.name}</td><td class="v-${i.c[c.id]}">${SYM[i.c[c.id]]} ${SYM_WORD[i.c[c.id]]}</td></tr>`).join("");
     const benchBlock = i.camp === "bench"
       ? `<h3>Role</h3><p>This is a <b>constraint</b>: a result other ideas are tested against, not an attempt to fill a hole.</p>`
@@ -253,7 +253,7 @@
       <h3>Holes it targets</h3><div class="pillrow">${holes}</div>
       ${benchBlock}
       ${i.note ? `<p class="note" style="margin-top:14px">${esc(i.note)}</p>` : ""}
-      ${i.user ? `<div class="row" style="justify-content:flex-start"><button class="btn" data-del="${i.id}">Remove</button></div>` : ""}`;
+      ${i.user ? `<div class="row" style="justify-content:flex-start"><button class="btn" data-del="${esc(i.id)}">Remove</button></div>` : ""}`;
   }
 
   /* ---------- test bench table ---------- */
@@ -261,7 +261,7 @@
     const v = $("#benchview");
     const ideas = allIdeas().filter(visible).filter(i => i.camp !== "bench" && i.tag !== "ANALOGY").sort((a, b) => a.year - b.year);
     const head = Chrono.CONSTRAINTS.map(c => `<th style="text-align:center" title="${c.name}">${c.short}</th>`).join("");
-    const rows = ideas.map(i => `<tr data-go-idea="${i.id}" style="${state.selected && state.selected.id === i.id ? "outline:1px solid var(--accent)" : ""}">
+    const rows = ideas.map(i => `<tr data-go-idea="${esc(i.id)}" style="${state.selected && state.selected.id === i.id ? "outline:1px solid var(--accent)" : ""}">
       <td>${i.user ? "yours" : i.year}${isExp(i) ? ' <span class="expdot" title="Exploratory">◌</span>' : ""}</td>
       <td><i class="camp-dot" style="background:${campColor(i.camp)}"></i>${esc(i.name)}</td>
       <td><span class="tag ${i.tag}">${Chrono.TAGS[i.tag]}</span></td>
@@ -293,7 +293,7 @@
     state.selected = { type: "idea", id: h.id };
     renderAll();
   };
-  $("#importfile").onchange = e => { const f = e.target.files[0]; if (f) Chrono.hyp.importJSON(f, ok => { if (!ok) alert("That file couldn't be read."); renderAll(); }); e.target.value = ""; };
+  $("#importfile").onchange = e => { const f = e.target.files[0]; if (f) Chrono.hyp.importJSON(f, (ok, added, skipped) => { if (!ok) alert("That file couldn't be read."); else if (skipped) alert(`Imported ${added} idea(s); skipped ${skipped} (already here, or missing a name, camp or known hole).`); renderAll(); }); e.target.value = ""; };
 
   /* ---------- views ---------- */
   document.querySelectorAll("nav button[data-view]").forEach(b => b.onclick = () => {

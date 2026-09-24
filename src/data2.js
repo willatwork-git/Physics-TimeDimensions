@@ -1,5 +1,6 @@
 /* Chronoscope — Atlas expansion (Build 2). New holes and ideas.
    Exploratory entries (tag HYPOTHESIS, who "Will & Claude") are our own thinking, not mainstream physics. */
+(function () {
 Chrono.HOLES.push(
   { id: "H8", name: "Is energy conserved cosmically?", tag: "ESTABLISHED",
     plain: "Energy is conserved because the laws are the same at every moment (Noether's theorem). But the expanding universe changes over time, so there is no general law that its total energy is conserved. Light crossing the cosmos loses energy to redshift; dark energy's total grows as space grows.",
@@ -124,3 +125,4 @@ Chrono.IDEAS.push(
     U, "The hard part: a layer that doesn't interact through gravity leaves no signature physics can detect.",
     { predicts: "If gravity leaks between layers: hidden mass (dark matter?) and deviations in gravity's force law.", kill: "Gravity's law holding perfectly at all testable scales, and dark matter identified as ordinary particles." })
 );
+})();

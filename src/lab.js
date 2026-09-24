@@ -40,6 +40,16 @@
     bar(x, y, w, h, frac, color, bg = "#171b25") { ctx.fillStyle = bg; ctx.fillRect(x, y, w, h); ctx.fillStyle = color; ctx.fillRect(x, y, w * Math.max(0, Math.min(1, frac)), h); }
   };
 
+  /* ---------- reduced motion ----------
+     With prefers-reduced-motion, a sim stays still when opened and runs once the visitor interacts
+     with it (DESIGN.md → Motion). Each view resets the gate when shown. */
+  let engaged = false;
+  ["pointerdown", "keydown", "input"].forEach(t => $("#stage").addEventListener(t, () => engaged = true, true));
+  Chrono.motion = {
+    reset() { engaged = false; },
+    dt(dt) { return !engaged && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : dt; }
+  };
+
   /* ---------- lab harness ---------- */
   const labs = {};
   let active = null, raf = 0, last = 0, W = 0, H = 0, canvas = null;
@@ -51,8 +61,7 @@
   function frame(ts) {
     if (!active) return;
     const dt = Math.min(0.05, (ts - (last || ts)) / 1000); last = ts;
-    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (active.tick) active.tick(reduce ? 0 : dt);
+    if (active.tick) active.tick(Chrono.motion.dt(dt));
     ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
     G.ctx = ctx; G.W = W; G.H = H;
     active.draw(G);
@@ -77,7 +86,7 @@
       } : {
         show() {
           if (!canvas) initCanvas();
-          $("#lab").style.display = "flex"; active = def; resize();
+          $("#lab").style.display = "flex"; active = def; resize(); Chrono.motion.reset();
           if (def.enter) def.enter(G);
           Chrono.lab.rebuild();
           cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(frame);

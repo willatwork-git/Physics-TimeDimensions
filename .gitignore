@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# iCloud sync-conflict duplicates (e.g. "spec 2.md")
+* 2.*
+* 2
+
+# Editor
+.vscode/
+*.swp

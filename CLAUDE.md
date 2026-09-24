@@ -8,6 +8,7 @@ An interactive, browser-based educational model with two independent investigati
 - No sub-agents without asking Will first.
 - Keep `ACTIVE.md` current — **replace, never append**. Archive finished material to `/archive`.
 - Keep this file under ~60 lines.
+- The GitHub repo is public: anything committed is published.
 
 ## Physics integrity (non-negotiable)
 - Every on-screen claim carries a tag: **ESTABLISHED / CONTESTED / SPECULATIVE / ANALOGY / HYPOTHESIS** — tag claims, not papers. Loose ideas are welcome; they must be labelled, and should say what they predict and what would kill them.
@@ -33,3 +34,5 @@ An interactive, browser-based educational model with two independent investigati
 | `sources.md` | References with confidence tags |
 | `reviews.md` | External AI reviews: adopted / rejected |
 | `learning.md` | Will's questions, intuitions, aha moments |
+| `HANDOVER.md` | Hosting + school edition notes |
+| `README.md` | Public-facing (repo is public on GitHub) — keep in sync with features |

@@ -689,8 +689,7 @@
   function frame(ts) {
     if (!active) return;
     const dt = Math.min(0.05, (ts - (last || ts)) / 1000); last = ts;
-    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    CH[chapter].tick(reduce ? 0 : dt);
+    CH[chapter].tick(Chrono.motion.dt(dt));
     ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
     CH[chapter].draw();
     raf = requestAnimationFrame(frame);
@@ -727,7 +726,7 @@
 
   F.show = function () {
     if (!canvas) initCanvas();
-    active = true; resize(); buildControls(); renderAside();
+    active = true; resize(); Chrono.motion.reset(); buildControls(); renderAside();
     cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(frame);
   };
   F.hide = function () { active = false; cancelAnimationFrame(raf); };
