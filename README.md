@@ -1,11 +1,8 @@
 # Chronoscope — the holes in time
 
-An interactive, browser-based guide to the open questions about **time**: where physics' account of
-time doesn't add up, what physicists have proposed over the last century, and how to tell solid
-science from speculation.
+An interactive, browser-based guide to the open questions about **time**: where physics' account of time doesn't add up, what physicists have proposed over the last century, and how to tell solid science from speculation.
 
-The hook: *why does our universe have exactly one time dimension?* The honest answer, which you reach
-by exploring, is that physics has strong constraints on it but no settled, model-independent answer.
+The hook: *why does our universe have exactly one time dimension?* The honest answer, which you reach by exploring, is that physics has strong constraints on it but no settled, model-independent answer.
 
 **▶ Try it live: [willatwork-git.github.io/Physics-TimeDimensions](https://willatwork-git.github.io/Physics-TimeDimensions/index.html#home)**
 · [Lab mode](https://willatwork-git.github.io/Physics-TimeDimensions/index.html?mode=lab#home)
@@ -108,6 +105,10 @@ straight to a lab. Press **?** inside the app for the built-in guide. Works on p
   time, time travel, holography, two-time physics — plus
   links to other free sites that explore each idea well.
 - **Predict first** — each lab asks for your guess before explaining (skippable).
+- **Picture it and Common trap** — each lab has one everyday analogy (and where it breaks) and one common
+  misconception, with what the lab shows instead.
+- **Quizzes and review** — a short quiz at the end of each tour, and questions from labs you've explored
+  that come back after a day, three days, a week and longer, to check what stuck.
 - **Glossary** — dotted-underlined terms show a plain definition on hover or tap.
 - **Progress** — ✓ marks on what you've seen, and "continue where you left off" (kept in your browser).
 
@@ -183,6 +184,7 @@ src/
   nav.js            header drop-down menus (Explore · Quantum · Voyages · Physics · Cosmos · Method)
   docs.js           Dimension Map, How sure are we?
   home.js           Home page, the three tours, the four scales and the threads
+  stick.js          Picture it, Common trap, tour quizzes and returning review
   flatland.js       the seven Flatland chapters (own engine)
   atlas.js          Atlas, Test bench, hypothesis form, mode switch, URL routing
   help.js           the Guide overlay
@@ -222,8 +224,7 @@ id, year, name, who, camp, holes, tag, outcome, plain description, reasoning, hu
 
 Working and usable on desktop and phone: the Atlas, Test bench, all labs listed above across four
 scales, Learn and Lab modes, three guided tours, Concepts pages and the school edition. The roadmap is
-in [`todo.md`](todo.md): next is making it stick (misconception cards, quizzes, review prompts), then
-deep time (Hawking evaporation, a cosmic timeline), then launch readiness — verified citations, a light
+in [`todo.md`](todo.md): next is deep time (Hawking evaporation, a cosmic timeline), then launch readiness — verified citations, a light
 theme, teacher notes, and a move to its own domain, **chronoscope.com.au**.
 
 ## Credits

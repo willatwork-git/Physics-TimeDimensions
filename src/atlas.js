@@ -381,6 +381,7 @@
     document.querySelectorAll("nav button[data-view]").forEach(x => { x.classList.toggle("on", x.dataset.view === v); x.classList.toggle("seen", Chrono.progress.seen(x.dataset.view)); });
     if (v === "flatland" && Chrono.flatland && arg) Chrono.flatland.setChapter(parseInt(arg, 10) - 1);
     if (v === "concepts") Chrono.conceptSel = arg || null;
+    if (v === "review") Chrono.reviewSel = arg || null;
     Chrono.tour.renderBar();
     if (Chrono.navSync) Chrono.navSync();
     if (same) { applyHighlight(); renderAside(); if (v === "bench") renderBench(); return; }

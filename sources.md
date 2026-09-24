@@ -157,3 +157,7 @@ Added 2026-09-25 from Claude's recall. All ☐ until checked against the primary
 - **S** 't Hooft, G. (1993) arXiv:gr-qc/9310026; Susskind, L. (1995) *J. Math. Phys.* 36, 6377 — holographic principle. ☐
 - **C** Maldacena, J. (1998) *Adv. Theor. Math. Phys.* 2, 231 — AdS/CFT (well tested internally; not shown for our universe). ☐
 - **S** Ryu, S. & Takayanagi, T. (2006) *Phys. Rev. Lett.* 96, 181602. Van Raamsdonk, M. (2010) *Gen. Rel. Grav.* 42, 2323. Maldacena, J. & Susskind, L. (2013) *Fortsch. Phys.* 61, 781 — ER = EPR. ☐
+- **E** Roediger, H. L. & Karpicke, J. D. (2006). "Test-enhanced learning." *Psychological Science* 17, 249. — Recalling beats re-reading (the testing effect). Basis for tour quizzes (D-037). ☐
+- **E** Cepeda, N. J. et al. (2006). "Distributed practice in verbal recall tasks." *Psychological Bulletin* 132, 354. — Spaced review beats massed review. Basis for returning review (D-037). ☐
+- **Lens** Matuschak, A. & Nielsen, M. (2019). *Quantum Country* — the mnemonic medium: review prompts embedded in an essay (landscape-2026-09-25.md). ☐
+- **Lens** Greene, B. (2004). *The Fabric of the Cosmos*, ch. 5 — the "loaf of spacetime" image (Spacetime lab, Picture it). ☐

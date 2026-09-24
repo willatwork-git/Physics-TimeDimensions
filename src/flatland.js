@@ -744,6 +744,7 @@
       ${Chrono.guideFor ? Chrono.guideFor(pkey) : ""}
       ${body}
       ${waiting ? "" : Chrono.rememberFor ? Chrono.rememberFor(pkey) : ""}
+      ${waiting ? "" : Chrono.stickFor ? Chrono.stickFor(pkey) : ""}
       ${Chrono.keyIdeas ? Chrono.keyIdeas("flatland/" + (chapter + 1)) : ""}
       ${Chrono.threadsFor ? Chrono.threadsFor("flatland/" + (chapter + 1)) : ""}
       <div class="row" style="justify-content:space-between">

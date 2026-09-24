@@ -36,7 +36,7 @@ Tags: ANALOGY (the story) + ESTABLISHED (the geometry).
 **Learn** (default): Mainstream + Frontier + Lens, guided. **Lab**: adds Exploratory, hypothesis tools, Dimension Map, all filters.
 
 ## Learning layer (D-026, D-027)
-Home (hook + doors) · 7-stop tour · Predict first per lab · progress marks · glossary · reasons for every non-✓ bench score and visitor's own scores · predicts / overturned-by for every physics idea.
+Home (hook + doors) · 7-stop tours · Predict first per lab · Picture it + Common trap per lab · end-of-tour quiz + spaced review (D-037) · progress marks · glossary · reasons for every non-✓ bench score and visitor's own scores · predicts / overturned-by for every physics idea.
 
 ## Scales, threads and tours (D-031, D-036)
 Four scales, smallest first: **Quantum** (Delayed choice, The frozen universe) · **Voyages** (Mission clocks, Talking to Mars, The 1 g voyage) · **Physics** (Flatland, Field Ocean, Clock Lab, Spacetime, River, Entropy box, Two Films, Wormholes, Time loops) · **Cosmos** (Expanding universe, Cosmic horizons, Boot a Universe, The Janus point). Four threads cross them (clocks · 'now' · arrow · 3 + 1). Three tours: *The puzzle of time* · *From the ISS to the edge of the universe* · *Is time travel possible?* Concepts pages (D-034) give the full story behind each lab.

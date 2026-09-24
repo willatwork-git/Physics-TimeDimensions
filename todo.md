@@ -42,14 +42,30 @@ Priority: credibility before launch; build what unlocks structure (Quantum scale
 - [x] Wormhole (Kruskal) lab · Time loop (Gödel) lab → Tour 3: Is time travel possible?
 - [x] Concept pages: quantum time, time travel, holography, two-time physics
 - [ ] Will: review the four labs' text and Tour 3 wording
-### Phase 3 — Making it stick
-- [ ] Misconception cards · end-of-tour quizzes · returning review prompts · "Picture it" analogies (Will to approve images)
+### Phase 3 — Making it stick ✅ 2026-09-25 (D-037)
+- [x] "Picture it" analogy (with where it breaks) and a "Common trap" card in all 17 labs
+- [x] End-of-tour quizzes (one question per stop) · review questions that return after 1, 3, 7, 16, 35, 80 days
+- [ ] Will: review the analogies, traps and 20 questions (`src/stick.js`)
+- [ ] "Picture it" images: text only for now; Will to approve any images before they're added
 ### Phase 4 — Deep time
 - [ ] Hawking evaporation lab (Page curve) · cosmic timeline · Earth's energy budget · Spacetime lab: hyperbolae, pole-and-barn
 ### Phase 5 — Launch readiness
 - [ ] Verify every ☐ citation · light theme · teacher notes · keyboard Atlas · tidy public review/learning files
 - [x] Domain chronoscope.com.au registered (AgilityAI)
 - [ ] Domain move: set DNS at the registrar first → then add `CNAME` file + custom domain in GitHub Pages settings → update og:url / og:image and README links. Adding CNAME before DNS works breaks the live site
+### Idea — the maths layer (research first, then decide) · Will, 2026-09-25
+The labs run real equations but the text keeps the maths light. Give students and working scientists a way to
+see the full physics (equations, derivations, the model's exact assumptions) without cluttering Learn.
+**Hold until researched:** how to present it cleanly and with impact, and as tools that help people advance ideas.
+- Form: a second marker per claim (e.g. **∑** beside ⓘ), a per-lab "The maths" panel, or a page-wide depth switch.
+  Note: depth is a different axis from Learn/Lab (Learn/Lab = how sure; depth = how technical), so probably its
+  own control rather than a third Learn/Lab state.
+- Research candidates: colour-coded equations whose terms highlight the matching part of the simulation
+  (Stuart Riffle's colour-coded DFT; Better Explained); live equations whose numbers update with the sliders
+  (Bret Victor, Ciechanowski); expandable derivations; KaTeX rendering (jsdelivr) with copy-as-LaTeX;
+  "view the code" showing the actual JS that runs; export parameters/data; links to the paper and equation number.
+- Related: review-2026-09-25.md §1.4 "Show me the maths" expander. Existing hooks: every lab's model line.
+
 ### Later
 - [ ] Claude chat in the app (needs a small server) · concept map · notebook · live diagrams in Concepts · colour split (review 3.1)
 

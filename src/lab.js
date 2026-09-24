@@ -144,6 +144,7 @@
       ${waiting ? "" : typeof def.aside === "function" ? def.aside() : (def.aside || "")}
       ${!waiting && Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
       ${waiting || !Chrono.rememberFor ? "" : Chrono.rememberFor(def.id)}
+      ${waiting || !Chrono.stickFor ? "" : Chrono.stickFor(def.id)}
       ${waiting || !Chrono.keyIdeas ? "" : Chrono.keyIdeas(def.id)}
       ${waiting || !Chrono.threadsFor ? "" : Chrono.threadsFor(def.id)}
       ${def.next ? `<a class="nextq" href="${def.next.href}"><span class="eyebrow">Next question</span><span class="nq">${def.next.q}</span><span class="hgo">${def.next.label} →</span></a>` : ""}

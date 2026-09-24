@@ -6,6 +6,7 @@
     { g: "explore", name: "Explore", blurb: "The big picture: where our account of time has gaps, and who has tried to fill them.", items: [
       { v: "atlas", n: "Atlas", d: "The map. Glowing nodes along the top are <b>holes</b> — known gaps in physics' account of time. Dots below are a century of <b>ideas</b> that tried to fill them, placed by year and grouped by approach. Hover a hole to light up every attempt at it; click anything for the detail." },
       { v: "concepts", n: "Concepts", d: "The ideas that run through the whole app — why clocks disagree, what 'now' means, the arrow of time, why 3 + 1 — with the evidence. Look for ⓘ markers for the short version." },
+      { v: "review", n: "Quizzes and review", d: "A short quiz at the end of each tour, and questions from labs you've explored that come back after a day, then three, a week and longer, to check what stuck. Each lab also has a 'Picture it' analogy and a 'Common trap'." },
       { v: "bench", n: "Test bench", d: "Every idea scored against the same hurdles: does it match relativity, keep the future predictable, allow stable matter, explain time's arrow, make a new testable prediction?" },
       { v: "dims", n: "Dimension Map", tier: "exploratory", d: "A working framework: sort dimensions into groups (space, time, charge, scale, state) and ask each the same questions. Gaps become visible." }
     ] },

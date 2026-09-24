@@ -225,7 +225,7 @@
         ["Voyages — people and spacecraft", `<p>Time as it affects people who travel: astronauts' clocks, conversations with rovers on Mars, how far a crew could go in a lifetime. Everything here is <b>measured</b> or engineering-real, apart from the starship itself.</p>`],
         ["Physics — the laws underneath", `<p>Why clocks disagree, what 'now' means, why time runs one way, what an extra dimension would look like. Small, exact models of the laws themselves.</p>`],
         ["Cosmos — the universe as a whole", `<p>Expansion, horizons, the arrow of time on the largest scale, and why the universe has three space dimensions and one time. Where the biggest open questions live.</p>`],
-        ["The threads", `<p>Four questions run across all three scales: <a href="#concepts/clock">Clocks disagree</a>, <a href="#concepts/now">Light and 'now'</a>, <a href="#concepts/arrow">The arrow of time</a> and <a href="#concepts/dims">Why 3 + 1?</a>. Each lab lists the threads it's on. Tour 2, <i>From the ISS to the edge of the universe</i>, walks all three scales in order.</p>`]
+        ["The threads", `<p>Four questions run across the scales: <a href="#concepts/clock">Clocks disagree</a>, <a href="#concepts/now">Light and 'now'</a>, <a href="#concepts/arrow">The arrow of time</a> and <a href="#concepts/dims">Why 3 + 1?</a>. Each lab lists the threads it's on. Tour 2, <i>From the ISS to the edge of the universe</i>, zooms out from astronauts to the whole cosmos; Tour 3, <i>Is time travel possible?</i>, follows one question from clocks to wormholes and time loops.</p>`]
       ],
       labs: [["#missions", "Voyages · Mission clocks"], ["#clocks", "Physics · Clock Lab"], ["#expand", "Cosmos · Expanding universe"]],
       sources: "Project structure (D-031)."

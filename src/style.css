@@ -518,3 +518,35 @@ button.info:hover, button.info:focus-visible { background: var(--accent); color:
 .tourpick { grid-template-columns: repeat(3, 1fr); }
 .tp.tp-time.on { border-color: var(--t-con); box-shadow: 0 0 0 1px var(--t-con) inset; background: color-mix(in srgb, var(--t-con) 10%, var(--bg)); }
 @media (max-width: 1100px) { .tourpick { grid-template-columns: 1fr; } }
+
+/* ---------- Making it stick (D-037): Picture it, Common trap, quizzes and review ---------- */
+.picture { margin: 14px 0 6px; padding: 10px 14px; border-left: 2px solid var(--t-ana); background: color-mix(in srgb, var(--t-ana) 6%, transparent); border-radius: 0 8px 8px 0; }
+.picture > b, .trap summary b { font: 10px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--t-ana); font-weight: 400; margin-right: 6px; }
+.picture p { margin: 6px 0 0; }
+.picture .meta { font-size: 13px; }
+.trap { margin: 10px 0 6px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+.trap summary { cursor: pointer; list-style: none; }
+.trap summary::-webkit-details-marker { display: none; }
+.trap summary b { color: var(--t-spe); display: block; margin-bottom: 3px; }
+.trap summary b::after { content: " ▸ what's really going on"; text-transform: none; letter-spacing: 0; color: var(--muted); }
+.trap[open] summary b::after { content: " ▾"; }
+.trap summary span { text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--t-spe) 60%, transparent); color: var(--text); }
+.trap p { margin: 8px 0 0; }
+.quiz .qcard { margin: 14px 0; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); max-width: 760px; }
+.quiz .qcard.right { border-color: color-mix(in srgb, var(--t-est) 50%, var(--line)); }
+.quiz .qcard.wrong { border-color: color-mix(in srgb, var(--t-con) 50%, var(--line)); }
+.qq { font-size: 17px; font-weight: 600; margin: 6px 0 10px; }
+.qopts { display: flex; flex-direction: column; gap: 6px; }
+.qopts .btn { text-align: left; white-space: normal; font-size: 14px; padding: 8px 12px; }
+.qopts .btn:disabled { cursor: default; opacity: .55; }
+.qopts .btn.ok { opacity: 1; border-color: var(--t-est); color: var(--t-est); }
+.qopts .btn.no { opacity: 1; border-color: var(--t-con); color: var(--t-con); }
+.qwhy { margin: 10px 0 0; }
+.qscore { margin: 18px 0; padding: 16px; border-radius: 10px; background: var(--panel2); max-width: 760px; }
+.qscore h2 { margin: 0 0 6px; }
+.qtours { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 900px; }
+.qtour { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); text-decoration: none; color: var(--text); }
+.qtour:hover { border-color: var(--accent); }
+@media (max-width: 700px) { .qtours { grid-template-columns: 1fr; } }
+.continue.revdue { display: block; margin: 8px 0; padding: 10px 14px; border: 1px solid color-mix(in srgb, var(--t-est) 40%, var(--line)); border-radius: 8px; color: var(--text); }
+#doc a.qtour { color: var(--text); }

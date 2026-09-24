@@ -51,7 +51,7 @@
     { id: "dims", icon: "◇", name: "Why 3 + 1?", stops: [["flatland/4", "A 4D visitor", "P"], ["films", "Two Films", "P"], ["boot", "Boot a Universe", "C"], ["atlas/H5", "Hole H5: why one time?", "A"]] }
   ];
   const SCALE_NAME = { Q: "Quantum", V: "Voyages", P: "Physics", C: "Cosmos", A: "Atlas" };
-  const TOTAL = ["atlas", "bench", ...SCALES.flatMap(s => s.labs.map(l => l[0])), "sure"];
+  const TOTAL = ["atlas", "bench", "concepts", "review", ...SCALES.flatMap(s => s.labs.map(l => l[0])), "sure"];
 
   /* Threads a view belongs to, rendered for its aside. key: "clocks", "flatland/7", … */
   Chrono.threadsFor = key => {
@@ -65,6 +65,8 @@
   const cur = () => TOURS[P.tourId()] || TOURS.puzzle;
   function startTour(i, id) { P.setTour(i, id); P.visit("tour:" + id); Chrono.nav(TOURS[id].stops[i].href); }
   Chrono.startTour = startTour;
+  Chrono.tourList = () => ["puzzle", "zoom", "time"].map(id => ({ id, name: TOURS[id].name }));
+  Chrono.tourStops = id => TOURS[id] ? TOURS[id].stops.map(s => s.href.slice(1)) : [];
   Chrono.tour = {
     renderBar() {
       const bar = $("#tourbar"), i = P.tour(), T = cur(), id = P.tourId(), S = T.stops;
@@ -77,7 +79,7 @@
         <span class="tb-q"><b>${s.q}</b> <span class="meta">${s.say}</span></span>
         <span class="tb-btns">
           <button class="btn" data-tb="prev" ${i === 0 ? "disabled" : ""}>←</button>
-          <button class="btn primary" data-tb="next">${last ? "Finish the tour ✓" : `Next: ${S[i + 1].q} →`}</button>
+          <button class="btn primary" data-tb="next">${last ? "Finish: a quick quiz ✓" : `Next: ${S[i + 1].q} →`}</button>
           <button class="btn" data-tb="leave" title="Leave the tour (you can resume from Home)">×</button>
         </span>` : `
         <span class="tb-step">Tour paused</span>
@@ -87,7 +89,7 @@
       bar.querySelectorAll("[data-tb]").forEach(b => b.onclick = () => {
         const a = b.dataset.tb;
         if (a === "prev") startTour(i - 1, id);
-        else if (a === "next") { if (last) { P.finishTour(); Chrono.nav("#home"); } else startTour(i + 1, id); }
+        else if (a === "next") { if (last) { P.finishTour(); Chrono.nav("#review/" + id); } else startTour(i + 1, id); }
         else if (a === "resume") Chrono.nav(s.href);
         else if (a === "leave") { P.setTour(null); Chrono.tour.renderBar(); }
       });
@@ -109,7 +111,7 @@
       <div class="th-head">
         <div><h2>${ICON[id]} ${T.name}</h2><p>Seven stops, about 20 minutes. No physics background needed.</p></div>
         <div class="th-go"><button class="btn primary big" data-go-tour="${mine ? running : 0}" data-tour-id="${id}">${mine ? `▶ Resume at stop ${running + 1}` : done ? "▶ Take it again" : "▶ Start the tour"}</button>
-          ${done && !mine ? `<span class="meta">✓ You've completed this tour</span>` : ""}</div>
+          ${done && !mine ? `<span class="meta">✓ You've completed this tour${P.quiz(id) ? ` · quiz best ${P.quiz(id).best} of ${P.quiz(id).n}` : ""} · <a href="#review/${id}">${P.quiz(id) ? "Retake" : "Take"} the quiz →</a></span>` : ""}</div>
       </div>
       <ol class="itinerary">${T.stops.map((s, i) => { const st = done && !mine ? "done" : mine && i < running ? "done" : mine && running === i ? "here" : "";
         return `<li class="${st}"><button data-go-tour="${i}" data-tour-id="${id}" title="Go to stop ${i + 1}"><span class="it-dot">${st === "done" ? "✓" : i + 1}</span><span class="it-q">${s.q}</span><span class="it-see">${s.see}</span><span class="it-where">${s.where}</span></button></li>`; }).join("")}</ol>
@@ -125,9 +127,10 @@
         <h1>Why does our universe have exactly one time dimension?</h1>
         <p class="lede">Time is the one thing everyone uses and nobody in physics fully understands — two of our best theories disagree about what it even is. Nobody has a settled answer. Chronoscope is a place to find out why — and to explore the other places where physics' account of time doesn't add up: what physicists have tried, which ideas survived, and how to tell solid science from speculation. Every simulation runs the real equations.</p>
         ${lastName && t === null ? `<a class="continue" href="${last}">Continue where you left off: <b>${lastName}</b> →</a>` : ""}
+        ${Chrono.reviewDue && Chrono.reviewDue() ? `<a class="continue revdue" href="#review">🔁 <b>${Chrono.reviewDue()} question${Chrono.reviewDue() > 1 ? "s" : ""} to review</b> from labs you've explored. A minute or two →</a>` : ""}
         ${tourCard()}
         <h2 class="sect">Four scales of time</h2>
-        <p class="meta">The same questions about time turn up at every scale — from an astronaut's watch to the edge of the universe. <a href="#" data-tab-jump="zoom">Take Tour 2 across all three →</a></p>
+        <p class="meta">The same questions about time turn up at every scale — from an astronaut's watch to the edge of the universe. <a href="#" data-tab-jump="zoom">Take Tour 2, from astronauts to the whole cosmos →</a></p>
         <div class="scales">${SCALES.map(s => `<div class="scale" style="--sc:${s.col}"><div class="eyebrow">${s.sub}</div><h3>${s.name} ${Chrono.info ? Chrono.info("sc-" + s.id) : ""}</h3>
           <div class="labchips">${s.labs.map(([v, n]) => `<a href="#${v}" class="${P.seen(v) ? "seen" : ""}">${P.seen(v) ? "✓ " : ""}${n}</a>`).join("")}</div></div>`).join("")}</div>
         <div class="threadlist">${THREADS.map(th => `<div class="thread"><span class="th-name">${th.icon} ${th.name} ${Chrono.info ? Chrono.info(th.id) : ""}</span><span class="th-stops">${th.stops.map(([k, n, sc]) => `<a href="#${k}"><i>${SCALE_NAME[sc]}</i> ${n}</a>`).join(" → ")}</span></div>`).join("")}</div>
