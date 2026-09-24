@@ -74,7 +74,12 @@ see the full physics (equations, derivations, the model's exact assumptions) wit
 ### Later
 - [x] Concept map → How it all connects (D-040) → replaced by **How it all fits together**, a comic strip (D-041)
 - [ ] Will: read the eight panels and the epilogue (`src/story.js`); illustrations could be replaced by approved artwork if wanted
-- [ ] **Stars forge the elements** (Cosmos) — agreed with Will: onion-star countdown · why fusion stops at iron · periodic table of origins with a cosmic-time slider; entropy strip (one helium nucleus → ~20 million sunlight photons). Blocked by an automated output filter on dense nuclear text — retry smaller, astronomy-first
+- [ ] **Stars forge the elements** (Cosmos, `src/stars.js`, D-042 reserved) — IN PROGRESS
+  - [x] Scene 1 drawing: onion star + countdown of burning stages (25 Sun masses; WHW 2002 times: H 6.7 Myr · He 0.84 Myr · C 522 yr · Ne 0.89 yr · O 0.40 yr · Si ~2 days · collapse < 1 s)
+  - [ ] Scene 2: periodic table of origins, Z 1–92, rounded shares after Johnson (2019) / Kobayashi et al. (2020); sources: Big Bang · cosmic rays · exploding massive stars · exploding white dwarfs · ageing giant stars · colliding neutron stars (site split CONTESTED) · made by people (Tc, Pm) · decay chains (Po–Ac, Pa); cosmic-time steps: 3 min → ~200 Myr → ~500 Myr → ~1 Gyr → Sun forms 9.2 Gyr → today; click an element for its story (H, Li, C, O, Fe, Tc, Eu, Au, Pb, U)
+  - [ ] register (predict: where does core fusion stop? → iron), aside with the entropy strip (one fusion → ~20 million sunlight photons → ~400 million infrared from Earth), Picture it / Common trap ("the Sun will make gold") / quiz question
+  - [ ] wire: index.html script + Cosmos nav, home SCALES, arrow thread (Entropy box → Stars → Earth's energy budget), guides, concepts KEY, timeline next → #stars, story panels 2 and 5 link to #stars; bump ?v=
+  - Working note: an automated output filter has blocked long, dense nuclear-physics passages. Write in small chunks, astronomy-first wording; the nuclear-energy curve is left out for now
 - [ ] Claude chat in the app (needs a small server) · notebook · live diagrams in Concepts · colour split (review 3.1)
 
 ## Space School readiness
