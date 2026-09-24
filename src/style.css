@@ -316,7 +316,12 @@ sup.mine { font-size: 10px; margin-left: 2px; }
   .hdr-right { order: 2; gap: 8px; }
   nav { order: 3; flex: 1 1 100%; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding-bottom: 2px; scrollbar-width: none; }
   nav::-webkit-scrollbar { display: none; }
-  nav, #fl-steps { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+  /* Fade at the right edge says 'swipe for more'. Not a mask: a mask would also hide the drop-down menus inside nav. */
+  #fl-steps { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+  nav::after { content: ""; position: sticky; right: -1px; flex: 0 0 28px; align-self: stretch; margin-left: -28px; background: linear-gradient(90deg, transparent, var(--bg)); pointer-events: none; }
+  /* Phone menus: a full-width sheet under the header, scrollable if long */
+  .navmenu { max-width: none; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .navmenu button[data-view] { padding: 11px 12px; }
   .navseg { flex-shrink: 0; }
   .navseg button { white-space: nowrap; }
   .helpbtn { padding: 5px 10px; }

@@ -7,9 +7,11 @@
   function close() { if (!open) return; open.classList.remove("open"); open.querySelector(".navtop").setAttribute("aria-expanded", "false"); open = null; }
   function show(g) {
     close(); open = g; g.classList.add("open"); g.querySelector(".navtop").setAttribute("aria-expanded", "true");
-    const m = g.querySelector(".navmenu"), r = g.querySelector(".navtop").getBoundingClientRect();
-    m.style.top = (r.bottom + 6) + "px";
-    m.style.left = Math.max(8, Math.min(window.innerWidth - m.offsetWidth - 8, r.left)) + "px";
+    const m = g.querySelector(".navmenu"), r = g.querySelector(".navtop").getBoundingClientRect(), narrow = window.innerWidth <= 600;
+    m.style.top = (narrow ? document.querySelector("header").getBoundingClientRect().bottom + 4 : r.bottom + 6) + "px";
+    m.style.width = narrow ? (window.innerWidth - 16) + "px" : "";
+    m.style.maxHeight = (window.innerHeight - parseFloat(m.style.top) - 12) + "px";
+    m.style.left = narrow ? "8px" : Math.max(8, Math.min(window.innerWidth - m.offsetWidth - 8, r.left)) + "px";
   }
   /* On a mouse (hover-capable) device menus also open on hover, with a short grace period so the
      pointer can travel from the button into the menu. Click always works (touch, keyboard). */
@@ -28,7 +30,8 @@
   $$("nav [data-start-tour]").forEach(b => b.addEventListener("click", () => Chrono.startTour && Chrono.startTour(0, b.dataset.startTour)));
   document.addEventListener("click", e => { if (open && !open.contains(e.target)) close(); });
   document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
-  window.addEventListener("resize", close);
+  let lastW = window.innerWidth;   // phones fire resize when the browser toolbar hides — only a real width change closes menus
+  window.addEventListener("resize", () => { if (window.innerWidth !== lastW) { lastW = window.innerWidth; close(); } });
   document.querySelector("nav").addEventListener("scroll", close);
 
   /* Show the current item's name on its group's button, e.g. "Physics · Spacetime". */
