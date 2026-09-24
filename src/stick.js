@@ -50,8 +50,6 @@
       "The calendar only covers the past. The universe's future would fill about 10⁹⁰ more calendar years."],
     energy: ["Swapping a $20 note for twenty $1 coins: the same money, in many more pieces, with far more ways to arrange them. Earth swaps sunlight for infrared the same way.",
       "Money isn't used up by the swap. What goes up here is the number of ways to arrange the photons: entropy."],
-    connect: ["A transit map. It doesn't show every street, only how the lines connect and where you can change. It tells you how to get from gravity to the arrow of time.",
-      "Real links in physics carry equations and numbers, and some lines on this map are still being surveyed."]
   };
 
   /* ---------- Common trap: [the belief, why it's tempting, what the lab shows, tag] ---------- */
@@ -96,7 +94,7 @@
       "On an ordinary clock the universe has barely begun: stars will keep shining for thousands of times longer than they have so far.", "ESTABLISHED"],
     energy: ["The Sun keeps Earth going by giving it energy.", "We talk about 'using' energy, and solar panels 'collect' it.",
       "Earth sends almost all of that energy back out. What gets used up is low entropy: sunlight arrives as a few hot photons and leaves as many cold ones.", "ESTABLISHED"],
-    connect: ["Physics already has one equation that explains everything.", "Headlines about a 'theory of everything' make it sound close.",
+    story: ["Physics already has one equation that explains everything.", "Headlines about a 'theory of everything' make it sound close.",
       "Each arrow here has its own tested physics, but no single theory joins them all: gravity and quantum theory still disagree about what time is.", "ESTABLISHED"]
   };
 
@@ -148,8 +146,8 @@
       why: "About 40% of the way along: as many powers of ten lie between the first instant and today as between today and the last black holes. On an ordinary clock we're at the very start." },
     energy: { q: "Earth sends back almost all the energy it absorbs from the Sun. So what does it actually gain?", o: ["Nothing: it's a perfect balance", "Low entropy: sunlight arrives as a few hot photons and leaves as many cold ones", "Mass, from sunlight turning into matter"], a: 1,
       why: "About 20 infrared photons leave for each photon of sunlight absorbed. Everything that builds order on Earth runs on that difference." },
-    connect: { q: "Which of these links is still an unsolved problem?", o: ["Gravity slowing clocks", "Gravity and quantum theory's accounts of time", "Expansion stretching light"], a: 1,
-      why: "The other two are measured every day, by GPS and by telescopes. Joining gravity with quantum theory is the biggest open gap on the map." }
+    story: { q: "Which of these is still an unsolved problem?", o: ["Gravity slowing clocks", "Gravity and quantum theory's accounts of time", "Expansion stretching light"], a: 1,
+      why: "The other two are measured every day, by GPS and by telescopes. Joining gravity with quantum theory is the biggest open gap in physics." }
   };
   const NAME = { "flatland/7": "Flatland · time as a slice", "atlas/H5": "Atlas · hole H5", "concepts/timetravel": "Concept · time travel" };
   const nameOf = k => NAME[k] || ((document.querySelector(`header button[data-view="${k}"]`) || {}).firstChild || {}).textContent || k;

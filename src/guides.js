@@ -33,12 +33,6 @@
       ["Barn's frame / Pole's frame", "Redraws the same history from the barn's or the pole's point of view."],
       ["The strip (right)", "What's where at the white 'now' line: the barn, its doors (pink when shut) and the pole."]
     ],
-    connect: [
-      ["Click a circle", "Lights up everything it drives and everything that drives it; the side panel lists them."],
-      ["Click an arrow", "Shows that one claim, how sure we are of it, and the lab where you can see it."],
-      ["Follow: …", "Walks a story through the map, one link at a time (◀ ▶)."],
-      ["Cosmic time", "From seconds after the Big Bang to 10¹⁰¹ years. Circle sizes follow what the universe is made of; the right panel shows where its entropy sits."]
-    ],
     hawking: [
       ["Mass buttons", "Start from a black hole with the Sun's mass, the Moon's, a mountain's, or one that would be finishing right now."],
       ["Starting mass", "Any mass from 10⁹ to 10³¹ kg (a logarithmic slider)."],
@@ -196,8 +190,8 @@
       "Every moving clock runs slow — not because it's broken, but because time itself does."],
     spacetime: ["A map of events: space runs across, time runs up. Observers moving past each other slice this map into moments differently — here you can see how. Three scenes (buttons top left): whose 'now', the twin paradox, and the pole and the barn.",
       "'At the same time' depends on who's asking — but cause and effect never swap places."],
-    connect: ["The big ideas on one page: what drives what, how sure we are of each link, and where the map runs out.",
-      "Every link has its own tested physics, but no single theory joins them all — and the gaps are where new ideas start."],
+    story: ["The labs each show one piece. Here is the whole story in eight panels.",
+      "Gravity gathers, stars shine, light carries entropy away, black holes collect it, space stretches — and the clock only runs forward."],
     hawking: ["Black holes aren't quite black: quantum theory says they glow, and shrink. Where does everything that fell in go?",
       "Black holes glow, heat up as they shrink, and vanish, and whether the information inside comes back out is still argued over."],
     timeline: ["All of cosmic time on one line, from the first instant physics can describe to the last black hole evaporating.",

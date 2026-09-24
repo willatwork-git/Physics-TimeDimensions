@@ -109,9 +109,10 @@ quizzes and the tours. ⌂ Home is always one click away, and each side panel st
 ![The Atlas: open problems about time along the top, a century of attempts to fill them below](docs/screenshot-atlas.png)
 
 **The big picture**
-- **How it all connects** — gravity, light, time, entropy, the expanding universe, black holes and the dark
-  sector on one map. Every arrow is one tagged claim linked to the lab that shows it; amber dashes mark the
-  gaps. Slide cosmic time and the balance shifts (real Friedmann equation). In the Guide menu.
+- **How it all fits together** — the whole story as a comic strip: the cast (things, doers, and the rules
+  every panel obeys — time only runs forward, entropy only rises), eight illustrated panels of cause and effect
+  from gravity gathering gas to the last black holes evaporating, and what we don't know yet. Each panel
+  links to the lab that runs the real equations. In the Guide menu.
 
 **Learning aids**
 - **Three guided tours** — *The puzzle of time* (seven stops from "Do clocks agree?" to "Is one time
@@ -199,7 +200,7 @@ src/
   quantum.js        Delayed choice, The frozen universe
   timetravel.js     Wormholes, Time loops
   deeptime.js       Black holes evaporate, Cosmic timeline, Earth's energy budget
-  connect.js        How it all connects (the systems map)
+  story.js          How it all fits together (the comic strip)
   voyages.js        Mission clocks, Talking to Mars, The 1 g voyage
   cosmos.js         Expanding universe, Cosmic horizons, Boot a Universe, The Janus point
   nav.js            header drop-down menus (Explore · Quantum · Voyages · Physics · Cosmos · ◌ Workbench; Guide), breadcrumb
