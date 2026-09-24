@@ -17,12 +17,12 @@
     lens: `<span class="tier tier-lens">Lens</span>`
   }[tier] || "");
   Chrono.tierLegend = () => `
-    <h3>How to read the tags</h3>
+    <h3>How to read the tags <a class="h3link" href="#concepts/tags">more →</a></h3>
     <div class="legend">
-      <div>${Chrono.tierPill("mainstream")} <span class="tag ESTABLISHED">Established</span> <span class="tag CONTESTED">Contested</span> <span class="tag RULEDOUT">Ruled out</span><br><span class="meta">What working physicists hold, actively debate — or have tested and rejected.</span></div>
-      ${Chrono.shows("frontier") ? `<div>${Chrono.tierPill("frontier")} <span class="tag SPECULATIVE">Speculative</span><br><span class="meta">Published proposals, not yet supported by evidence.</span></div>` : ""}
-      ${Chrono.shows("exploratory") ? `<div>${Chrono.tierPill("exploratory")} <span class="tag HYPOTHESIS">Hypothesis</span><br><span class="meta">This project's own ideas and visitors' hypotheses (Lab mode). Dashed outlines. Not mainstream physics.</span></div>` : ""}
-      <div>${Chrono.tierPill("lens")} <span class="tag ANALOGY">Analogy</span><br><span class="meta">Stories, history and analogies that help thinking.</span></div>
+      <div>${Chrono.tierPill("mainstream")} <span class="tag ESTABLISHED">Established</span> <span class="tag CONTESTED">Contested</span> <span class="tag RULEDOUT">Ruled out</span> ${Chrono.info ? Chrono.info("tier-mainstream") : ""}<br><span class="meta">What working physicists hold, actively debate — or have tested and rejected.</span></div>
+      ${Chrono.shows("frontier") ? `<div>${Chrono.tierPill("frontier")} <span class="tag SPECULATIVE">Speculative</span> ${Chrono.info ? Chrono.info("tier-frontier") : ""}<br><span class="meta">Published proposals, not yet supported by evidence.</span></div>` : ""}
+      ${Chrono.shows("exploratory") ? `<div>${Chrono.tierPill("exploratory")} <span class="tag HYPOTHESIS">Hypothesis</span> ${Chrono.info ? Chrono.info("tier-exploratory") : ""}<br><span class="meta">This project's own ideas and visitors' hypotheses (Lab mode). Dashed outlines. Not mainstream physics.</span></div>` : ""}
+      <div>${Chrono.tierPill("lens")} <span class="tag ANALOGY">Analogy</span> ${Chrono.info ? Chrono.info("tier-lens") : ""}<br><span class="meta">Stories, history and analogies that help thinking.</span></div>
     </div>`;
 
   /* ---------- drawing helpers ---------- */
@@ -137,6 +137,7 @@
       ${waiting ? "" : typeof def.aside === "function" ? def.aside() : (def.aside || "")}
       ${!waiting && Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
       ${waiting || !Chrono.rememberFor ? "" : Chrono.rememberFor(def.id)}
+      ${waiting || !Chrono.keyIdeas ? "" : Chrono.keyIdeas(def.id)}
       ${waiting || !Chrono.threadsFor ? "" : Chrono.threadsFor(def.id)}
       ${def.next ? `<a class="nextq" href="${def.next.href}"><span class="eyebrow">Next question</span><span class="nq">${def.next.q}</span><span class="hgo">${def.next.label} →</span></a>` : ""}
       ${def.sources ? `<p class="caveat">Sources: ${def.sources}</p>` : ""}`;

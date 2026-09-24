@@ -237,8 +237,8 @@
       <h2>Every idea against the same five hurdles</h2>
       <p class="intro">A good theory of time has to clear all five. Few do. Click any row to see why it scored as it did — and set your own score where you disagree.</p>
       <h3>The five hurdles</h3>
-      <dl class="hurdles">${Chrono.CONSTRAINTS.map(c => `<dt>${c.name}</dt><dd>${HURDLE_WHY[c.id]}</dd>`).join("")}</dl>
-      <p class="meta">✓ passes · ◐ partly / evades · ✗ fails or ignores · – doesn't apply · ? unknown</p>
+      <dl class="hurdles">${Chrono.CONSTRAINTS.map(c => `<dt>${c.name} ${Chrono.info ? Chrono.info("h-" + c.id) : ""}</dt><dd>${HURDLE_WHY[c.id]}</dd>`).join("")}</dl>
+      <p class="meta">✓ passes · ◐ partly / evades · ✗ fails or ignores · – doesn't apply · ? unknown · <a href="#concepts/hurdles">More on the hurdles →</a></p>
       <p class="caveat">Scores are a first-pass judgement drafted with Claude, an AI — made to be argued with.</p>`;
   }
   function holeHTML(h) {
@@ -291,7 +291,7 @@
   function renderBench() {
     const v = $("#benchview");
     const ideas = allIdeas().filter(visible).filter(i => i.camp !== "bench" && i.tag !== "ANALOGY").sort((a, b) => a.year - b.year);
-    const head = Chrono.CONSTRAINTS.map(c => `<th style="text-align:center" title="${c.name}: ${HURDLE_WHY[c.id]}">${c.short}</th>`).join("");
+    const head = Chrono.CONSTRAINTS.map(c => `<th style="text-align:center" title="${c.name}: ${HURDLE_WHY[c.id]}">${c.short} ${Chrono.info ? Chrono.info("h-" + c.id) : ""}</th>`).join("");
     const rows = ideas.map(i => `<tr data-go-idea="${esc(i.id)}" style="${state.selected && state.selected.id === i.id ? "outline:1px solid var(--accent)" : ""}">
       <td>${i.user ? "yours" : i.year}${isExp(i) ? ' <span class="expdot" title="Exploratory">◌</span>' : ""}</td>
       <td><i class="camp-dot" style="background:${campColor(i.camp)}"></i>${esc(i.name)}</td>
@@ -380,6 +380,7 @@
     if (v !== "home") Chrono.progress.setLast("#" + v + (sel ? "/" + sel.id : fl ? "/" + fl : ""));
     document.querySelectorAll("nav button[data-view]").forEach(x => { x.classList.toggle("on", x.dataset.view === v); x.classList.toggle("seen", Chrono.progress.seen(x.dataset.view)); });
     if (v === "flatland" && Chrono.flatland && arg) Chrono.flatland.setChapter(parseInt(arg, 10) - 1);
+    if (v === "concepts") Chrono.conceptSel = arg || null;
     Chrono.tour.renderBar();
     if (Chrono.navSync) Chrono.navSync();
     if (same) { applyHighlight(); renderAside(); if (v === "bench") renderBench(); return; }

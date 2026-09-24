@@ -727,6 +727,7 @@
       ${Chrono.guideFor ? Chrono.guideFor("flatland/" + (chapter + 1)) : ""}
       ${body}
       ${Chrono.rememberFor ? Chrono.rememberFor("flatland/" + (chapter + 1)) : ""}
+      ${Chrono.keyIdeas ? Chrono.keyIdeas("flatland/" + (chapter + 1)) : ""}
       ${Chrono.threadsFor ? Chrono.threadsFor("flatland/" + (chapter + 1)) : ""}
       <div class="row" style="justify-content:space-between">
         <button class="btn" data-step="-1" ${chapter === 0 ? "disabled" : ""}>← Previous</button>

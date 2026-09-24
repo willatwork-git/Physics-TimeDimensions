@@ -35,6 +35,7 @@ Tier pills (Mainstream / Frontier / ◌ Exploratory / Lens) sit beside the tags.
 - **Flatland**: chapter bar above the stage in three acts, ★ = 4D chapters; contents card on first visit (D-028).
 - **Home** is the landing view, with the tour as its hero and a 7-stop itinerary; the **tour bar** sits above the stage while touring and hides next-question cards (the tour owns the path).
 - **Predict first** cards (amber) sit under the lab title and hold back the explanation until a guess or skip.
+- **Three depths of explanation (D-034):** glossary underline (what a word means) → ⓘ popup, ≤ 3 sentences (why it's so) → Concepts page (the full story, evidence, how sure). ⓘ goes on labels only — thread names, tier rows, hurdles — never inside running text.
 - **The controls** (D-032): every lab's right panel lists its controls, from `src/guides.js`. A new lab needs an entry there.
 - **Glossary**: dotted underline, first use per panel only; never inside headings, buttons, tags or links.
 

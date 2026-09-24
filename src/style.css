@@ -471,3 +471,41 @@ nav { gap: 8px; }
 .hurdles { margin: 0 0 10px; }
 .hurdles dt { font-weight: 600; color: var(--text); margin-top: 8px; }
 .hurdles dd { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+
+/* ---------- Concepts: ⓘ markers, popup, pages (D-034) ---------- */
+button.info { display: inline-grid; place-items: center; width: 17px; height: 17px; padding: 0; margin: 0 2px; vertical-align: 1px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent); background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); font: italic 700 11px Georgia, "Times New Roman", serif; line-height: 1; cursor: help; text-transform: none; letter-spacing: 0; }
+button.info:hover, button.info:focus-visible { background: var(--accent); color: var(--bg); outline: none; }
+#infopop { display: none; position: fixed; z-index: 60; width: min(340px, calc(100vw - 16px)); padding: 12px 14px; border-radius: 10px; border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line)); background: var(--panel2); color: var(--text); box-shadow: 0 14px 40px rgba(0,0,0,.5); font-size: 14px; line-height: 1.5; }
+#infopop p { margin: 4px 0 8px; }
+#infopop .ip-title { font-weight: 600; color: var(--accent); }
+#infopop .ip-tags { margin-bottom: 8px; }
+#infopop .ip-more { color: var(--accent); text-decoration: none; font-weight: 600; font-size: 13px; }
+#infopop .ip-more:hover { text-decoration: underline; }
+.h3link { font-size: 12px; font-weight: 400; color: var(--accent); text-decoration: none; margin-left: 6px; }
+.concept { max-width: 820px; }
+.concept h1 { font-size: 32px; margin: 4px 0 10px; }
+.concept .lede { font-size: 18px; line-height: 1.55; color: var(--text); margin: 12px 0 8px; }
+.concept section h2, .concept > h2 { font-size: 19px; margin: 28px 0 8px; }
+.concept p, .concept li, .concept dd { font-size: 15.5px; line-height: 1.65; }
+.concept a:not(.chip):not(.ccard) { color: var(--accent); }
+.backlink { font-size: 13px; color: var(--accent); text-decoration: none; }
+.evidence { padding-left: 18px; } .evidence li { margin-bottom: 6px; }
+.tagdefs dt { margin-top: 10px; } .tagdefs dd { margin: 4px 0 0; color: var(--muted); }
+.labchips a.chip { font-size: 13px; padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--text); text-decoration: none; }
+.labchips a.chip:hover { border-color: var(--accent); }
+.cgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 18px; }
+.ccard { display: flex; flex-direction: column; gap: 6px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: var(--text); text-decoration: none; }
+.ccard:hover { border-color: var(--accent); }
+.ccard .cc-icon { font-size: 22px; }
+.ccard b { font-size: 17px; } .ccard span { color: var(--muted); font-size: 14px; line-height: 1.45; }
+.ccard .hgo { margin-top: auto; color: var(--accent); }
+.barlist { display: flex; flex-direction: column; gap: 4px; }
+.barlist a { color: var(--text); text-decoration: none; padding: 5px 8px; border-radius: 6px; }
+.barlist a:hover, .barlist a.on { background: var(--panel2); color: var(--accent); }
+#benchview th button.info { width: 15px; height: 15px; font-size: 10px; }
+/* Key ideas row in lab panels (D-034) */
+.keyideas { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 16px 0 4px; font-size: 13px; }
+.ki-label { font: 10px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.ki { display: inline-flex; align-items: center; gap: 2px; padding: 3px 4px 3px 10px; border: 1px solid var(--line); border-radius: 999px; }
+.ki a { color: var(--text); text-decoration: none; } .ki a:hover { color: var(--accent); }
+.concept table.orph { margin: 8px 0 12px; }

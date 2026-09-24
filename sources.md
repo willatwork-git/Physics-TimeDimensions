@@ -66,6 +66,26 @@ Confidence: **E** = established · **C** = contested · **S** = speculative. ☐
 - **E** Loschmidt, J. (1876) — the reversibility objection; Boltzmann, L. (1877) — entropy as counting arrangements (S = k ln W). ☐
 - **E** Levesque, D. & Verlet, L. (1993). "Molecular dynamics and time reversibility." *J. Stat. Phys.* 72, 519. — Integer (bit-reversible) leapfrog; basis of the Entropy box. ☐
 
+## Concepts pages (D-034)
+- **E** Rossi, B. & Hall, D. B. (1941). "Variation of the rate of decay of mesotrons with momentum." *Phys. Rev.* 59, 223. ☐
+- **E** Pound, R. V. & Rebka, G. A. (1960). "Apparent weight of photons." *PRL* 4, 337. ☐
+- **E** Chou, C. W., Hume, D. B., Rosenband, T. & Wineland, D. J. (2010). "Optical clocks and relativity." *Science* 329, 1630. ☐
+- **E** Bothwell, T. et al. (2022). "Resolving the gravitational redshift across a millimetre-scale atomic sample." *Nature* 602, 420. ☐
+- **E** Nagel, M. et al. (2015). "Direct terrestrial test of Lorentz symmetry in electrodynamics to 10⁻¹⁸." *Nat. Commun.* 6, 8174. ☐
+- **E** Boltzmann (1877), Loschmidt (1876), Bailey et al. (1977), Hafele & Keating (1972), Ehrenfest (1917), Tegmark (1997) — see sections above.
+- **E** Everitt, C. W. F. et al. (2011). "Gravity Probe B: final results." *PRL* 106, 221101. ☐
+- **E** LIGO & Virgo (2016). "Observation of gravitational waves from a binary black hole merger." *PRL* 116, 061102. ☐
+- **E** Event Horizon Telescope Collaboration (2019) *ApJL* 875, L1 (M87*); (2022) *ApJL* 930, L12 (Sgr A*). ☐
+- **E** Dyson, F. W., Eddington, A. S. & Davidson, C. (1920). Deflection of light by the Sun's gravitational field (1919 eclipse). *Phil. Trans. R. Soc. A* 220, 291. ☐
+- **E** Riess, A. G. et al. (1998) *AJ* 116, 1009; Perlmutter, S. et al. (1999) *ApJ* 517, 565 — accelerating expansion (Nobel 2011). ☐
+- **E** Genzel, R. & Ghez, A. — stars orbiting Sgr A* (Nobel 2020). ☐
+- **E** Landauer, R. (1961). *IBM J. Res. Dev.* 5, 183; Bérut, A. et al. (2012). "Experimental verification of Landauer's principle…" *Nature* 483, 187. ☐
+- **E** Wang, G. M. et al. (2002). "Experimental demonstration of violations of the second law of thermodynamics for small systems and short time scales." *PRL* 89, 050601. ☐
+- **E** (theory; untested) Bekenstein, J. D. (1973) *PRD* 7, 2333; Hawking, S. W. (1974) *Nature* 248, 30; (1975) *Commun. Math. Phys.* 43, 199. ☐
+- **E** Egan, C. A. & Lineweaver, C. H. (2010). "A larger estimate of the entropy of the universe." *ApJ* 710, 1825 — black holes dominate. ☐
+- **E** Minkowski quote: "Raum und Zeit" (1908), standard English translation. ☐
+- **C** Presentism vs eternalism (the block universe) — philosophy of time; see e.g. the Stanford Encyclopedia of Philosophy, "Time". ☐
+
 ## Time-reversal violation (D-033)
 - **E** Christenson, J. H., Cronin, J. W., Fitch, V. L. & Turlay, R. (1964). "Evidence for the 2π decay of the K₂⁰ meson." *Phys. Rev. Lett.* 13, 138 — CP violation (T violation inferred via CPT). ☐
 - **E** CPLEAR Collaboration (1998). "First direct observation of time-reversal non-invariance in the neutral-kaon system." *Phys. Lett. B* 444, 43. ☐

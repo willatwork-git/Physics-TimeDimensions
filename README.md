@@ -92,6 +92,8 @@ straight to a lab. Press **?** inside the app for the built-in guide. Works on p
 - **Two guided tours** — *The puzzle of time* (seven stops from "Do clocks agree?" to "Is one time
   dimension a law of nature?") and *From the ISS to the edge of the universe*.
 - **Threads** — each lab links to the same question at the other scales (clocks, 'now', the arrow, 3 + 1).
+- **Concepts** — ⓘ markers give a short "why" on hover or tap; the Concepts pages (under Explore) tell the full
+  story with the evidence: why clocks disagree, what 'now' means, the arrow of time, why 3 + 1.
 - **Predict first** — each lab asks for your guess before explaining (skippable).
 - **Glossary** — dotted-underlined terms show a plain definition on hover or tap.
 - **Progress** — ✓ marks on what you've seen, and "continue where you left off" (kept in your browser).
@@ -170,6 +172,7 @@ src/
   atlas.js          Atlas, Test bench, hypothesis form, mode switch, URL routing
   help.js           the Guide overlay
   guides.js         'The controls' — what every button and slider does, per lab
+  concepts.js       Concepts pages and the ⓘ popups (why clocks disagree, 'now', the arrow, 3 + 1, tags, hurdles)
   glossary.js       glossary terms and hover definitions
   style.css         all styling (dark theme; colour tokens at the top)
 docs/               screenshots for this README
