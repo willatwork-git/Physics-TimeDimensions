@@ -15,7 +15,7 @@
     { id: "time", name: "Time", color: "#f2c94c", native: ["Persistence — what stays the same thing through it?", "Accumulation — what builds up along it (records, memory, entropy)?", "Loss of possibility — how many futures become one past?"],
       members: [
         { n: "Direction", tag: "ESTABLISHED", a: ["Before → after", "Going back", "Energy", "Yes — the order of distant events depends on motion", "Becomes space-like at the Hartle–Hawking origin; swaps with space in black holes", "Clocks, memory, entropy"], note: "The one member we know. Its one-way character is hole H3." },
-        { n: "Texture", tag: "HYPOTHESIS", a: ["Smooth ↔ turbulent; continuous ↔ grainy; predictable ↔ random", "?", "?", "?", "?", "Ultra-precise clock noise, if anything"], note: "Will's candidate. Echoes: spacetime foam, Oppenheim's wobble." },
+        { n: "Texture", tag: "HYPOTHESIS", a: ["Smooth ↔ turbulent; continuous ↔ grainy; predictable ↔ random", "?", "?", "?", "?", "Ultra-precise clock noise, if anything"], note: "An exploratory candidate from this project. Echoes: spacetime foam, Oppenheim's wobble." },
         { n: "A second time axis", tag: "SPECULATIVE", a: ["A second before/after", "Stable prediction from the present alone", "A second energy-like quantity", "—", "Constraints can collapse it to one effective time (Bars)", "None yet"], note: "Bars, Pettini, Kletetschka. See the Two Films lab." }
       ] },
     { id: "internal", name: "Internal (charge)", color: "#e36bd0", native: ["Which forces live here?", "What particles carry it?"],
@@ -25,7 +25,7 @@
       ] },
     { id: "scale", name: "Scale", color: "#9b8cff", native: ["What changes as you zoom?"],
       members: [
-        { n: "The holographic direction", tag: "CONTESTED", a: ["Zoom level (energy scale)", "—", "—", "—", "Dimension appears to drop to ~2 at the smallest scales", "Only in theory (AdS/CFT) and simulations"], note: "In holography, moving 'inward' in one dimension means zooming into the boundary. Links to 'space from entanglement'." }
+        { n: "The holographic direction", tag: "CONTESTED", a: ["Zoom level (energy scale)", "—", "—", "—", "At the boundary it stops being a place and becomes an energy scale", "Only in theory (AdS/CFT)"], note: "In holography, moving 'inward' in one dimension means zooming into the boundary. Links to 'space from entanglement'. (Separate result: in CDT and other quantum-gravity approaches, spacetime's effective dimension drops to about 2 at the smallest scales — see the Atlas.)" }
       ] },
     { id: "state", name: "State", color: "#4fd1a5", native: ["Is it a place, or a list of possibilities?"],
       members: [
@@ -35,7 +35,7 @@
   const ORPHANS = [
     ["Dark energy", "~68% of the universe", "Acceleration measured; no known dimension or particle explains it. Candidates: vacuum (H9), leakage to a 5th dimension (DGP), a timing illusion (timescape)."],
     ["Dark matter", "~27%", "Gravity measured many ways; nothing seen. Candidates: new particles, particles moving in curled dimensions, modified gravity."],
-    ["The Hubble tension", "67 vs 73 km/s/Mpc", "The expansion rate disagrees between methods (H10)."],
+    ["The Hubble tension", "67 vs 73 (km/s per megaparsec)", "The expansion rate disagrees between methods (H10)."],
     ["The 'now'", "—", "Experienced by every observer; absent from every equation (H4)."]
   ];
 
@@ -58,7 +58,7 @@
       return `
         <div class="docwrap">
           <div class="dintro">${Chrono.expBanner()}
-            <p><b>The idea (Will's):</b> stop describing every dimension with questions written for space. Sort dimensions into <b>groups</b>, give every group the same <b>neutral</b> questions, and let each group add its own <b>native</b> questions. Gaps and unanswered rows become visible.</p>
+            <p><b>The idea:</b> stop describing every dimension with questions written for space. Sort dimensions into <b>groups</b>, give every group the same <b>neutral</b> questions, and let each group add its own <b>native</b> questions. Gaps and unanswered rows become visible.</p>
             <p class="meta">The <i>framework</i> is exploratory. The <i>contents</i> of each card carry their own tags — most are mainstream physics.</p>
           </div>
           <div class="dgrid">${cols}</div>
@@ -72,7 +72,8 @@
       <p>Each group is a column. Each card is a candidate member, scored on the same six neutral questions.</p>
       <p><b>Space</b> and <b>Time</b> are different kinds of group — which is why physicists write <b>3 + 1</b>, not 4. The <b>Internal</b> group is where light lives: in gauge theory, light is the ripple of a hidden circle's geometry, just as gravity is the ripple of spacetime's. That's the most solid version of "light and gravity are more alike than different".</p>
       <p>Question marks are the point. The Texture card is almost all "?" — that's what a genuinely new idea looks like before anyone has tested it.</p>
-      <p class="meta">Open for editing: add groups, cards or native questions in <code>src/docs.js</code>.</p>`
+      <p class="meta">Open for editing: add groups, cards or native questions in <code>src/docs.js</code>.</p>`,
+    next: { q: "If physics has no agreed account of what a dimension is, who has tried to give one?", href: "#atlas/H11", label: "Atlas · hole H11" }
   });
 
   /* ---------------- How sure are we? ---------------- */
@@ -95,7 +96,7 @@
           <p style="margin-top:14px"><b>Verdict:</b> expansion is <span class="tag ESTABLISHED">Established</span>. Independent tests agree, and tired light fails several of them.</p>
           <h3>What is still genuinely uncertain</h3>
           <ul class="biglist">
-            <li><b>How fast?</b> Two methods disagree (67 vs 73 km/s/Mpc) — the Hubble tension. ${TG("ESTABLISHED")} that the disagreement exists.</li>
+            <li><b>How fast?</b> Two methods disagree (67 vs 73 km/s per megaparsec) — the Hubble tension. ${TG("ESTABLISHED")} that the disagreement exists.</li>
             <li><b>What drives the acceleration?</b> "Dark energy" is a name, not an explanation. DESI hints it may be weakening. ${TG("CONTESTED")}</li>
             <li><b>Is the acceleration even real?</b> Timescape cosmology argues it's an effect of clocks ticking differently in voids. ${TG("CONTESTED")}</li>
           </ul>
@@ -113,6 +114,7 @@
       <p>This page teaches the <b>method</b> rather than the answer: find where two ideas disagree, then look.</p>
       <p>Tired light is a good example to learn from because it was a <i>reasonable</i> idea. It failed tests, not ridicule.</p>
       <div class="try"><b>For classrooms:</b> give students only the first three columns and ask them to predict the winner before revealing what we see.</div>`,
+    next: { q: "Now use the method on questions that are still open. Which attempts make predictions you could check?", href: "#bench", label: "Test bench" },
     sources: "DES Supernova Program, MNRAS 533, 3365 (2024); COBE FIRAS (1990); E. L. Wright, 'Errors in tired light cosmology' (UCLA)."
   });
 })();

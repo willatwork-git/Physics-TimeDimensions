@@ -33,6 +33,7 @@ An interactive, browser-based educational model with two independent investigati
 | `todo.md` | Tasks |
 | `sources.md` | References with confidence tags |
 | `reviews.md` | External AI reviews: adopted / rejected |
+| `learner-review.md` | Newcomer's-eye review; phases A (done) → B → C |
 | `learning.md` | Will's questions, intuitions, aha moments |
 | `HANDOVER.md` | Hosting + school edition notes |
 | `README.md` | Public-facing (repo is public on GitHub) — keep in sync with features |

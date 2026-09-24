@@ -46,7 +46,7 @@
       f.appendChild(b);
     });
     const sep = document.createElement("span"); sep.style.width = "12px"; f.appendChild(sep);
-    Object.keys(Chrono.TAGS).filter(t => Chrono.shows(Chrono.TIER_OF_TAG[t])).forEach(t => {
+    if (Chrono.mode() === "lab") Object.keys(Chrono.TAGS).filter(t => Chrono.shows(Chrono.TIER_OF_TAG[t])).forEach(t => {
       const b = document.createElement("button");
       b.className = "chip" + (state.tags.has(t) ? " on" : "");
       b.innerHTML = `<span class="tag ${t}" style="border:none;padding:0">${Chrono.TAGS[t]}</span>`;
@@ -68,7 +68,7 @@
     const glow = el("filter", { id: "glow", x: "-100%", y: "-100%", width: "300%", height: "300%" }, defs);
     el("feGaussianBlur", { stdDeviation: "6", result: "b" }, glow);
     const m = el("feMerge", {}, glow); el("feMergeNode", { in: "b" }, m); el("feMergeNode", { in: "SourceGraphic" }, m);
-    svg.addEventListener("click", e => { if (e.target === svg) { state.selected = null; renderAll(); } });
+    svg.addEventListener("click", e => { if (e.target === svg) Chrono.nav("#atlas"); });
 
     // lanes + axis
     Chrono.CAMPS.forEach(c => {
@@ -168,7 +168,7 @@
   function applyHighlight() {
     const f = focusSets(state.hover || state.selected);
     document.querySelectorAll("#atlas .hole").forEach(n => n.classList.toggle("dim", !!f && !f.holes.has(n.dataset.hole)));
-    document.querySelectorAll("#atlas .idea").forEach(n => n.classList.toggle("dim", !!f && !f.ideas.has(n.dataset.idea)));
+    document.querySelectorAll("#atlas .idea").forEach(n => { n.classList.toggle("dim", !!f && !f.ideas.has(n.dataset.idea)); n.classList.toggle("hot", !!f && f.ideas.has(n.dataset.idea)); });
     document.querySelectorAll("#atlas .arc").forEach(n => {
       const on = f && f.ideas.has(n.dataset.idea) && f.holes.has(n.dataset.hole);
       n.style.opacity = f ? (on ? .95 : .03) : .16;
@@ -176,7 +176,7 @@
     });
   }
   function setHover(h) { state.hover = h; applyHighlight(); }
-  function select(s) { state.selected = s; applyHighlight(); renderAside(); if (state.view === "bench") renderBench(); }
+  function select(s) { Chrono.nav(`#${state.view === "bench" ? "bench" : "atlas"}/${s.id}`); }
 
   /* ---------- aside ---------- */
   function renderAside() {
@@ -191,10 +191,15 @@
   function wireAside() {
     document.querySelectorAll("#aside [data-go-hole]").forEach(b => b.onclick = () => select({ type: "hole", id: b.dataset.goHole }));
     document.querySelectorAll("#aside [data-go-idea]").forEach(b => b.onclick = () => select({ type: "idea", id: b.dataset.goIdea }));
+    document.querySelectorAll("#aside [data-myscore]").forEach(sel => sel.onchange = () => {
+      const s = state.selected; if (!s || s.type !== "idea") return;
+      Chrono.progress.setScore(s.id, sel.dataset.myscore, sel.value || null);
+      if (state.view === "bench") renderBench();
+    });
     const del = $("#aside [data-del]");
-    if (del) del.onclick = () => { Chrono.hyp.remove(del.dataset.del); state.selected = null; renderAll(); };
+    if (del) del.onclick = () => { Chrono.hyp.remove(del.dataset.del); Chrono.nav("#atlas"); };
     const back = $("#aside [data-back]");
-    if (back) back.onclick = () => { state.selected = null; renderAll(); };
+    if (back) back.onclick = () => Chrono.nav("#" + state.view);
   }
   function introHTML() {
     const ideas = allIdeas().filter(visible);
@@ -206,9 +211,10 @@
     setTimeout(wireAside);
     return `
       <div class="eyebrow">The Atlas</div>
-      <h2>Where our account of time doesn't add up</h2>
-      <p>The glowing nodes along the top are <b>holes</b>: known gaps in physics' account of time. The dots below are a century of <b>attempts</b> to fill them, placed by year and sorted into camps.</p>
-      <p>Hover a hole to see who has tried to fill it. Click anything to read the detail.</p>
+      <h2>Why does our universe have exactly one time dimension?</h2>
+      <p>Nobody knows for sure — and that is one of ${visHoles().length} <b>holes</b> in physics' account of time, the glowing nodes along the top. The dots below are a century of <b>attempts</b> to fill them, placed by year and sorted into camps.</p>
+      <p>Hover a hole to see who has tried to fill it${Chrono.mode() === "learn" ? " — names appear as you hover" : ""}. Click anything to read the detail.</p>
+      ${Chrono.mode() === "learn" && Chrono.maxLevel >= 3 ? `<p class="meta">Want the raw version — this project's own challenges to the mainstream, your own hypotheses, every label? Switch to <b>Lab</b> (top right).</p>` : ""}
       <h3>Who attacks which hole</h3>
       <div class="bars">${bars}</div>
       <p class="meta" style="margin-top:8px">Colour = camp. Notice where "more time" and "less time" aim at the same hole — two opposite repairs for one crack.</p>
@@ -235,10 +241,15 @@
   function ideaHTML(i) {
     const camp = campOf(i.camp);
     const holes = i.holes.filter(holeOf).map(h => `<span class="holepill" data-go-hole="${esc(h)}">${esc(h)} · ${esc(holeOf(h).name)}</span>`).join("");
-    const bench = Chrono.CONSTRAINTS.map(c => `<tr><td>${c.name}</td><td class="v-${i.c[c.id]}">${SYM[i.c[c.id]]} ${SYM_WORD[i.c[c.id]]}</td></tr>`).join("");
+    const mine = k => Chrono.progress.score(i.id, k);
+    const bench = Chrono.CONSTRAINTS.map(c => `<tr><td>${c.name}</td><td class="sc"><span class="v-${i.c[c.id]}">${i.user ? "" : `${SYM[i.c[c.id]]} ${SYM_WORD[i.c[c.id]]}`}</span>${i.user ? "" : `<div class="why">${esc(Chrono.benchWhy(i, c.id))}</div>`}
+      <label class="yours">${i.user ? "Your score" : "You"} <select class="myscore" data-myscore="${c.id}" aria-label="Your score: ${c.name}"><option value="">${i.user ? "—" : "agree"}</option>${Object.keys(SYM).map(v => `<option value="${v}"${mine(c.id) === v ? " selected" : ""}>${SYM[v]} ${SYM_WORD[v]}</option>`).join("")}</select></label></td></tr>`).join("");
     const benchBlock = i.camp === "bench"
       ? `<h3>Role</h3><p>This is a <b>constraint</b>: a result other ideas are tested against, not an attempt to fill a hole.</p>`
-      : i.tag === "ANALOGY" ? "" : `<h3>Test bench ${i.user ? "(unscored — yours to argue)" : ""}</h3><table class="bench">${bench}</table>`;
+      : i.tag === "ANALOGY" ? "" : `<h3>Test bench ${i.user ? "(unscored — yours to argue)" : ""}</h3>
+        <table class="bench">${bench}</table>
+        <p class="meta">Scores are a first-pass judgement by Claude. Disagree? Set <b>You</b> under any score — it's kept in your browser and shown on the Test bench.</p>`;
+    const [hp, hk] = i.tag === "RULEDOUT" ? ["What it predicted", "What killed it"] : i.tag === "ESTABLISHED" ? ["Predicts", "What would overturn it"] : i.camp === "bench" ? ["Says", "What would overturn it"] : ["Would predict", "Would be killed by"];
     return `
       <button class="btn" data-back>← Atlas</button>
       <div class="eyebrow" style="margin-top:14px"><i class="camp-dot" style="background:${campColor(i.camp)}"></i>${camp.name} · ${i.user ? "your hypothesis" : i.year}</div>
@@ -248,8 +259,8 @@
       <span class="tag ${i.tag}">${Chrono.TAGS[i.tag]}</span>
       <p style="margin-top:12px">${esc(i.plain)}</p>
       ${i.why ? `<h3>The thinking behind it</h3><p>${esc(i.why)}</p>` : ""}
-      ${i.predicts ? `<h3>Would predict</h3><p>${esc(i.predicts)}</p>` : ""}
-      ${i.kill ? `<h3>Would be killed by</h3><p>${esc(i.kill)}</p>` : ""}
+      ${i.predicts ? `<h3>${hp}</h3><p>${esc(i.predicts)}</p>` : ""}
+      ${i.kill ? `<h3>${hk}</h3><p>${esc(i.kill)}</p>` : ""}
       <h3>Holes it targets</h3><div class="pillrow">${holes}</div>
       ${benchBlock}
       ${i.note ? `<p class="note" style="margin-top:14px">${esc(i.note)}</p>` : ""}
@@ -265,9 +276,9 @@
       <td>${i.user ? "yours" : i.year}${isExp(i) ? ' <span class="expdot" title="Exploratory">◌</span>' : ""}</td>
       <td><i class="camp-dot" style="background:${campColor(i.camp)}"></i>${esc(i.name)}</td>
       <td><span class="tag ${i.tag}">${Chrono.TAGS[i.tag]}</span></td>
-      ${Chrono.CONSTRAINTS.map(c => `<td class="sym v-${i.c[c.id]}" title="${SYM_WORD[i.c[c.id]]}">${SYM[i.c[c.id]]}</td>`).join("")}
+      ${Chrono.CONSTRAINTS.map(c => { const m = Chrono.progress.score(i.id, c.id); return `<td class="sym v-${i.c[c.id]}" title="${esc(SYM_WORD[i.c[c.id]] + (Chrono.benchWhy(i, c.id) ? " — " + Chrono.benchWhy(i, c.id) : "") + (m ? ` · You: ${SYM_WORD[m]}` : ""))}">${SYM[i.c[c.id]]}${m && m !== i.c[c.id] ? `<sup class="mine v-${m}" aria-label="your score">${SYM[m]}</sup>` : ""}</td>`; }).join("")}
     </tr>`).join("");
-    v.innerHTML = `<p class="meta">Every attempt against the same hurdles. ✓ passes · ◐ partly / evades · ✗ fails or ignores · – n/a · ? unknown. First-pass scores by Claude — challenge them.</p>
+    v.innerHTML = `<p class="meta">Every attempt against the same hurdles. ✓ passes · ◐ partly / evades · ✗ fails or ignores · – n/a · ? unknown. First-pass scores by Claude — hover a score for the reason, click a row to argue with it. Small raised marks are your own scores.</p>
       <table><thead><tr><th>Year</th><th>Idea</th><th>Status</th>${head}</tr></thead><tbody>${rows}</tbody></table>`;
     v.querySelectorAll("[data-go-idea]").forEach(r => r.onclick = () => select({ type: "idea", id: r.dataset.goIdea }));
   }
@@ -290,17 +301,12 @@
     Chrono.hyp.add(h);
     state.camps.add(h.camp); state.tags.add("HYPOTHESIS");
     $("#modal").style.display = "none";
-    state.selected = { type: "idea", id: h.id };
-    renderAll();
+    Chrono.nav("#atlas/" + h.id);
   };
   $("#importfile").onchange = e => { const f = e.target.files[0]; if (f) Chrono.hyp.importJSON(f, (ok, added, skipped) => { if (!ok) alert("That file couldn't be read."); else if (skipped) alert(`Imported ${added} idea(s); skipped ${skipped} (already here, or missing a name, camp or known hole).`); renderAll(); }); e.target.value = ""; };
 
   /* ---------- views ---------- */
-  document.querySelectorAll("nav button[data-view]").forEach(b => b.onclick = () => {
-    state.view = b.dataset.view;
-    document.querySelectorAll("nav button[data-view]").forEach(x => x.classList.toggle("on", x === b));
-    renderAll();
-  });
+  document.querySelectorAll("nav button[data-view]").forEach(b => b.onclick = () => Chrono.nav("#" + b.dataset.view));
   function renderAll() {
     const mod = Chrono.views && Chrono.views[state.view];
     ["#atlas", "#benchview", "#flatland", "#lab", "#doc"].forEach(sel => { const n = $(sel); if (n) n.style.display = "none"; });
@@ -316,17 +322,48 @@
   }
   function renderLevel() {
     const host = $("#levelctl"); if (!host) return;
-    const opts = [[1, "Mainstream"], [2, "+ Frontier"], [3, "+ Exploratory"]].filter(o => o[0] <= Chrono.maxLevel);
-    host.innerHTML = `<span class="lvl-label">Show</span>` + opts.map(([n, t]) => `<button class="lvl lvl${n} ${Chrono.level >= n ? "on" : ""}" data-lvl="${n}" title="${["", "Established and contested physics, plus lenses", "Adds speculative proposals by physicists", "Adds Will & Claude's ideas and visitor hypotheses — not mainstream physics"][n]}">${t}</button>`).join("");
+    document.body.classList.toggle("mode-lab", Chrono.mode() === "lab");
+    document.body.classList.toggle("mode-learn", Chrono.mode() === "learn");
+    host.innerHTML = Chrono.maxLevel < 3 ? "" : `<div class="modesw" role="group" aria-label="Mode">
+      <button class="${Chrono.mode() === "learn" ? "on" : ""}" data-lvl="2" title="Physics as physicists hold and debate it, plus published fringe proposals. Guided and uncluttered.">Learn</button>
+      <button class="lab ${Chrono.mode() === "lab" ? "on" : ""}" data-lvl="3" title="The raw workbench: adds this project's own exploratory ideas, your hypotheses, the Dimension Map and every filter. Not mainstream physics.">◌ Lab</button></div>`;
     host.querySelectorAll("[data-lvl]").forEach(b => b.onclick = () => Chrono.setLevel(+b.dataset.lvl));
     document.querySelectorAll("nav button[data-tier]").forEach(b => b.style.display = Chrono.shows(b.dataset.tier) ? "" : "none");
   }
-  Chrono.onLevel.push(() => {
-    const cur = document.querySelector(`nav button[data-view="${state.view}"]`);
-    if (cur && cur.dataset.tier && !Chrono.shows(cur.dataset.tier)) { state.view = "atlas"; document.querySelectorAll("nav button[data-view]").forEach(x => x.classList.toggle("on", x.dataset.view === "atlas")); } if (state.selected) { const x = state.selected.type === "hole" ? holeOf(state.selected.id) : allIdeas().find(i => i.id === state.selected.id); if (!x || !Chrono.shows(Chrono.tierOf(x))) state.selected = null; } renderAll(); });
+  Chrono.onLevel.push(() => { if (Chrono.mode() === "learn") state.tags = new Set(Object.keys(Chrono.TAGS)); rendered = false; route(); });
   Chrono.views = Chrono.views || {};
   if (Chrono.flatland) Chrono.views.flatland = { show: () => { $("#flatland").style.display = "flex"; Chrono.flatland.show(); }, hide: () => Chrono.flatland.hide() };
-  Chrono.goView = v => { state.view = v; document.querySelectorAll("nav button[data-view]").forEach(x => x.classList.toggle("on", x.dataset.view === v)); renderAll(); };
-  Chrono.goHole = id => { state.view = "atlas"; document.querySelectorAll("nav button").forEach(x => x.classList.toggle("on", x.dataset.view === "atlas")); state.selected = { type: "hole", id }; renderAll(); };
-  renderAll();
+  Chrono.goView = v => Chrono.nav("#" + v);
+  Chrono.goHole = id => Chrono.nav("#atlas/" + id);
+
+  /* ---------- routing: #view · #atlas/H5 · #atlas/<idea id> · #bench/<idea id> · #flatland/3 ----------
+     Every navigation goes through the URL hash, so views can be linked to and Back works. */
+  let rendered = false;
+  Chrono.nav = hash => { if (location.hash === hash) route(); else location.hash = hash; };
+  function route() {
+    const [v0, arg] = decodeURIComponent(location.hash.slice(1)).split("/");
+    const btn = document.querySelector(`nav button[data-view="${v0}"]`);
+    const known = btn || v0 === "home";
+    const v = !v0 ? "home" : known && (!btn || !btn.dataset.tier || Chrono.shows(btn.dataset.tier)) ? v0 : "atlas";
+    if (v0 && v !== v0) history.replaceState(null, "", "#atlas");
+    let sel = null;
+    if ((v === "atlas" || v === "bench") && arg) {
+      const h = holeOf(arg), i = allIdeas().find(x => x.id === arg);
+      if (h && Chrono.shows(Chrono.tierOf(h))) sel = { type: "hole", id: arg };
+      else if (i && Chrono.shows(Chrono.tierOf(i))) sel = { type: "idea", id: arg };
+    }
+    const same = rendered && v === state.view && (v === "atlas" || v === "bench");
+    state.view = v; state.selected = sel;
+    Chrono.progress.visit(v);
+    const fl = v === "flatland" && parseInt(arg, 10);
+    if (v !== "home") Chrono.progress.setLast("#" + v + (sel ? "/" + sel.id : fl ? "/" + fl : ""));
+    document.querySelectorAll("nav button[data-view]").forEach(x => { x.classList.toggle("on", x.dataset.view === v); x.classList.toggle("seen", Chrono.progress.seen(x.dataset.view)); });
+    if (v === "flatland" && Chrono.flatland && arg) Chrono.flatland.setChapter(parseInt(arg, 10) - 1);
+    Chrono.tour.renderBar();
+    if (same) { applyHighlight(); renderAside(); if (v === "bench") renderBench(); return; }
+    rendered = true;
+    renderAll();
+  }
+  window.addEventListener("hashchange", route);
+  route();
 })();

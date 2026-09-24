@@ -19,10 +19,26 @@ It works offline; fonts fall back to system fonts without a connection.
 
 | Want | Open |
 |---|---|
-| Everything, including exploratory ideas | `index.html` |
-| Classroom version (mainstream and frontier physics only) | `index.html?edition=school` |
+| Learn mode (default): mainstream and frontier physics, guided | `index.html` |
+| Lab mode: the raw workbench, including exploratory ideas | `index.html?mode=lab` |
+| Classroom version (Learn only, no switch) | `index.html?edition=school` |
 
-Press **?** inside the app for the built-in guide. Designed for desktop browsers at 1024 px and wider.
+## Two modes: Learn and Lab
+
+Chronoscope has two audiences, split by one switch in the header.
+
+- **Learn** (the default) — physics as physicists hold and debate it, plus published proposals from
+  the fringe, all tagged. The Atlas stays uncluttered (idea names appear as you hover) and each lab
+  ends with the next question and a link to where it's explored.
+- **◌ Lab** — the raw workbench for experimenting with ideas. It adds this project's own exploratory
+  ideas, which deliberately challenge the mainstream, plus your own hypotheses, the Dimension Map,
+  exploratory overlays and every filter. None of it is mainstream physics; it's there to be tested.
+
+Every view has its own link (for example `#atlas/H5` or `#flatland/7`), so you can share exactly
+what you're looking at, and the browser's Back button works.
+
+The app opens on a home page: take the **7-stop guided tour** (about 20 minutes), explore the map, or go
+straight to a lab. Press **?** inside the app for the built-in guide. Designed for desktop browsers at 1024 px and wider.
 
 ## What's inside
 
@@ -31,8 +47,10 @@ Press **?** inside the app for the built-in guide. Designed for desktop browsers
   gravity, the arrow of time, the missing "now") and around 50 *ideas* from 1880 to 2026 that tried to
   fill them. Ideas are placed by year and grouped by approach. Hover a hole to see every attempt at it.
 - **Test bench** — every idea scored against the same five hurdles: matches relativity tests, keeps the
-  present predictive, allows stable matter, explains the arrow, makes a new testable prediction.
-- **Dimension Map** *(exploratory)* — a working framework that asks every kind of dimension (space,
+  present predictive, allows stable matter, explains the arrow, makes a new testable prediction. Every
+  partial, failing or unknown score has a written reason, and you can record your own score where you
+  disagree. Each idea also says what it predicts and what would overturn it.
+- **Dimension Map** *(Lab)* — a working framework that asks every kind of dimension (space,
   time, internal, scale, state) the same questions, to make the gaps visible.
 
 **Labs** — small simulations that run the real equations
@@ -48,6 +66,12 @@ Press **?** inside the app for the built-in guide. Designed for desktop browsers
   at the starting frame and then diverge. With two times, a complete snapshot of "now" doesn't fix
   the future.
 
+**Learning aids**
+- **Guided tour** — seven stops from "Do clocks agree?" to "Is one time dimension a law of nature?"
+- **Predict first** — each lab asks for your guess before explaining (skippable).
+- **Glossary** — dotted-underlined terms show a plain definition on hover or tap.
+- **Progress** — ✓ marks on what you've seen, and "continue where you left off" (kept in your browser).
+
 **Method**
 - **How sure are we?** — a worked example (expanding space vs "tired light") showing how a claim earns
   the label *established*.
@@ -61,13 +85,12 @@ paper can contain established maths and speculative physics.
 
 | Tier | Tags | Meaning |
 |---|---|---|
-| Mainstream | Established · Contested | Held, or actively debated, by working physicists |
+| Mainstream | Established · Contested · Ruled out | Held, actively debated, or tested and rejected by working physicists |
 | Frontier | Speculative | Published proposals without supporting evidence yet |
-| Exploratory | Hypothesis | The authors' own ideas and visitors' hypotheses. **Not mainstream physics.** Drawn with dashed outlines |
+| Exploratory | Hypothesis | This project's own ideas and visitors' hypotheses (Lab mode). **Not mainstream physics.** Drawn with dashed outlines |
 | Lens | Analogy | History, stories and analogies that help thinking |
 
-The **Show** switch in the header sets how far from mainstream physics the app goes. The school
-edition stops at Frontier.
+Learn mode shows Mainstream, Frontier and Lens; Lab adds Exploratory.
 
 Other rules the project follows:
 - Every simulation states its **model assumption** and says where it simplifies.
@@ -81,7 +104,7 @@ Other rules the project follows:
 
 ## Your own hypotheses
 
-In the full edition, **+ Your hypothesis** adds an idea to the Atlas. You're asked what it would
+In Lab mode, **+ Your hypothesis** adds an idea to the Atlas. You're asked what it would
 predict and what observation would rule it out. Ideas are stored **only in your browser**
 (`localStorage`); nothing is sent anywhere. **Export** saves them to a JSON file you can send a friend,
 who uses **Import** to add them to their own Atlas. Imported files are treated as untrusted: only
@@ -105,16 +128,20 @@ The only external request is Google Fonts. To make the school edition the defaul
 ```
 index.html          entry point; loads the scripts below in order
 src/
-  config.js         edition (full / school) and the Show level
+  config.js         edition (full / school) and mode (learn / lab)
+  progress.js       the visitor's progress, predictions, tour position, own scores (browser only)
   data.js           Atlas: tags, tiers, camps, hurdles, holes H1–H7, first 25 ideas
   data2.js          Atlas expansion: holes H8–H11 and later ideas
+  data3.js          what each idea predicts, what would overturn it, and a reason per bench score
   hypotheses.js     visitor hypotheses: storage, export, import
   lab.js            shared drawing helpers, lab harness, reduced-motion handling
   labs.js           Field Ocean, Clock Lab, River, Two Films
   docs.js           Dimension Map, How sure are we?
+  home.js           Home page and the guided tour
   flatland.js       the seven Flatland chapters (own engine)
-  atlas.js          Atlas, Test bench, hypothesis form, navigation
+  atlas.js          Atlas, Test bench, hypothesis form, mode switch, URL routing
   help.js           the Guide overlay
+  glossary.js       glossary terms and hover definitions
   style.css         all styling (dark theme; colour tokens at the top)
 docs/               screenshots for this README
 archive/            superseded specs (v1, v2)
@@ -137,6 +164,7 @@ id, year, name, who, camp, holes, tag, outcome, plain description, reasoning, hu
 | [`decisions.md`](decisions.md) | Decision records (D-001 onward) |
 | [`sources.md`](sources.md) | References, with confidence tags |
 | [`reviews.md`](reviews.md) | Design reviews from other AI systems, and what was adopted or rejected (and why) |
+| [`learner-review.md`](learner-review.md) | The app reviewed from a newcomer's point of view, with a phased plan |
 | [`todo.md`](todo.md) | Task list |
 | [`ACTIVE.md`](ACTIVE.md) | Current focus |
 | [`HANDOVER.md`](HANDOVER.md) | Notes for hosting and school use |
@@ -145,7 +173,8 @@ id, year, name, who, camp, holes, tag, outcome, plain description, reasoning, hu
 
 ## Status
 
-Working and usable: the Atlas, Test bench, all labs listed above, and both editions. Planned next
+Working and usable: the Atlas, Test bench, all labs listed above, Learn and Lab modes, the guided tour,
+and the school edition. Next are new labs (see [`learner-review.md`](learner-review.md), Phase C). Also planned
 (see [`spec.md`](spec.md)): a "Boot a Universe" entrance that turns Tegmark's (space, time)
 dimension diagram into named failure modes, a Mode Explorer and Future Compass for two-time physics,
 and an arrow-of-time investigation. Also still to do before wider classroom use: a light theme, a

@@ -9,15 +9,16 @@ Chrono.TAGS = {
   CONTESTED: "Contested",
   SPECULATIVE: "Speculative",
   ANALOGY: "Analogy",
-  HYPOTHESIS: "Hypothesis"
+  HYPOTHESIS: "Hypothesis",
+  RULEDOUT: "Ruled out"
 };
 
 /* Tiers separate mainstream physics from frontier ideas and from our own exploratory thinking.
    mainstream = Established or Contested claims held by working physicists
    frontier   = Speculative proposals published by physicists
-   exploratory= Will & Claude's ideas and visitors' hypotheses — NOT mainstream physics
+   exploratory= this project's own ideas and visitors' hypotheses — NOT mainstream physics
    lens       = analogies and history that help thinking (shown in every edition) */
-Chrono.TIER_OF_TAG = { ESTABLISHED: "mainstream", CONTESTED: "mainstream", SPECULATIVE: "frontier", HYPOTHESIS: "exploratory", ANALOGY: "lens" };
+Chrono.TIER_OF_TAG = { ESTABLISHED: "mainstream", CONTESTED: "mainstream", SPECULATIVE: "frontier", HYPOTHESIS: "exploratory", ANALOGY: "lens", RULEDOUT: "mainstream" };
 Chrono.TIER_LEVEL = { lens: 1, mainstream: 1, frontier: 2, exploratory: 3 };
 Chrono.tierOf = x => x.tier || Chrono.TIER_OF_TAG[x.tag] || "mainstream";
 
@@ -144,7 +145,7 @@ Chrono.IDEAS = [
 
   { id: "thermal", year: 1994, name: "Thermal time", who: "Connes & Rovelli", camp: "less", holes: ["H1","H3"], tag: "SPECULATIVE", outcome: "Open",
     plain: "Time's flow isn't in the laws; it comes from our incomplete, statistical knowledge of a system — like temperature.",
-    why: "It explains why the timeless fundamental theory can look timeful to observers who can't see every detail. Your 'Newton inside quantum' intuition in physics form.",
+    why: "It explains why the timeless fundamental theory can look timeful to observers who can't see every detail. An example of emergence: the everyday flow of time appearing from a deeper, timeless description, as temperature appears from moving molecules.",
     c: { rel: "yes", pred: "yes", matter: "na", arrow: "part", test: "no" },
     note: "Scale and coarse-graining create time — emergence, not addition." },
 
@@ -208,7 +209,7 @@ Chrono.IDEAS = [
     c: { rel: "yes", pred: "yes", matter: "yes", arrow: "unk", test: "part" },
     note: "Media coverage often also cites JWST galaxy-rotation claims, which are separately disputed." },
 
-  { id: "ai", year: 2026, name: "Time as seen by a language model", who: "Will & Claude", camp: "lens", holes: ["H1","H4"], tag: "ANALOGY", outcome: "Lens",
+  { id: "ai", year: 2026, name: "Time as seen by a language model", who: "Chronoscope project", camp: "lens", holes: ["H1","H4"], tag: "ANALOGY", outcome: "Lens",
     plain: "A trained model is static weights; its only 'time' is the order of text in a conversation. Five minutes or five days between messages feel identical unless it's told the date.",
     why: "Structurally close to Page–Wootters: time as correlation inside a static whole. Watching a being with 'thinner' time is Flatland one level down.",
     c: { rel: "na", pred: "na", matter: "na", arrow: "na", test: "na" },

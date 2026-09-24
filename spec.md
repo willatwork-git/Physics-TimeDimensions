@@ -32,8 +32,14 @@ Tags: ANALOGY (the story) + ESTABLISHED (the geometry).
 - **Pages:** Dimension Map (exploratory framework, level 3 only), How sure are we? (expansion vs tired light, the claim ladder).
 - See `HANDOVER.md` for hosting and the school edition.
 
+## Modes (D-023)
+**Learn** (default): Mainstream + Frontier + Lens, guided. **Lab**: adds Exploratory, hypothesis tools, Dimension Map, all filters.
+
+## Learning layer (D-026, D-027)
+Home (hook + doors) · 7-stop tour · Predict first per lab · progress marks · glossary · reasons for every non-✓ bench score and visitor's own scores · predicts / overturned-by for every physics idea.
+
 ## Tags (v3)
-ESTABLISHED · CONTESTED (Mainstream) · SPECULATIVE (Frontier) · **HYPOTHESIS** (Exploratory: ours and visitors') · **ANALOGY** (Lens)
+ESTABLISHED · CONTESTED · **RULED OUT** (Mainstream) · SPECULATIVE (Frontier) · **HYPOTHESIS** (Exploratory: ours and visitors') · **ANALOGY** (Lens)
 
 ## Hook
 **"Why does our universe have exactly one time dimension?"**

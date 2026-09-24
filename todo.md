@@ -7,6 +7,7 @@ Delivery builds are named by date/content below; spec.md "Build order" numbers t
 - [x] Flatland tab (7 chapters) — Build 1.1
 - [x] Tiers/editions, Atlas expansion, Field Ocean, Clock Lab, River, Two Films (I.4), Dimension Map, How sure are we?, Guide — delivery Build 2
 - [x] Housekeeping (2026-09-24): public README + screenshots, .gitignore, import sanitising, reduced-motion fix, River timescale fix, Build 2 sources
+- [x] Learner review Phase A (2026-09-24): Learn/Lab modes, deep links, RULED OUT, accuracy fixes, public voice, next-question chain, calm Atlas
 
 ## Will to decide
 - [x] Licence — MIT code, CC BY 4.0 content (2026-09-24)
@@ -16,6 +17,15 @@ Delivery builds are named by date/content below; spec.md "Build order" numbers t
 ## Now
 - [ ] Will: explore the Atlas; challenge scores; add hypotheses
 - [ ] Verify ☐ citations in sources.md (Atlas, Build 2 section)
+
+## Learner review — Phase B (the path) ✅ 2026-09-24 (D-026, D-027)
+- [x] Home · 7-stop tour · Predict first (4 labs) · progress marks · glossary (33 terms) · bench reasons + own scores · predicts/overturned-by for 42 ideas
+- [ ] Will: review `src/data3.js` (reasons, predictions, kill conditions) and the tour wording in `src/home.js`
+- [ ] Predict-first for Flatland chapters (Flatland has its own aside engine)
+
+## Learner review — Phase C (new models)
+- [ ] Spacetime diagram (simultaneity + twins) · Entropy box · Expanding universe · Page–Wootters clock · Cosmic timeline (Boot a Universe is below)
+- [ ] When Spacetime diagram + Entropy box exist: swap them into tour stops (see comment in `src/home.js`)
 
 ## Space School readiness
 - [ ] Teacher notes per lab

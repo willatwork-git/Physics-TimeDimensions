@@ -52,7 +52,7 @@ p { margin: 0 0 10px; }
 .meta { color: var(--muted); font-size: 12px; margin-bottom: 10px; }
 .tag { display: inline-block; font: 600 10px var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid; }
 .tag.ESTABLISHED { color: var(--t-est); } .tag.CONTESTED { color: var(--t-con); } .tag.SPECULATIVE { color: var(--t-spe); }
-.tag.ANALOGY { color: var(--t-ana); } .tag.HYPOTHESIS { color: var(--t-hyp); border-style: dashed; }
+.tag.ANALOGY { color: var(--t-ana); } .tag.RULEDOUT { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; } .tag.HYPOTHESIS { color: var(--t-hyp); border-style: dashed; }
 .pillrow { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
 .holepill { font: 11px var(--mono); padding: 2px 8px; border-radius: 4px; background: var(--panel2); border: 1px solid var(--line); cursor: pointer; }
 .holepill:hover { border-color: var(--accent); }
@@ -189,3 +189,66 @@ nav { flex: 1; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 nav { gap: 6px; }
 .lvl { padding: 3px 8px; }
 @media (max-width: 1750px) { .brand-sub { display: none; } }
+
+/* Learn | Lab mode switch */
+.modesw { display: flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
+.modesw button { font-size: 12px; padding: 4px 12px; border-radius: 999px; border: 1px solid transparent; background: none; color: var(--muted); cursor: pointer; }
+.modesw button.on { color: var(--bg); background: var(--t-est); }
+.modesw button.lab.on { color: var(--t-hyp); background: rgba(124,196,255,.1); border: 1px dashed var(--t-hyp); }
+/* Learn mode: idea names appear only for the focused hole/idea, so the Atlas reads as a map, not a knot */
+.mode-learn #atlas .idea .idea-label { opacity: 0; transition: opacity .15s ease-out; }
+.mode-learn #atlas .idea.hot .idea-label { opacity: 1; }
+/* Next-question hand-off at the end of each lab */
+.nextq { display: block; margin-top: 18px; padding: 12px 14px; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; background: var(--panel2); color: var(--text); text-decoration: none; }
+.nextq:hover { border-color: var(--accent); }
+.nextq .nq { display: block; margin: 4px 0 6px; font-size: 14px; color: var(--text); }
+.nextq .hgo { font-size: 13px; color: var(--accent); }
+
+/* ---------- Phase B: home, tour, predict, progress, glossary, your scores ---------- */
+.brand { text-decoration: none; color: var(--text); }
+.brand:hover b { text-decoration: underline; }
+nav button.seen:not(.on)::after, .chapters button.seen:not(.on)::after { content: " ✓"; color: var(--t-est); font-size: .85em; }
+
+.home { max-width: 1040px; }
+.home h1 { font-size: clamp(26px, 3.2vw, 40px); line-height: 1.15; margin: 8px 0 14px; }
+.home .lede { font-size: 17px; line-height: 1.55; color: var(--text); max-width: 760px; }
+.continue { display: inline-block; margin: 6px 0 4px; color: var(--accent); text-decoration: none; }
+.continue:hover { text-decoration: underline; }
+.doors { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 22px 0 16px; }
+.door { display: flex; flex-direction: column; gap: 8px; padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: var(--text); text-decoration: none; }
+.door h2 { margin: 0; font-size: 20px; }
+.door p { margin: 0; color: var(--muted); line-height: 1.5; }
+.door .btn { align-self: flex-start; margin-top: auto; }
+a.door:hover { border-color: var(--accent); }
+.door.d-tour { border-color: var(--accent); background: linear-gradient(160deg, rgba(124,196,255,.10), var(--panel) 60%); }
+.door.d-lab { border: 1px dashed var(--t-hyp); }
+.door .hgo { margin-top: auto; color: var(--accent); }
+.labchips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+.labchips a { font-size: 13px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--text); text-decoration: none; }
+.labchips a:hover { border-color: var(--t-est); }
+.labchips a.seen { color: var(--t-est); }
+
+#tourbar { display: none; align-items: center; gap: 14px; padding: 10px 16px; border-bottom: 1px solid var(--accent); background: linear-gradient(90deg, rgba(124,196,255,.12), var(--panel)); flex-wrap: wrap; }
+.tb-step { font: 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+.tb-q { flex: 1; min-width: 240px; }
+.tb-q .meta { margin-left: 6px; }
+.tb-btns { display: flex; gap: 6px; }
+body.touring .nextq { display: none; }
+
+.predict { margin: 14px 0; padding: 12px 14px; border: 1px solid var(--t-con); border-radius: 8px; background: rgba(242,201,76,.06); }
+.predict .eyebrow { color: var(--t-con); }
+.predict p { margin: 6px 0; }
+.popts { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+.popts .btn { text-align: left; white-space: normal; }
+.linkish { background: none; border: 0; padding: 0; color: var(--muted); font-size: 12px; text-decoration: underline; cursor: pointer; }
+
+dfn.gl { font-style: normal; text-decoration: underline dotted var(--muted); text-underline-offset: 3px; cursor: help; }
+dfn.gl:focus { outline: 1px solid var(--accent); outline-offset: 2px; }
+#gltip { display: none; position: fixed; z-index: 50; max-width: 300px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel2); color: var(--text); font-size: 13px; line-height: 1.45; box-shadow: 0 8px 24px rgba(0,0,0,.4); pointer-events: none; }
+
+table.bench .why { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+.bench td.sc { text-align: left; font-family: var(--sans); padding-left: 10px; }
+.bench td.sc > span { font-family: var(--mono); }
+.yours { display: flex; align-items: center; gap: 6px; margin-top: 5px; font-size: 11px; color: var(--muted); }
+.myscore { font-size: 11px; background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 2px 4px; }
+sup.mine { font-size: 10px; margin-left: 2px; }

@@ -1,19 +1,11 @@
 # ACTIVE
 
-**Focus:** Housekeeping pass done (2026-09-24). Repo is public on GitHub; README rewritten for public readers.
+**Focus:** Learner-review Phase B delivered (2026-09-24) — D-026, D-027.
 
-**State:** Atlas (11 holes, 49 ideas, 1880–2026), Test bench, Dimension Map, Flatland (7 chapters), Field Ocean, Clock Lab, River, Two Films, How sure are we?, Guide. Full and school editions. Spec v3.
+**State:** Opens on **Home** (hook + tour · map · labs). **7-stop tour** over existing views. **Predict first** in Field Ocean, Clock Lab, River, Two Films. Progress ✓ marks + continue-where-you-left-off. **Glossary** (33 terms, hover/tap). Test bench: a reason for every ◐/✗/? (59 cells), generic lines for ✓/n/a, visitor's own scores. Every physics idea (42) says what it predicts and what would overturn it. Learn/Lab modes and deep links from Phase A.
 
-**Housekeeping changes:** imported hypotheses sanitised (D-020); reduced motion now pauses sims until the visitor interacts, instead of freezing them for good (D-021); River flow and light share one timescale; `data2.js` helpers no longer global; `.gitignore` added; `sources.md` covers the Build 2 content.
+**For Will to review:** `src/data3.js` — Claude's first-pass reasons, predictions and kill conditions (one sentence each). Tour wording in `src/home.js`.
 
-**Decisions waiting on Will:**
-- `learning.md` is personal and is now public. Keep it, trim it, or move it out of the repo?
+**Parked (Will, 2026-09-24):** `learner-review.md` and `learning.md` stay public for now; clean up later.
 
-**Settled:** licence MIT (code) + CC BY 4.0 (docs) — D-022. Live at https://willatwork-git.github.io/Physics-TimeDimensions/
-
-**Next step:** Will explores the Atlas and labs. Then either the Boot a Universe entrance (spec Build order step 1) or Space School readiness (light theme, tablet layout, teacher notes).
-
-**Open questions for Will:**
-- Which test-bench scores do you disagree with?
-- Which ideas are missing?
-- Are 11 the right holes? (Candidate: "why does time pass at all?")
+**Next step:** Phase C — Spacetime diagram and Entropy box first (they complete the tour), then Boot a Universe, Expanding universe, Page–Wootters clock, cosmic timeline.

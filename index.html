@@ -10,7 +10,7 @@
 </head>
 <body>
 <header>
-  <div class="brand"><b>CHRONOSCOPE</b><span class="brand-sub"> · the holes in time</span></div>
+  <a class="brand" href="#home" title="Home"><b>CHRONOSCOPE</b><span class="brand-sub"> · the holes in time</span></a>
   <nav>
     <div class="navseg g-explore"><span class="navgrp">Explore</span>
       <button data-view="atlas" class="on">Atlas</button>
@@ -32,6 +32,7 @@
 </header>
 <main>
   <section id="stage">
+    <div id="tourbar" role="region" aria-label="Guided tour"></div>
     <div class="toolbar" id="filters"></div>
     <div id="atlas"></div>
     <div id="benchview"></div>
@@ -60,14 +61,18 @@
 <input type="file" id="importfile" accept=".json" hidden>
 
 <script src="src/config.js"></script>
+<script src="src/progress.js"></script>
 <script src="src/data.js"></script>
 <script src="src/data2.js"></script>
+<script src="src/data3.js"></script>
 <script src="src/hypotheses.js"></script>
 <script src="src/lab.js"></script>
 <script src="src/labs.js"></script>
 <script src="src/docs.js"></script>
+<script src="src/home.js"></script>
 <script src="src/flatland.js"></script>
 <script src="src/atlas.js"></script>
 <script src="src/help.js"></script>
+<script src="src/glossary.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 /* Chronoscope — Atlas expansion (Build 2). New holes and ideas.
-   Exploratory entries (tag HYPOTHESIS, who "Will & Claude") are our own thinking, not mainstream physics. */
+   Exploratory entries (tag HYPOTHESIS, who "Chronoscope project") are our own thinking, not mainstream physics. */
 (function () {
 Chrono.HOLES.push(
   { id: "H8", name: "Is energy conserved cosmically?", tag: "ESTABLISHED",
@@ -9,11 +9,11 @@ Chrono.HOLES.push(
     plain: "The vacuum isn't empty: quantum fields fill it, and it pushes (the Casimir effect). Quantum theory's estimate of the vacuum's energy is wrong by a factor of about 10^120 compared with the dark energy we measure — perhaps the worst prediction in physics.",
     why: "Whatever space is 'made of' — fields, a condensate, entanglement — it is the stage for time too. Dark energy (~68% of the universe) sits here." },
   { id: "H10", name: "How fast is it expanding?", tag: "ESTABLISHED",
-    plain: "Two good methods measure the expansion rate and disagree: about 67 versus 73 km/s per megaparsec. Years of checking haven't closed the gap (the 'Hubble tension').",
+    plain: "Two good methods measure the expansion rate and disagree: about 67 versus 73 kilometres per second for every megaparsec (3.26 million light-years) of distance. Years of checking haven't closed the gap (the 'Hubble tension').",
     why: "If it isn't a measurement error, something is missing from our model of the cosmos — possibly in how time and expansion are described." },
   { id: "H11", name: "What is a dimension?", tag: "HYPOTHESIS",
-    plain: "Will's challenge: physics uses dimensions constantly but has no agreed account of what makes one kind of dimension different from another. Time is usually described with questions written for space.",
-    why: "Exploratory framing by Will & Claude. Mathematics defines dimension rigorously (degrees of freedom, fractional and scale-dependent dimension); the open part is a physical taxonomy of dimension types. See the Dimension Map." }
+    plain: "An open challenge: physics uses dimensions constantly but has no agreed account of what makes one kind of dimension different from another. Time is usually described with questions written for space.",
+    why: "Exploratory framing by this project. Mathematics defines dimension rigorously (degrees of freedom, fractional and scale-dependent dimension); the open part is a physical taxonomy of dimension types. See the Dimension Map." }
 );
 
 const E = (id, year, name, who, camp, holes, tag, outcome, plain, why, c, note, extra) =>
@@ -34,7 +34,7 @@ Chrono.IDEAS.push(
     "Every conservation law comes from a symmetry. Energy is conserved because the laws are the same at every moment; momentum because they're the same everywhere.",
     "It turns conservation from a rule into a consequence — and tells you exactly when it can fail: when time itself isn't uniform, as in an expanding universe.",
     { rel: "yes", pred: "yes", matter: "yes", arrow: "no", test: "yes" }, "Energy is time's conserved partner."),
-  E("tired", 1929, "Tired light", "Fritz Zwicky", "cosmos", ["H10"], "SPECULATIVE", "Tested and ruled out",
+  E("tired", 1929, "Tired light", "Fritz Zwicky", "cosmos", ["H10"], "RULEDOUT", "Tested and ruled out",
     "Maybe distant galaxies look redder because light loses energy on its long journey, not because space expands.",
     "A natural idea, taken seriously for decades. It fails several tests: distant supernovae unfold in slow motion by exactly the redshift factor (DES, 2024); the microwave background keeps a perfect thermal spectrum and was hotter in the past by the same factor; distant galaxies aren't blurred.",
     { rel: "part", pred: "yes", matter: "yes", arrow: "na", test: "no" }, "A model of how a good idea is tested — see 'How sure are we?'"),
@@ -95,7 +95,7 @@ Chrono.IDEAS.push(
     "It explains some features of the early universe and makes a dark-matter prediction.",
     { rel: "yes", pred: "yes", matter: "yes", arrow: "yes", test: "part" }),
   E("hubble", 2019, "The Hubble tension", "SH0ES (Riess) vs Planck", "cosmos", ["H10"], "ESTABLISHED", "Unresolved",
-    "Local measurements give ~73 km/s/Mpc; the early-universe method gives ~67. The disagreement has grown more significant with better data.",
+    "Local measurements give ~73 (km/s per megaparsec); the early-universe method gives ~67. The disagreement has grown more significant with better data.",
     "Either a hidden error or missing physics.",
     { rel: "yes", pred: "yes", matter: "yes", arrow: "na", test: "yes" }),
   E("desi", 2024, "Is dark energy weakening?", "DESI collaboration (2024–25)", "cosmos", ["H9", "H10"], "CONTESTED", "Hints, not proof",
@@ -103,23 +103,23 @@ Chrono.IDEAS.push(
     "If confirmed, the future of expansion — even a slowdown or reversal — reopens.",
     { rel: "yes", pred: "yes", matter: "yes", arrow: "na", test: "yes" }),
 
-  /* ---- Exploratory: Will & Claude (not mainstream physics) ---- */
-  E("wc-membrane", 2026, "The membrane: one ocean", "Will & Claude", "less", ["H9", "H1"], "HYPOTHESIS", "Exploratory",
+  /* ---- Exploratory: this project's own ideas (not mainstream physics) ---- */
+  E("wc-membrane", 2026, "The membrane: one ocean", "Chronoscope project", "less", ["H9", "H1"], "HYPOTHESIS", "Exploratory",
     "Light, gravity and matter aren't separate things in space — they are all features of one underlying medium, the way waves and currents are all just the ocean. Matter arises from the membrane, not the other way round.",
     "Partly mainstream already: in quantum field theory particles are ripples of fields. The exploratory step is that spacetime and fields are one medium, and that the dark sector is a property of it.",
     U, "Must pass Michelson–Morley: the medium can have no 'wind'.",
     { predicts: "Light and gravity share deep properties (both travel at c — consistent so far); the dark sector behaves like properties of the medium, not new particles.", kill: "Direct detection of dark-matter particles with no medium-like behaviour; evidence that spacetime is fundamental at every scale." }),
-  E("wc-river", 2026, "Time as a turbulent river", "Will & Claude", "more", ["H1", "H3"], "HYPOTHESIS", "Exploratory",
+  E("wc-river", 2026, "Time as a turbulent river", "Chronoscope project", "more", ["H1", "H3"], "HYPOTHESIS", "Exploratory",
     "Time looks like a smooth, laminar flow from afar, but up close it has rapids and whirlpools — a texture, perhaps with entropy at work inside time itself.",
     "Echoes of real ideas: spacetime foam, Oppenheim's random wobble, the river model. The exploratory step: texture as a genuine property of time.",
     U, null,
     { predicts: "Tiny excess 'noise' in the best clocks that grows in particular environments (near mass, in voids).", kill: "Optical-clock networks finding no noise beyond known sources down to the Planck-scale expectation." }),
-  E("wc-timegroup", 2026, "Time as a dimension group", "Will & Claude", "more", ["H5", "H11"], "HYPOTHESIS", "Exploratory",
+  E("wc-timegroup", 2026, "Time as a dimension group", "Chronoscope project", "more", ["H5", "H11"], "HYPOTHESIS", "Exploratory",
     "Treat time as its own group, like space, with its own native sub-dimensions: direction, texture — and properties space doesn't have: persistence, accumulation, loss of possibility.",
     "Stops describing time with questions written for space. See the Dimension Map.",
     U, null,
     { predicts: "Missing time-native properties will line up with open holes (the arrow, the 'now').", kill: "Showing every property of time reduces to geometry plus initial conditions." }),
-  E("wc-layers", 2026, "Interwoven universes", "Will & Claude", "more", ["H6", "H11"], "HYPOTHESIS", "Exploratory",
+  E("wc-layers", 2026, "Interwoven universes", "Chronoscope project", "more", ["H6", "H11"], "HYPOTHESIS", "Exploratory",
     "Other 'universes' may not be elsewhere but interwoven with ours — other groupings of dimensions we don't occupy, as Flatland is interwoven with Spaceland. Long human intuitions of 'higher realms' could be read this way.",
     "Brane-world physics makes a version of this concrete. The exploratory step extends it beyond gravity.",
     U, "The hard part: a layer that doesn't interact through gravity leaves no signature physics can detect.",

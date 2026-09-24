@@ -60,6 +60,9 @@ Confidence: **E** = established · **C** = contested · **S** = speculative. ☐
 - TED-Ed, "Exploring other dimensions" — Alex Rosenthal & George Zaidan (recommended by Will). ☐ link
 - 4D visualisation video shared by Will: https://www.youtube.com/watch?v=4URVJ3D8e8k — squashed-3D + w-axis diagram, hypersphere and hypercone slices, tesseract cell-by-cell slicing and rotations. ☐ creator name.
 
+## Method (learner experience)
+- **E** Crouch, C. H., Fagen, A. P., Callan, J. P. & Mazur, E. (2004). "Classroom demonstrations: Learning tools or entertainment?" *Am. J. Phys.* 72, 835. — Students who predicted a demonstration's outcome before seeing it learned more than those who only watched. Basis for Predict first (D-026). ☐
+
 ## Build 2 — labs, pages and Atlas expansion
 Added 2026-09-24 in the housekeeping pass, from Claude's recall. All ☐ until checked against the primary source.
 - **E** Klein–Gordon equation — standard QFT textbook result (Field Ocean). Higgs boson discovery: ATLAS and CMS, *Phys. Lett. B* 716 (2012), 1 and 30. ☐

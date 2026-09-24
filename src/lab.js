@@ -9,7 +9,7 @@
   Chrono.C = C;
 
   /* ---------- shared UI ---------- */
-  Chrono.expBanner = user => `<div class="exp-banner"><b>◌ Exploratory</b> — ${user ? "a visitor's hypothesis" : "Will &amp; Claude's own thinking"}. Not mainstream physics; shown to invite testing, not belief.</div>`;
+  Chrono.expBanner = user => `<div class="exp-banner"><b>◌ Exploratory</b> — ${user ? "a visitor's hypothesis" : "this project's own thinking — deliberately challenging the mainstream"}. Not mainstream physics; shown to invite testing, not belief.</div>`;
   Chrono.tierPill = tier => ({
     mainstream: `<span class="tier tier-main">Mainstream</span>`,
     frontier: `<span class="tier tier-front">Frontier</span>`,
@@ -19,9 +19,9 @@
   Chrono.tierLegend = () => `
     <h3>How to read the tags</h3>
     <div class="legend">
-      <div>${Chrono.tierPill("mainstream")} <span class="tag ESTABLISHED">Established</span> <span class="tag CONTESTED">Contested</span><br><span class="meta">What working physicists hold, or actively debate.</span></div>
+      <div>${Chrono.tierPill("mainstream")} <span class="tag ESTABLISHED">Established</span> <span class="tag CONTESTED">Contested</span> <span class="tag RULEDOUT">Ruled out</span><br><span class="meta">What working physicists hold, actively debate — or have tested and rejected.</span></div>
       ${Chrono.shows("frontier") ? `<div>${Chrono.tierPill("frontier")} <span class="tag SPECULATIVE">Speculative</span><br><span class="meta">Published proposals, not yet supported by evidence.</span></div>` : ""}
-      ${Chrono.shows("exploratory") ? `<div>${Chrono.tierPill("exploratory")} <span class="tag HYPOTHESIS">Hypothesis</span><br><span class="meta">Will &amp; Claude's ideas and visitors' hypotheses. Dashed outlines. Not mainstream physics.</span></div>` : ""}
+      ${Chrono.shows("exploratory") ? `<div>${Chrono.tierPill("exploratory")} <span class="tag HYPOTHESIS">Hypothesis</span><br><span class="meta">This project's own ideas and visitors' hypotheses (Lab mode). Dashed outlines. Not mainstream physics.</span></div>` : ""}
       <div>${Chrono.tierPill("lens")} <span class="tag ANALOGY">Analogy</span><br><span class="meta">Stories, history and analogies that help thinking.</span></div>
     </div>`;
 
@@ -96,17 +96,36 @@
     },
     size: () => [W, H]
   };
+  /* Predict first: the visitor commits to a guess before the explanation opens (predict → observe →
+     explain). def.predict = { q, options: [...], answer: index, explain }. Skippable. */
+  function predictCard(def) {
+    const p = def.predict, g = Chrono.progress.pred(def.id);
+    if (g.guess === undefined) return `<div class="predict"><div class="eyebrow">Predict first</div><p>${p.q}</p>
+      <div class="popts">${p.options.map((o, i) => `<button class="btn" data-guess="${i}">${o}</button>`).join("")}</div>
+      <button class="linkish" data-guess="-1">Skip — just show me</button></div>`;
+    if (g.guess < 0) return "";
+    const right = g.guess === p.answer;
+    return `<div class="predict">${!g.checked
+      ? `<div class="eyebrow">Your prediction</div><p><b>${p.options[g.guess]}</b></p><p class="meta">Now try it in the lab, then check.</p><button class="btn primary" data-pcheck>Check my prediction</button>`
+      : `<div class="eyebrow">${right ? "✓ You predicted it" : "Not quite — and that's the useful kind of wrong"}</div><p class="meta">You said: ${p.options[g.guess]}${right ? "" : ` · Answer: <b>${p.options[p.answer]}</b>`}</p><p>${p.explain}</p><button class="linkish" data-pagain>Ask me again</button>`}</div>`;
+  }
   function renderLabAside(def) {
     const tier = def.tier || "mainstream";
+    const waiting = def.predict && Chrono.progress.pred(def.id).guess === undefined;
     $("#aside").innerHTML = `
       <div class="eyebrow">${def.eyebrow || "Lab"}</div>
       <h2>${def.title}</h2>
       <div class="pillrow">${Chrono.tierPill(tier)} ${(def.tags || []).map(t => `<span class="tag ${t}">${Chrono.TAGS[t]}</span>`).join(" ")}</div>
       ${tier === "exploratory" ? Chrono.expBanner() : ""}
-      ${typeof def.aside === "function" ? def.aside() : (def.aside || "")}
+      ${def.predict ? predictCard(def) : ""}
+      ${waiting ? "" : typeof def.aside === "function" ? def.aside() : (def.aside || "")}
+      ${def.next ? `<a class="nextq" href="${def.next.href}"><span class="eyebrow">Next question</span><span class="nq">${def.next.q}</span><span class="hgo">${def.next.label} →</span></a>` : ""}
       ${def.sources ? `<p class="caveat">Sources: ${def.sources}</p>` : ""}`;
     document.querySelectorAll("#aside [data-hole]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goHole(a.dataset.hole); });
     document.querySelectorAll("#aside [data-view-link]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goView(a.dataset.viewLink); });
+    document.querySelectorAll("#aside [data-guess]").forEach(b => b.onclick = () => { Chrono.progress.setPred(def.id, { guess: +b.dataset.guess }); renderLabAside(def); });
+    const chk = $("#aside [data-pcheck]"); if (chk) chk.onclick = () => { Chrono.progress.setPred(def.id, Object.assign(Chrono.progress.pred(def.id), { checked: true })); renderLabAside(def); };
+    const again = $("#aside [data-pagain]"); if (again) again.onclick = () => { Chrono.progress.setPred(def.id, {}); renderLabAside(def); };
     if (def.wireAside) def.wireAside();
   }
 })();

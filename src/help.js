@@ -35,9 +35,14 @@
       <div class="eyebrow">Guide</div>
       <h2 id="help-title">Chronoscope — the holes in time</h2>
       <p class="hlead">Time is the most familiar thing in physics and one of the least understood. Chronoscope is a place to explore <b>where our account of time doesn't add up</b>, what physicists have proposed, and how to tell solid science from speculation — using interactive models rather than walls of text.</p>
+      ${Chrono.maxLevel >= 3 ? `<section class="hsec"><h3>Two modes: Learn and Lab</h3>
+        <p><b>Learn</b> (the default) shows physics as physicists hold and debate it, plus published proposals from the fringe — clearly tagged. The map stays uncluttered and each lab hands you on to the next question.</p>
+        <p><b>◌ Lab</b> is the raw workbench. It adds this project's own exploratory ideas, which deliberately challenge the mainstream, plus your own hypotheses, the Dimension Map, extra overlays and every filter. Not mainstream physics — shown to be tested, not believed.</p>
+        <p class="meta">Switch any time, top right. You're in <b>${Chrono.mode() === "lab" ? "Lab" : "Learn"}</b> mode.</p>
+      </section>` : ""}
       ${secs}
       <section class="hsec"><h3>Mainstream or not? The tags</h3>
-        <p class="meta">Every idea is labelled, so you always know what kind of claim you're looking at. The <b>Show</b> switch in the top bar lets you choose how far from mainstream physics you want to go.</p>
+        <p class="meta">Every idea is labelled, so you always know what kind of claim you're looking at.</p>
         ${Chrono.tierLegend().replace('<h3>How to read the tags</h3>', '')}
       </section>
       <section class="hsec"><h3>Tips</h3>
@@ -46,10 +51,11 @@
           <li>Most 3D views can be <b>dragged</b> to turn them.</li>
           <li>Links in the right panel jump between related labs and Atlas holes.</li>
           ${Chrono.shows("exploratory") ? "<li><b>+ Your hypothesis</b> (in the Atlas) adds your own idea to the map. Say what it predicts and what would prove it wrong. <b>Export</b> saves your ideas to a file you can share; friends use <b>Import</b>.</li>" : ""}
+          <li>Every view has its own link — copy the address bar to share exactly what you're looking at. The browser's Back button works.</li>
           <li>Press <b>?</b> at any time to reopen this guide; <b>Esc</b> closes it.</li>
         </ul>
       </section>
-      <p class="caveat">Built by Will (AgilityAI) with Claude. Sources are listed in each panel.${Chrono.CONFIG.edition === "school" ? " School edition: exploratory content is hidden." : ""}</p>`;
+      <p class="caveat">Built by Will (AgilityAI) with Claude. Sources are listed in each panel.${Chrono.CONFIG.edition === "school" ? " School edition: Learn mode only." : ""}</p>`;
   }
   function open() {
     $("#helpbox").innerHTML = html();
@@ -70,9 +76,7 @@
     if (e.key === "?") { e.preventDefault(); open(); }
     if (e.key === "Escape") close();
   });
-  let hinted = false;
-  try { hinted = localStorage.getItem("chronoscope.hinted") === "1"; } catch (e) { }
-  if (!hinted) { $("#hint").style.display = "flex"; setTimeout(() => { const h = $("#hint"); if (h) h.classList.add("fade"); }, 12000); }
+  /* The Home view now orients first-time visitors, so the hint no longer shows automatically (D-026). */
   $("#hint-open").onclick = open;
   $("#hint-x").onclick = dismissHint;
 })();

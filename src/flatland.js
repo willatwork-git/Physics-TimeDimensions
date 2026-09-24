@@ -372,7 +372,7 @@
       <p>What we'd see, on the right: a point appearing from nowhere, swelling into a sphere, shrinking, vanishing. Watching how fast it grows and shrinks is how we'd "see" its roundness in the fourth direction — exactly as a Flatlander could infer a sphere's roundness from a circle's changing radius.</p>
       <div class="try"><b>Try:</b> compare with chapter 2 side by side. The picture on the left is <i>the same drawing</i>, relabelled. That's the whole trick of reasoning by analogy.</div>
       <p class="note"><b>Important for our question:</b> here w is a fourth direction of <i>space</i>. Time is different — it enters the equations with the opposite sign. Chapter 7 shows time as the stacking direction instead.</p>
-      <p class="meta">The "squashed 3D + w axis" drawing follows the video Will shared (link in Sources).</p>`
+      <p class="meta">The "squashed 3D + w axis" drawing follows a popular 4D visualisation video (link in Sources).</p>`
   });
 
   // 5 — Hypercone: 3D conic sections
@@ -650,7 +650,7 @@
     aside: `
       <p>Stack every moment of Flatland's history on top of each other and you get a <b>3D block</b>. We can see it whole — past and future at once.</p>
       <p>A Square moving becomes a wavy <b>tube</b>. And the Sphere's visit — the circle that appeared from nowhere — is, in the block, a perfect <b>sphere</b>. Flatlanders experience it as an event in time; we see it as a shape.</p>
-      <p>Relativity treats <i>our</i> history the same way: a 4D block, with "now" as a slice moving through it. That's the <b>block universe</b> — and it's exactly why physics has no "now".</p>
+      <p>Relativity treats <i>our</i> history the same way: a 4D block, with "now" as a slice moving through it. That's the <b>block universe</b> — and why many physicists say the equations contain no "now" (contested: see H4).</p>
       <div class="try"><b>Try:</b> pause, then drag "Now". Nothing in the block moves; only the slice does. Ask: what, in the block, is doing the moving?</div>
       <p class="meta">This is hole <a href="#" data-hole="H4">H4 — No 'now'</a> in the Atlas. And with <i>two</i> time dimensions, "now" would be a line through a time <i>plane</i>, not a single slice — the setting of the <a href="#" data-view-link="films">Two Films lab</a>.</p>`
   });
@@ -658,7 +658,7 @@
   /* ---------- aside + controls ---------- */
   function renderAside() {
     const ch = CH[chapter];
-    const nav = CH.map((c, i) => `<button class="${i === chapter ? "on" : ""}" data-ch="${i}">${i + 1}. ${c.title}</button>`).join("");
+    const nav = CH.map((c, i) => `<button class="${i === chapter ? "on" : ""}${Chrono.progress.seen("flatland/" + (i + 1)) ? " seen" : ""}" data-ch="${i}">${i + 1}. ${c.title}</button>`).join("");
     const body = ch.asideFn ? ch.asideFn() : ch.aside;
     $("#aside").innerHTML = `
       <div class="eyebrow">Flatland · a lens on dimensions</div>
@@ -670,7 +670,7 @@
         <button class="btn" data-step="-1" ${chapter === 0 ? "disabled" : ""}>← Previous</button>
         <button class="btn primary" data-step="1" ${chapter === CH.length - 1 ? "disabled" : ""}>Next →</button>
       </div>
-      <p class="caveat">Sources: E. A. Abbott, <i>Flatland</i> (1884, public domain) · C. Sagan, <i>Cosmos</i> ep. 10 (1980) · TED-Ed, "Exploring other dimensions" (Rosenthal &amp; Zaidan) · 4D visualisation video shared by Will: <a href="https://www.youtube.com/watch?v=4URVJ3D8e8k" target="_blank">youtube.com/watch?v=4URVJ3D8e8k</a>.</p>`;
+      <p class="caveat">Sources: E. A. Abbott, <i>Flatland</i> (1884, public domain) · C. Sagan, <i>Cosmos</i> ep. 10 (1980) · TED-Ed, "Exploring other dimensions" (Rosenthal &amp; Zaidan) · 4D visualisation video (YouTube): <a href="https://www.youtube.com/watch?v=4URVJ3D8e8k" target="_blank">youtube.com/watch?v=4URVJ3D8e8k</a>.</p>`;
     document.querySelectorAll("[data-ch]").forEach(b => b.onclick = () => go(+b.dataset.ch));
     document.querySelectorAll("[data-step]").forEach(b => b.onclick = () => go(chapter + +b.dataset.step));
     document.querySelectorAll("[data-rev]").forEach(b => b.onclick = () => { st.reveal[b.dataset.rev] = true; renderAside(); });
@@ -678,7 +678,10 @@
     document.querySelectorAll("#aside [data-view-link]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goView(a.dataset.viewLink); });
   }
   function buildControls() { $("#fl-controls").innerHTML = CH[chapter].controls(); CH[chapter].wire(); }
-  function go(i) { chapter = Math.max(0, Math.min(CH.length - 1, i)); buildControls(); renderAside(); }
+  const clampCh = i => Math.max(0, Math.min(CH.length - 1, Number.isInteger(i) ? i : 0));
+  /* Chapter changes go through the URL (#flatland/3) so chapters can be linked to and Back works. */
+  function go(i) { Chrono.nav("#flatland/" + (clampCh(i) + 1)); }
+  F.setChapter = i => { chapter = clampCh(i); };
 
   /* ---------- canvas + loop ---------- */
   function resize() {
@@ -727,6 +730,7 @@
   F.show = function () {
     if (!canvas) initCanvas();
     active = true; resize(); Chrono.motion.reset(); buildControls(); renderAside();
+    Chrono.progress.visit("flatland/" + (chapter + 1));
     cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(frame);
   };
   F.hide = function () { active = false; cancelAnimationFrame(raf); };

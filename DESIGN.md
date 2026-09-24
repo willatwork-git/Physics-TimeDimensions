@@ -19,7 +19,7 @@ The region colours below are the original Dimension Map plan; the live token set
 | `--ultra` | #f2c94c | Ultrahyperbolic region |
 | `--tachyon` | #e36bd0 | Swapped/tachyonic region |
 
-Confidence tags (tokens `--t-*` in `src/style.css`): ESTABLISHED = teal `--t-est`; CONTESTED = amber `--t-con`; SPECULATIVE = orange `--t-spe`; ANALOGY = pink `--t-ana`; HYPOTHESIS = blue `--t-hyp`, **dashed** outline. Tags are small-caps pills, always visible next to the claim.
+Confidence tags (tokens `--t-*` in `src/style.css`): ESTABLISHED = teal `--t-est`; CONTESTED = amber `--t-con`; SPECULATIVE = orange `--t-spe`; ANALOGY = pink `--t-ana`; HYPOTHESIS = blue `--t-hyp`, **dashed** outline; RULED OUT = muted, struck through. Tags are small-caps pills, always visible next to the claim.
 
 Tier pills (Mainstream / Frontier / ◌ Exploratory / Lens) sit beside the tags. Exploratory content is always dashed — outlines, arcs, card borders — so it is visually separable without reading labels (D-017).
 
@@ -27,6 +27,14 @@ Tier pills (Mainstream / Frontier / ◌ Exploratory / Lens) sit beside the tags.
 - UI/body: Inter (Google Fonts), fallback system-ui.
 - Numerals, axes, equations: JetBrains Mono.
 - Equations rendered as plain Unicode/HTML (no MathJax in v1).
+
+## Modes (D-023)
+- **Learn**: calm by default — Atlas idea names only on hover/select (`.mode-learn`), camp filters only, every lab aside ends with a **Next question** card linking onward. Never show exploratory content.
+- **Lab**: dense and raw — all labels, tag filters, hypothesis tools, exploratory overlays. The switch shows Lab with the dashed exploratory style.
+- Every view is a URL (`Chrono.nav`, D-024). Link between views with plain `href="#view"`.
+- **Home** is the landing view; the **tour bar** sits above the stage while touring and hides next-question cards (the tour owns the path).
+- **Predict first** cards (amber) sit under the lab title and hold back the explanation until a guess or skip.
+- **Glossary**: dotted underline, first use per panel only; never inside headings, buttons, tags or links.
 
 ## Layout
 - Desktop-first, 1280–1920px. Min supported 1024px.

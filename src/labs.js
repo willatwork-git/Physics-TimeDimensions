@@ -41,7 +41,10 @@
     return [E > 1e-9 ? X / E : 0, E];
   }
   Chrono.lab.register({
-    id: "field", title: "The Field Ocean", eyebrow: "Lab · matter from the membrane", tier: "mainstream", tags: ["ESTABLISHED"],
+    predict: { q: "You pluck the <b>massive</b> field at one spot and let go. What does the ripple do?",
+      options: ["Splits in two and flies apart at light speed", "Stays centred and vibrates, spreading only slowly", "Disappears almost at once"], answer: 1,
+      explain: "Splitting and racing away is what the <i>massless</i> field does. The mass term lets a ripple oscillate in place — and a ripple that stays put and vibrates is exactly what a particle at rest is. Try <b>Pluck one spot</b> to see both." },
+    id: "field", title: "The Field Ocean", eyebrow: "Lab · particles as ripples", tier: "mainstream", tags: ["ESTABLISHED"],
     enter() { if (!FO.lanes) { FO.lanes = [kgLane(0), kgLane(FO.m)]; FO.lanes.forEach(L => launch(L, FO.mode)); } },
     controls() {
       return `<button class="btn ${FO.mode === "travel" ? "primary" : ""}" id="fo-travel">Send a ripple</button>
@@ -71,7 +74,7 @@
       FO.lanes.forEach((L, li) => {
         const y0 = pad + li * (laneH + pad), cy = y0 + laneH * 0.62, sx = (W - pad * 2 - 40) / FO.N, ox = pad + 20;
         const col = li === 0 ? C.amber : C.teal;
-        g.panel(pad, y0, W - pad * 2, laneH, li === 0 ? "Massless field — like light (m = 0)" : `Massive field — like an electron (m = ${L.m.toFixed(2)})`);
+        g.panel(pad, y0, W - pad * 2, laneH, li === 0 ? "Massless field — like light (m = 0)" : `Massive field — like any particle with mass (m = ${L.m.toFixed(2)})`);
         g.line(ox, cy, ox + FO.N * sx, cy, C.line);
         const amp = laneH * 0.3;
         ctx.beginPath();
@@ -101,7 +104,8 @@
       <h3>The light–time link</h3>
       <p>Watch the little clocks. A massive ripple carries an internal "tick" (its vibration). The faster it moves, the slower its clock — the speed-budget bars trade off exactly. The massless ripple has no clock at all: <b>light spends its whole budget on space and none on time</b>.</p>
       <p class="meta">Grid effect: on this finite lattice the massless ripple travels at ~0.99 c rather than exactly c.</p>
-      ${Chrono.shows("exploratory") ? `<div class="exp-box">${Chrono.expBanner()}<p>Will's <b>membrane</b> idea goes one step further: that the fields and spacetime itself are one medium, and the dark sector is a property of it. See the Atlas card "The membrane: one ocean".</p></div>` : ""}`,
+      ${Chrono.shows("exploratory") ? `<div class="exp-box">${Chrono.expBanner()}<p>This project's exploratory <b>membrane</b> idea goes one step further: that the fields and spacetime itself are one medium, and the dark sector is a property of it. See the Atlas card "The membrane: one ocean".</p></div>` : ""}`,
+    next: { q: "A moving ripple's clock slows down. Is that just ripples — or every clock there is?", href: "#clocks", label: "Clock Lab" },
     sources: "Klein–Gordon equation (standard QFT); Higgs mechanism (confirmed 2012)."
   });
 
@@ -117,6 +121,9 @@
     return { grav, vel, net: grav + vel, v: hkm < 100 ? 0 : Math.sqrt(GM / r) };
   }
   Chrono.lab.register({
+    predict: { q: "A perfect clock moves past you at 0.87 of light speed. For every 2 ticks of your clock, how many does it make?",
+      options: ["2 — a clock is a clock", "About 1 — it runs at half speed", "About 4 — motion speeds it up"], answer: 1,
+      explain: "At 0.87 c the slowing factor γ is about 2, so the moving clock ticks about once for every two of yours. Set the slider to 0.87 and count. Not a fault in the clock: every process on board — atoms, heartbeats — slows the same way." },
     id: "clocks", title: "Clock Lab", eyebrow: "Lab · why clocks disagree", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {
       return `<button class="btn ${CL.mode === "light" ? "primary" : ""}" id="cl-light">Light clock</button>
@@ -143,6 +150,7 @@
       <p>For GPS, the two effects don't cancel: satellite clocks gain about <b>38 microseconds a day</b>. Uncorrected, GPS positions would drift by kilometres per day. Engineers build the correction into every satellite.</p>
       <div class="try"><b>Try:</b> compare the ISS (low and fast: speed wins, its clocks run slow) with GPS (high: gravity wins). Find the altitude where the two effects cancel.</div>
       <p class="meta">Computed from Earth's mass and orbital speed at each altitude; Earth's own rotation (a small extra effect) is ignored.</p>`,
+    next: { q: "Speed slows clocks, and so does gravity. What happens where gravity is strongest of all?", href: "#river", label: "The River" },
     sources: "Einstein (1905, 1915); Hafele–Keating (1971); GPS relativistic corrections (Ashby, Living Reviews in Relativity, 2003)."
   });
   function drawLightClock(g) {
@@ -202,6 +210,9 @@
      ===================================================================== */
   const RV = { dots: null, flashes: [], cursor: null, eddies: false, T: 0 };
   Chrono.lab.register({
+    predict: { q: "A flash of light is fired straight outward from <b>just outside</b> a black hole's horizon. What happens to it?",
+      options: ["It escapes easily", "It escapes, but crawls away very slowly at first", "It is swept in"], answer: 1,
+      explain: "Just outside the horizon the inflow is almost light speed, so outward light barely gains ground — but the current weakens as it climbs, and it gets away. From inside the horizon it would be swept in. Press <b>Fire outward from 3 distances</b>: the middle flash starts just outside." },
     id: "river", title: "The River", eyebrow: "Lab · time and space near a black hole", tier: "mainstream", tags: ["ESTABLISHED"],
     enter() { if (!RV.dots) RV.dots = Array.from({ length: 520 }, () => ({ a: Math.random() * TAU, r: 0.3 + Math.random() * 5 })); },
     controls() {
@@ -251,14 +262,15 @@
         g.text(txt, pad + 14, H - pad - 14, C.text, 12);
       }
       g.label("Sideways light-bending simplified; radial motion exact.", W - pad - 14, H - pad - 14, C.muted, 10, "right");
-      if (RV.eddies && Chrono.shows("exploratory")) { ctx.fillStyle = g.alpha(C.hyp, 0.12); ctx.fillRect(pad + 1, pad + 26, W - pad * 2 - 2, 26); g.label("◌ EXPLORATORY OVERLAY — Will & Claude's turbulent-time idea. Illustrative only: no equations, not mainstream physics.", pad + 12, pad + 43, C.hyp, 11); }
+      if (RV.eddies && Chrono.shows("exploratory")) { ctx.fillStyle = g.alpha(C.hyp, 0.12); ctx.fillRect(pad + 1, pad + 26, W - pad * 2 - 2, 26); g.label("◌ EXPLORATORY OVERLAY — this project's turbulent-time idea. Illustrative only: no equations, not mainstream physics.", pad + 12, pad + 43, C.hyp, 11); }
     },
     aside: () => `
       <p>One exact way to picture a black hole: <b>space itself flows inward like a river</b>, faster and faster as it approaches the centre (Hamilton &amp; Lisle, 2008). Light always moves at light speed <i>relative to the water around it</i>.</p>
       <p>Far out, the current is gentle and light swims away easily. At the <b>horizon</b> the current reaches light speed: light aimed outward just holds its place. Inside, even outward-pointing light is swept in.</p>
       <div class="try"><b>Try:</b> press <b>Fire outward from 3 distances</b>. Then hover to see how slowly a clock held still near the horizon ticks — the same slowing as the Clock Lab, caused here by gravity.</div>
       <p>This is <i>where</i> the Atlas hole <a href="#" data-hole="H7">H7 — Time at the edge</a> lives: at the horizon, space and time swap roles.</p>
-      ${Chrono.shows("exploratory") ? `<div class="exp-box">${Chrono.expBanner()}<p>The optional overlay adds eddies to the flow — Will's picture of time as a <b>turbulent river</b>. It is illustrative only, with no equations behind it.</p></div>` : ""}`,
+      ${Chrono.shows("exploratory") ? `<div class="exp-box">${Chrono.expBanner()}<p>The optional overlay adds eddies to the flow — this project's picture of time as a <b>turbulent river</b>. It is illustrative only, with no equations behind it.</p></div>` : ""}`,
+    next: { q: "At the horizon, space and time trade places. What if there were a second time direction to trade with?", href: "#films", label: "Two Films" },
     sources: "A. Hamilton & J. Lisle, 'The river model of black holes', Am. J. Phys. 76, 519 (2008)."
   });
   function fire(r, a, radialOnly) {
@@ -277,6 +289,9 @@
   const uA = (x, t) => Math.cos(2 * x) * Math.cos(2 * t);
   const uB = (x, t, s) => uA(x, t) + TF.eps * Math.cos(3 * x) * (Math.cos(3 * t) - Math.cos(S5 * t) * Math.cos(2 * s));
   Chrono.lab.register({
+    predict: { q: "Two films start from <b>exactly</b> the same frame — same shape, same rate of change in every direction. You press play. Do they stay identical?",
+      options: ["Yes — same start, same future", "They drift apart, but only through rounding errors", "They genuinely diverge"], answer: 2,
+      explain: "Both films are exact solutions — no rounding is involved. With two time directions, even a perfect snapshot of 'now' isn't enough data to fix the future (Craig &amp; Weinstein, 2009). In our one-time universe, it is." },
     id: "films", title: "Two Films", eyebrow: "Lab · prediction with two times", tier: "frontier", tags: ["ESTABLISHED", "SPECULATIVE"],
     controls() {
       return `<button class="btn primary" id="tf-play">${TF.play ? "Pause" : TF.t > 0 ? "Continue" : "Predict ▶"}</button>
@@ -331,8 +346,9 @@
       <p>These two "films" are exact solutions of a wave equation with two times (u<sub>tt</sub> + u<sub>ss</sub> − u<sub>xx</sub> = 0). At the starting frame they are <b>identical</b> — same shape, same rates of change in both t and s. Press <b>Predict</b>: they separate anyway.</p>
       <div class="try"><b>Try:</b> predict, then <b>Reveal the hidden time direction</b>. Along s = 0 — the only slice we saw — the two films matched. Everywhere else in s, Film B was different from the start.</div>
       <p><b>"The frame was accurate. It just wasn't enough data."</b></p>
-      <p class="meta">Maths: ESTABLISHED (a periodic toy example of the non-uniqueness Craig &amp; Weinstein, 2009, describe). Relevance to our universe: SPECULATIVE. This demo came from the ChatGPT review; Claude verified every step.</p>
+      <p class="meta">Maths: ESTABLISHED (a periodic toy example of the non-uniqueness Craig &amp; Weinstein, 2009, describe). Relevance to our universe: SPECULATIVE. Check it yourself: substitute either film into the equation — both satisfy it exactly.</p>
       <p>Compare <a href="#" data-view-link="flatland">Flatland chapter 7</a>: with one time, "now" is a single slice through the block. With two, a moment is only a line through a time <i>plane</i> — and a line leaves out too much.</p>`,
+    next: { q: "So is one time dimension a law of nature? See who has tried to explain it — and how far they got.", href: "#atlas/H5", label: "Atlas · hole H5" },
     sources: "W. Craig & S. Weinstein, 'On determinism and well-posedness in multiple time dimensions', Proc. R. Soc. A 465 (2009)."
   });
 })();

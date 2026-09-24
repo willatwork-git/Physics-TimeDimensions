@@ -65,3 +65,18 @@
 
 ## D-022 — Licence: MIT code, CC BY 4.0 content; live on GitHub Pages (2026-09-24)
 **Decision:** `index.html` + `src/` (including in-app text and Atlas data) under MIT; Markdown documents and screenshots under CC BY 4.0. Served from `main` via GitHub Pages. **Why:** Will's choice — the permissive, standard pairing for an educational app, so schools and others can reuse and adapt it with credit.
+
+## D-023 — Two modes: Learn and Lab (2026-09-24)
+**Decision:** One header switch replaces the three-level Show switch. **Learn** (default) = mainstream + frontier + lenses: calm Atlas (idea names on hover), camp filters only, next-question links. **Lab** = everything: this project's exploratory ideas, visitor hypotheses, Dimension Map, overlays, tag filters, all labels. `?mode=lab` links into Lab; school edition is Learn with no switch. Internally still levels (learn = 2, lab = 3); the Mainstream-only level is retired from the UI. **Why:** Will wants a friendly educational app for newcomers and a raw research bench, cleanly split. Fringe *published* ideas stay in Learn, tagged; the project's own deliberate challenges to the mainstream live in Lab, unchanged. See `learner-review.md`.
+
+## D-024 — Every view has a URL (2026-09-24)
+**Decision:** Hash routing: `#view`, `#atlas/H5`, `#atlas/<idea id>`, `#bench/<idea id>`, `#flatland/3`. All navigation goes through `Chrono.nav`; Back works. **Why:** Sharing, classroom handouts and posts need to land on a specific moment.
+
+## D-025 — RULED OUT tag; public voice (2026-09-24)
+**Decision:** New tag RULED OUT (Mainstream tier, struck-through grey) for ideas tested and rejected — first: tired light. On-screen attribution says "this project" rather than naming people; credits stay in the Guide footer and README. **Why:** Frontier ("not yet supported by evidence") misdescribed refuted ideas; visitors don't know who "Will" is.
+
+## D-026 — Home, tour, predict-first, progress (2026-09-24)
+**Decision:** The app opens on a **Home** view (the hook + doors: tour · map · labs; Lab mode adds a workbench door). A **7-stop tour** strings existing views together with a tour bar (question, Previous/Next, leave/resume). Labs open with a **Predict first** card (skippable) that hides the explanation until the visitor commits a guess. **Progress** (views seen, predictions, tour position, own scores) lives in the browser (`src/progress.js`) and shows as ✓ marks and "continue where you left off". The auto "New here?" hint is retired — Home does that job. **Why:** learner-review Phase B. Predicting before observing measurably improves learning (Crouch et al. 2004, sources.md). Tour stops 4–5 move to the Spacetime diagram and Entropy box when Phase C builds them.
+
+## D-027 — Every score has a reason; visitors can score differently; glossary (2026-09-24)
+**Decision:** `src/data3.js` gives every physics idea *predicts* / *what would overturn it* (for ruled-out ideas: *what killed it*), and a one-sentence reason for every ◐, ✗ and ? on the Test bench (✓ and n/a use a generic line per hurdle). Visitors can set their own score per hurdle; it's stored locally and shown as a raised mark on the Test bench — not exported. A glossary (`src/glossary.js`, ~33 standard terms) underlines each term's first use in a panel, with a hover/tap definition. **Why:** the app's method (say what would kill it) was visible on 4 of 49 ideas; bare ✓/✗ taught nothing. Content is Claude's first pass — Will to review `data3.js`.
