@@ -165,6 +165,7 @@ src/
   flatland.js       the seven Flatland chapters (own engine)
   atlas.js          Atlas, Test bench, hypothesis form, mode switch, URL routing
   help.js           the Guide overlay
+  guides.js         'The controls' — what every button and slider does, per lab
   glossary.js       glossary terms and hover definitions
   style.css         all styling (dark theme; colour tokens at the top)
 docs/               screenshots for this README

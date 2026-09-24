@@ -132,6 +132,7 @@
       <div class="pillrow">${Chrono.tierPill(tier)} ${(def.tags || []).map(t => `<span class="tag ${t}">${Chrono.TAGS[t]}</span>`).join(" ")}</div>
       ${tier === "exploratory" ? Chrono.expBanner() : ""}
       ${def.predict ? predictCard(def) : ""}
+      ${Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
       ${waiting ? "" : typeof def.aside === "function" ? def.aside() : (def.aside || "")}
       ${waiting || !Chrono.threadsFor ? "" : Chrono.threadsFor(def.id)}
       ${def.next ? `<a class="nextq" href="${def.next.href}"><span class="eyebrow">Next question</span><span class="nq">${def.next.q}</span><span class="hgo">${def.next.label} →</span></a>` : ""}

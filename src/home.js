@@ -53,7 +53,8 @@
 
   /* ---------- tour bar ---------- */
   const cur = () => TOURS[P.tourId()] || TOURS.puzzle;
-  function startTour(i, id) { P.setTour(i, id); Chrono.nav(TOURS[id].stops[i].href); }
+  function startTour(i, id) { P.setTour(i, id); P.visit("tour:" + id); Chrono.nav(TOURS[id].stops[i].href); }
+  Chrono.startTour = startTour;
   Chrono.tour = {
     renderBar() {
       const bar = $("#tourbar"), i = P.tour(), T = cur(), id = P.tourId(), S = T.stops;
@@ -88,10 +89,15 @@
   function tourCard() {
     const running = P.tour(), rid = P.tourId();
     const id = tab || (running !== null ? rid : "puzzle"), T = TOURS[id], mine = running !== null && rid === id, done = P.tourDone(id);
+    const ICON = { puzzle: "🧩", zoom: "🚀" }, NUM = { puzzle: "Tour 1", zoom: "Tour 2" };
     return `<section class="tourhero">
-      <div class="th-tabs">${Object.entries(TOURS).map(([k, t]) => `<button class="${k === id ? "on" : ""}" data-tab="${k}">${k === "puzzle" ? "Tour 1" : "Tour 2"} · ${t.name}${P.tourDone(k) ? " ✓" : ""}</button>`).join("")}</div>
+      <div class="eyebrow">Start here · two guided tours — pick one</div>
+      <div class="tourpick">${Object.entries(TOURS).map(([k, t]) => `<button class="tp tp-${k} ${k === id ? "on" : ""}" data-tab="${k}" aria-pressed="${k === id}">
+          <span class="tp-icon" aria-hidden="true">${ICON[k]}</span>
+          <span class="tp-body"><span class="tp-num">${NUM[k]}${k === "zoom" && !P.seen("tour:zoom") ? ' <em class="tp-new">New</em>' : ""}${P.tourDone(k) ? ' <em class="tp-done">✓ done</em>' : ""}</span>
+          <span class="tp-name">${t.name}</span><span class="tp-blurb">${t.blurb}</span></span></button>`).join("")}</div>
       <div class="th-head">
-        <div><div class="eyebrow">Start here · a guided tour</div><h2>${T.name}</h2><p>${T.blurb} Seven stops, about 20 minutes. No physics background needed.</p></div>
+        <div><h2>${ICON[id]} ${T.name}</h2><p>Seven stops, about 20 minutes. No physics background needed.</p></div>
         <div class="th-go"><button class="btn primary big" data-go-tour="${mine ? running : 0}" data-tour-id="${id}">${mine ? `▶ Resume at stop ${running + 1}` : done ? "▶ Take it again" : "▶ Start the tour"}</button>
           ${done && !mine ? `<span class="meta">✓ You've completed this tour</span>` : ""}</div>
       </div>
@@ -111,7 +117,7 @@
         ${lastName && t === null ? `<a class="continue" href="${last}">Continue where you left off: <b>${lastName}</b> →</a>` : ""}
         ${tourCard()}
         <h2 class="sect">Three scales of time</h2>
-        <p class="meta">The same questions about time turn up at every scale — from an astronaut's watch to the edge of the universe.</p>
+        <p class="meta">The same questions about time turn up at every scale — from an astronaut's watch to the edge of the universe. <a href="#" data-tab-jump="zoom">Take Tour 2 across all three →</a></p>
         <div class="scales">${SCALES.map(s => `<div class="scale" style="--sc:${s.col}"><div class="eyebrow">${s.sub}</div><h3>${s.name}</h3>
           <div class="labchips">${s.labs.map(([v, n]) => `<a href="#${v}" class="${P.seen(v) ? "seen" : ""}">${P.seen(v) ? "✓ " : ""}${n}</a>`).join("")}</div></div>`).join("")}</div>
         <div class="threadlist">${THREADS.map(th => `<div class="thread"><span class="th-name">${th.icon} ${th.name}</span><span class="th-stops">${th.stops.map(([k, n, sc]) => `<a href="#${k}"><i>${SCALE_NAME[sc]}</i> ${n}</a>`).join(" → ")}</span></div>`).join("")}</div>
@@ -133,6 +139,7 @@
     wire() {
       document.querySelectorAll("[data-go-tour]").forEach(b => b.onclick = () => startTour(+b.dataset.goTour, b.dataset.tourId));
       document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => { tab = b.dataset.tab; $("#doc").innerHTML = page(); this.wire(); });
+      document.querySelectorAll("[data-tab-jump]").forEach(a => a.onclick = e => { e.preventDefault(); tab = a.dataset.tabJump; $("#doc").innerHTML = page(); this.wire(); $(".tourhero").scrollIntoView({ behavior: "smooth", block: "start" }); });
     },
     aside: () => `
       <p><b>Learn</b> mode (the default) shows physics as physicists hold and debate it, plus published ideas from the fringe — every claim tagged.${Chrono.maxLevel >= 3 ? ` <b>◌ Lab</b> mode adds this project's own exploratory ideas and your hypotheses. Switch top right.` : ""}</p>

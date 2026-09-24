@@ -724,6 +724,7 @@
       <div class="flhead"><span class="eyebrow">Flatland · ${chapter + 1} of ${CH.length} · ${actOf(chapter).name}</span><button class="linkish" data-contents>☰ All chapters</button></div>
       <h2>${ch.title}</h2>
       <div class="pillrow"><span class="tag ANALOGY">Analogy</span> <span class="tag ESTABLISHED">Established geometry</span></div>
+      ${Chrono.guideFor ? Chrono.guideFor("flatland/" + (chapter + 1)) : ""}
       ${body}
       ${Chrono.threadsFor ? Chrono.threadsFor("flatland/" + (chapter + 1)) : ""}
       <div class="row" style="justify-content:space-between">
