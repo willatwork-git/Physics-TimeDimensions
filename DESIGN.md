@@ -40,7 +40,7 @@ Tier pills (Mainstream / Frontier / ◌ Exploratory / Lens) sit beside the tags.
 - **Glossary**: dotted underline, first use per panel only; never inside headings, buttons, tags or links.
 
 ## Scales and threads (D-031)
-- Three scales, colour-coded in the nav: **Voyages** pink, **Physics** teal, **Cosmos** violet (Explore blue, Method amber).
+- Four scales, colour-coded in the nav, smallest first: **Quantum** cyan `#5ee0e6` (D-036), **Voyages** pink, **Physics** teal, **Cosmos** violet (Explore blue, Method amber).
 - A new lab joins a **thread** by adding its view key to `THREADS` in `src/home.js`; the aside shows the thread automatically.
 
 ## Layout

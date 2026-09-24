@@ -233,6 +233,7 @@
       L.push(["checking prediction …", ERR, "ERR_ILL_POSED: a complete snapshot of 'now' doesn't fix the future (see Two Films).", "ESTABLISHED"]);
       L.push(["checking matter …", ERR, "ERR_MATTER_UNSTABLE: particles can decay into heavier ones (Dorling, 1970).", "ESTABLISHED"]);
       if (n === 1 && m === 3) L.push(["note …", WARN, "WARN_TACHYONIC: this is our world with space and time swapped — only faster-than-light particles.", "CONTESTED"]);
+      if (n === 4 && m === 2) L.push(["note …", WARN, "Itzhak Bars's two-time physics starts from exactly this (4, 2) world and proposes a hidden symmetry that removes these problems, leaving an effective 3 + 1 world as its 'shadow'.", "SPECULATIVE"]);
       L.push(["RESULT: unpredictable — no stable observers expected.", ERR]); return L;
     }
     L.push(["checking time … 1 time dimension", OK, "the present predicts the future", "ESTABLISHED"]);

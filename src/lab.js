@@ -112,8 +112,10 @@
   };
   /* Predict first: the visitor commits to a guess before the explanation opens (predict → observe →
      explain). def.predict = { q, options: [...], answer: index, explain }. Skippable. */
-  function predictCard(def) {
-    const p = def.predict, g = Chrono.progress.pred(def.id);
+  /* Shared with Flatland: Chrono.predictCard(key, p) renders the card; Chrono.wirePredict(key, rerender) wires it. */
+  function predictCard(def) { return Chrono.predictCard(def.id, def.predict); }
+  Chrono.predictCard = function (key, p) {
+    const g = Chrono.progress.pred(key);
     if (g.guess === undefined) return `<div class="predict"><div class="eyebrow">Predict first</div><p>${p.q}</p>
       <div class="popts">${p.options.map((o, i) => `<button class="btn" data-guess="${i}">${o}</button>`).join("")}</div>
       <button class="linkish" data-guess="-1">Skip — just show me</button></div>`;
@@ -123,6 +125,11 @@
       ? `<div class="eyebrow">Your prediction</div><p><b>${p.options[g.guess]}</b></p><p class="meta">Now try it in the lab, then check.</p><button class="btn primary" data-pcheck>Check my prediction</button>`
       : `<div class="eyebrow">${right ? "✓ You predicted it" : "Not quite — and that's the useful kind of wrong"}</div><p class="meta">You said: ${p.options[g.guess]}${right ? "" : ` · Answer: <b>${p.options[p.answer]}</b>`}</p><p>${p.explain}</p><button class="linkish" data-pagain>Ask me again</button>`}</div>`;
   }
+  Chrono.wirePredict = function (key, rerender) {
+    document.querySelectorAll("#aside [data-guess]").forEach(b => b.onclick = () => { Chrono.progress.setPred(key, { guess: +b.dataset.guess }); rerender(); });
+    const chk = $("#aside [data-pcheck]"); if (chk) chk.onclick = () => { Chrono.progress.setPred(key, Object.assign(Chrono.progress.pred(key), { checked: true })); rerender(); };
+    const again = $("#aside [data-pagain]"); if (again) again.onclick = () => { Chrono.progress.setPred(key, {}); rerender(); };
+  };
   function renderLabAside(def) {
     const tier = def.tier || "mainstream";
     const waiting = def.predict && Chrono.progress.pred(def.id).guess === undefined;
@@ -143,9 +150,7 @@
       ${def.sources ? `<p class="caveat">Sources: ${def.sources}</p>` : ""}`;
     document.querySelectorAll("#aside [data-hole]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goHole(a.dataset.hole); });
     document.querySelectorAll("#aside [data-view-link]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goView(a.dataset.viewLink); });
-    document.querySelectorAll("#aside [data-guess]").forEach(b => b.onclick = () => { Chrono.progress.setPred(def.id, { guess: +b.dataset.guess }); renderLabAside(def); });
-    const chk = $("#aside [data-pcheck]"); if (chk) chk.onclick = () => { Chrono.progress.setPred(def.id, Object.assign(Chrono.progress.pred(def.id), { checked: true })); renderLabAside(def); };
-    const again = $("#aside [data-pagain]"); if (again) again.onclick = () => { Chrono.progress.setPred(def.id, {}); renderLabAside(def); };
+    Chrono.wirePredict(def.id, () => renderLabAside(def));
     if (def.wireAside) def.wireAside();
   }
 })();

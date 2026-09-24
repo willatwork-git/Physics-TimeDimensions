@@ -11,7 +11,7 @@ by exploring, is that physics has strong constraints on it but no settled, model
 · [Lab mode](https://willatwork-git.github.io/Physics-TimeDimensions/index.html?mode=lab#home)
 · [classroom edition](https://willatwork-git.github.io/Physics-TimeDimensions/index.html?edition=school#home)
 
-![Home: the hook, two guided tours and the three scales of time](docs/screenshot-home.png)
+![Home: the hook, three guided tours and the four scales of time](docs/screenshot-home.png)
 
 ## Run it locally
 
@@ -54,6 +54,12 @@ straight to a lab. Press **?** inside the app for the built-in guide. Works on p
 - **Dimension Map** *(Lab)* — a working framework that asks every kind of dimension (space,
   time, internal, scale, state) the same questions, to make the gaps visible.
 
+**Quantum** — time at the smallest scale
+- **Delayed choice** — one photon, two routes, and a second beam splitter put in or taken out *after*
+  the photon has set off. The result always matches the set-up at detection — yet nothing travels back in time.
+- **The frozen universe** — a whole universe (a clock and a spin) in one unchanging quantum state.
+  Seen from inside, the spin turns as the clock ticks: time from entanglement (Page–Wootters).
+
 **Voyages** — time for people who travel
 - **Mission clocks** — how much younger the ISS, a GPS satellite or a Moon base makes you (clocks on the
   Moon gain about 56 µs a day — why a lunar time standard is being set up).
@@ -74,6 +80,10 @@ straight to a lab. Press **?** inside the app for the built-in guide. Works on p
   arithmetic is integer) and it does; nudge one disc by a millionth first and it doesn't.
 - **River** — a black hole pictured as space flowing inward (the Gullstrand–Painlevé "river model").
   Fire light and see where it can escape.
+- **Wormholes** — the complete black hole drawn so light runs at 45°, with its bridge to a second
+  universe. Fire light at it: the bridge pinches shut before anything can cross.
+- **Time loops** — Gödel's rotating universe, an exact solution of Einstein's equations in which
+  circling far enough out, slower than light, returns you to your own past.
 - **Two Films** — two exact solutions of a wave equation with *two* time directions that are identical
   at the starting frame and then diverge. With two times, a complete snapshot of "now" doesn't fix
   the future.
@@ -89,11 +99,14 @@ straight to a lab. Press **?** inside the app for the built-in guide. Works on p
 ![The Atlas: open problems about time along the top, a century of attempts to fill them below](docs/screenshot-atlas.png)
 
 **Learning aids**
-- **Two guided tours** — *The puzzle of time* (seven stops from "Do clocks agree?" to "Is one time
-  dimension a law of nature?") and *From the ISS to the edge of the universe*.
+- **Three guided tours** — *The puzzle of time* (seven stops from "Do clocks agree?" to "Is one time
+  dimension a law of nature?"), *From the ISS to the edge of the universe*, and *Is time travel possible?*
+  (from clocks that disagree to wormholes and time loops).
 - **Threads** — each lab links to the same question at the other scales (clocks, 'now', the arrow, 3 + 1).
 - **Concepts** — ⓘ markers give a short "why" on hover or tap; the Concepts pages (under Explore) tell the full
-  story with the evidence: why clocks disagree, what 'now' means, the arrow of time, why 3 + 1.
+  story with the evidence: why clocks disagree, what 'now' means, the arrow of time, why 3 + 1, quantum
+  time, time travel, holography, two-time physics — plus
+  links to other free sites that explore each idea well.
 - **Predict first** — each lab asks for your guess before explaining (skippable).
 - **Glossary** — dotted-underlined terms show a plain definition on hover or tap.
 - **Progress** — ✓ marks on what you've seen, and "continue where you left off" (kept in your browser).
@@ -163,16 +176,18 @@ src/
   lab.js            shared drawing helpers, lab harness, reduced-motion handling
   labs.js           Field Ocean, Clock Lab, River, Two Films
   labs2.js          Spacetime diagram, Entropy box
+  quantum.js        Delayed choice, The frozen universe
+  timetravel.js     Wormholes, Time loops
   voyages.js        Mission clocks, Talking to Mars, The 1 g voyage
   cosmos.js         Expanding universe, Cosmic horizons, Boot a Universe, The Janus point
-  nav.js            header drop-down menus (Explore · Voyages · Physics · Cosmos · Method)
+  nav.js            header drop-down menus (Explore · Quantum · Voyages · Physics · Cosmos · Method)
   docs.js           Dimension Map, How sure are we?
-  home.js           Home page, the two tours, the three scales and the threads
+  home.js           Home page, the three tours, the four scales and the threads
   flatland.js       the seven Flatland chapters (own engine)
   atlas.js          Atlas, Test bench, hypothesis form, mode switch, URL routing
   help.js           the Guide overlay
   guides.js         'The controls' — what every button and slider does, per lab
-  concepts.js       Concepts pages and the ⓘ popups (why clocks disagree, 'now', the arrow, 3 + 1, tags, hurdles)
+  concepts.js       Concepts pages and the ⓘ popups (the threads, core ideas, big questions, how the app works)
   glossary.js       glossary terms and hover definitions
   style.css         all styling (dark theme; colour tokens at the top)
 docs/               screenshots for this README
@@ -205,12 +220,11 @@ id, year, name, who, camp, holes, tag, outcome, plain description, reasoning, hu
 
 ## Status
 
-Working and usable: the Atlas, Test bench, all labs listed above, Learn and Lab modes, the guided tour,
-and the school edition. Next are new labs (see [`learner-review.md`](learner-review.md), Phase C). Also planned
-(see [`spec.md`](spec.md)): a "Boot a Universe" entrance that turns Tegmark's (space, time)
-dimension diagram into named failure modes, a Mode Explorer and Future Compass for two-time physics,
-and an arrow-of-time investigation. Also still to do before wider classroom use: a light theme, a
-tablet/mobile layout, and teacher notes.
+Working and usable on desktop and phone: the Atlas, Test bench, all labs listed above across four
+scales, Learn and Lab modes, three guided tours, Concepts pages and the school edition. The roadmap is
+in [`todo.md`](todo.md): next is making it stick (misconception cards, quizzes, review prompts), then
+deep time (Hawking evaporation, a cosmic timeline), then launch readiness — verified citations, a light
+theme, teacher notes, and a move to its own domain, **chronoscope.com.au**.
 
 ## Credits
 

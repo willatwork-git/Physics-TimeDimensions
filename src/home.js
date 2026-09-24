@@ -18,6 +18,15 @@
       { href: "#films", where: "Two Films", q: "Why only one time direction?", see: "Two identical starting frames. Watch what happens next.", say: "Give a universe two time directions and see what happens to predicting the future." },
       { href: "#atlas/H5", where: "The Atlas", q: "So is one time dimension a law of nature?", see: "Everyone who has tried to answer it — and how far they got.", say: "Strong constraints, no settled answer. Here is everyone who has tried — click any of them." }
     ] },
+    time: { name: "Is time travel possible?", blurb: "If you'd like the question everyone asks first: into the future, into the past — what the physics actually allows.", stops: [
+      { href: "#clocks", where: "Clock Lab", q: "Can you travel into the future?", see: "Yes — every moving clock does it. By how much?", say: "Push the moving clock towards light speed. Every tick it skips is a step into the future." },
+      { href: "#voyage", where: "The 1 g voyage", q: "How far into the future could you go?", see: "The galaxy's centre in 20 years — 26,000 on Earth.", say: "Fly to the centre of the galaxy. Then tick 'Compare with Newton'." },
+      { href: "#spacetime", where: "Spacetime", q: "Why can't you just come back?", see: "Light cones, and a twin who turns round.", say: "Switch to Twin paradox. The traveller's 'now' jumps at the turnaround." },
+      { href: "#river", where: "The River", q: "Could a black hole be a shortcut?", see: "Space flowing in faster than light can swim out.", say: "Fire light out from just outside and just inside the horizon." },
+      { href: "#wormhole", where: "Wormholes", q: "Can you cross a wormhole?", see: "Einstein and Rosen's bridge between two universes.", say: "Fire light inward, then watch the bridge open and close." },
+      { href: "#loops", where: "Time loops", q: "Could you loop back into your own past?", see: "A spinning universe where light cones tip over.", say: "Slide past the critical radius and walk the circle." },
+      { href: "#concepts/timetravel", where: "Concept", q: "So — is time travel possible?", see: "Forward, backward, paradoxes — the verdict.", say: "The verdict, with the paradoxes and Hawking's party for time travellers." }
+    ] },
     zoom: { name: "From the ISS to the edge of the universe", blurb: "If you'd rather start with astronauts and spacecraft — then zoom out to the whole cosmos.", stops: [
       { href: "#missions", where: "Mission clocks", q: "Does space travel make you younger?", see: "Clocks on the ISS, on GPS satellites, on the Moon.", say: "Pick ISS, then GPS, then Moon base. Which effect wins at each?" },
       { href: "#mars", where: "Talking to Mars", q: "What does 'now' mean on Mars?", see: "A question and answer that take the best part of an hour.", say: "Press Farthest, then send a message. Watch it cross the spacetime diagram." },
@@ -29,18 +38,19 @@
     ] }
   };
   const SCALES = [
+    { id: "quantum", name: "Quantum", sub: "The very small", col: "#5ee0e6", labs: [["delayed", "Delayed choice"], ["frozen", "The frozen universe"]] },
     { id: "voyages", name: "Voyages", sub: "People and spacecraft", col: "var(--c-lens)", labs: [["missions", "Mission clocks"], ["mars", "Talking to Mars"], ["voyage", "The 1 g voyage"]] },
-    { id: "labs", name: "Physics", sub: "The laws underneath", col: "var(--t-est)", labs: [["flatland", "Flatland"], ["field", "Field Ocean"], ["clocks", "Clock Lab"], ["spacetime", "Spacetime"], ["river", "River"], ["entropy", "Entropy box"], ["films", "Two Films"]] },
+    { id: "labs", name: "Physics", sub: "The laws underneath", col: "var(--t-est)", labs: [["flatland", "Flatland"], ["field", "Field Ocean"], ["clocks", "Clock Lab"], ["spacetime", "Spacetime"], ["river", "River"], ["entropy", "Entropy box"], ["films", "Two Films"], ["wormhole", "Wormholes"], ["loops", "Time loops"]] },
     { id: "cosmos", name: "Cosmos", sub: "The universe as a whole", col: "var(--simple, #9b8cff)", labs: [["expand", "Expanding universe"], ["horizons", "Cosmic horizons"], ["boot", "Boot a Universe"], ["janus", "The Janus point"]] }
   ];
   /* Threads: [view key, label, scale] — scale V (voyages), P (physics), C (cosmos), A (atlas). */
   const THREADS = [
-    { id: "clock", icon: "⏱", name: "Clocks disagree", stops: [["missions", "Mission clocks", "V"], ["clocks", "Clock Lab", "P"], ["spacetime", "Twin paradox", "P"], ["river", "Clocks near a black hole", "P"], ["expand", "Cosmic clocks (redshift)", "C"]] },
-    { id: "now", icon: "◬", name: "Light and 'now'", stops: [["mars", "Talking to Mars", "V"], ["spacetime", "Whose 'now'?", "P"], ["flatland/7", "Time as a slice", "P"], ["films", "Two Films", "P"], ["horizons", "Cosmic horizons", "C"]] },
+    { id: "clock", icon: "⏱", name: "Clocks disagree", stops: [["frozen", "A clock in a frozen universe", "Q"], ["missions", "Mission clocks", "V"], ["clocks", "Clock Lab", "P"], ["spacetime", "Twin paradox", "P"], ["river", "Clocks near a black hole", "P"], ["expand", "Cosmic clocks (redshift)", "C"]] },
+    { id: "now", icon: "◬", name: "Light and 'now'", stops: [["delayed", "Delayed choice", "Q"], ["mars", "Talking to Mars", "V"], ["spacetime", "Whose 'now'?", "P"], ["flatland/7", "Time as a slice", "P"], ["films", "Two Films", "P"], ["horizons", "Cosmic horizons", "C"]] },
     { id: "arrow", icon: "→", name: "The arrow of time", stops: [["entropy", "Entropy box", "P"], ["janus", "The Janus point", "C"], ["atlas/H3", "Hole H3: why the arrow?", "A"]] },
     { id: "dims", icon: "◇", name: "Why 3 + 1?", stops: [["flatland/4", "A 4D visitor", "P"], ["films", "Two Films", "P"], ["boot", "Boot a Universe", "C"], ["atlas/H5", "Hole H5: why one time?", "A"]] }
   ];
-  const SCALE_NAME = { V: "Voyages", P: "Physics", C: "Cosmos", A: "Atlas" };
+  const SCALE_NAME = { Q: "Quantum", V: "Voyages", P: "Physics", C: "Cosmos", A: "Atlas" };
   const TOTAL = ["atlas", "bench", ...SCALES.flatMap(s => s.labs.map(l => l[0])), "sure"];
 
   /* Threads a view belongs to, rendered for its aside. key: "clocks", "flatland/7", … */
@@ -89,12 +99,12 @@
   function tourCard() {
     const running = P.tour(), rid = P.tourId();
     const id = tab || (running !== null ? rid : "puzzle"), T = TOURS[id], mine = running !== null && rid === id, done = P.tourDone(id);
-    const ICON = { puzzle: "🧩", zoom: "🚀" }, NUM = { puzzle: "Tour 1", zoom: "Tour 2" };
+    const ICON = { puzzle: "🧩", zoom: "🚀", time: "⏳" }, NUM = { puzzle: "Tour 1", zoom: "Tour 2", time: "Tour 3" };
     return `<section class="tourhero">
-      <div class="eyebrow">Start here · two guided tours — pick one</div>
-      <div class="tourpick">${Object.entries(TOURS).map(([k, t]) => `<button class="tp tp-${k} ${k === id ? "on" : ""}" data-tab="${k}" aria-pressed="${k === id}">
+      <div class="eyebrow">Start here · three guided tours — pick one</div>
+      <div class="tourpick">${["puzzle", "zoom", "time"].map(k => [k, TOURS[k]]).map(([k, t]) => `<button class="tp tp-${k} ${k === id ? "on" : ""}" data-tab="${k}" aria-pressed="${k === id}">
           <span class="tp-icon" aria-hidden="true">${ICON[k]}</span>
-          <span class="tp-body"><span class="tp-num">${NUM[k]}${k === "zoom" && !P.seen("tour:zoom") ? ' <em class="tp-new">New</em>' : ""}${P.tourDone(k) ? ' <em class="tp-done">✓ done</em>' : ""}</span>
+          <span class="tp-body"><span class="tp-num">${NUM[k]}${k !== "puzzle" && !P.seen("tour:" + k) ? ' <em class="tp-new">New</em>' : ""}${P.tourDone(k) ? ' <em class="tp-done">✓ done</em>' : ""}</span>
           <span class="tp-name">${t.name}</span><span class="tp-blurb">${t.blurb}</span></span></button>`).join("")}</div>
       <div class="th-head">
         <div><h2>${ICON[id]} ${T.name}</h2><p>Seven stops, about 20 minutes. No physics background needed.</p></div>
@@ -116,7 +126,7 @@
         <p class="lede">Time is the one thing everyone uses and nobody in physics fully understands — two of our best theories disagree about what it even is. Nobody has a settled answer. Chronoscope is a place to find out why — and to explore the other places where physics' account of time doesn't add up: what physicists have tried, which ideas survived, and how to tell solid science from speculation. Every simulation runs the real equations.</p>
         ${lastName && t === null ? `<a class="continue" href="${last}">Continue where you left off: <b>${lastName}</b> →</a>` : ""}
         ${tourCard()}
-        <h2 class="sect">Three scales of time</h2>
+        <h2 class="sect">Four scales of time</h2>
         <p class="meta">The same questions about time turn up at every scale — from an astronaut's watch to the edge of the universe. <a href="#" data-tab-jump="zoom">Take Tour 2 across all three →</a></p>
         <div class="scales">${SCALES.map(s => `<div class="scale" style="--sc:${s.col}"><div class="eyebrow">${s.sub}</div><h3>${s.name} ${Chrono.info ? Chrono.info("sc-" + s.id) : ""}</h3>
           <div class="labchips">${s.labs.map(([v, n]) => `<a href="#${v}" class="${P.seen(v) ? "seen" : ""}">${P.seen(v) ? "✓ " : ""}${n}</a>`).join("")}</div></div>`).join("")}</div>

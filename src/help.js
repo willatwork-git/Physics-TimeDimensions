@@ -9,6 +9,10 @@
       { v: "bench", n: "Test bench", d: "Every idea scored against the same hurdles: does it match relativity, keep the future predictable, allow stable matter, explain time's arrow, make a new testable prediction?" },
       { v: "dims", n: "Dimension Map", tier: "exploratory", d: "A working framework: sort dimensions into groups (space, time, charge, scale, state) and ask each the same questions. Gaps become visible." }
     ] },
+    { g: "quantum", name: "Quantum", blurb: "Time at the very smallest scale.", items: [
+      { v: "delayed", n: "Delayed choice", d: "Single photons, and a choice made after they set off. Why a photon has no definite path until it's measured." },
+      { v: "frozen", n: "The frozen universe", d: "A universe in one unchanging state — and a clock inside it that still sees time pass." }
+    ] },
     { g: "voyages", name: "Voyages", blurb: "Time for people who travel — astronauts, rovers, starships.", items: [
       { v: "missions", n: "Mission clocks", d: "How much younger the ISS, a GPS satellite or a Moon base makes you — gravity and speed pulling opposite ways." },
       { v: "mars", n: "Talking to Mars", d: "Radio at light speed takes minutes: a conversation with a rover, drawn as a spacetime diagram." },
@@ -21,6 +25,8 @@
       { v: "spacetime", n: "Spacetime", d: "Drag events and change your speed: observers disagree about what happens 'at the same time'. Plus the twin paradox, drawn exactly." },
       { v: "river", n: "River", d: "A black hole pictured as space flowing inward. Fire light and see where it can and can't escape." },
       { v: "entropy", n: "Entropy box", d: "A gas spreads out and never gathers back — unless you reverse every velocity exactly. Why time has a direction." },
+      { v: "wormhole", n: "Wormholes", d: "Einstein and Rosen's bridge between two universes, drawn exactly — and why nothing can cross it." },
+      { v: "loops", n: "Time loops", d: "Gödel's spinning universe, where far enough out a circle leads back into your own past." },
       { v: "films", n: "Two Films", tier: "frontier", d: "If the universe had two time directions, could the present predict the future? Two identical starting frames, two different futures." }
     ] },
     { g: "cosmos", name: "Cosmos", blurb: "The universe as a whole.", items: [

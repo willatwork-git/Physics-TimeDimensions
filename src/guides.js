@@ -93,6 +93,31 @@
       ["A new swarm", "A different random swarm — the pattern repeats."],
       ["Reading it", "Left: the swarm run one way (violet) and the other (teal), shape only. Right: size and clumpiness across the whole history; pink dots mark the moment shown."]
     ],
+    delayed: [
+      ["Second beam splitter: In / Out", "In: the two routes recombine and interfere. Out: each detector sees only one route."],
+      ["Decide late, at random", "The choice is made only after each photon has passed the first beam splitter."],
+      ["Phase φ, Sweep the phase", "Delays one route relative to the other; with the splitter in, this moves photons between D1 and D2."],
+      ["Fire photons, Many photons", "One photon at a time (watch it), or thousands (watch the statistics)."],
+      ["Reading it", "Results are sorted by what was chosen. The dots trace the fringe for 'in' runs; the line is the quantum prediction."]
+    ],
+    frozen: [
+      ["Entangled / Not entangled", "Whether each clock reading comes paired with its own spin direction — or not."],
+      ["Read the clock at, Step through the readings", "Pick a clock reading; the right panel shows the spin given that reading."],
+      ["Spin turns … per clock cycle", "How fast the spin turns relative to the clock."],
+      ["Evolve the whole universe one tick", "Advances everything at once and compares with before: does the universe as a whole change?"]
+    ],
+    wormhole: [
+      ["Click in our universe (right)", "Fires a light ray from that point — Inward or Outward."],
+      ["The bridge at time V", "Moves the violet 'now' line up the diagram; the right panel shows the bridge's throat at that moment."],
+      ["Watch the bridge open and close", "Animates the throat from the white-hole past to its pinch-off."],
+      ["Reading it", "Right wedge: our universe. Left: the other one. Top: the black hole; bottom: the white hole. Light always runs at 45°."]
+    ],
+    loops: [
+      ["Your distance from the centre", "In units of the critical radius, where light cones tip over far enough for loops."],
+      ["Universe spins once every", "Sets how fast the universe rotates; faster spin brings the loops closer in."],
+      ["Walk the circle", "Sends a traveller round your circle — slower than light all the way."],
+      ["Reading it", "Left: light-cone slices tipping over as you go outwards. Right: your own light cone and the 'go round with no time passing' arrow."]
+    ],
     "flatland/1": [
       ["Look around", "A Square turns his gaze by himself. Untick it to steer with the Gaze slider."],
       ["Gaze", "The direction A Square is looking."],
@@ -163,6 +188,14 @@
       "Other dimension counts break orbits, atoms or prediction — which is why we find ourselves in 3 + 1, though nobody has shown it had to be."],
     janus: ["A swarm of stars under gravity, started from one special moment and run both forwards and backwards in time.",
       "From one special moment, structure can grow both ways — so time might have an arrow on both sides of the Big Bang (contested)."],
+    delayed: ["Two routes for a single photon, and a second beam splitter you can put in or take out — even after the photon has set off.",
+      "A photon has no definite path until it's measured — and nothing needs to travel back in time for that to be true."],
+    frozen: ["A whole universe — a clock and a spin — sitting in one unchanging quantum state. Can anything inside it tell that time is passing?",
+      "The whole can be frozen while its parts see time pass: time may be a correlation, not a backdrop (contested)."],
+    wormhole: ["The complete solution for a black hole, drawn so light always runs at 45° — including a bridge to a second universe.",
+      "The bridge is real mathematics, but it pinches shut too fast for anything to cross — and real black holes don't have one."],
+    loops: ["A universe where all the matter rotates. Watch what that does to light cones — and to the past.",
+      "Einstein's equations allow time loops in spinning universes — ours isn't one, and nobody knows if nature forbids them."],
     "flatland/7": [null, "In the block picture, nothing moves — only our slice through it does. That's why 'now' is a puzzle."]
   };
   Chrono.introFor = key => TEXT[key] && TEXT[key][0] ? `<p class="intro">${TEXT[key][0]}</p>` : "";

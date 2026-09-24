@@ -3,7 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chronoscope</title>
+<title>Chronoscope — the holes in time</title>
+<meta name="description" content="A free, interactive guide to the open questions about time: why clocks disagree, what 'now' means, why time runs one way, and why the universe has one time dimension. Real simulations; every claim tagged by how sure physicists are.">
+<meta name="theme-color" content="#0b0d12">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<!-- Link previews. Absolute URLs: update if the site moves to its own domain. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chronoscope — the holes in time">
+<meta property="og:description" content="Why does our universe have exactly one time dimension? A free, interactive guide to the open questions about time — real simulations, every claim tagged by how sure physicists are.">
+<meta property="og:url" content="https://willatwork-git.github.io/Physics-TimeDimensions/">
+<meta property="og:image" content="https://willatwork-git.github.io/Physics-TimeDimensions/docs/og-image.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="src/style.css">
@@ -17,6 +28,11 @@
       <button data-view="concepts">Concepts<span>Why clocks disagree, what 'now' means, the arrow, 3 + 1 — explained</span></button>
       <button data-view="bench">Test bench<span>Every idea against the same five hurdles — argue with the scores</span></button>
       <button data-view="dims" data-tier="exploratory">◌ Dimension Map<span>Exploratory framework: groups of dimensions, the same questions</span></button>
+    </div></div>
+    <div class="navgroup g-quantum"><button class="navtop" aria-haspopup="true" aria-expanded="false">Quantum</button><div class="navmenu">
+      <div class="navscale">The very small</div>
+      <button data-view="delayed">Delayed choice<span>When is a photon's path decided? A real single-photon experiment</span></button>
+      <button data-view="frozen">The frozen universe<span>A universe that never changes — yet time appears inside it</span></button>
     </div></div>
     <div class="navgroup g-voyages"><button class="navtop" aria-haspopup="true" aria-expanded="false">Voyages</button><div class="navmenu">
       <div class="navscale">People and spacecraft</div>
@@ -34,6 +50,9 @@
       <button data-view="river">River<span>A black hole as space flowing inward</span></button>
       <button data-view="entropy">Entropy box<span>Why a gas never gathers itself back up</span></button>
       <button data-view="films" data-tier="frontier">Two Films<span>Two time directions: the present stops predicting the future</span></button>
+      <button data-view="wormhole">Wormholes<span>Einstein and Rosen's bridge — and why you can't cross it</span></button>
+      <button data-view="loops">Time loops<span>Gödel's spinning universe, where you can meet your past</span></button>
+      <button class="navtour" data-start-tour="time">▶ Tour 3 · Is time travel possible?</button>
     </div></div>
     <div class="navgroup g-cosmos"><button class="navtop" aria-haspopup="true" aria-expanded="false">Cosmos</button><div class="navmenu">
       <div class="navscale">The universe as a whole</div>
@@ -89,6 +108,8 @@
 <script src="src/labs2.js"></script>
 <script src="src/voyages.js"></script>
 <script src="src/cosmos.js"></script>
+<script src="src/quantum.js"></script>
+<script src="src/timetravel.js"></script>
 <script src="src/docs.js"></script>
 <script src="src/home.js"></script>
 <script src="src/concepts.js"></script>

@@ -134,3 +134,26 @@ Added 2026-09-24 in the housekeeping pass, from Claude's recall. All ☐ until c
 - **E** (tension exists) Riess, A. G. et al. (2019). *ApJ* 876, 85; Planck Collaboration (2020). *A&A* 641, A6. ☐
 - **C** DESI Collaboration — BAO results, arXiv:2404.03002 (2024) and DR2, arXiv:2503.14738 (2025). ☐
 - **Lens** Hinton, C. H. (1880). "What is the fourth dimension?" (collected in *Scientific Romances*, 1884). Zöllner, J. C. F. (1878), *Transcendental Physics*. ☐
+
+## Quantum and time travel (D-036)
+Added 2026-09-25 from Claude's recall. All ☐ until checked against the primary source.
+- **E** Wheeler, J. A. (1978). "The 'past' and the 'delayed-choice' double-slit experiment." In *Mathematical Foundations of Quantum Theory*, ed. A. R. Marlow, Academic Press. ☐
+- **E** Jacques, V. et al. (2007). "Experimental realization of Wheeler's delayed-choice gedanken experiment." *Science* 315, 966. — single photons, random choice made after entry. ☐
+- **C** (interpretation) Ma, X.-s., Kofler, J. & Zeilinger, A. (2016). "Delayed-choice gedanken experiments and their realizations." *Rev. Mod. Phys.* 88, 015005. ☐
+- **E** (maths) / **C** (as the origin of time) Page, D. N. & Wootters, W. K. (1983). "Evolution without evolution." *Phys. Rev. D* 27, 2885. ☐
+- **E** Moreva, E. et al. (2014). "Time from quantum entanglement: an experimental illustration." *Phys. Rev. A* 89, 052122. ☐
+- **E** DeWitt, B. S. (1967). "Quantum theory of gravity. I." *Phys. Rev.* 160, 1113 — the Wheeler–DeWitt equation. ☐
+- **E** Pauli, W. (1933). *Handbuch der Physik* 24 — no self-adjoint time operator. Mandelstam, L. & Tamm, I. (1945). *J. Phys. USSR* 9, 249 — energy–time uncertainty. ☐
+- **E** Zurek, W. H. (2003). "Decoherence, einselection, and the quantum origins of the classical." *Rev. Mod. Phys.* 75, 715. ☐
+- **C** Procopio, L. M. et al. (2015) *Nat. Commun.* 6, 7913; Rubino, G. et al. (2017) *Sci. Adv.* 3, e1602589 — indefinite causal order (quantum switch). ☐
+- **E** Einstein, A. & Rosen, N. (1935). "The particle problem in the general theory of relativity." *Phys. Rev.* 48, 73. ☐
+- **E** Kruskal, M. D. (1960). *Phys. Rev.* 119, 1743. Szekeres, G. (1960). *Publ. Math. Debrecen* 7, 285. ☐
+- **E** Fuller, R. W. & Wheeler, J. A. (1962). "Causality and multiply connected space-time." *Phys. Rev.* 128, 919 — the bridge pinches off before light crosses. ☐
+- **S** Morris, M. S. & Thorne, K. S. (1988). *Am. J. Phys.* 56, 395. Morris, M. S., Thorne, K. S. & Yurtsever, U. (1988). *Phys. Rev. Lett.* 61, 1446. ☐
+- **E** (solution) / **C** (physical relevance) Gödel, K. (1949). "An example of a new type of cosmological solutions of Einstein's field equations of gravitation." *Rev. Mod. Phys.* 21, 447. ☐
+- **S** Tipler, F. J. (1974) *Phys. Rev. D* 9, 2203. Gott, J. R. (1991) *Phys. Rev. Lett.* 66, 1126. ☐
+- **C** Novikov, I. D. (1990s) self-consistency principle — Friedman, J. et al. (1990) *Phys. Rev. D* 42, 1915. Hawking, S. W. (1992). "Chronology protection conjecture." *Phys. Rev. D* 46, 603. ☐
+- **E** (bound) Saadeh, D. et al. (2016). "How isotropic is the Universe?" *Phys. Rev. Lett.* 117, 131302 — no measurable cosmic rotation. ☐
+- **S** 't Hooft, G. (1993) arXiv:gr-qc/9310026; Susskind, L. (1995) *J. Math. Phys.* 36, 6377 — holographic principle. ☐
+- **C** Maldacena, J. (1998) *Adv. Theor. Math. Phys.* 2, 231 — AdS/CFT (well tested internally; not shown for our universe). ☐
+- **S** Ryu, S. & Takayanagi, T. (2006) *Phys. Rev. Lett.* 96, 181602. Van Raamsdonk, M. (2010) *Gen. Rel. Grav.* 42, 2323. Maldacena, J. & Susskind, L. (2013) *Fortsch. Phys.* 61, 781 — ER = EPR. ☐

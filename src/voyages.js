@@ -187,7 +187,12 @@
     { id: "gc", n: "Centre of the galaxy", d: 26000, note: "" },
     { id: "andromeda", n: "Andromeda galaxy", d: 2.5e6, note: "nearest big galaxy" }
   ];
-  const VY = { dest: DEST[1], gs: 1, p: 0, play: true };
+  const VY = { dest: DEST[1], gs: 1, p: 0, play: true, newton: false };
+  /* Newton's version of the same trip — no speed limit, one time for everyone. Shown only for comparison. */
+  function newtonTrip(g, D) {
+    const th = Math.sqrt(D / g), T = 2 * th;
+    return { T, vmax: g * th, x: t => t <= th ? g * t * t / 2 : D - g * (T - t) ** 2 / 2 };
+  }
   function trip() {
     const g = VY.gs * G1, D = VY.dest.d, tau = 2 / g * Math.acosh(1 + g * D / 2), T = 2 / g * Math.sinh(g * tau / 2);
     const at = s => {   // state after a fraction s of the ship's own time
@@ -209,12 +214,14 @@
     controls() {
       return DEST.map(d => `<button class="btn ${VY.dest.id === d.id ? "primary" : ""}" data-dest="${d.id}">${d.n}</button>`).join("") +
         `<label class="ctl">Acceleration <input type="range" id="vy-g" min="10" max="300" value="${Math.round(VY.gs * 100)}"><output id="vy-go">${VY.gs.toFixed(1)} g</output></label>
-        <button class="btn" id="vy-play">${VY.play ? "Pause" : "Fly"}</button>`;
+        <button class="btn" id="vy-play">${VY.play ? "Pause" : "Fly"}</button>
+        <label class="ctl"><input type="checkbox" id="vy-newton" ${VY.newton ? "checked" : ""}> Compare with Newton</label>`;
     },
     wire() {
       document.querySelectorAll("[data-dest]").forEach(b => b.onclick = () => { VY.dest = DEST.find(d => d.id === b.dataset.dest); VY.p = 0; VY.play = true; Chrono.lab.rebuild(); });
       $("#vy-g").oninput = e => { VY.gs = e.target.value / 100; $("#vy-go").textContent = VY.gs.toFixed(1) + " g"; VY.p = 0; };
       $("#vy-play").onclick = () => { VY.play = !VY.play; if (VY.play && VY.p >= 1) VY.p = 0; Chrono.lab.rebuild(); };
+      $("#vy-newton").onchange = e => { VY.newton = e.target.checked; };
     },
     tick(dt) { if (VY.play) { VY.p = Math.min(1, VY.p + dt / 9); if (VY.p >= 1) VY.play = false; } },
     draw(g) {
@@ -228,6 +235,12 @@
       g.label("light", ...P(lx * 0.5, lx * 0.5).map((v, i) => v + (i ? -6 : 8)), C.amber, 9);
       ctx.strokeStyle = C.pink; ctx.lineWidth = 2.5; ctx.beginPath();
       for (let i = 0; i <= 160; i++) { const q = tr.at(i / 160), [x, y] = P(q.x, q.t); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke(); ctx.lineWidth = 1;
+      const NT = newtonTrip(tr.g, tr.D);
+      if (VY.newton) {
+        ctx.strokeStyle = g.alpha(C.violet, 0.9); ctx.setLineDash([6, 5]); ctx.lineWidth = 2; ctx.beginPath();
+        for (let i = 0; i <= 160; i++) { const t = i / 160 * NT.T, [x, y] = P(NT.x(t), t); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke(); ctx.setLineDash([]); ctx.lineWidth = 1;
+        const [nx, ny] = P(tr.D, NT.T); g.label("Newton's ship", nx - 6, ny - 6, C.violet, 10, "right");
+      }
       const [ssx, ssy] = P(now.x, now.t); ctx.shadowColor = C.pink; ctx.shadowBlur = 12; g.dot(ssx, ssy, 6, C.pink); ctx.shadowBlur = 0;
       g.label("distance →", px + pw, py + ph + 18, C.muted, 9, "right"); g.label("Earth time ↑", px - 50, py + ph / 2, C.muted, 9);
       if (A.w > 560) g.label(`scales differ: distance ${fmtYears(tr.D).replace("years", "light-years").replace("days", "light-days").replace("hours", "light-hours")} across, Earth time ${fmtYears(tr.T)} up`, A.x + 14, A.y + A.h - 12, C.muted, 9);
@@ -242,6 +255,10 @@
       y += 48; g.label("FUEL, EVEN FOR A PERFECT PHOTON ROCKET", bx, y, C.muted, 10);
       y += 20; g.text(`${fmtBig(tr.fuel - 1)} tonnes per tonne of ship`, bx, y, C.orange, 13);
       y += 26; g.label(`At Voyager 1's speed (17 km/s): ${fmtYears(tr.D / (17e3 / c))}.`, bx, y, C.muted, 11, "left", "Inter, sans-serif");
+      if (VY.newton) {
+        y += 30; g.label("NEWTON'S PHYSICS (WRONG NEAR LIGHT SPEED)", bx, y, C.violet, 10);
+        y += 18; y += g.wrap(`Top speed ${NT.vmax.toFixed(2)} c${NT.vmax > 1 ? " — faster than light, which never happens" : ""}. Trip ${fmtYears(NT.T)}, the same on every clock.`, bx, y, B.w - 28, 16, C.text, 12);
+      }
       g.label("Model: special relativity, constant proper acceleration.", bx, B.y + B.h - 14, C.muted, 10);
     },
     aside: () => `
@@ -250,6 +267,7 @@
       <div class="try"><b>Try:</b> <b>Proxima Centauri</b> — 3.5 years for the crew, 5.9 on Earth. Then <b>Centre of the galaxy</b> and <b>Andromeda</b>. Watch the ship's clock and Earth's clock pull apart.</div>
       <p>The pink curve is the ship's path through spacetime: it bends toward the light line but never crosses it — the twin paradox, stretched to its limit. It's exactly the Spacetime lab's physics.</p>
       <p><b>What's real and what isn't.</b> The clock effects are <span class="tag ESTABLISHED">Established</span> physics. The ship is <span class="tag SPECULATIVE">Speculative</span>: nobody knows how to build it. Even a perfect rocket that turned fuel entirely into light would need the fuel shown — for the galaxy's centre, about 700 million tonnes for each tonne of ship.</p>
+      <p><b>Compare with Newton:</b> tick the box to fly the same trip with Newton's laws. His ship just keeps speeding up — to Proxima it would top out at about twice the speed of light — and every clock agrees. Newton's mechanics is superb at everyday speeds and <span class="tag RULEDOUT">Ruled out</span> near light speed: particle accelerators push particles ever closer to c but never past it.</p>
       <p class="meta">Model assumption: special relativity (flat spacetime), constant proper acceleration, instant turnaround at the midpoint, no gravity or interstellar dust. Fuel: the ideal photon-rocket equation, mass ratio = e^(gτ).</p>`,
     next: { q: "We've crossed the galaxy. Now zoom out to the universe as a whole: is everything flying away from us?", href: "#expand", label: "Cosmos · Expanding universe" },
     sources: "Relativistic rocket: e.g. C. Misner, K. Thorne & J. Wheeler, Gravitation (1973), §6; J. Ackeret (1946) photon-rocket equation. Destination distances: standard catalogues."

@@ -76,3 +76,23 @@ Google: framing and spectacle, unreliable on facts. SOL: rigour and the best sin
 | Google AI Overview | Strong | Weak | Invented one | Boot a Universe |
 | Gemini 3.8 Flash | Moderate | Mixed | Real, unverified details | Two-time particle decay; Janus point |
 | ChatGPT 6 SOL | Moderate | Strong | 4/4 checked real | Two Films; two-investigation split |
+
+---
+
+## Google AI Overview — new-module proposals (2026-09-25)
+Seven module ideas, sent by Will after searching for similar apps. Assessed by Claude; decisions by Will (pending: Quantum as a fourth scale, Tour 3).
+
+**Adopt, corrected**
+- **Delayed choice (Wheeler).** Best of the set: a real, repeated experiment (single-photon delayed choice, Jacques et al. 2007 ☐), exactly simulable (Mach–Zehnder amplitudes). *Correction:* the proposal says users "manipulate whether a particle has a definite past" and that it "challenges the linear progression of time". Standard QM needs no retrocausation; the lesson is that no definite path should be assigned before measurement. Interpretation CONTESTED.
+- **The fade-out: Hawking evaporation.** Extends River and H7 with real formulas (T ∝ 1/M; lifetime ∝ M³). *Correction:* the infalling-pair picture is Hawking's own heuristic — tag ANALOGY. Show the information question as Hawking curve vs Page curve (Page 1993; islands 2019 ☐), CONTESTED.
+- **Wormhole bridge (Kruskal–Szekeres).** The diagram is ESTABLISHED maths and a strong lab. *Correction — wrong as stated:* nothing can cross an Einstein–Rosen bridge into the other exterior "without breaking the speed limit"; the bridge pinches off faster than light can cross, and the white-hole region lies in the past, not ahead. The lab should show *why* it can't be crossed. Traversable wormholes need exotic matter (Morris & Thorne 1988 ☐) — SPECULATIVE.
+- **Time loop (Gödel / closed timelike curves).** Light cones tipping in a rotating universe is exact, ESTABLISHED maths. *Correction:* our universe is measured not to rotate; the Tipler cylinder requires infinite length; chronology protection (Hawking 1992) is CONTESTED.
+- **The frozen universe (Wheeler–DeWitt).** Already planned as the Page–Wootters "clock in a frozen universe" — build with the real formalism (Moreva et al. 2014 photon demonstration). *Correction:* "time as a domestic illusion" is garbled; the claim is that time can emerge as correlation between a clock and the rest.
+
+**Reject as simulations → Concepts pages**
+- **Two-time physics (4 + 2) sim.** A toy animation cannot execute Bars' theory faithfully (D-009). Instead: Boot a Universe's (4, 2) cell notes Bars' Sp(2,ℝ) gauge symmetry, SPECULATIVE. ("Caquality violations" — garbled; causality.)
+- **Holographic projector (AdS/CFT).** No honest equation to run; "projects an arrow of time" is invented. A Holography concept page can present the real result (entanglement ↔ geometry, Ryu–Takayanagi ☐).
+
+**Structure suggested:** a "Quantum & Emergence" section. Counter-proposal: **Quantum** as a fourth scale (the very small), ordered Quantum → Voyages → Physics → Cosmos; "Emergence" leans on interpretation. Wormhole + time loop + twin paradox + 1 g voyage → **Tour 3: Is time travel possible?**
+
+**Critique:** Same pattern as before — strong framing and ideas, three confident technical errors (wormhole traversal, AdS/CFT arrow, delayed-choice retrocausation), two garbled phrases.

@@ -21,7 +21,7 @@ Delivery builds are named by date/content below; spec.md "Build order" numbers t
 ## Learner review — Phase B (the path) ✅ 2026-09-24 (D-026, D-027)
 - [x] Home · 7-stop tour · Predict first (4 labs) · progress marks · glossary (33 terms) · bench reasons + own scores · predicts/overturned-by for 42 ideas
 - [ ] Will: review `src/data3.js` (reasons, predictions, kill conditions) and the tour wording in `src/home.js`
-- [ ] Predict-first for Flatland chapters (Flatland has its own aside engine)
+- [x] Predict-first for Flatland chapters (Flatland has its own aside engine)
 
 ## Learner review — Phase C (new models)
 - [x] Spacetime diagram (simultaneity + twins) · Entropy box — in the tour (D-030)
@@ -29,11 +29,29 @@ Delivery builds are named by date/content below; spec.md "Build order" numbers t
 - [ ] Cosmic timeline (orientation, log-time) · a Voyages lab on the arrow thread (e.g. Earth's energy budget)
 - [ ] README screenshots: add the home page and a Cosmos lab
 
-## From the 2026-09-25 reviews — for Will to decide
-- [ ] Colour split: hue only for confidence tags (review 3.1)
-- [ ] Two-part badge / "How sure?" line per lab (review 3.2, text review Part 1)
-- [ ] "Picture it" analogies per lab (balloon, rubber band, loaf, deck of cards…)
-- [ ] End-of-tour quizzes · misconception cards · evidence gallery ("How we know") · Tour 3: time travel · quantum time · concept map
+## Roadmap (2026-09-25) — toward its own domain
+Priority: credibility before launch; build what unlocks structure (Quantum scale, Tour 3) first.
+### Phase 1 — Quick wins ✅ 2026-09-25 (D-035)
+- [x] "Further exploring" links on Concepts pages (landscape-2026-09-25.md)
+- [x] Newton vs Einstein switch on the 1 g voyage (after Lansdell)
+- [x] Boot a Universe: Bars two-time note on (4, 2) — SPECULATIVE (reviews.md, 2026-09-25)
+- [x] Predict-first for Flatland chapters
+- [x] Launch basics: meta description, link preview (Open Graph image), favicon
+### Phase 2 — Quantum and time travel ✅ 2026-09-25 (D-036)
+- [x] Delayed-choice lab · Frozen universe (Page–Wootters) lab → Quantum scale (fourth scale)
+- [x] Wormhole (Kruskal) lab · Time loop (Gödel) lab → Tour 3: Is time travel possible?
+- [x] Concept pages: quantum time, time travel, holography, two-time physics
+- [ ] Will: review the four labs' text and Tour 3 wording
+### Phase 3 — Making it stick
+- [ ] Misconception cards · end-of-tour quizzes · returning review prompts · "Picture it" analogies (Will to approve images)
+### Phase 4 — Deep time
+- [ ] Hawking evaporation lab (Page curve) · cosmic timeline · Earth's energy budget · Spacetime lab: hyperbolae, pole-and-barn
+### Phase 5 — Launch readiness
+- [ ] Verify every ☐ citation · light theme · teacher notes · keyboard Atlas · tidy public review/learning files
+- [x] Domain chronoscope.com.au registered (AgilityAI)
+- [ ] Domain move: set DNS at the registrar first → then add `CNAME` file + custom domain in GitHub Pages settings → update og:url / og:image and README links. Adding CNAME before DNS works breaks the live site
+### Later
+- [ ] Claude chat in the app (needs a small server) · concept map · notebook · live diagrams in Concepts · colour split (review 3.1)
 
 ## Space School readiness
 - [ ] Teacher notes per lab

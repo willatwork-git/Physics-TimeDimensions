@@ -3,6 +3,14 @@
 ## Purpose
 An interactive, browser-based educational model with two independent investigations: **how many time dimensions?** and **which way does time point?** Hook: why does our universe have one time dimension (answer: strong constraints, no settled model-independent answer). Part of a wider "Reality OS" concept: a fake desktop where each app breaks one classical assumption about reality.
 
+Now a free public learning tool with a life of its own: four scales (Quantum · Voyages · Physics · Cosmos), three tours, Concepts pages; **Learn** mode for newcomers, **Lab** mode for labelled exploratory ideas that challenge the mainstream (intentional). Later: an in-app Claude chat (needs a small server).
+
+## Hosting and domain
+- Live on GitHub Pages: `willatwork-git/Physics-TimeDimensions` → https://willatwork-git.github.io/Physics-TimeDimensions/
+- Domain **chronoscope.com.au** registered to AgilityAI (Will's business). Not yet pointed at the site.
+- Move order: DNS at registrar first → `CNAME` file + Pages custom domain → update og:url / og:image and README links. A CNAME before DNS works breaks the live site.
+- Will commits and pushes; Claude only offers.
+
 ## Working rules
 - Propose before executing any multi-step change. Will reviews; Claude builds.
 - No sub-agents without asking Will first.

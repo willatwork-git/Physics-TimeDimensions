@@ -1,9 +1,9 @@
 # ACTIVE
 
-**Focus:** D-034 — Concepts complete (12 pages: four threads, five core ideas, how the app works), ⓘ popups, Key ideas row in every lab. Before that: D-033 — adopted the 2026-09-25 reviews (accuracy fix, bugs, intro + Remember on every lab, Test bench panel). Decisions pending on the deferred items (todo.md). Before that: D-032 polish — controls explained in every lab, clearer menus, Tour 2 easy to find. Before that: three scales delivered (D-031): **Voyages** (Mission clocks, Talking to Mars, The 1 g voyage) and **Cosmos** (Expanding universe, Cosmic horizons, Boot a Universe, The Janus point), tied to Physics by drop-down nav groups, four threads (clocks · 'now' · arrow · 3+1) and a second tour (From the ISS to the edge of the universe).
+**Focus:** D-036 — Phase 2 done: **Quantum** is the fourth scale (Delayed choice, The frozen universe) and **Tour 3 — Is time travel possible?** runs through two new Physics labs (Wormholes, Time loops). Four new Concepts pages: quantum time, time travel, holography, two-time physics. Domain **chronoscope.com.au** registered to AgilityAI; the move is Phase 5.
 
-**State:** 18 views. Home: two tours, three-scales strip, threads. Learn/Lab modes, deep links, predict-first everywhere, glossary, progress, phone layout. All views pass headless checks at desktop and phone width, full and school editions.
+**State:** 19 canvas labs plus Flatland in four scales (Quantum · Voyages · Physics · Cosmos), three tours, 16 Concepts pages. All 27 routes pass headless checks in Learn, Lab and school edition; new labs checked at phone width. Not yet committed.
 
-**For Will to review:** tour 2 wording (`src/home.js`), the new labs' text; `src/data3.js` still pending.
+**For Will to review:** the four new labs' text, Tour 3 wording (`src/home.js`); `src/data3.js` still pending.
 
-**Next options:** cosmic timeline; an arrow-of-time lab at human scale; Flatland predict cards; teacher notes + light theme for Space School; verify ☐ citations.
+**Next:** Phase 3 — making it stick (misconception cards, end-of-tour quizzes, returning review prompts, "Picture it" analogies). See `todo.md` roadmap.

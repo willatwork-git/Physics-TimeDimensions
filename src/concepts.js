@@ -156,11 +156,72 @@
       labs: [["#river", "River"], ["#horizons", "Cosmic horizons"], ["#spacetime", "Spacetime diagram"]],
       sources: "Schwarzschild (1916); Hawking, Nature 248 (1974); Genzel & Ghez (Nobel 2020); Event Horizon Telescope (2019, 2022); LIGO (2016); Davis & Lineweaver (2004); Steinhauer (2016, 2019)."
     },
+    quantum: {
+      title: "Quantum time", icon: "⚛", tags: ["ESTABLISHED", "CONTESTED"],
+      short: "In quantum mechanics, time isn't something you measure like position — it's the background everything else evolves against. In relativity, time is part of the geometry. The clash between the two is one of the deepest holes in physics.",
+      one: "Quantum mechanics treats time as the stage, not an actor. That works brilliantly — and it's exactly what breaks when quantum rules meet gravity.",
+      sections: [
+        ["Time is a parameter, not something you measure", `<p>Position, momentum and energy are <i>observables</i>: there are quantum rules for measuring them. Time isn't. Pauli showed in 1933 that, in the standard theory, there can't be a well-behaved 'time observable' paired with energy. What we measure are <b>clocks</b> — physical things that change. ${TG("ESTABLISHED")}</p>`],
+        ["The time–energy uncertainty relation", `<p>There is a famous relation ΔE × Δt ≳ ħ/2, but it doesn't mean what position–momentum uncertainty means. Δt is how long a system takes to change noticeably (Mandelstam and Tamm, 1945): a short-lived particle has a spread of energies — which is why unstable particles show up as broad bumps in collider data. ${TG("ESTABLISHED")}</p>`],
+        ["Measurement and the arrow", `<p>Quantum evolution runs just as well backwards; measurement seems not to. <b>Decoherence</b> explains why interference disappears in practice — quantum information leaks irreversibly into the surroundings, much like entropy growing. ${TG("ESTABLISHED")} Whether anything more — a real 'collapse' — happens is a matter of interpretation. ${TG("CONTESTED")}</p>`],
+        ["No definite path — even in hindsight", `<p>Wheeler's delayed-choice experiment, done with single photons in 2007, shows you can't picture a photon as having taken one definite route before it's measured — even when the measurement is chosen after it set off. No signal goes back in time. ${TG("ESTABLISHED")} (the results) · ${TG("CONTESTED")} (what they mean).</p>`],
+        ["Time from correlation", `<p>Apply quantum rules to the whole universe and time disappears from the equations (the Wheeler–DeWitt equation, hole <a href="#atlas/H1">H1</a>). Page and Wootters showed time can reappear inside a static whole, as the correlation between a clock and everything else — demonstrated in miniature with photons (2014). ${TG("ESTABLISHED")} (the formalism) · ${TG("CONTESTED")} (that our time works this way).</p>`],
+        ["Even the order of events can be quantum", `<p>In the 'quantum switch', two operations happen in a superposition of both orders — A then B <i>and</i> B then A — demonstrated with photons (2015, 2017). No extra time dimension needed: order itself can be quantum. ${TG("ESTABLISHED")} (the experiments) · ${TG("CONTESTED")} (the interpretation).</p>`]
+      ],
+      labs: [["#delayed", "Delayed choice"], ["#frozen", "The frozen universe"], ["#atlas/H2", "Atlas · hole H2"], ["#atlas/pw", "Time from entanglement"]],
+      sources: "Pauli, Handbuch der Physik (1933); Mandelstam & Tamm, J. Phys. USSR 9 (1945); Zurek, Rev. Mod. Phys. 75 (2003); Jacques et al., Science 315 (2007); Page & Wootters, PRD 27 (1983); Moreva et al., PRA 89 (2014); Procopio et al., Nat. Commun. 6 (2015); Rubino et al., Sci. Adv. 3 (2017)."
+    },
+    holography: {
+      title: "Holography", icon: "◈", tags: ["CONTESTED", "SPECULATIVE"],
+      short: "In certain model universes, a theory with gravity inside a region is exactly equivalent to a theory without gravity on its boundary — and the shape of space inside is set by quantum entanglement on the edge. Checked in many calculations for model universes; not yet shown for ours.",
+      one: "Space may be built from entanglement — like a hologram, where a 3D image is encoded on a flat surface. For model universes the evidence is strong; for ours it's an open bet.",
+      sections: [
+        ["The clue from black holes", `<p>A black hole's entropy grows with the <i>area</i> of its horizon, not its volume (Bekenstein, Hawking). That suggests the information needed to describe a region of space fits on its boundary. ${TG("ESTABLISHED")} as theory, not yet tested by experiment.</p>`],
+        ["The holographic principle", `<p>'t Hooft (1993) and Susskind (1995) proposed that this is general: the physics inside any region can be described by degrees of freedom on its surface. ${TG("SPECULATIVE")} as a principle about our universe.</p>`],
+        ["A precise version: AdS/CFT", `<p>In 1997 Maldacena found a concrete case: string theory in a model universe with a negative cosmological constant ('anti-de Sitter space') is exactly equivalent to an ordinary quantum theory, without gravity, on its boundary. It has passed thousands of calculational checks but isn't proven, and our universe has a <i>positive</i> cosmological constant. ${TG("CONTESTED")} (the duality) · ${TG("SPECULATIVE")} (for our universe).</p>`],
+        ["Entanglement builds space", `<p>Ryu and Takayanagi (2006) found that the entanglement between regions of the boundary equals the area of a surface in the interior. Van Raamsdonk (2010) argued that removing entanglement pulls space apart. And Maldacena and Susskind's 'ER = EPR' (2013) proposes that every entangled pair is joined by a tiny wormhole. ${TG("SPECULATIVE")} — bold, published, and influential.</p>`],
+        ["And time?", `<p>Here holography is quieter. In AdS/CFT the boundary theory still has an ordinary time; how time itself might emerge is much less understood than how space does. ${TG("CONTESTED")} Holes <a href="#atlas/H1">H1</a> and <a href="#atlas/H11">H11</a>.</p>`],
+        ["Why there's no lab for this", `<p>There's no honest equation for 'watching space emerge' that runs in a browser — a toy animation would only pretend. So this stays a page, not a simulation.</p>`]
+      ],
+      labs: [["#wormhole", "Wormholes"], ["#frozen", "The frozen universe"], ["#horizons", "Cosmic horizons"], ["#atlas/H11", "Atlas · hole H11"]],
+      sources: "Bekenstein, PRD 7 (1973); 't Hooft (1993); Susskind, J. Math. Phys. 36 (1995); Maldacena, Adv. Theor. Math. Phys. 2 (1998); Ryu & Takayanagi, PRL 96 (2006); Van Raamsdonk, Gen. Rel. Grav. 42 (2010); Maldacena & Susskind, Fortsch. Phys. 61 (2013)."
+    },
+    twotime: {
+      title: "Two-time physics", icon: "⧉", tags: ["ESTABLISHED", "SPECULATIVE"],
+      short: "What if there were a second time dimension? The maths says the present stops predicting the future and matter could decay into heavier particles. A few physicists propose hidden two-time worlds whose 'shadow' is our 3 + 1 — bold, published, and untested.",
+      one: "A second time dimension breaks things we rely on. A handful of physicists think the breakage can be tamed — and that the tamed version might explain puzzles in ours.",
+      sections: [
+        ["What goes wrong", `<p>With two times, a complete snapshot of the present doesn't fix the future for general starting data (Craig and Weinstein, 2009); energy becomes a direction in a plane, so particles could decay into heavier ones (Dorling, 1970); and quantum versions tend to produce 'ghosts' — states with negative probability. ${TG("ESTABLISHED")} as mathematics.</p>`],
+        ["Bars: a hidden symmetry", `<p>Itzhak Bars (from about 1998) proposes a world with four space and two time dimensions plus a gauge symmetry (called Sp(2,ℝ)) that removes the ghosts and leaves only one effective time. Different familiar one-time theories then appear as different 'shadows' of one two-time theory. ${TG("SPECULATIVE")}</p>`],
+        ["Newer proposals", `<p>Pettini and colleagues (2025) use a (3, 2) spacetime to model quantum entanglement without faster-than-light influences, and propose a test (2026). Kletetschka (2025) proposes three time dimensions and claims to reproduce particle masses — heavily covered in the press; whether the masses are predictions or fits is disputed. ${TG("SPECULATIVE")}</p>`],
+        ["How to judge them", `<p>The same way as anything else: which of the <a href="#concepts/hurdles">five hurdles</a> do they clear, what new thing do they predict, and what result would overturn them? Each has an Atlas entry with its scores.</p>`],
+        ["A challenge to think with", () => Chrono.shows("exploratory") ? `${Chrono.expBanner()}<p>This project's own question: we describe time with questions written for space. What if time is its own <i>group</i> of dimensions — direction, texture, persistence — rather than one more axis? See the <a href="#dims">Dimension Map</a>. ${TG("HYPOTHESIS")}</p>` : `<p class="meta">Lab mode adds this project's own exploratory take on this question.</p>`]
+      ],
+      labs: [["#films", "Two Films"], ["#boot", "Boot a Universe"], ["#atlas/bars", "Two-time physics (Atlas)"], ["#atlas/pettini", "Entanglement via a second time"], ["#atlas/kletetschka", "Three-dimensional time"]],
+      sources: "Craig & Weinstein, Proc. R. Soc. A 465 (2009); Dorling, Am. J. Phys. 38 (1970); Bars, Class. Quantum Grav. 18 (2001); Pettini et al., Phys. Rev. Research 7 (2025), arXiv:2606.12457; Kletetschka (2025)."
+    },
+    timetravel: {
+      title: "Is time travel possible?", icon: "⏳", tags: ["ESTABLISHED", "CONTESTED", "SPECULATIVE"],
+      short: "Into the future: yes — every fast or high-flying clock does it, measurably. Into the past: Einstein's equations allow universes with time loops, but every known recipe needs something we don't think exists — and many physicists expect nature forbids it.",
+      one: "Forward, yes — astronauts already do. Backward, the equations leave a door ajar, and physics hasn't found a way through it.",
+      sections: [
+        ["Forward: yes", `<p>Travelling into the future is just time dilation: move fast or sit low in gravity and less time passes for you. Astronauts return from the ISS a few milliseconds 'in the future'; a ship at a steady 1 g could reach the galaxy's centre in 20 of its crew's years while 26,000 pass on Earth. ${TG("ESTABLISHED")}</p>`],
+        ["Backward: the equations allow it", `<p>Einstein's equations have exact solutions containing <b>closed timelike curves</b> — paths that loop back to their own past: Gödel's rotating universe (1949), an infinitely long rotating cylinder (Tipler, 1974), wormholes turned into time machines (Morris, Thorne and Yurtsever, 1988), and pairs of fast-moving cosmic strings (Gott, 1991). ${TG("ESTABLISHED")} as mathematics.</p>`],
+        ["The catch", `<p>Every recipe needs something missing from our universe: a universe that rotates (ours doesn't measurably), something infinitely long, or large amounts of 'exotic' matter with negative energy. ${TG("ESTABLISHED")} (what the recipes need) · ${TG("CONTESTED")} (whether any could ever be met).</p>`],
+        ["The paradoxes", `<p>What stops you preventing your own birth? Novikov's self-consistency principle says only consistent histories happen — you might try, but something always intervenes. Some quantum versions let the traveller arrive in a different branch. ${TG("SPECULATIVE")}</p>`],
+        ["Does nature forbid it?", `<p>Hawking's <b>chronology protection conjecture</b> (1992): quantum effects build up and destroy any time machine as it forms, 'keeping the world safe for historians'. Unproven either way. ${TG("CONTESTED")}</p>
+          <p>Hawking also held a party for time travellers in 2009 and sent the invitations only afterwards. Nobody came. ${TG("ANALOGY")} — a joke, not evidence, but a good one.</p>`],
+        ["The verdict", `<p><b>Forward:</b> real and routine. <b>Backward:</b> allowed by the maths in special universes, impossible by every known means in ours, and open in principle. The honest answer is 'we don't know — but don't hold your breath'.</p>`]
+      ],
+      labs: [["#clocks", "Clock Lab"], ["#voyage", "The 1 g voyage"], ["#spacetime", "Spacetime · twin paradox"], ["#wormhole", "Wormholes"], ["#loops", "Time loops"]],
+      sources: "Gödel (1949); Tipler, PRD 9 (1974); Morris, Thorne & Yurtsever, PRL 61 (1988); Gott, PRL 66 (1991); Novikov et al., PRD 42 (1990); Hawking, PRD 46 (1992)."
+    },
     scales: {
-      title: "Three scales of time", icon: "⇲", tags: [],
-      short: "The app is organised by scale: Voyages (people and spacecraft), Physics (the laws underneath) and Cosmos (the universe as a whole). The same questions about time turn up at every scale.",
+      title: "The scales of time", icon: "⇲", tags: [],
+      short: "The app is organised by scale: Quantum (the very small), Voyages (people and spacecraft), Physics (the laws underneath) and Cosmos (the universe as a whole). The same questions about time turn up at every scale.",
       one: "An astronaut's watch, a light clock and the edge of the universe are the same story, told at different sizes.",
       sections: [
+        ["Quantum — the very small", `<p>Where time stops being a simple backdrop: photons with no definite path until they're measured, and a whole universe frozen in one state, with time appearing only from inside. The experiments are real; what they mean is still argued over.</p>`],
         ["Voyages — people and spacecraft", `<p>Time as it affects people who travel: astronauts' clocks, conversations with rovers on Mars, how far a crew could go in a lifetime. Everything here is <b>measured</b> or engineering-real, apart from the starship itself.</p>`],
         ["Physics — the laws underneath", `<p>Why clocks disagree, what 'now' means, why time runs one way, what an extra dimension would look like. Small, exact models of the laws themselves.</p>`],
         ["Cosmos — the universe as a whole", `<p>Expansion, horizons, the arrow of time on the largest scale, and why the universe has three space dimensions and one time. Where the biggest open questions live.</p>`],
@@ -205,12 +266,25 @@
     }
   };
 
+  /* ---------------- further exploring: other free sites, checked 2026-09-25 (landscape-2026-09-25.md) ---------------- */
+  const SITES = {
+    tao: ["https://teorth.github.io/tao-web/applets.html", "Terence Tao — Spacetime diagram applet", "Build events, worldlines and lines of simultaneity in two frames; worked twin-paradox and pole-and-barn scenes."],
+    eo: ["https://www.einstein-online.info/en/", "Einstein Online (Max Planck Institute for Gravitational Physics)", "Short, authoritative articles on relativity, black holes and cosmology."],
+    sheep: ["https://aatishb.com/entropy/", "Entropy Explained, With Sheep — Aatish Bhatia", "An interactive essay that builds entropy up from counting."],
+    slower: ["http://gamelab.mit.edu/games/a-slower-speed-of-light/", "A Slower Speed of Light — MIT Game Lab", "A game where light slows down as you play, so you see relativity's visual effects first-hand."],
+    qc: ["https://quantum.country", "Quantum Country — Andy Matuschak & Michael Nielsen", "Free essays on quantum mechanics, with review questions built in so ideas stick."],
+    flytrap: ["https://quantumflytrap.com/", "Quantum Flytrap Virtual Lab", "Build your own optical-table experiments with beam splitters and entangled photons."],
+    lansdell: ["https://benlansdell.github.io/expositions/posts/sr-simulator.html", "Ben Lansdell — Special relativity simulator", "Steer a spaceship with one thrust slider and watch its worldline, proper time and γ."]
+  };
+  const FURTHER = { clock: ["eo", "tao"], now: ["tao", "slower"], arrow: ["sheep"], dims: ["eo"], spacetime: ["tao", "eo"], dilation: ["lansdell", "tao"], entropy: ["sheep"], expansion: ["eo"], horizons: ["eo"], quantum: ["qc", "flytrap"], timetravel: ["tao", "eo"] };
+
   /* ---------------- popup text (ⓘ) — pages' short text plus a few extra keys ---------------- */
   const INFO = {
     "tier-mainstream": { t: "Mainstream", s: "What working physicists hold (Established), actively debate (Contested), or have tested and rejected (Ruled out).", p: "tags" },
     "tier-frontier": { t: "Frontier", s: "Speculative: published proposals from physicists, not yet supported by evidence. Look for what they predict.", p: "tags" },
     "tier-exploratory": { t: "Exploratory", s: "This project's own ideas and visitors' hypotheses. Not mainstream physics — shown to be tested, not believed.", p: "tags" },
     "tier-lens": { t: "Lens", s: "Analogies, history and stories that help thinking. They're pictures, not claims about how nature works.", p: "tags" },
+    "sc-quantum": { t: "Quantum", s: "The very small: photons with no definite path, and a frozen universe where time appears from entanglement.", p: "scales" },
     "sc-voyages": { t: "Voyages", s: "Time for people who travel: astronauts' clocks, talking to Mars, how far a crew could go in a lifetime.", p: "scales" },
     "sc-labs": { t: "Physics", s: "The laws underneath: small, exact models of why clocks disagree, what 'now' means and why time runs one way.", p: "scales" },
     "sc-cosmos": { t: "Cosmos", s: "The universe as a whole: expansion, horizons, the cosmic arrow of time, and why 3 + 1.", p: "scales" },
@@ -256,14 +330,15 @@
   document.addEventListener("scroll", () => current && hide(), true);
 
   /* ---------------- the Concepts view ---------------- */
-  const GROUPS = [["The four threads", ["clock", "now", "arrow", "dims"]], ["Core ideas", ["spacetime", "dilation", "entropy", "expansion", "horizons"]], ["How this app works", ["scales", "tags", "hurdles"]]];
+  const GROUPS = [["The four threads", ["clock", "now", "arrow", "dims"]], ["Core ideas", ["spacetime", "dilation", "entropy", "expansion", "horizons", "quantum"]], ["Big questions, bold ideas", ["timetravel", "holography", "twotime"]], ["How this app works", ["scales", "tags", "hurdles"]]];
   const ORDER = GROUPS.flatMap(g => g[1]);
   /* Key ideas per view: shown as a row of links in each lab's side panel */
   const KEY = {
     missions: ["dilation", "clock"], mars: ["now", "spacetime"], voyage: ["dilation", "spacetime"],
     field: ["dilation"], clocks: ["dilation", "clock"], spacetime: ["spacetime", "now", "dilation"], river: ["horizons", "dilation"],
     entropy: ["entropy", "arrow"], films: ["dims", "now"], expand: ["expansion"], horizons: ["horizons", "expansion"],
-    boot: ["dims"], janus: ["arrow", "entropy"],
+    boot: ["dims", "twotime"], janus: ["arrow", "entropy"],
+    delayed: ["quantum"], frozen: ["quantum", "holography"], wormhole: ["horizons", "timetravel"], loops: ["timetravel", "spacetime"],
     "flatland/1": ["dims"], "flatland/2": ["dims"], "flatland/3": ["dims"], "flatland/4": ["dims"], "flatland/5": ["dims"], "flatland/6": ["dims"], "flatland/7": ["spacetime", "now"]
   };
   Chrono.keyIdeas = key => KEY[key] ? `<div class="keyideas"><span class="ki-label">Key ideas</span>${KEY[key].map(k => `<span class="ki"><a href="#concepts/${k}">${PAGES[k].title}</a>${Chrono.info(k)}</span>`).join("")}</div>` : "";
@@ -275,8 +350,9 @@
       <h1>${c.icon} ${c.title}</h1>
       ${c.tags.length ? `<div class="pillrow">${c.tags.map(TG).join(" ")}</div>` : ""}
       <p class="lede">${c.one}</p>
-      ${c.sections.map(([h, body]) => `<section><h2>${h}</h2>${body}</section>`).join("")}
+      ${c.sections.map(([h, body]) => `<section><h2>${h}</h2>${typeof body === "function" ? body() : body}</section>`).join("")}
       <h2>See it in the labs</h2><div class="labchips">${c.labs.map(([h, n]) => lab(h, n)).join("")}</div>
+      ${FURTHER[k] ? `<h2>Further exploring</h2><p class="meta">Other free sites that explore this well — not part of Chronoscope.</p><ul class="further">${FURTHER[k].map(id => { const [u, n, d] = SITES[id]; return `<li><a href="${u}" target="_blank" rel="noopener">${n} ↗</a><span>${d}</span></li>`; }).join("")}</ul>` : ""}
       <p class="caveat">Sources: ${c.sources}</p>
     </div>`;
   }

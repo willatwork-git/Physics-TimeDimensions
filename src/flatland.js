@@ -717,16 +717,33 @@
     box.querySelectorAll("[data-pick]").forEach(b => b.onclick = () => { introOpen = false; go(+b.dataset.pick); if (+b.dataset.pick === chapter) { renderSteps(); renderIntro(); } });
   }
 
+  /* Predict first, for the chapters where the answer surprises (same card as the labs). */
+  const PREDICT = {
+    2: { q: "A sphere passes down through Flatland. What does A Square, living in the plane, actually see?",
+      options: ["A sphere, coming closer", "A point that grows into a circle, shrinks, and vanishes", "Nothing — the sphere is in another dimension"], answer: 1,
+      explain: "He only ever sees the slice where the sphere meets his plane: first a point, then a circle that grows to the sphere's full width, then shrinks back to a point and vanishes. One object, seen one slice at a time." },
+    4: { q: "Now we're the Flatlanders. A 4D ball passes through our 3D world. What would we see?",
+      options: ["A 4D ball", "A point that swells into a sphere, then shrinks and vanishes", "A flat circle"], answer: 1,
+      explain: "Exactly what A Square saw, one dimension up: we'd see only the 3D slice where the 4D ball meets our space — a sphere appearing from nowhere, growing, shrinking and vanishing." },
+    6: { q: "A tesseract (a 4D cube) passes corner-first through our world. What's the first shape to appear?",
+      options: ["A tiny cube", "A tiny tetrahedron (a triangular pyramid)", "A tiny square"], answer: 1,
+      explain: "A corner arrives first, and the slice near a corner is a small tetrahedron — just as a cube pushed corner-first through Flatland first shows a small triangle. It grows into an octahedron in the middle, then shrinks away." },
+    7: { q: "Stack every moment of Flatland's history into one 3D block. In that block, what does the Sphere's visit look like?",
+      options: ["A circle", "A sphere", "A straight line"], answer: 1,
+      explain: "A sphere. The Flatlanders lived it as an event in time — a circle appearing, growing, shrinking — but in the block of their whole history it's simply a shape. That's the block-universe picture of time." }
+  };
   function renderAside() {
-    const ch = CH[chapter];
-    const body = ch.asideFn ? ch.asideFn() : ch.aside;
+    const ch = CH[chapter], pkey = "flatland/" + (chapter + 1), pred = PREDICT[chapter + 1];
+    const waiting = pred && Chrono.progress.pred(pkey).guess === undefined;
+    const body = waiting ? "" : ch.asideFn ? ch.asideFn() : ch.aside;
     $("#aside").innerHTML = `
       <div class="flhead"><span class="eyebrow">Flatland · ${chapter + 1} of ${CH.length} · ${actOf(chapter).name}</span><button class="linkish" data-contents>☰ All chapters</button></div>
       <h2>${ch.title}</h2>
       <div class="pillrow"><span class="tag ANALOGY">Analogy</span> <span class="tag ESTABLISHED">Established geometry</span></div>
-      ${Chrono.guideFor ? Chrono.guideFor("flatland/" + (chapter + 1)) : ""}
+      ${pred ? Chrono.predictCard(pkey, pred) : ""}
+      ${Chrono.guideFor ? Chrono.guideFor(pkey) : ""}
       ${body}
-      ${Chrono.rememberFor ? Chrono.rememberFor("flatland/" + (chapter + 1)) : ""}
+      ${waiting ? "" : Chrono.rememberFor ? Chrono.rememberFor(pkey) : ""}
       ${Chrono.keyIdeas ? Chrono.keyIdeas("flatland/" + (chapter + 1)) : ""}
       ${Chrono.threadsFor ? Chrono.threadsFor("flatland/" + (chapter + 1)) : ""}
       <div class="row" style="justify-content:space-between">
@@ -735,6 +752,7 @@
       </div>
       <p class="caveat">Sources: E. A. Abbott, <i>Flatland</i> (1884, public domain) · C. Sagan, <i>Cosmos</i> ep. 10 (1980) · TED-Ed, "Exploring other dimensions" (Rosenthal &amp; Zaidan) · 4D visualisation video (YouTube): <a href="https://www.youtube.com/watch?v=4URVJ3D8e8k" target="_blank">youtube.com/watch?v=4URVJ3D8e8k</a>.</p>`;
     document.querySelectorAll("#aside [data-step]").forEach(b => b.onclick = () => go(chapter + +b.dataset.step));
+    if (pred) Chrono.wirePredict(pkey, renderAside);
     $("#aside [data-contents]").onclick = () => { introOpen = !introOpen; renderSteps(); renderIntro(); };
     document.querySelectorAll("[data-rev]").forEach(b => b.onclick = () => { st.reveal[b.dataset.rev] = true; renderAside(); });
     document.querySelectorAll("#aside [data-hole]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goHole(a.dataset.hole); });
