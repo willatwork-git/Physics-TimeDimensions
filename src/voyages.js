@@ -204,7 +204,7 @@
   Chrono.lab.register({
     predict: { q: "A ship accelerates at a steady 1 g — the push of Earth's gravity — then turns and brakes at 1 g. How long does the crew, by their own clocks, take to reach the centre of our galaxy, 26,000 light-years away?",
       options: ["About 26,000 years", "About 20 years", "It can't be done — nothing gets that far that fast"], answer: 1,
-      explain: "About 20 years by the crew's clocks. Nothing passes light speed, but the ship's clocks slow more and more as it approaches it (the twin paradox again), so a ship accelerating steadily can cross huge distances within a crew's lifetime. On Earth, 26,000 years pass. The catch is fuel: even a perfect matter–antimatter rocket would need hundreds of millions of tonnes of fuel for each tonne of ship." },
+      explain: "About 20 years by the crew's clocks. Nothing passes light speed, but the ship's clocks slow more and more as it approaches it (the twin paradox again), so a ship accelerating steadily can cross huge distances within a crew's lifetime. On Earth, 26,000 years pass. The catch is fuel: even a perfect matter–antimatter rocket would need about 700 million tonnes of fuel for each tonne of ship." },
     id: "voyage", title: "The 1 g voyage", eyebrow: "Voyages · how far in a lifetime?", tier: "mainstream", tags: ["ESTABLISHED", "SPECULATIVE"],
     controls() {
       return DEST.map(d => `<button class="btn ${VY.dest.id === d.id ? "primary" : ""}" data-dest="${d.id}">${d.n}</button>`).join("") +
@@ -249,7 +249,7 @@
       <p>This ship accelerates at a steady 1 g (it would feel like standing on Earth) for the first half of the trip, then turns round and brakes at 1 g for the second half, arriving at rest.</p>
       <div class="try"><b>Try:</b> <b>Proxima Centauri</b> — 3.5 years for the crew, 5.9 on Earth. Then <b>Centre of the galaxy</b> and <b>Andromeda</b>. Watch the ship's clock and Earth's clock pull apart.</div>
       <p>The pink curve is the ship's path through spacetime: it bends toward the light line but never crosses it — the twin paradox, stretched to its limit. It's exactly the Spacetime lab's physics.</p>
-      <p><b>What's real and what isn't.</b> The clock effects are ${"<span class=\"tag ESTABLISHED\">Established</span>"} physics. The ship is <span class="tag SPECULATIVE">Speculative</span>: nobody knows how to build it. Even a perfect rocket that turned fuel entirely into light would need the fuel shown — for the galaxy's centre, about a billion times the ship's mass.</p>
+      <p><b>What's real and what isn't.</b> The clock effects are <span class="tag ESTABLISHED">Established</span> physics. The ship is <span class="tag SPECULATIVE">Speculative</span>: nobody knows how to build it. Even a perfect rocket that turned fuel entirely into light would need the fuel shown — for the galaxy's centre, about 700 million tonnes for each tonne of ship.</p>
       <p class="meta">Model assumption: special relativity (flat spacetime), constant proper acceleration, instant turnaround at the midpoint, no gravity or interstellar dust. Fuel: the ideal photon-rocket equation, mass ratio = e^(gτ).</p>`,
     next: { q: "We've crossed the galaxy. Now zoom out to the universe as a whole: is everything flying away from us?", href: "#expand", label: "Cosmos · Expanding universe" },
     sources: "Relativistic rocket: e.g. C. Misner, K. Thorne & J. Wheeler, Gravitation (1973), §6; J. Ackeret (1946) photon-rocket equation. Destination distances: standard catalogues."

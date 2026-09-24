@@ -2,16 +2,16 @@
    Exploratory entries (tag HYPOTHESIS, who "Chronoscope project") are our own thinking, not mainstream physics. */
 (function () {
 Chrono.HOLES.push(
-  { id: "H8", name: "Is energy conserved cosmically?", tag: "ESTABLISHED",
+  { id: "H8", name: "Is energy conserved cosmically?", one: "In an expanding universe, energy isn't simply conserved.", tag: "ESTABLISHED",
     plain: "Energy is conserved because the laws are the same at every moment (Noether's theorem). But the expanding universe changes over time, so there is no general law that its total energy is conserved. Light crossing the cosmos loses energy to redshift; dark energy's total grows as space grows.",
     why: "Energy conservation is usually treated as sacred. At the scale of the whole universe, general relativity doesn't guarantee it — physicists disagree about how to describe this, not about the maths." },
-  { id: "H9", name: "What is empty space made of?", tag: "ESTABLISHED",
+  { id: "H9", name: "What is empty space made of?", one: "Empty space has energy — and our best estimate of how much is wildly wrong.", tag: "ESTABLISHED",
     plain: "The vacuum isn't empty: quantum fields fill it, and it pushes (the Casimir effect). Quantum theory's estimate of the vacuum's energy is wrong by a factor of about 10^120 compared with the dark energy we measure — perhaps the worst prediction in physics.",
     why: "Whatever space is 'made of' — fields, a condensate, entanglement — it is the stage for time too. Dark energy (~68% of the universe) sits here." },
-  { id: "H10", name: "How fast is it expanding?", tag: "ESTABLISHED",
+  { id: "H10", name: "How fast is it expanding?", one: "Two good ways of measuring the expansion rate disagree.", tag: "ESTABLISHED",
     plain: "Two good methods measure the expansion rate and disagree: about 67 versus 73 kilometres per second for every megaparsec (3.26 million light-years) of distance. Years of checking haven't closed the gap (the 'Hubble tension').",
     why: "If it isn't a measurement error, something is missing from our model of the cosmos — possibly in how time and expansion are described." },
-  { id: "H11", name: "What is a dimension?", tag: "HYPOTHESIS",
+  { id: "H11", name: "What is a dimension?", one: "What makes time a different kind of dimension from space?", tag: "HYPOTHESIS",
     plain: "An open challenge: physics uses dimensions constantly but has no agreed account of what makes one kind of dimension different from another. Time is usually described with questions written for space.",
     why: "Exploratory framing by this project. Mathematics defines dimension rigorously (degrees of freedom, fractional and scale-dependent dimension); the open part is a physical taxonomy of dimension types. See the Dimension Map." }
 );
@@ -103,6 +103,10 @@ Chrono.IDEAS.push(
     "If confirmed, the future of expansion — even a slowdown or reversal — reopens.",
     { rel: "yes", pred: "yes", matter: "yes", arrow: "na", test: "yes" }),
 
+  E("weak", 1964, "The weak force knows past from future", "Christenson, Cronin, Fitch & Turlay; CPLEAR (1998); BaBar (2012)", "found", ["H3"], "ESTABLISHED", "Real, but tiny",
+    "One rare process — the weak nuclear force acting on certain particles (kaons, B mesons) — runs very slightly differently backwards. It's the one known place where the laws themselves tell past from future.",
+    "It shows fundamental physics isn't perfectly time-symmetric. But the effect is minute and confined to a few particle decays: it can't explain why eggs break, stars burn or we remember the past.",
+    { rel: "yes", pred: "yes", matter: "yes", arrow: "no", test: "yes" }, "Measured directly in B mesons by BaBar (2012). Part of the same story as the matter–antimatter imbalance."),
   /* ---- Exploratory: this project's own ideas (not mainstream physics) ---- */
   E("wc-membrane", 2026, "The membrane: one ocean", "Chronoscope project", "less", ["H9", "H1"], "HYPOTHESIS", "Exploratory",
     "Light, gravity and matter aren't separate things in space — they are all features of one underlying medium, the way waves and currents are all just the ocean. Matter arises from the membrane, not the other way round.",

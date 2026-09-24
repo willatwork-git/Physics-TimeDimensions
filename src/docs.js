@@ -90,6 +90,7 @@
       return `
         <div class="docwrap">
           <h2 style="margin-top:0">Worked example: is the universe really expanding?</h2>
+          <p class="lede" style="font-size:16px">Scientists don't settle arguments by vote. They find a test where two ideas predict different things — then look.</p>
           <p>Distant galaxies look redder (<b>redshift</b>). Two explanations were on the table from 1929: <b>space is expanding</b>, or light simply <b>gets tired</b> on a long journey (Fritz Zwicky's idea — a natural one). How do we decide? Find tests where the two ideas predict <i>different</i> things, then look.</p>
           <table class="orph"><tr><th>Test</th><th>If space expands</th><th>If light gets tired</th><th>What we see</th><th>Winner</th></tr>
             ${TESTS.map(t => `<tr><td>${t[0]}</td><td>${t[1]}</td><td>${t[2]}</td><td>${t[3]}</td><td><b>${t[4]}</b></td></tr>`).join("")}</table>
@@ -106,6 +107,7 @@
             <li><b>Proposal</b> — worked out mathematically and published. ${TG("SPECULATIVE")}</li>
             <li><b>Tested, disputed</b> — evidence exists, experts disagree. ${TG("CONTESTED")}</li>
             <li><b>Confirmed</b> — independent tests agree; alternatives fail. ${TG("ESTABLISHED")}</li>
+            <li><b>Ruled out</b> — failed its tests. Still worth learning from: tired light is here. ${TG("RULEDOUT")}</li>
           </ol>
           <p class="meta">"Established" never means "final". Newton's gravity was established — and still is, inside its limits. Relativity showed where those limits are.</p>
         </div>`;

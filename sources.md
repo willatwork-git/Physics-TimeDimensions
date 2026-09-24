@@ -66,6 +66,12 @@ Confidence: **E** = established · **C** = contested · **S** = speculative. ☐
 - **E** Loschmidt, J. (1876) — the reversibility objection; Boltzmann, L. (1877) — entropy as counting arrangements (S = k ln W). ☐
 - **E** Levesque, D. & Verlet, L. (1993). "Molecular dynamics and time reversibility." *J. Stat. Phys.* 72, 519. — Integer (bit-reversible) leapfrog; basis of the Entropy box. ☐
 
+## Time-reversal violation (D-033)
+- **E** Christenson, J. H., Cronin, J. W., Fitch, V. L. & Turlay, R. (1964). "Evidence for the 2π decay of the K₂⁰ meson." *Phys. Rev. Lett.* 13, 138 — CP violation (T violation inferred via CPT). ☐
+- **E** CPLEAR Collaboration (1998). "First direct observation of time-reversal non-invariance in the neutral-kaon system." *Phys. Lett. B* 444, 43. ☐
+- **E** BaBar (2012) — see *Time symmetry and measured anchors* above.
+- **C** That T violation is irrelevant to the thermodynamic arrow is the widely held view (e.g. Price, *Time's Arrow and Archimedes' Point*, 1996). ☐
+
 ## Voyages (D-031)
 - **E** Ashby, N. & Patla, B. (2024). "A relativistic framework to establish coordinate time on the Moon and beyond." *Astronomical Journal* 168. — Lunar clocks gain ≈ 56 µs/day; our model gives 55.9. ☐
 - **E** White House OSTP (2024) memo on Coordinated Lunar Time. ☐

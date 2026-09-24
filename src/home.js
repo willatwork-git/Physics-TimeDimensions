@@ -9,7 +9,7 @@
 
   /* q = the stop's question · where = shown on Home · see = the Home teaser (no spoilers) · say = the tour-bar instruction */
   const TOURS = {
-    puzzle: { name: "The puzzle of time", blurb: "From 'do clocks agree?' to 'is one time dimension a law of nature?'", stops: [
+    puzzle: { name: "The puzzle of time", blurb: "If you want the big question: why is there one time, and only one? From 'do clocks agree?' to 'is it a law of nature?'", stops: [
       { href: "#clocks", where: "Clock Lab", q: "Do clocks agree?", see: "Two perfect clocks — and a surprise when one of them moves.", say: "Two perfect clocks, one moving. Push the speed up and count the ticks." },
       { href: "#river", where: "The River", q: "Does gravity change time too?", see: "A black hole drawn as space flowing inward. Can light swim out?", say: "Near a black hole, space flows inward. Hover close to the horizon and read the clock rate." },
       { href: "#spacetime", where: "Spacetime", q: "Is there one 'now' for everyone?", see: "Two lamps flash together — or do they?", say: "Two lamps flash at the same moment for you. Set a speed and see whether they still do for someone moving." },
@@ -18,7 +18,7 @@
       { href: "#films", where: "Two Films", q: "Why only one time direction?", see: "Two identical starting frames. Watch what happens next.", say: "Give a universe two time directions and see what happens to predicting the future." },
       { href: "#atlas/H5", where: "The Atlas", q: "So is one time dimension a law of nature?", see: "Everyone who has tried to answer it — and how far they got.", say: "Strong constraints, no settled answer. Here is everyone who has tried — click any of them." }
     ] },
-    zoom: { name: "From the ISS to the edge of the universe", blurb: "The same questions about time, zooming out from people to the whole cosmos.", stops: [
+    zoom: { name: "From the ISS to the edge of the universe", blurb: "If you'd rather start with astronauts and spacecraft — then zoom out to the whole cosmos.", stops: [
       { href: "#missions", where: "Mission clocks", q: "Does space travel make you younger?", see: "Clocks on the ISS, on GPS satellites, on the Moon.", say: "Pick ISS, then GPS, then Moon base. Which effect wins at each?" },
       { href: "#mars", where: "Talking to Mars", q: "What does 'now' mean on Mars?", see: "A question and answer that take the best part of an hour.", say: "Press Farthest, then send a message. Watch it cross the spacetime diagram." },
       { href: "#voyage", where: "The 1 g voyage", q: "How far could you go in a lifetime?", see: "The centre of the galaxy — by your own clock.", say: "Fly to Proxima, then the centre of the galaxy. Watch the two clocks pull apart." },
@@ -113,7 +113,7 @@
       <div class="docwrap home">
         <div class="eyebrow">Chronoscope · the holes in time</div>
         <h1>Why does our universe have exactly one time dimension?</h1>
-        <p class="lede">Nobody has a settled answer. Chronoscope is a place to find out why — and to explore the other places where physics' account of time doesn't add up: what physicists have tried, which ideas survived, and how to tell solid science from speculation. Every simulation runs the real equations.</p>
+        <p class="lede">Time is the one thing everyone uses and nobody in physics fully understands — two of our best theories disagree about what it even is. Nobody has a settled answer. Chronoscope is a place to find out why — and to explore the other places where physics' account of time doesn't add up: what physicists have tried, which ideas survived, and how to tell solid science from speculation. Every simulation runs the real equations.</p>
         ${lastName && t === null ? `<a class="continue" href="${last}">Continue where you left off: <b>${lastName}</b> →</a>` : ""}
         ${tourCard()}
         <h2 class="sect">Three scales of time</h2>
@@ -142,6 +142,7 @@
       document.querySelectorAll("[data-tab-jump]").forEach(a => a.onclick = e => { e.preventDefault(); tab = a.dataset.tabJump; $("#doc").innerHTML = page(); this.wire(); $(".tourhero").scrollIntoView({ behavior: "smooth", block: "start" }); });
     },
     aside: () => `
+      <p>Everything here is labelled by how sure physicists are — you'll see these tags on every page.</p>
       <p><b>Learn</b> mode (the default) shows physics as physicists hold and debate it, plus published ideas from the fringe — every claim tagged.${Chrono.maxLevel >= 3 ? ` <b>◌ Lab</b> mode adds this project's own exploratory ideas and your hypotheses. Switch top right.` : ""}</p>
       ${Chrono.tierLegend()}
       <p class="meta">Press <b>?</b> any time for the Guide. Every view has its own link — share the address bar.</p>`

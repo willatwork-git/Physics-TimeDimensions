@@ -143,7 +143,7 @@
     draw(g) { CL.mode === "light" ? drawLightClock(g) : drawGPS(g); },
     aside: () => CL.mode === "light" ? `
       <p>A <b>light clock</b> is the simplest possible clock: a pulse of light bouncing between two mirrors. One bounce up and back = one tick.</p>
-      <p>Now move the clock sideways. Seen by us, the light must travel a longer, <b>diagonal</b> path — but light always travels at the same speed. So each tick takes longer. The moving clock <i>really</i> ticks slower, by the factor γ = 1/√(1 − v²/c²).</p>
+      <p>Now move the clock sideways. Seen by us, the light must travel a longer, <b>diagonal</b> path — but light always travels at the same speed. So each tick takes longer. The moving clock <i>really</i> ticks slower, by a factor physicists call gamma: at 87% of light speed it's 2, so the moving clock ticks half as fast.</p><p class="meta">For the technically minded: γ = 1/√(1 − v²/c²).</p>
       <div class="try"><b>Try:</b> push the speed toward 0.99 c and watch the moving clock nearly stop. At exactly c there'd be no vertical motion left at all — which is why <b>light's own clock never ticks</b>.</div>
       <p>This isn't a quirk of light clocks: every clock, heartbeat and atom slows the same way. It's measured daily — see the GPS mode.</p>` : `
       <p>Clocks run at different rates depending on <b>speed</b> and <b>gravity</b>. A satellite clock gains time because it sits higher up, where gravity is weaker, and loses time because it moves fast.</p>

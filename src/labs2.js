@@ -317,8 +317,8 @@
       <div class="try"><b>Try:</b> <b>Remove the partition</b> and let the gas run until the reverse buttons light up (a few seconds). Press <b>Reverse every velocity</b>: every collision replays backwards and the gas gathers itself back into the left half. Then <b>Reset</b>, and try <b>Nudge one disc, then reverse</b>.</div>
       <p><b>What it shows</b> <span class="tag ESTABLISHED">Established</span>: un-mixing is allowed by the laws but needs a perfectly exact starting point. A disturbance of one part in a million, amplified by collision after collision, destroys it. Real gases have around 10²³ molecules — the one-way-ness becomes overwhelming.</p>
       <p><b>What it doesn't show:</b> why the universe started in the ordered, low-entropy state that let everything spread since. That is hole <a href="#" data-hole="H3">H3</a> — and still open.</p>
-      <p class="meta">Model assumption: 240 soft discs in two dimensions under Newton's laws, computed in whole numbers so that reversal is exact rather than approximate (Levesque &amp; Verlet, 1993). Entropy is coarse-grained over a 8 × 4 grid.</p>`,
-    next: { q: "If the laws don't care about direction, why did the universe start out so ordered?", href: "#atlas/H3", label: "Atlas · hole H3" },
+      <p class="meta">Model assumption: 240 soft discs in two dimensions under Newton's laws, computed in whole numbers so that reversal is exact rather than approximate (Levesque &amp; Verlet, 1993). Entropy is coarse-grained over an 8 × 4 grid.</p>`,
+    next: { q: "Almost all the laws run the same both ways — the one known exception is far too small to explain the arrow. So why did the universe start out so ordered?", href: "#atlas/H3", label: "Atlas · hole H3" },
     sources: "L. Boltzmann (1877); J. Loschmidt (1876); D. Levesque & L. Verlet, 'Molecular dynamics and time reversibility', J. Stat. Phys. 72, 519 (1993)."
   });
 })();

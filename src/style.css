@@ -421,7 +421,7 @@ nav { gap: 8px; }
 .guide dl { margin: 0; padding: 0 12px 10px; display: grid; grid-template-columns: minmax(96px, 38%) 1fr; gap: 6px 12px; font-size: 13px; }
 .guide dt { font-weight: 600; color: var(--text); }
 .guide dd { margin: 0; color: var(--muted); line-height: 1.45; }
-.guide dt.sub { text-align: left; grid-column: 1 / -1; margin-top: 4px; font: 10px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 400; }
+.guide dt.gsub { text-align: left; grid-column: 1 / -1; margin-top: 4px; font: 10px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 400; }
 @media (max-width: 900px) and (orientation: portrait), (max-width: 600px) { .guide dl { grid-template-columns: 1fr; gap: 2px; } .guide dd { margin-bottom: 6px; } }
 
 /* ---------- Menu affordance: a chevron in its own segment, flipping when open (D-032) ---------- */
@@ -459,3 +459,15 @@ nav { gap: 8px; }
 .threadlist .thread { display: grid; grid-template-columns: 190px 1fr; gap: 12px; flex-wrap: nowrap; }
 .threadlist .th-name { min-width: 0; }
 @media (max-width: 700px) { .threadlist .thread { grid-template-columns: 1fr; gap: 0; } }
+
+/* ---------- Reading pattern (D-033): intro before predicting, Remember at the end ---------- */
+#aside { font-size: 15px; line-height: 1.55; }
+#aside .intro { font-size: 15px; color: var(--text); margin: 10px 0 12px; padding-left: 10px; border-left: 2px solid var(--line); }
+.remember { margin: 18px 0 6px; padding: 12px 14px; border-radius: 8px; background: color-mix(in srgb, var(--t-est) 9%, var(--panel2)); border: 1px solid color-mix(in srgb, var(--t-est) 35%, var(--line)); font-size: 15px; font-weight: 600; color: var(--text); }
+.remember b { display: block; font: 10px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--t-est); margin-bottom: 4px; font-weight: 400; }
+.dim { opacity: .25; }
+.bench:not(.scoring) .yours { display: none; }
+.scoreme { margin-top: 6px; color: var(--accent); }
+.hurdles { margin: 0 0 10px; }
+.hurdles dt { font-weight: 600; color: var(--text); margin-top: 8px; }
+.hurdles dd { margin: 2px 0 0; color: var(--muted); font-size: 14px; }

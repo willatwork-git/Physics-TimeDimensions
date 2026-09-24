@@ -11,7 +11,7 @@ by exploring, is that physics has strong constraints on it but no settled, model
 · [Lab mode](https://willatwork-git.github.io/Physics-TimeDimensions/index.html?mode=lab#home)
 · [classroom edition](https://willatwork-git.github.io/Physics-TimeDimensions/index.html?edition=school#home)
 
-![The Atlas: open problems about time along the top, a century of attempts to solve them below](docs/screenshot-atlas.png)
+![Home: the hook, two guided tours and the three scales of time](docs/screenshot-home.png)
 
 ## Run it locally
 
@@ -83,6 +83,10 @@ straight to a lab. Press **?** inside the app for the built-in guide. Works on p
 - **Cosmic horizons** — how far we can see (46 billion light-years) and how far our signals can reach.
 - **Boot a Universe** — try other numbers of space and time dimensions and watch what breaks.
 - **The Janus point** — a gravitating swarm whose structure grows in both directions of time.
+
+![Cosmic horizons: light at 45°, our past light cone and the event horizon](docs/screenshot-cosmos.png)
+
+![The Atlas: open problems about time along the top, a century of attempts to fill them below](docs/screenshot-atlas.png)
 
 **Learning aids**
 - **Two guided tours** — *The puzzle of time* (seven stops from "Do clocks agree?" to "Is one time

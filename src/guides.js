@@ -134,8 +134,42 @@
       ["Right-hand view", "What Flatlanders experience at that moment."]
     ]
   };
+  /* The words around each lab (text review, D-033): a no-spoiler intro shown before predicting, and one
+     sentence to remember at the end. */
+  const TEXT = {
+    field: ["Physics says particles aren't tiny balls — they're ripples in fields that fill all of space. Here are two fields side by side: one behaves like light, one like a particle with mass.",
+      "Mass is what gives a particle an internal clock — and moving fast slows that clock."],
+    clocks: ["Two identical clocks, one at rest and one moving. Do they keep the same time? A second mode does the same for real satellites in orbit.",
+      "Every moving clock runs slow — not because it's broken, but because time itself does."],
+    spacetime: ["A map of events: space runs across, time runs up. Observers moving past each other slice this map into moments differently — here you can see how.",
+      "'At the same time' depends on who's asking — but cause and effect never swap places."],
+    river: ["Near a black hole, time and space behave strangely. This lab uses one exact way to picture it: space itself flowing inward like a river.",
+      "Gravity slows clocks too — and at the horizon, not even light can swim against the current."],
+    entropy: ["A box of gas, all on one side. Remove the wall and it spreads out. The question: why does it never gather itself back?",
+      "Time's arrow comes from the odds, not the laws of motion — and from a universe that started out ordered."],
+    films: ["In our universe, if you knew everything about this moment, the laws would fix what happens next. This lab asks: would that still work with two time directions?",
+      "The frame was accurate. It just wasn't enough data: with two times, the present can't fix the future. In our universe, it can."],
+    missions: ["Clocks in space don't keep the same time as clocks on the ground. This lab works out by how much, for real missions.",
+      "Speed slows clocks and height speeds them up — GPS corrects for both, every day."],
+    mars: ["Earth and Mars on their orbits, with a radio link between them. How long does a conversation take — and what does 'now' mean on Mars?",
+      "Everything you see from far away is already old news — and there is no shared 'now' across the solar system."],
+    voyage: ["A spaceship that keeps accelerating for the whole trip. How far could its crew get in a lifetime — by their own clocks?",
+      "You can't beat light — but your own clock can make the trip short."],
+    expand: ["A patch of the universe, full of galaxies. Run time forward and watch the distances between them grow — then ask where the centre is.",
+      "Everything is moving apart from everything else — and no galaxy is the centre."],
+    horizons: ["Light takes time to reach us, and space keeps stretching while it travels. Together they give the universe two edges: how far we can see, and how far we can ever reach.",
+      "There are two edges: how far we can see, and how far we can ever reach — and galaxies are slipping beyond the second all the time."],
+    boot: ["Could a universe have four space dimensions, or two times? Boot one and see what breaks.",
+      "Other dimension counts break orbits, atoms or prediction — which is why we find ourselves in 3 + 1, though nobody has shown it had to be."],
+    janus: ["A swarm of stars under gravity, started from one special moment and run both forwards and backwards in time.",
+      "From one special moment, structure can grow both ways — so time might have an arrow on both sides of the Big Bang (contested)."],
+    "flatland/7": [null, "In the block picture, nothing moves — only our slice through it does. That's why 'now' is a puzzle."]
+  };
+  Chrono.introFor = key => TEXT[key] && TEXT[key][0] ? `<p class="intro">${TEXT[key][0]}</p>` : "";
+  Chrono.rememberFor = key => TEXT[key] && TEXT[key][1] ? `<p class="remember"><b>Remember</b>${TEXT[key][1]}</p>` : "";
+
   Chrono.guideFor = key => {
     const g = G[key]; if (!g) return "";
-    return `<details class="guide" open><summary>The controls</summary><dl>${g.map(([k, v]) => k ? `<dt>${k}</dt><dd>${v}</dd>` : `<dt class="sub">${v}</dt>`).join("")}</dl></details>`;
+    return `<details class="guide" open><summary>The controls</summary><dl>${g.map(([k, v]) => k ? `<dt>${k}</dt><dd>${v}</dd>` : `<dt class="gsub">${v}</dt>`).join("")}</dl></details>`;
   };
 })();

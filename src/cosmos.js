@@ -108,7 +108,7 @@
       <p>Space itself is stretching. Galaxies aren't flying through space away from a centre — the distances between them grow, everywhere at once.</p>
       <div class="try"><b>Try:</b> click any galaxy to stand on it. The arrows always point away, longer for farther galaxies — <b>Hubble's law</b>, seen from everywhere. Then try the presets: without dark energy expansion slows; with too much matter the universe falls back in a Big Crunch.</div>
       <p><b>Cosmic clocks run slow too.</b> Light crossing expanding space is stretched: its wavelength grows by the same factor as the universe (redshift) — and so does everything carried by it. A supernova at redshift 1 appears to unfold twice as slowly. That's measured (see <a href="#" data-view-link="sure">How sure are we?</a>).</p>
-      <p><b>How old is it?</b> With the best-measured matter and dark energy, <b>13.8 billion years</b> for H₀ = 67.4 — but 12.7 if the expansion rate is 73, as nearby measurements say. That disagreement is the Hubble tension, hole <a href="#" data-hole="H10">H10</a> <span class="tag CONTESTED">Contested</span>.</p>
+      <p><b>How old is it?</b> That depends on the expansion rate today, called H₀: how fast space stretches, in km/s for every megaparsec (3.26 million light-years). With the best-measured matter and dark energy, <b>13.8 billion years</b> for H₀ = 67.4 — but 12.7 if the expansion rate is 73, as nearby measurements say. That disagreement is the Hubble tension, hole <a href="#" data-hole="H10">H10</a> <span class="tag CONTESTED">Contested</span>.</p>
       <p class="meta">Model assumption: a smooth, uniform universe (Friedmann equations) with matter, radiation, dark energy as a constant, and curvature set by the total. Galaxies' own motions ignored; the galaxy field is a comoving grid. <span class="tag ESTABLISHED">Established</span></p>`,
     next: { q: "If space has been stretching for 13.8 billion years, how far away is the most distant thing we can see?", href: "#horizons", label: "Cosmic horizons" },
     sources: "A. Friedmann (1922); G. Lemaître (1927); E. Hubble (1929); Planck Collaboration, A&A 641, A6 (2020); A. Riess et al. (SH0ES); DES supernova time dilation (2024)."
@@ -138,7 +138,7 @@
     id: "horizons", title: "Cosmic horizons", eyebrow: "Cosmos · how far can we ever see?", tier: "mainstream", tags: ["ESTABLISHED"],
     enter() { if (!HZ.T) HZ.T = hzTables(); },
     controls() {
-      return `<button class="btn ${HZ.view === "conformal" ? "primary" : ""}" id="hz-conf">Light at 45° (conformal)</button>
+      return `<button class="btn ${HZ.view === "conformal" ? "primary" : ""}" id="hz-conf">Light at 45° (stretched view)</button>
         <button class="btn ${HZ.view === "proper" ? "primary" : ""}" id="hz-prop">Ordinary distance and time</button>
         <label class="ctl">A galaxy, today at <input type="range" id="hz-chi" min="1" max="60" value="${HZ.chi}"><output id="hz-chio">${HZ.chi} billion ly</output></label>`;
     },

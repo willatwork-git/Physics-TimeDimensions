@@ -311,7 +311,7 @@
         <p>We can't point in that fourth direction. But we can still count — and the pattern keeps working.</p>
         <table class="counts"><tr><th>Shape</th><th>Corners</th><th>Edges</th><th>Squares</th><th>Cubes</th></tr>${rows}</table>
         <div class="try"><b>Try:</b> predict the 4D and 5D numbers before clicking the <b>?</b>s. Hint: every step doubles the old shape and joins each old corner to its copy.</div>
-        <p class="meta">Maths can describe any number of dimensions with ease. The difficulty is only in our imagination — which is the point of this whole tab.</p>`;
+        <p class="meta">Maths can describe any number of dimensions with ease. The difficulty is only in our imagination — which is the point of this whole section.</p>`;
     }
   });
   function easeInOut(t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
@@ -441,7 +441,7 @@
       rows.forEach(([a, b], i) => { const on = a === cname; label(a, px + 16, ty + r0 + i * dr, on ? col : C.text, 12); label("→", px + pw / 2, ty + r0 + i * dr, C.muted, 12, "center"); label(b, px + pw - 16, ty + r0 + i * dr, on ? col : C.text, 12, "right"); });
     },
     aside: `
-      <p>A <b>hypercone</b> is a cone one dimension up: a spherical base drawn out to a point along w. Its slices straight across are spheres of changing size.</p>
+      <p>You may remember conic sections from school: slice a cone and you get a circle, ellipse, parabola or hyperbola. This chapter does the same, one dimension up.</p><p>A <b>hypercone</b> is a cone one dimension up: a spherical base drawn out to a point along w. Its slices straight across are spheres of changing size.</p>
       <p>But what if our 3D "sheet" cuts it at a <b>tilt</b>? Then we'd see other shapes: an <b>ellipsoid</b>, a <b>paraboloid</b>, a <b>hyperboloid</b> — and, as the hypercone turned, a smooth morph between them.</p>
       <p>The pattern is the payoff. Slice an ordinary cone with a flat plane and you get the conic sections every student meets: circle, ellipse, parabola, hyperbola. Slice a hypercone with a 3D "plane" and you get their 3D twins — the left view is literally the right-hand curve spun around its axis.</p>
       <div class="try"><b>Try:</b> press <b>Sweep</b>. Watch the shape tip over from closed (ellipsoid) to open (hyperboloid). The switch happens exactly at 45°, where our slice runs parallel to the cone's side.</div>
@@ -588,7 +588,7 @@
     asideFn() {
       return st.tessMode === "slice" ? `
         <p>A tesseract passing <b>through</b> our world. We'd never see the whole thing — only the 3D slice where it meets our space.</p>
-        <p>The slice is built exactly as the video explains: the tesseract's boundary is <b>8 cubes</b> ("cells"). Our world cuts each cell in a flat polygon; those polygons (coloured by cell) join up into the solid you see.</p>
+        <p>The slice is built the way a well-known 4D visualisation video does it (link in Sources): the tesseract's boundary is <b>8 cubes</b> ("cells"). Our world cuts each cell in a flat polygon; those polygons (coloured by cell) join up into the solid you see.</p>
         <p>Its <b>orientation</b> changes everything. Cube-first, it's just a cube. Corner-first, a tiny <b>tetrahedron</b> appears, grows into an <b>octahedron</b> at the middle, then shrinks away.</p>
         <div class="try"><b>Try:</b> pick an orientation, watch the <b>Flatland analog</b> on the right first (a cube through a plane), then watch the 3D slice. Same story, one dimension up.</div>
         <p class="meta">Exact geometry: intersection of the hyperplane n·x = d with the tesseract's 32 edges. <span class="tag ESTABLISHED">Established</span></p>` : `
@@ -726,10 +726,11 @@
       <div class="pillrow"><span class="tag ANALOGY">Analogy</span> <span class="tag ESTABLISHED">Established geometry</span></div>
       ${Chrono.guideFor ? Chrono.guideFor("flatland/" + (chapter + 1)) : ""}
       ${body}
+      ${Chrono.rememberFor ? Chrono.rememberFor("flatland/" + (chapter + 1)) : ""}
       ${Chrono.threadsFor ? Chrono.threadsFor("flatland/" + (chapter + 1)) : ""}
       <div class="row" style="justify-content:space-between">
         <button class="btn" data-step="-1" ${chapter === 0 ? "disabled" : ""}>← Previous</button>
-        <button class="btn primary" data-step="1" ${chapter === CH.length - 1 ? "disabled" : ""}>${chapter < CH.length - 1 ? `Next: ${SHORT[chapter + 1]} →` : "Next →"}</button>
+        ${chapter < CH.length - 1 ? `<button class="btn primary" data-step="1">Next: ${SHORT[chapter + 1]} →</button>` : `<a class="btn primary" href="#films">Next: Two Films →</a>`}
       </div>
       <p class="caveat">Sources: E. A. Abbott, <i>Flatland</i> (1884, public domain) · C. Sagan, <i>Cosmos</i> ep. 10 (1980) · TED-Ed, "Exploring other dimensions" (Rosenthal &amp; Zaidan) · 4D visualisation video (YouTube): <a href="https://www.youtube.com/watch?v=4URVJ3D8e8k" target="_blank">youtube.com/watch?v=4URVJ3D8e8k</a>.</p>`;
     document.querySelectorAll("#aside [data-step]").forEach(b => b.onclick = () => go(chapter + +b.dataset.step));

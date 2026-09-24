@@ -182,7 +182,7 @@
   function renderAside() {
     const a = $("#aside");
     const s = state.selected;
-    if (!s) return a.innerHTML = introHTML();
+    if (!s) return a.innerHTML = state.view === "bench" ? benchIntroHTML() : introHTML();
     if (s.type === "hole") return a.innerHTML = holeHTML(holeOf(s.id)), wireAside();
     const i = allIdeas().find(x => x.id === s.id);
     a.innerHTML = i ? ideaHTML(i) : introHTML();
@@ -196,6 +196,7 @@
       Chrono.progress.setScore(s.id, sel.dataset.myscore, sel.value || null);
       if (state.view === "bench") renderBench();
     });
+    const sm = $("#aside [data-scoreme]"); if (sm) sm.onclick = () => { const t = $("#aside table.bench"); t.classList.toggle("scoring"); sm.textContent = t.classList.contains("scoring") ? "Hide my scores" : "Score it yourself"; };
     const del = $("#aside [data-del]");
     if (del) del.onclick = () => { Chrono.hyp.remove(del.dataset.del); Chrono.nav("#atlas"); };
     const back = $("#aside [data-back]");
@@ -212,16 +213,33 @@
     return `
       <div class="eyebrow">The Atlas</div>
       <h2>Why does our universe have exactly one time dimension?</h2>
-      <p>Nobody knows for sure — and that is one of ${visHoles().length} <b>holes</b> in physics' account of time, the glowing nodes along the top. The dots below are a century of <b>attempts</b> to fill them, placed by year and sorted into camps.</p>
+      <p>Nobody knows for sure — and that's one of the holes in physics' account of time. Think of that account as a map with holes in it: places where the theories don't add up. The ${visHoles().length} glowing nodes along the top are those <b>holes</b>. Every dot below is someone's <b>attempt</b> to fill one, placed by year and coloured by approach.</p>
       <p>Hover a hole to see who has tried to fill it${Chrono.mode() === "learn" ? " — names appear as you hover" : ""}. Click anything to read the detail.</p>
       ${Chrono.mode() === "learn" && Chrono.maxLevel >= 3 ? `<p class="meta">Want the raw version — this project's own challenges to the mainstream, your own hypotheses, every label? Switch to <b>Lab</b> (top right).</p>` : ""}
       <h3>Who attacks which hole</h3>
       <div class="bars">${bars}</div>
-      <p class="meta" style="margin-top:8px">Colour = camp. Notice where "more time" and "less time" aim at the same hole — two opposite repairs for one crack.</p>
+      <p class="meta" style="margin-top:8px">Colour shows the approach (the "camp"): some add more time or dimensions, some argue time is less fundamental than it looks, some look to the cosmos. Notice where "more time" and "less time" aim at the same hole — two opposite repairs for one crack.</p>
       ${Chrono.shows("exploratory") ? `<h3>Add your own</h3>
       <p>Use <b>+ Your hypothesis</b> to put a loose idea on the map. Say what it would predict and what would kill it. Export the file to share with friends; they import it to see yours.</p>` : ""}
       ${Chrono.tierLegend()}
-      <p class="caveat">Test-bench scores are Claude's first-pass judgement, made to be argued with.</p>`;
+      <p class="caveat">Test-bench scores are a first-pass judgement drafted with Claude, an AI — made to be argued with.</p>`;
+  }
+  const HURDLE_WHY = {
+    rel: "Relativity has passed every test for over a century; any idea about time has to agree with it.",
+    pred: "If knowing 'now' doesn't fix what comes next, physics can't forecast anything.",
+    matter: "Atoms, planets and people have to be able to exist.",
+    arrow: "A full account of time should say why it runs one way.",
+    test: "An idea that predicts nothing new can't be checked."
+  };
+  function benchIntroHTML() {
+    return `
+      <div class="eyebrow">Test bench</div>
+      <h2>Every idea against the same five hurdles</h2>
+      <p class="intro">A good theory of time has to clear all five. Few do. Click any row to see why it scored as it did — and set your own score where you disagree.</p>
+      <h3>The five hurdles</h3>
+      <dl class="hurdles">${Chrono.CONSTRAINTS.map(c => `<dt>${c.name}</dt><dd>${HURDLE_WHY[c.id]}</dd>`).join("")}</dl>
+      <p class="meta">✓ passes · ◐ partly / evades · ✗ fails or ignores · – doesn't apply · ? unknown</p>
+      <p class="caveat">Scores are a first-pass judgement drafted with Claude, an AI — made to be argued with.</p>`;
   }
   function holeHTML(h) {
     const ideas = allIdeas().filter(visible).filter(i => i.holes.includes(h.id)).sort((a, b) => a.year - b.year);
@@ -230,6 +248,7 @@
       <button class="btn" data-back>← Atlas</button>
       <div class="eyebrow" style="margin-top:14px">Hole ${h.id}</div>
       <h2>${esc(h.name)}</h2>
+      ${h.one ? `<p class="intro">${esc(h.one)}</p>` : ""}
       ${isExp(h) ? Chrono.expBanner() : ""}
       <span class="tag ${h.tag}">${Chrono.TAGS[h.tag]}</span> <span class="meta">${isExp(h) ? "our framing" : "that this is an open problem"}</span>
       <p style="margin-top:12px">${esc(h.plain)}</p>
@@ -247,9 +266,10 @@
     const benchBlock = i.camp === "bench"
       ? `<h3>Role</h3><p>This is a <b>constraint</b>: a result other ideas are tested against, not an attempt to fill a hole.</p>`
       : i.tag === "ANALOGY" ? "" : `<h3>Test bench ${i.user ? "(unscored — yours to argue)" : ""}</h3>
-        <table class="bench">${bench}</table>
-        <p class="meta">Scores are a first-pass judgement by Claude. Disagree? Set <b>You</b> under any score — it's kept in your browser and shown on the Test bench.</p>`;
-    const [hp, hk] = i.tag === "RULEDOUT" ? ["What it predicted", "What killed it"] : i.tag === "ESTABLISHED" ? ["Predicts", "What would overturn it"] : i.camp === "bench" ? ["Says", "What would overturn it"] : ["Would predict", "Would be killed by"];
+        <table class="bench${Chrono.CONSTRAINTS.some(c => mine(c.id)) || i.user ? " scoring" : ""}">${bench}</table>
+        ${i.user ? "" : `<button class="linkish scoreme" data-scoreme>Score it yourself</button>`}
+        <p class="meta">Scores are a first-pass judgement drafted with Claude, an AI. Disagree? Press <b>Score it yourself</b> and set your own — kept in your browser and shown on the Test bench.</p>`;
+    const [hp, hk] = i.tag === "RULEDOUT" ? ["What it predicted", "What killed it"] : i.tag === "ESTABLISHED" ? ["Predicts", "What would overturn it"] : i.camp === "bench" ? ["Predicts", "What would overturn it"] : ["Would predict", "Would be killed by"];
     return `
       <button class="btn" data-back>← Atlas</button>
       <div class="eyebrow" style="margin-top:14px"><i class="camp-dot" style="background:${campColor(i.camp)}"></i>${camp.name} · ${i.user ? "your hypothesis" : i.year}</div>
@@ -271,7 +291,7 @@
   function renderBench() {
     const v = $("#benchview");
     const ideas = allIdeas().filter(visible).filter(i => i.camp !== "bench" && i.tag !== "ANALOGY").sort((a, b) => a.year - b.year);
-    const head = Chrono.CONSTRAINTS.map(c => `<th style="text-align:center" title="${c.name}">${c.short}</th>`).join("");
+    const head = Chrono.CONSTRAINTS.map(c => `<th style="text-align:center" title="${c.name}: ${HURDLE_WHY[c.id]}">${c.short}</th>`).join("");
     const rows = ideas.map(i => `<tr data-go-idea="${esc(i.id)}" style="${state.selected && state.selected.id === i.id ? "outline:1px solid var(--accent)" : ""}">
       <td>${i.user ? "yours" : i.year}${isExp(i) ? ' <span class="expdot" title="Exploratory">◌</span>' : ""}</td>
       <td><i class="camp-dot" style="background:${campColor(i.camp)}"></i>${esc(i.name)}</td>

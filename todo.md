@@ -29,6 +29,12 @@ Delivery builds are named by date/content below; spec.md "Build order" numbers t
 - [ ] Cosmic timeline (orientation, log-time) · a Voyages lab on the arrow thread (e.g. Earth's energy budget)
 - [ ] README screenshots: add the home page and a Cosmos lab
 
+## From the 2026-09-25 reviews — for Will to decide
+- [ ] Colour split: hue only for confidence tags (review 3.1)
+- [ ] Two-part badge / "How sure?" line per lab (review 3.2, text review Part 1)
+- [ ] "Picture it" analogies per lab (balloon, rubber band, loaf, deck of cards…)
+- [ ] End-of-tour quizzes · misconception cards · evidence gallery ("How we know") · Tour 3: time travel · quantum time · concept map
+
 ## Space School readiness
 - [ ] Teacher notes per lab
 - [ ] Light theme

@@ -41,25 +41,25 @@ Chrono.CONSTRAINTS = [
 ];
 
 Chrono.HOLES = [
-  { id: "H1", name: "Two clocks that disagree", tag: "ESTABLISHED",
+  { id: "H1", name: "Two clocks that disagree", one: "Our two best theories disagree about what time is.", tag: "ESTABLISHED",
     plain: "Quantum mechanics runs on one universal background clock. General relativity says no such clock exists. When physicists merged the two (the Wheeler–DeWitt equation), time dropped out altogether.",
     why: "This is the 'problem of time' in quantum gravity. It is not a gap in data; it is a clash between our two best theories about what time even is." },
-  { id: "H2", name: "Time isn't measured like space", tag: "ESTABLISHED",
+  { id: "H2", name: "Time isn't measured like space", one: "Time isn't something you can measure the way you measure position.", tag: "ESTABLISHED",
     plain: "In quantum mechanics, position is something you measure. Time is only a label on the measurements. Pauli showed in 1933 that time can't simply be promoted to a measurable quantity in the standard theory.",
     why: "Relativity insists space and time are a package. Quantum mechanics treats them completely differently. Both theories work, so something deeper is unresolved." },
-  { id: "H3", name: "Why the arrow?", tag: "ESTABLISHED",
-    plain: "The laws are (almost) the same run forwards or backwards, yet eggs never unbreak. The arrow traces back to the universe starting in an extraordinarily ordered state — Penrose put the odds at 1 in 10^(10^123).",
+  { id: "H3", name: "Why the arrow?", one: "The laws barely care which way time runs — so why does everything?", tag: "ESTABLISHED",
+    plain: "The laws are (almost) the same run forwards or backwards — one rare particle process tells past from future, far too weakly to explain the arrow — yet eggs never unbreak. The arrow traces back to the universe starting in an extraordinarily ordered state. Penrose put the odds at 1 in 10 raised to the power 10¹²³: a number with more digits than there are particles in the observable universe.",
     why: "That starting condition (the 'Past Hypothesis') is assumed, not explained. The direction of time rests on it." },
-  { id: "H4", name: "No 'now'", tag: "CONTESTED",
+  { id: "H4", name: "No 'now'", one: "Physics has no place in its equations for 'now'.", tag: "CONTESTED",
     plain: "In relativity, all moments exist together as a 'block'. Nothing in the equations marks the present or makes it move.",
     why: "Einstein said the problem of the Now worried him seriously. Some physicists argue relativity doesn't force the block view — hence Contested." },
-  { id: "H5", name: "Why one time dimension?", tag: "ESTABLISHED",
+  { id: "H5", name: "Why one time dimension?", one: "Why exactly one time dimension? Nobody has shown it had to be.", tag: "ESTABLISHED",
     plain: "Three space dimensions, one time dimension. Nobody has derived why. The best-known argument (Tegmark) explains why observers would find themselves here, which is not the same thing.",
     why: "If there's no derivation, the number is an input, not an output — the kind of thing physicists expect a deeper theory to explain." },
-  { id: "H6", name: "What came 'before'?", tag: "ESTABLISHED",
+  { id: "H6", name: "What came 'before'?", one: "Did time have a beginning — and what, if anything, came before?", tag: "ESTABLISHED",
     plain: "The Big Bang model describes the universe evolving from a hot, dense state. It does not describe an origin, and the equations break down before they reach one.",
     why: "'Before the Big Bang' may be meaningless, a real earlier phase, or a place where time turns into something else. All three have serious advocates." },
-  { id: "H7", name: "Time at the edge: black holes", tag: "ESTABLISHED",
+  { id: "H7", name: "Time at the edge: black holes", one: "At a black hole's edge, time seems to stop — and what falls in may be lost.", tag: "ESTABLISHED",
     plain: "Seen from outside, time freezes at a black hole's horizon. Inside, space and time swap roles: moving 'forward in time' means moving toward the centre. What happens to information that falls in is unresolved.",
     why: "Black holes are where gravity and quantum theory meet head-on, so they are where the problem of time becomes concrete." }
 ];

@@ -131,9 +131,12 @@
       <h2>${def.title}</h2>
       <div class="pillrow">${Chrono.tierPill(tier)} ${(def.tags || []).map(t => `<span class="tag ${t}">${Chrono.TAGS[t]}</span>`).join(" ")}</div>
       ${tier === "exploratory" ? Chrono.expBanner() : ""}
+      ${Chrono.introFor ? Chrono.introFor(def.id) : ""}
       ${def.predict ? predictCard(def) : ""}
-      ${Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
+      ${waiting && Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
       ${waiting ? "" : typeof def.aside === "function" ? def.aside() : (def.aside || "")}
+      ${!waiting && Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
+      ${waiting || !Chrono.rememberFor ? "" : Chrono.rememberFor(def.id)}
       ${waiting || !Chrono.threadsFor ? "" : Chrono.threadsFor(def.id)}
       ${def.next ? `<a class="nextq" href="${def.next.href}"><span class="eyebrow">Next question</span><span class="nq">${def.next.q}</span><span class="hgo">${def.next.label} →</span></a>` : ""}
       ${def.sources ? `<p class="caveat">Sources: ${def.sources}</p>` : ""}`;
