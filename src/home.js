@@ -7,13 +7,14 @@
 
   /* Stops 4–5 will move to the Spacetime diagram and Entropy box when those labs exist (learner-review, Phase C). */
   const TOUR = [
-    { href: "#clocks", q: "Do clocks agree?", say: "Two perfect clocks, one moving. Push the speed up and count the ticks." },
-    { href: "#river", q: "Does gravity change time too?", say: "Near a black hole, space flows inward. Hover close to the horizon and read the clock rate." },
-    { href: "#flatland/2", q: "What would an extra dimension look like from inside?", say: "A sphere visits a flat world. Its inhabitant only ever sees one slice of it." },
-    { href: "#flatland/7", q: "So what is 'now'?", say: "Stack every moment into one block. 'Now' becomes a slice — and nothing in the block says which one." },
-    { href: "#atlas/H3", q: "Why does time only run one way?", say: "The laws barely care about direction. Read where physicists think the arrow comes from — and who has tried to explain it." },
-    { href: "#films", q: "Why only one time direction?", say: "Give a universe two time directions and see what happens to predicting the future." },
-    { href: "#atlas/H5", q: "So is one time dimension a law of nature?", say: "Strong constraints, no settled answer. Here is everyone who has tried — click any of them." }
+    /* q = the stop's question · where = shown on Home · see = the Home teaser (no spoilers) · say = the tour-bar instruction */
+    { href: "#clocks", where: "Clock Lab", q: "Do clocks agree?", see: "Two perfect clocks — and a surprise when one of them moves.", say: "Two perfect clocks, one moving. Push the speed up and count the ticks." },
+    { href: "#river", where: "The River", q: "Does gravity change time too?", see: "A black hole drawn as space flowing inward. Can light swim out?", say: "Near a black hole, space flows inward. Hover close to the horizon and read the clock rate." },
+    { href: "#flatland/2", where: "Flatland", q: "What would an extra dimension look like from inside?", see: "A sphere visits a flat world, one slice at a time.", say: "A sphere visits a flat world. Its inhabitant only ever sees one slice of it." },
+    { href: "#flatland/7", where: "Flatland", q: "So what is 'now'?", see: "A whole history stacked into one block.", say: "Stack every moment into one block. 'Now' becomes a slice — and nothing in the block says which one." },
+    { href: "#atlas/H3", where: "The Atlas", q: "Why does time only run one way?", see: "Eggs break but never unbreak — yet the laws barely care. Why?", say: "The laws barely care about direction. Read where physicists think the arrow comes from — and who has tried to explain it." },
+    { href: "#films", where: "Two Films", q: "Why only one time direction?", see: "Two identical starting frames. Watch what happens next.", say: "Give a universe two time directions and see what happens to predicting the future." },
+    { href: "#atlas/H5", where: "The Atlas", q: "So is one time dimension a law of nature?", see: "Everyone who has tried to answer it — and how far they got.", say: "Strong constraints, no settled answer. Here is everyone who has tried — click any of them." }
   ];
   const LABS = [["flatland", "Flatland"], ["field", "Field Ocean"], ["clocks", "Clock Lab"], ["river", "River"], ["films", "Two Films"], ["sure", "How sure are we?"]];
   const TOTAL = ["atlas", "bench", "flatland", "field", "clocks", "river", "films", "sure"];
@@ -62,14 +63,28 @@
         <h1>Why does our universe have exactly one time dimension?</h1>
         <p class="lede">Nobody has a settled answer. Chronoscope is a place to find out why — and to explore the other places where physics' account of time doesn't add up: what physicists have tried, which ideas survived, and how to tell solid science from speculation. Every simulation runs the real equations.</p>
         ${lastName && t === null ? `<a class="continue" href="${last}">Continue where you left off: <b>${lastName}</b> →</a>` : ""}
-        <div class="doors">
-          <div class="door d-tour">
-            <div class="eyebrow">Start here</div>
-            <h2>▶ Take the tour</h2>
-            <p>${TOUR.length} stops, about 20 minutes. From <i>"Do clocks agree?"</i> to <i>"Is one time dimension a law of nature?"</i></p>
-            <button class="btn primary" data-go-tour="${t !== null ? t : 0}">${t !== null ? `Resume at stop ${t + 1}` : done ? "Take it again" : "Start the tour"}</button>
-            ${done && t === null ? `<span class="meta">✓ Completed</span>` : ""}
+        <section class="tourhero">
+          <div class="th-head">
+            <div>
+              <div class="eyebrow">Start here · the guided tour</div>
+              <h2>Seven questions, about 20 minutes</h2>
+              <p>Each stop asks one question, lets you try it for yourself, then hands you the next. No physics background needed.</p>
+            </div>
+            <div class="th-go">
+              <button class="btn primary big" data-go-tour="${t !== null ? t : 0}">${t !== null ? `▶ Resume at stop ${t + 1}` : done ? "▶ Take it again" : "▶ Start the tour"}</button>
+              ${done && t === null ? `<span class="meta">✓ You've completed the tour</span>` : ""}
+            </div>
           </div>
+          <ol class="itinerary">${TOUR.map((s, i) => {
+            const state = done && t === null ? "done" : t !== null && i < t ? "done" : t === i ? "here" : "";
+            return `<li class="${state}"><button data-go-tour="${i}" title="Go to stop ${i + 1}">
+              <span class="it-dot">${state === "done" ? "✓" : i + 1}</span>
+              <span class="it-q">${s.q}</span>
+              <span class="it-see">${s.see}</span>
+              <span class="it-where">${s.where}</span></button></li>`;
+          }).join("")}</ol>
+        </section>
+        <div class="doors">
           <a class="door d-map" href="#atlas">
             <div class="eyebrow">Explore</div>
             <h2>🗺 The map of holes</h2>

@@ -32,11 +32,13 @@ Tier pills (Mainstream / Frontier / ◌ Exploratory / Lens) sit beside the tags.
 - **Learn**: calm by default — Atlas idea names only on hover/select (`.mode-learn`), camp filters only, every lab aside ends with a **Next question** card linking onward. Never show exploratory content.
 - **Lab**: dense and raw — all labels, tag filters, hypothesis tools, exploratory overlays. The switch shows Lab with the dashed exploratory style.
 - Every view is a URL (`Chrono.nav`, D-024). Link between views with plain `href="#view"`.
-- **Home** is the landing view; the **tour bar** sits above the stage while touring and hides next-question cards (the tour owns the path).
+- **Flatland**: chapter bar above the stage in three acts, ★ = 4D chapters; contents card on first visit (D-028).
+- **Home** is the landing view, with the tour as its hero and a 7-stop itinerary; the **tour bar** sits above the stage while touring and hides next-question cards (the tour owns the path).
 - **Predict first** cards (amber) sit under the lab title and hold back the explanation until a guess or skip.
 - **Glossary**: dotted underline, first use per panel only; never inside headings, buttons, tags or links.
 
 ## Layout
+- **Small screens (D-029):** one column below 900 px portrait — stage first, explanation below. Two-pane canvases use `split()` (flatland.js) or a `tall` check (labs.js): side by side when wide, stacked when tall. New labs must do the same.
 - Desktop-first, 1280–1920px. Min supported 1024px.
 - Panel 1: grid on the left (~55%), live-sim + explainer side panel on the right.
 - Explainers: one-line claim → two-sentence explanation → "Go deeper" expander.

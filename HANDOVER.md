@@ -27,7 +27,7 @@ Every item carries a tier:
 ## Suggested before publishing
 - [ ] Teacher-facing notes per lab (age level, suggested questions). Each lab now opens with a Predict-first question, and the 7-stop tour gives a ready lesson sequence; "How sure are we?" includes a classroom prompt.
 - [ ] Light theme to match the Space School site (currently dark only).
-- [ ] Mobile/tablet layout (currently desktop-first, 1024px+).
+- [x] Mobile/tablet layout (D-029). Atlas map scrolls sideways on phones; best on tablet/desktop.
 - [ ] Verify remaining ☐ citations in `sources.md`.
 - [x] Licence: code MIT (`LICENSE`), documents CC BY 4.0 (`LICENSE-CONTENT`); Flatland text public domain.
 - [ ] Keyboard access to Atlas nodes (currently mouse-only).

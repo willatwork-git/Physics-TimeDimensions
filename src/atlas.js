@@ -62,7 +62,7 @@
   /* ---------- atlas (SVG) ---------- */
   function renderAtlas() {
     const host = $("#atlas");
-    host.innerHTML = "";
+    host.innerHTML = `<div class="atlas-hint">The map is wide — swipe sideways to explore it, or tap a hole in the list below.</div>`;
     const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: "xMidYMid meet" }, host);
     const defs = el("defs", {}, svg);
     const glow = el("filter", { id: "glow", x: "-100%", y: "-100%", width: "300%", height: "300%" }, defs);

@@ -30,7 +30,7 @@ Delivery builds are named by date/content below; spec.md "Build order" numbers t
 ## Space School readiness
 - [ ] Teacher notes per lab
 - [ ] Light theme
-- [ ] Mobile/tablet layout
+- [x] Mobile/tablet layout (D-029)
 - [ ] Keyboard access to Atlas nodes (currently mouse-only)
 
 ## Next — spec Build order step 1: Boot a Universe entrance

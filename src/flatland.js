@@ -151,6 +151,15 @@
     }
   }
 
+  /* Two-pane layout: side by side on wide screens, stacked (A on top) on tall ones such as phones.
+     frac = pane A's share of the width (or height when stacked). */
+  function split(frac) {
+    const pad = 16;
+    if (H <= W * 1.05) { const aw = Math.floor((W - pad * 3) * frac); return { stacked: false, A: { x: pad, y: pad, w: aw, h: H - pad * 2 }, B: { x: pad * 2 + aw, y: pad, w: W - pad * 3 - aw, h: H - pad * 2 } }; }
+    const ah = Math.floor((H - pad * 3) * Math.max(frac, 0.55));
+    return { stacked: true, A: { x: pad, y: pad, w: W - pad * 2, h: ah }, B: { x: pad, y: pad * 2 + ah, w: W - pad * 2, h: H - pad * 3 - ah } };
+  }
+
   /* ---------- chapters ---------- */
   const CH = [];
 
@@ -207,12 +216,11 @@
       return [{ pts: regular(st.sphereXY.x, st.sphereXY.y, r, 40), color: C.accent, fill: "rgba(124,196,255,0.25)" }];
     },
     draw() {
-      const pad = 16, leftW = Math.floor((W - pad * 3) * 0.55), rightW = W - pad * 3 - leftW;
-      const stripH = 60;
-      panel(pad, pad, leftW, H - pad * 2, "Our view — 3D");
-      ctx.save(); ctx.beginPath(); ctx.rect(pad, pad, leftW, H - pad * 2); ctx.clip();
-      const CX = pad + leftW / 2, CY = pad + (H - pad * 2) * 0.58, s = Math.min(leftW, H - pad * 2) / 34;
-      this.box3d = [pad, pad, leftW, H - pad * 2];
+      const { A, B } = split(0.55), stripH = 60;
+      panel(A.x, A.y, A.w, A.h, "Our view — 3D");
+      ctx.save(); ctx.beginPath(); ctx.rect(A.x, A.y, A.w, A.h); ctx.clip();
+      const CX = A.x + A.w / 2, CY = A.y + A.h * 0.58, s = Math.min(A.w, A.h) / 34;
+      this.box3d = [A.x, A.y, A.w, A.h];
       const R = st.sphereR, z0 = st.sphereZ, sx = st.sphereXY.x, sy = st.sphereXY.y;
       const N = 36, slices = [];
       for (let i = 0; i <= N; i++) { const z = -R + 2 * R * i / N; slices.push(z); }
@@ -230,15 +238,15 @@
         ellipseAt(sx, sy, 0, r, CX, CY, s, null, C.text, 2.2);
       }
       ctx.restore();
-      label("FLATLAND (THE PLANE)", pad + 14, pad + (H - pad * 2) - 14, C.muted, 10);
+      label("FLATLAND (THE PLANE)", A.x + 14, A.y + A.h - 14, C.muted, 10);
 
-      const rx = pad * 2 + leftW, mapH = H - pad * 2 - stripH - 70;
-      panel(rx, pad, rightW, mapH + 30, "Flatland from above");
-      topView(rx, pad + 30, rightW, mapH, this.slice());
-      label("WHAT A SQUARE SEES", rx, pad + mapH + 56, C.accent, 10);
-      eyeStrip(rx, pad + mapH + 64, rightW, stripH, this.slice());
+      const rx = B.x, rightW = B.w, top = B.y, mapH = B.h - stripH - 70;
+      panel(rx, top, rightW, mapH + 30, "Flatland from above");
+      topView(rx, top + 30, rightW, mapH, this.slice());
+      label("WHAT A SQUARE SEES", rx, top + mapH + 56, C.accent, 10);
+      eyeStrip(rx, top + mapH + 64, rightW, stripH, this.slice());
       const rr = Math.abs(z0) < R ? Math.sqrt(R * R - z0 * z0) : 0;
-      label(`slice radius √(R² − z²) = ${rr.toFixed(2)}`, rx + rightW, pad + mapH + 56, C.muted, 10, "right");
+      label(`slice radius √(R² − z²) = ${rr.toFixed(2)}`, rx + rightW, top + mapH + 56, C.muted, 10, "right");
     },
     aside: `
       <p>A <b>Sphere</b> from Spaceland visits. It passes through the plane — and to A Square, something impossible happens.</p>
@@ -343,11 +351,11 @@
       const o = $("#o-w"); if (o) { o.textContent = st.w.toFixed(2); $("#c-w").value = Math.round(st.w * 100); }
     },
     draw() {
-      const pad = 16, lw = Math.floor((W - pad * 3) * 0.55), rw = W - pad * 3 - lw, ph = H - pad * 2;
-      panel(pad, pad, lw, ph, "4D space — each flat sheet is a whole 3D space, squashed");
-      this.box3d = [pad, pad, lw, ph];
-      ctx.save(); ctx.beginPath(); ctx.rect(pad, pad, lw, ph); ctx.clip();
-      const CX = pad + lw / 2, CY = pad + ph * 0.6, s = Math.min(lw, ph) / 34, R = 3, c = st.w * 4.5;
+      const { A, B } = split(0.55);
+      panel(A.x, A.y, A.w, A.h, "4D space — each flat sheet is a whole 3D space, squashed");
+      this.box3d = [A.x, A.y, A.w, A.h];
+      ctx.save(); ctx.beginPath(); ctx.rect(A.x, A.y, A.w, A.h); ctx.clip();
+      const CX = A.x + A.w / 2, CY = A.y + A.h * 0.6, s = Math.min(A.w, A.h) / 34, R = 3, c = st.w * 4.5;
       [-4.5, 4.5].forEach(z => { const a = [[-9, -9, z], [9, -9, z], [9, 9, z], [-9, 9, z]].map(p => proj(p, CX, CY, s)); ctx.beginPath(); a.forEach((q, i) => i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1])); ctx.closePath(); ctx.strokeStyle = "rgba(255,255,255,0.06)"; ctx.stroke(); });
       drawStackedSphere(CX, CY, s, 0, 0, c, R, C.pink, () => {
         drawPlane(CX, CY, s, 9, 0.82, false);
@@ -359,12 +367,12 @@
       const pl = proj([9, -9, 0], CX, CY, s); label("w = 0 · our whole 3D world", pl[0] - 6, pl[1] + 18, C.accent, 10, "right");
       ctx.restore();
 
-      panel(pad * 2 + lw, pad, rw, ph, "What we would see — the 3D slice");
-      const r = Math.sqrt(Math.max(0, R * R - c * c)) / R, bx = pad * 2 + lw + rw / 2, by = pad + ph * 0.45, BR = Math.min(rw, ph) * 0.3;
+      panel(B.x, B.y, B.w, B.h, "What we would see — the 3D slice");
+      const r = Math.sqrt(Math.max(0, R * R - c * c)) / R, bx = B.x + B.w / 2, by = B.y + B.h * 0.45, BR = Math.min(B.w, B.h) * 0.3;
       if (r > 0.01) { shadedBall(bx, by, r * BR, C.pink); ctx.strokeStyle = "rgba(227,107,208,0.25)"; ctx.beginPath(); ctx.arc(bx, by, BR, 0, TAU); ctx.setLineDash([4, 5]); ctx.stroke(); ctx.setLineDash([]); }
       else label("nothing — it's 'beside' our space", bx, by, C.muted, 12, "center", "Inter, sans-serif");
-      label(`slice radius = √(R² − w²) = ${(r).toFixed(2)} R`, bx, pad + ph - 60, C.text, 12, "center");
-      label("dashed ring: the hypersphere's full radius R", bx, pad + ph - 38, C.muted, 10, "center");
+      label(`slice radius = √(R² − w²) = ${(r).toFixed(2)} R`, bx, B.y + B.h - 34, C.text, 12, "center");
+      label("dashed ring: the hypersphere's full radius R", bx, B.y + B.h - 14, C.muted, 10, "center");
     },
     aside: `
       <p>Now <b>we</b> are the Flatlanders. On the left, our entire 3D world is squashed into one flat sheet so there's room to draw a fourth direction, <b>w</b>, going up. Every sheet stacked along w is a whole 3D space.</p>
@@ -398,13 +406,13 @@
     // radius of the 3D slice at position s along its axis: x²+y² = (s·sinθ + d)² − s²·cos²θ, one nappe (w ≥ 0)
     rho(s, th, d) { const w = s * Math.sin(th) + d; if (w < 0) return NaN; const q = w * w - s * s * Math.cos(th) * Math.cos(th); return q >= 0 ? Math.sqrt(q) : NaN; },
     draw() {
-      const pad = 16, lw = Math.floor((W - pad * 3) * 0.6), rw = W - pad * 3 - lw, ph = H - pad * 2;
+      const { A, B, stacked } = split(0.6), rw = B.w;
       const th = st.coneTh * Math.PI / 180, d = 2, L = 7, RMAX = 5.5;
       const name = coneShape(st.coneTh), col = { sphere: C.accent, ellipsoid: C.teal, paraboloid: C.amber, hyperboloid: C.orange }[name];
-      panel(pad, pad, lw, ph, `The 3D slice we would see: ${name}`);
-      this.box3d = [pad, pad, lw, ph];
-      ctx.save(); ctx.beginPath(); ctx.rect(pad, pad, lw, ph); ctx.clip();
-      const CX = pad + lw / 2, CY = pad + ph / 2, sc = Math.min(lw, ph) / 18;
+      panel(A.x, A.y, A.w, A.h, `The 3D slice we would see: ${name}`);
+      this.box3d = [A.x, A.y, A.w, A.h];
+      ctx.save(); ctx.beginPath(); ctx.rect(A.x, A.y, A.w, A.h); ctx.clip();
+      const CX = A.x + A.w / 2, CY = A.y + A.h / 2, sc = Math.min(A.w, A.h) / 18;
       const save = [st.yaw, st.pitch]; st.yaw = 0.5 + 0.35 * Math.sin(st.coneYaw); st.pitch = 0.35;
       const P = (s, a, r) => proj([s, r * Math.cos(a), r * Math.sin(a)], CX, CY, sc);
       const S = [];
@@ -414,20 +422,23 @@
       for (let m = 0; m < 12; m++) { const a = TAU * m / 12; ctx.strokeStyle = col; ctx.globalAlpha = 0.8; ctx.beginPath(); let on = false; S.forEach(o => { if (isNaN(o.r)) { on = false; return; } const q = P(o.s, a, o.r); on ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); on = true; }); ctx.stroke(); }
       ctx.globalAlpha = 1; [st.yaw, st.pitch] = save; ctx.restore();
 
-      const rx = pad * 2 + lw, ih = Math.min(rw, (ph - 30) / 2);
-      panel(rx, pad, rw, ih, "Flatland analog: slice a 3D cone");
-      const ox = rx + rw / 2, oy = pad + ih * 0.55, s2 = ih / 16;
-      ctx.strokeStyle = C.line; ctx.beginPath(); ctx.moveTo(rx + 10, oy); ctx.lineTo(rx + rw - 10, oy); ctx.stroke();
+      /* stacked: analog and pattern side by side under the 3D view (tablets) or one above the other (phones) */
+      const side = stacked && B.w >= 520, tight = stacked && !side;
+      const rx = B.x, top = B.y, aw = side ? Math.floor((B.w - 16) / 2) : rw, ih = side ? B.h : tight ? Math.floor((B.h - 12) * 0.55) : Math.min(rw, (B.h - 30) / 2);
+      panel(rx, top, aw, ih, "Flatland analog: slice a 3D cone");
+      const ox = rx + aw / 2, oy = top + ih * 0.55, s2 = Math.min(ih, aw) / 16;
+      ctx.strokeStyle = C.line; ctx.beginPath(); ctx.moveTo(rx + 10, oy); ctx.lineTo(rx + aw - 10, oy); ctx.stroke();
       [1, -1].forEach(sg => { ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.beginPath(); let on = false; S.forEach(o => { if (isNaN(o.r)) { on = false; return; } const x = ox + o.s * s2, y = oy - sg * o.r * s2; on ? ctx.lineTo(x, y) : ctx.moveTo(x, y); on = true; }); ctx.stroke(); });
       ctx.lineWidth = 1;
       const cname = { sphere: "circle", ellipsoid: "ellipse", paraboloid: "parabola", hyperboloid: "hyperbola" }[name];
-      label(`→ a ${cname}`, rx + 12, pad + ih - 12, col, 11);
+      label(`→ a ${cname}`, rx + 12, top + ih - 12, col, 11);
 
-      const ty = pad + ih + 30;
-      panel(rx, ty, rw, ph - ih - 30, "The pattern");
+      const px = side ? rx + aw + 16 : rx, pw = side ? B.w - aw - 16 : rw, ty = side ? top : top + ih + (tight ? 12 : 30);
+      panel(px, ty, pw, side ? B.h : B.h - (ty - top), "The pattern");
       const rows = [["circle", "sphere"], ["ellipse", "ellipsoid"], ["parabola", "paraboloid"], ["hyperbola", "hyperboloid"]];
-      label("3D cone → 2D slice", rx + 16, ty + 46, C.muted, 10); label("4D hypercone → 3D slice", rx + rw - 16, ty + 46, C.muted, 10, "right");
-      rows.forEach(([a, b], i) => { const on = a === cname; label(a, rx + 16, ty + 72 + i * 24, on ? col : C.text, 12); label("→", rx + rw / 2, ty + 72 + i * 24, C.muted, 12, "center"); label(b, rx + rw - 16, ty + 72 + i * 24, on ? col : C.text, 12, "right"); });
+      const r0 = tight ? 38 : 72, dr = tight ? 17 : 24;
+      if (!tight) { label(side ? "3D cone → slice" : "3D cone → 2D slice", px + 16, ty + 46, C.muted, 10); label(side ? "4D → 3D" : "4D hypercone → 3D slice", px + pw - 16, ty + 46, C.muted, 10, "right"); }
+      rows.forEach(([a, b], i) => { const on = a === cname; label(a, px + 16, ty + r0 + i * dr, on ? col : C.text, 12); label("→", px + pw / 2, ty + r0 + i * dr, C.muted, 12, "center"); label(b, px + pw - 16, ty + r0 + i * dr, on ? col : C.text, 12, "right"); });
     },
     aside: `
       <p>A <b>hypercone</b> is a cone one dimension up: a spherical base drawn out to a point along w. Its slices straight across are spheres of changing size.</p>
@@ -502,12 +513,12 @@
     draw() {
       const pad = 16;
       if (st.tessMode === "shadow") return this.drawShadow(pad);
-      const lw = Math.floor((W - pad * 3) * 0.62), rw = W - pad * 3 - lw, ph = H - pad * 2;
+      const { A, B: PB, stacked } = split(0.62), rw = PB.w;
       const n4 = norm(ORIENT[st.orient]), span = dot([1, 1, 1, 1].map((_, i) => Math.sign(n4[i]) || 1), n4) * 0.999, d = st.tessD * span;
       const B = basisFor(n4), V = cubeVerts(4);
-      panel(pad, pad, lw, ph, `3D slice of a tesseract · ${ORIENT_NAME[st.orient]}`);
-      this.box3d = [pad, pad, lw, ph];
-      const CX = pad + lw / 2, CY = pad + ph / 2, sc = Math.min(lw, ph) / 6.2;
+      panel(A.x, A.y, A.w, A.h, `3D slice of a tesseract · ${ORIENT_NAME[st.orient]}`);
+      this.box3d = [A.x, A.y, A.w, A.h];
+      const CX = A.x + A.w / 2, CY = A.y + A.h / 2, sc = Math.min(A.w, A.h) / 6.2;
       const save = [st.yaw, st.pitch]; st.yaw = st.tessYaw; st.pitch = 0.45;
       const faces = [];
       for (let ax = 0; ax < 4; ax++) for (const sg of [-1, 1]) {
@@ -521,14 +532,16 @@
       faces.forEach(f => { ctx.beginPath(); f.Q.forEach((q, i) => i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1])); ctx.closePath(); ctx.fillStyle = shade(f.col, 0.35); ctx.globalAlpha = 0.55; ctx.fill(); ctx.globalAlpha = 1; ctx.strokeStyle = f.col; ctx.lineWidth = 1.6; ctx.stroke(); });
       ctx.lineWidth = 1; [st.yaw, st.pitch] = save;
       if (!faces.length) label("nothing — the tesseract is outside our world", CX, CY, C.muted, 12, "center", "Inter, sans-serif");
-      label(`${faces.length} faces · one from each of the tesseract's 8 cubic cells it cuts`, pad + 14, pad + ph - 14, C.muted, 10);
+      label(`${faces.length} faces · one from each of the tesseract's 8 cubic cells it cuts`, A.x + 14, A.y + A.h - 14, C.muted, 10);
 
       // Flatland analog: slice a cube with a plane, same orientation one dimension down
-      const rx = pad * 2 + lw, ih = Math.min(rw, ph * 0.55);
-      panel(rx, pad, rw, ih, "Flatland analog: a cube through a plane");
+      /* stacked: analog and reading notes side by side under the 3D view (tablets) or one above the other (phones) */
+      const side = stacked && PB.w >= 520, tight = stacked && !side;
+      const rx = PB.x, top = PB.y, aw = side ? Math.floor((PB.w - 16) / 2) : rw, ih = side ? PB.h : tight ? Math.floor((PB.h - 12) * 0.58) : Math.min(rw, PB.h * 0.55);
+      panel(rx, top, aw, ih, "Flatland analog: a cube through a plane");
       const n3 = norm(ORIENT[st.orient].slice(1)), span3 = dot([1, 1, 1].map((_, i) => Math.sign(n3[i]) || 1), n3) * 0.999, B3 = basisFor(n3);
       let P3 = dedupe(edgePts(cubeVerts(3), n3, st.tessD * span3));
-      const ox = rx + rw / 2, oy = pad + ih / 2 + 10, s3 = ih / 7;
+      const ox = rx + aw / 2, oy = top + ih / 2 + 10, s3 = Math.min(ih, aw) / 7;
       if (P3.length >= 3) {
         P3 = P3.map(p => B3.map(b => dot(p, b)));
         const c = [P3.reduce((t, p) => t + p[0], 0) / P3.length, P3.reduce((t, p) => t + p[1], 0) / P3.length];
@@ -536,14 +549,14 @@
         poly(P3, p => [ox + p[0] * s3, oy - p[1] * s3], shade(C.violet, 0.35), C.violet, 2);
       }
       const nm = ["", "", "", "triangle", "square / rectangle", "pentagon", "hexagon"][P3.length] || "";
-      label(`${P3.length >= 3 ? P3.length + " sides: " + nm : "nothing"}`, rx + 12, pad + ih - 12, C.violet, 11);
-      const ty = pad + ih + 16;
-      panel(rx, ty, rw, ph - ih - 16, "Reading it");
+      label(`${P3.length >= 3 ? P3.length + " sides: " + nm : "nothing"}`, rx + 12, top + ih - 12, C.violet, 11);
+      const tx = side ? rx + aw + 16 : rx, ty = side ? top : top + ih + (tight ? 12 : 16);
+      panel(tx, ty, side ? PB.w - aw - 16 : rw, side ? PB.h : PB.h - (ty - top), "Reading it");
       const lines = { cell: ["A cube, unchanging, then gone —", "like a square passing through", "Flatland face-first."],
         face: ["A box that stretches then shrinks —", "the cube's analog is a rectangle", "that widens and narrows."],
         edge: ["Triangular prisms and hexagonal", "shapes — as the cube corner-first", "gives triangles then hexagons."],
         corner: ["Tetrahedron → truncated shapes →", "octahedron → back. A corner", "arrives first, like the cube's triangle."] }[st.orient];
-      lines.forEach((t, i) => label(t, rx + 14, ty + 44 + i * 18, C.text, 12, "left", "Inter, sans-serif"));
+      lines.forEach((t, i) => label(t, tx + 14, ty + (tight ? 38 : 44) + i * (tight ? 16 : 18), C.text, stacked ? 11 : 12, "left", "Inter, sans-serif"));
     },
     drawShadow(pad) {
       panel(pad, pad, W - pad * 2, H - pad * 2, "A tesseract's shadow in 3D, drawn on your 2D screen");
@@ -613,11 +626,11 @@
       return out;
     },
     draw() {
-      const pad = 16, lw = Math.floor((W - pad * 3) * 0.6), rw = W - pad * 3 - lw;
-      panel(pad, pad, lw, H - pad * 2, "Flatland's whole history as one 3D block (up = time)");
-      this.box3d = [pad, pad, lw, H - pad * 2];
-      ctx.save(); ctx.beginPath(); ctx.rect(pad, pad, lw, H - pad * 2); ctx.clip();
-      const CX = pad + lw / 2, CY = pad + (H - pad * 2) * 0.74, s = Math.min(lw, H - pad * 2) / 40, TZ = 16;
+      const { A, B } = split(0.6);
+      panel(A.x, A.y, A.w, A.h, "Flatland's whole history as one 3D block (up = time)");
+      this.box3d = [A.x, A.y, A.w, A.h];
+      ctx.save(); ctx.beginPath(); ctx.rect(A.x, A.y, A.w, A.h); ctx.clip();
+      const CX = A.x + A.w / 2, CY = A.y + A.h * 0.74, s = Math.min(A.w, A.h) / 40, TZ = 16;
       const box = (z, a) => { const c = [[-9, -9, z], [9, -9, z], [9, 9, z], [-9, 9, z]].map(p => proj(p, CX, CY, s)); ctx.beginPath(); c.forEach((q, i) => i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1])); ctx.closePath(); return c; };
       ctx.strokeStyle = C.line; box(0); ctx.stroke(); box(TZ); ctx.stroke();
       [[-9, -9], [9, -9], [9, 9], [-9, 9]].forEach(([x, y]) => { const a = proj([x, y, 0], CX, CY, s), b = proj([x, y, TZ], CX, CY, s); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); });
@@ -640,12 +653,12 @@
       const nl = proj([cxy[0], cxy[1], nowZ], CX, CY, s); label("NOW", nl[0] - 20, nl[1] + 4, C.accent, 11, "right");
       ctx.restore();
 
-      const rx = pad * 2 + lw;
-      panel(rx, pad, rw, rw + 30, "What Flatlanders experience at this 'now'");
-      const sc = rw / 22, ox = rx + rw / 2, oy = pad + 30 + rw / 2;
+      const rx = B.x, rw = B.w, sz = Math.max(60, Math.min(B.w, B.h - 60));
+      panel(rx, B.y, rw, sz + 30, "What Flatlanders experience at this 'now'");
+      const sc = sz / 22, ox = rx + rw / 2, oy = B.y + 30 + sz / 2;
       this.history(st.now).forEach(o => { ctx.beginPath(); ctx.arc(ox + o.x * sc, oy - o.y * sc, o.r * sc, 0, TAU); ctx.fillStyle = shade(o.color, 0.35); ctx.fill(); ctx.strokeStyle = o.color; ctx.lineWidth = 2; ctx.stroke(); });
       ctx.lineWidth = 1;
-      label("blue: A Square moving · teal: a hexagon · pink: the Sphere's visit", rx, pad + rw + 52, C.muted, 10);
+      label("blue: A Square moving · teal: a hexagon · pink: the Sphere's visit", rx, B.y + sz + 52, C.muted, 10);
     },
     aside: `
       <p>Stack every moment of Flatland's history on top of each other and you get a <b>3D block</b>. We can see it whole — past and future at once.</p>
@@ -656,23 +669,69 @@
   });
 
   /* ---------- aside + controls ---------- */
+  /* ---------- chapter bar + contents ----------
+     Seven chapters in three acts. The bar above the stage is the chapter navigation; the contents card
+     opens over the stage on a first visit (or from the bar) and lets visitors jump to the highlights. */
+  const ACTS = [
+    { name: "In Flatland", chs: [0, 1] },
+    { name: "Up a dimension", chs: [2, 3, 4, 5] },
+    { name: "Time", chs: [6] }
+  ];
+  const SHORT = ["Meet A Square", "Sphere visits", "Building up", "A 4D visitor", "Hypercone", "Tesseract", "Time as a slice"];
+  const HOOK = [
+    "See a whole world as its inhabitant does: a single line.",
+    "A 3D visitor, seen one slice at a time — a point that grows, shrinks and vanishes.",
+    "Point, line, square, cube … tesseract. Predict the corners before you count them.",
+    "Now we are the Flatlanders: a 4D ball passes through our world.",
+    "Slice a 4D cone at a tilt: spheres, ellipsoids, paraboloids, hyperboloids.",
+    "A 4D cube passing through our space — and its shadow turning inside out.",
+    "All of Flatland's history as one block. 'Now' is just a slice."
+  ];
+  const STAR = new Set([3, 4, 5]);
+  const actOf = i => ACTS.find(a => a.chs.includes(i));
+  let introOpen = false;
+  const seenCh = i => Chrono.progress.seen("flatland/" + (i + 1));
+
+  function renderSteps() {
+    $("#fl-steps").innerHTML = ACTS.map(a => `<div class="flact"><span class="flact-name">${a.name}</span><div class="flact-chs">${a.chs.map(i => `
+      <button class="flstep${i === chapter && !introOpen ? " on" : ""}${seenCh(i) ? " seen" : ""}" data-ch="${i}" title="${HOOK[i]}">
+        <span class="n">${i + 1}</span>${STAR.has(i) ? '<span class="star" aria-label="highlight">★</span>' : ""}${SHORT[i]}</button>`).join("")}</div></div>`).join("")
+      ;
+    document.querySelectorAll("#fl-steps [data-ch]").forEach(b => b.onclick = () => { introOpen = false; go(+b.dataset.ch); });
+  }
+  function renderIntro() {
+    const box = $("#fl-intro");
+    box.style.display = introOpen ? "flex" : "none";
+    if (!introOpen) return;
+    box.innerHTML = `<div class="flintro">
+      <div class="eyebrow">Flatland · a lens on dimensions</div>
+      <h2>Why are extra dimensions so hard to picture?</h2>
+      <p>In 1884 Edwin Abbott imagined a flat world whose people can't picture "up". Seven short, hands-on chapters use his trick — reason one dimension down, then climb back up — to picture a fourth dimension, and then to see time as a slice.</p>
+      <div class="flacts">${ACTS.map(a => `<div><div class="eyebrow">${a.name}</div>${a.chs.map(i => `
+        <button class="flpick${STAR.has(i) ? " star" : ""}" data-pick="${i}"><b>${i + 1}. ${CH[i].title}${STAR.has(i) ? " ★" : ""}${seenCh(i) ? ' <i class="seen-mark">✓</i>' : ""}</b><span>${HOOK[i]}</span></button>`).join("")}</div>`).join("")}</div>
+      <div class="row" style="justify-content:flex-start;gap:10px">
+        <button class="btn primary" data-pick="0">Start at the beginning →</button>
+        <button class="btn" data-pick="3">★ Jump to the highlights: a 4D visitor</button>
+        <span class="meta">★ = the chapters where the fourth dimension appears</span>
+      </div></div>`;
+    box.querySelectorAll("[data-pick]").forEach(b => b.onclick = () => { introOpen = false; go(+b.dataset.pick); if (+b.dataset.pick === chapter) { renderSteps(); renderIntro(); } });
+  }
+
   function renderAside() {
     const ch = CH[chapter];
-    const nav = CH.map((c, i) => `<button class="${i === chapter ? "on" : ""}${Chrono.progress.seen("flatland/" + (i + 1)) ? " seen" : ""}" data-ch="${i}">${i + 1}. ${c.title}</button>`).join("");
     const body = ch.asideFn ? ch.asideFn() : ch.aside;
     $("#aside").innerHTML = `
-      <div class="eyebrow">Flatland · a lens on dimensions</div>
+      <div class="flhead"><span class="eyebrow">Flatland · ${chapter + 1} of ${CH.length} · ${actOf(chapter).name}</span><button class="linkish" data-contents>☰ All chapters</button></div>
       <h2>${ch.title}</h2>
-      <span class="tag ANALOGY">Analogy</span> <span class="tag ESTABLISHED">Established geometry</span>
-      <div class="chapters">${nav}</div>
+      <div class="pillrow"><span class="tag ANALOGY">Analogy</span> <span class="tag ESTABLISHED">Established geometry</span></div>
       ${body}
       <div class="row" style="justify-content:space-between">
         <button class="btn" data-step="-1" ${chapter === 0 ? "disabled" : ""}>← Previous</button>
-        <button class="btn primary" data-step="1" ${chapter === CH.length - 1 ? "disabled" : ""}>Next →</button>
+        <button class="btn primary" data-step="1" ${chapter === CH.length - 1 ? "disabled" : ""}>${chapter < CH.length - 1 ? `Next: ${SHORT[chapter + 1]} →` : "Next →"}</button>
       </div>
       <p class="caveat">Sources: E. A. Abbott, <i>Flatland</i> (1884, public domain) · C. Sagan, <i>Cosmos</i> ep. 10 (1980) · TED-Ed, "Exploring other dimensions" (Rosenthal &amp; Zaidan) · 4D visualisation video (YouTube): <a href="https://www.youtube.com/watch?v=4URVJ3D8e8k" target="_blank">youtube.com/watch?v=4URVJ3D8e8k</a>.</p>`;
-    document.querySelectorAll("[data-ch]").forEach(b => b.onclick = () => go(+b.dataset.ch));
-    document.querySelectorAll("[data-step]").forEach(b => b.onclick = () => go(chapter + +b.dataset.step));
+    document.querySelectorAll("#aside [data-step]").forEach(b => b.onclick = () => go(chapter + +b.dataset.step));
+    $("#aside [data-contents]").onclick = () => { introOpen = !introOpen; renderSteps(); renderIntro(); };
     document.querySelectorAll("[data-rev]").forEach(b => b.onclick = () => { st.reveal[b.dataset.rev] = true; renderAside(); });
     document.querySelectorAll("#aside [data-hole]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goHole(a.dataset.hole); });
     document.querySelectorAll("#aside [data-view-link]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goView(a.dataset.viewLink); });
@@ -708,7 +767,7 @@
     canvas.addEventListener("pointerdown", e => {
       const [x, y] = pointer(e), ch = CH[chapter];
       if (chapter === 0 && ch.box) drag = "square";
-      else if (ch.box3d && x >= ch.box3d[0] && x <= ch.box3d[0] + ch.box3d[2]) drag = { yaw: st.yaw, pitch: st.pitch, x, y };
+      else if (ch.box3d && x >= ch.box3d[0] && x <= ch.box3d[0] + ch.box3d[2] && y >= ch.box3d[1] && y <= ch.box3d[1] + ch.box3d[3]) drag = { yaw: st.yaw, pitch: st.pitch, x, y };
       if (drag) { canvas.setPointerCapture(e.pointerId); move(e); }
     });
     const move = e => {
@@ -729,8 +788,10 @@
 
   F.show = function () {
     if (!canvas) initCanvas();
-    active = true; resize(); Chrono.motion.reset(); buildControls(); renderAside();
-    Chrono.progress.visit("flatland/" + (chapter + 1));
+    const firstVisit = !CH.some((c, i) => seenCh(i));
+    introOpen = firstVisit && !/^#flatland\/\d/.test(location.hash);
+    active = true; resize(); Chrono.motion.reset(); buildControls(); renderAside(); renderSteps(); renderIntro();
+    if (!introOpen) Chrono.progress.visit("flatland/" + (chapter + 1));
     cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(frame);
   };
   F.hide = function () { active = false; cancelAnimationFrame(raf); };

@@ -154,7 +154,7 @@
     sources: "Einstein (1905, 1915); Hafele–Keating (1971); GPS relativistic corrections (Ashby, Living Reviews in Relativity, 2003)."
   });
   function drawLightClock(g) {
-    const { W, H } = g, pad = 16, pw = (W - pad * 3) / 2, ph = H - pad * 2 - 120;
+    const { W, H } = g, pad = 16, narrow = W < 640, foot = narrow ? 140 : 120, pw = (W - pad * 3) / 2, ph = H - pad * 2 - foot;
     const Lpx = Math.min(ph * 0.55, 260), gamma = 1 / Math.sqrt(1 - CL.v * CL.v), vert = Math.sqrt(1 - CL.v * CL.v);
     [0, 1].forEach(k => {
       const x0 = pad + k * (pw + pad), y0 = pad;
@@ -170,16 +170,19 @@
       const ticks = Math.floor(t / 2);
       g.text(`${ticks} ticks`, x0 + pw / 2, y0 + ph - 18, C.text, 16, "center");
     });
-    const by = H - pad - 100;
-    g.text(`γ = ${gamma.toFixed(3)}  —  the moving clock ticks ${gamma.toFixed(2)}× slower`, pad, by + 10, C.text, 14);
-    g.label("MOTION THROUGH SPACE", pad, by + 38, C.muted, 10); g.bar(pad, by + 44, 320, 8, CL.v, C.amber);
-    g.label("MOTION THROUGH TIME (clock rate)", pad, by + 70, C.muted, 10); g.bar(pad, by + 76, 320, 8, vert, C.teal);
-    g.label("Every clock shares one budget: faster through space means slower through time.", pad + 340, by + 60, C.muted, 11);
+    const by = H - pad - foot + 20, bw = Math.min(320, W - pad * 2);
+    g.text(`γ = ${gamma.toFixed(3)}  —  ${narrow ? "" : "the moving clock "}ticks ${gamma.toFixed(2)}× slower`, pad, by + 10, C.text, 14);
+    g.label("MOTION THROUGH SPACE", pad, by + 38, C.muted, 10); g.bar(pad, by + 44, bw, 8, CL.v, C.amber);
+    g.label("MOTION THROUGH TIME (clock rate)", pad, by + 70, C.muted, 10); g.bar(pad, by + 76, bw, 8, vert, C.teal);
+    if (narrow) g.label("One budget: faster through space = slower through time.", pad, by + 104, C.muted, 10);
+    else g.label("Every clock shares one budget: faster through space means slower through time.", pad + 340, by + 60, C.muted, 11);
   }
   function drawGPS(g) {
-    const { W, H, ctx } = g, pad = 16, lw = Math.floor((W - pad * 3) * 0.55), rw = W - pad * 3 - lw;
-    g.panel(pad, pad, lw, H - pad * 2, "Earth and your clock's orbit (to scale)");
-    const cx = pad + lw / 2, cy = pad + (H - pad * 2) / 2, maxR = Math.min(lw, H - pad * 2) / 2 - 30, s = maxR / (RE / 1000 + 40000);
+    const { W, H, ctx } = g, pad = 16, tall = H > W * 1.05, lw = Math.floor((W - pad * 3) * 0.55);
+    const L = tall ? { x: pad, y: pad, w: W - pad * 2, h: Math.floor((H - pad * 3) * 0.5) } : { x: pad, y: pad, w: lw, h: H - pad * 2 };
+    const Rp = tall ? { x: pad, y: pad * 2 + L.h, w: W - pad * 2, h: H - pad * 3 - L.h } : { x: pad * 2 + lw, y: pad, w: W - pad * 3 - lw, h: H - pad * 2 };
+    g.panel(L.x, L.y, L.w, L.h, "Earth and your clock's orbit (to scale)");
+    const cx = L.x + L.w / 2, cy = L.y + L.h / 2 + 8, maxR = Math.min(L.w, L.h) / 2 - 24, s = maxR / (RE / 1000 + 40000);
     const er = RE / 1000 * s, orr = (RE / 1000 + CL.alt) * s;
     const grd = ctx.createRadialGradient(cx - er * .3, cy - er * .3, er * .1, cx, cy, er); grd.addColorStop(0, "#5fa8e8"); grd.addColorStop(1, "#123a5c");
     ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(cx, cy, er, 0, TAU); ctx.fill();
@@ -187,12 +190,12 @@
     const o = orbitShift(CL.alt), ang = CL.alt < 100 ? -Math.PI / 2 : CL.T * 0.4 * Math.sqrt(26571 / (RE / 1000 + CL.alt)) ** 3;
     g.ring(cx, cy, orr, C.accent, 1);
     g.dot(cx + orr * Math.cos(ang), cy + orr * Math.sin(ang), 6, C.amber);
-    const x0 = pad * 2 + lw, y0 = pad;
-    g.panel(x0, y0, rw, H - pad * 2, "Clock gain per day vs a clock on the ground");
+    const x0 = Rp.x, y0 = Rp.y, rw = Rp.w, gap = tall ? 52 : 74, top = tall ? 50 : 70;
+    g.panel(x0, y0, rw, Rp.h, "Clock gain per day vs a clock on the ground");
     const rows = [["Gravity (weaker up high → faster)", o.grav, C.teal], ["Speed (moving → slower)", o.vel, C.orange], ["Net", o.net, C.amber]];
     const maxv = 60, bx = x0 + 20, bw = rw - 40, mid = bx + bw / 2;
     rows.forEach(([name, val, col], i) => {
-      const y = y0 + 70 + i * 74;
+      const y = y0 + top + i * gap;
       g.text(name, bx, y, C.text, 13);
       g.line(mid, y + 12, mid, y + 34, C.muted);
       const w = Math.max(-1, Math.min(1, val / maxv)) * bw / 2;
@@ -200,8 +203,8 @@
       g.label(`${val >= 0 ? "+" : ""}${val.toFixed(2)} µs/day`, bx + bw, y, col, 12, "right");
     });
     const km = Math.abs(o.net) * 1e-6 * c / 1000;
-    g.text(CL.alt < 100 ? "On the ground: no difference (by definition)." : `Uncorrected, a navigation system would drift ~${km.toFixed(1)} km per day.`, bx, y0 + 70 + 3 * 74 + 10, C.muted, 12);
-    if (CL.alt >= 100) g.text(`Orbital speed: ${(o.v / 1000).toFixed(2)} km/s`, bx, y0 + 70 + 3 * 74 + 32, C.muted, 12);
+    g.text(CL.alt < 100 ? "On the ground: no difference (by definition)." : `Uncorrected, ${tall ? "positions" : "a navigation system"} would drift ~${km.toFixed(1)} km per day.`, bx, y0 + top + 3 * gap + 10, C.muted, 12);
+    if (CL.alt >= 100) g.text(`Orbital speed: ${(o.v / 1000).toFixed(2)} km/s`, bx, y0 + top + 3 * gap + 32, C.muted, 12);
   }
 
   /* =====================================================================
@@ -261,7 +264,7 @@
         const txt = r > 1 ? `Here: flow ${Math.sqrt(1 / r).toFixed(2)} c · a clock held still ticks at ${(Math.sqrt(1 - 1 / r) * 100).toFixed(0)}% of a distant clock's rate` : "Inside the horizon: the flow outruns light — nothing can stay still";
         g.text(txt, pad + 14, H - pad - 14, C.text, 12);
       }
-      g.label("Sideways light-bending simplified; radial motion exact.", W - pad - 14, H - pad - 14, C.muted, 10, "right");
+      g.label("Sideways light-bending simplified; radial motion exact.", W - pad - 14, W < 640 ? pad + 40 : H - pad - 14, C.muted, 10, "right");
       if (RV.eddies && Chrono.shows("exploratory")) { ctx.fillStyle = g.alpha(C.hyp, 0.12); ctx.fillRect(pad + 1, pad + 26, W - pad * 2 - 2, 26); g.label("◌ EXPLORATORY OVERLAY — this project's turbulent-time idea. Illustrative only: no equations, not mainstream physics.", pad + 12, pad + 43, C.hyp, 11); }
     },
     aside: () => `
@@ -320,14 +323,14 @@
       };
       if (!TF.reveal) {
         plot(pad, pad, W - pad * 2, topH, "The starting frame (t = 0) — both films", 0, 0);
-        g.text("Film A (blue) and Film B (pink) have identical shape, identical rate of change in t, and identical rate of change in s here.", pad + 20, pad + topH - 16, C.muted, 12);
+        g.text(W < 760 ? "Same shape and rates of change in t and s." : "Film A (blue) and Film B (pink) have identical shape, identical rate of change in t, and identical rate of change in s here.", pad + 20, pad + topH - 16, C.muted, 12);
         plot(pad, pad * 2 + topH, W - pad * 2, topH, `The prediction at t = ${TF.t.toFixed(2)} (still at s = 0)`, TF.t, 0);
         let d = 0; for (let i = 0; i <= 120; i++) { const x = i / 120 * TAU; d = Math.max(d, Math.abs(uB(x, TF.t, 0) - uA(x, TF.t))); }
         g.text(`Largest difference between the films: ${d.toFixed(3)}`, pad + 20, H - pad - 16, d > 0.05 ? C.pink : C.muted, 13);
       } else {
-        const hw = (W - pad * 3) / 2, hh = H - pad * 2;
+        const tall = H > W * 1.05, hw = tall ? W - pad * 2 : (W - pad * 3) / 2, hh = tall ? (H - pad * 3) / 2 : H - pad * 2;
         [["Film A — every s looks the same", (x, s) => uA(x, TF.t)], ["Film B — it was different away from s = 0 all along", (x, s) => uB(x, TF.t, s)]].forEach(([title, f], k) => {
-          const x0 = pad + k * (hw + pad), y0 = pad; g.panel(x0, y0, hw, hh, `${title} (t = ${TF.t.toFixed(2)})`);
+          const x0 = tall ? pad : pad + k * (hw + pad), y0 = tall ? pad + k * (hh + pad) : pad; g.panel(x0, y0, hw, hh, `${title} (t = ${TF.t.toFixed(2)})`);
           const gw = 160, gh = 110, img = ctx.createImageData(gw, gh);
           for (let j = 0; j < gh; j++) for (let i = 0; i < gw; i++) {
             const x = i / gw * TAU, s = (j / (gh - 1) - 0.5) * TAU, v = Math.max(-1, Math.min(1, f(x, s) / 1.3)), o = (j * gw + i) * 4;

@@ -252,3 +252,117 @@ table.bench .why { font-size: 12px; color: var(--muted); margin-top: 3px; line-h
 .yours { display: flex; align-items: center; gap: 6px; margin-top: 5px; font-size: 11px; color: var(--muted); }
 .myscore { font-size: 11px; background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 2px 4px; }
 sup.mine { font-size: 10px; margin-left: 2px; }
+
+/* ---------- Flatland: chapter bar (three acts) and contents card ---------- */
+#fl-steps { display: flex; align-items: flex-end; gap: 10px; padding: 8px 12px 8px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.flact { display: flex; flex-direction: column; gap: 4px; }
+.flact-name { font: 10px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.flact-chs { display: flex; gap: 3px; }
+.flstep { display: flex; align-items: center; gap: 5px; padding: 4px 9px 4px 5px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 12px; cursor: pointer; white-space: nowrap; }
+.flstep .n { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--panel2); color: var(--muted); font: 11px var(--mono); }
+.flstep .star { color: var(--t-con); font-size: 11px; }
+.flstep:hover { border-color: var(--accent); }
+.flstep.seen .n { background: rgba(79,209,165,.18); color: var(--t-est); }
+.flstep.on { border-color: var(--accent); background: rgba(124,196,255,.14); }
+.flstep.on .n { background: var(--accent); color: var(--bg); }
+.flhead { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.flhead .linkish { color: var(--accent); white-space: nowrap; }
+#fl-intro { display: none; position: absolute; inset: 0; z-index: 5; align-items: flex-start; justify-content: center; overflow: auto; padding: 28px 20px; background: rgba(11,13,18,.9); backdrop-filter: blur(3px); }
+.flintro { max-width: 980px; }
+.flintro h2 { font-size: 28px; margin: 6px 0 10px; }
+.flintro > p { font-size: 16px; line-height: 1.55; max-width: 760px; }
+.flacts { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 16px; margin: 20px 0; }
+.flacts > div { display: flex; flex-direction: column; gap: 8px; }
+.flacts > div:nth-child(2) { display: grid; grid-template-columns: 1fr 1fr; align-content: start; }
+.flacts > div:nth-child(2) > .eyebrow { grid-column: 1 / -1; }
+.flpick { text-align: left; display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--text); cursor: pointer; font-size: 14px; }
+.flpick i.seen-mark { font-style: normal; }
+.flpick span { color: var(--muted); font-size: 13px; line-height: 1.45; }
+.flpick.star { border-color: rgba(242,201,76,.55); background: linear-gradient(160deg, rgba(242,201,76,.08), var(--panel) 60%); }
+.flpick:hover { border-color: var(--accent); }
+.seen-mark { color: var(--t-est); }
+
+/* ---------- Home: the tour as hero, with its itinerary ---------- */
+.tourhero { margin: 22px 0 8px; padding: 20px 20px 16px; border: 1px solid var(--accent); border-radius: 14px; background: linear-gradient(160deg, rgba(124,196,255,.10), var(--panel) 55%); }
+.th-head { display: flex; gap: 20px; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; }
+.th-head h2 { margin: 4px 0 6px; font-size: 22px; }
+.th-head p { margin: 0; color: var(--muted); max-width: 560px; }
+.th-go { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.btn.big { font-size: 15px; padding: 9px 18px; background: var(--accent); color: var(--bg); }
+.itinerary { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; position: relative; }
+.itinerary li button { width: 100%; height: 100%; display: flex; flex-direction: column; gap: 6px; text-align: left; padding: 10px 9px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--text); cursor: pointer; }
+.itinerary li button:hover { border-color: var(--accent); }
+.it-dot { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--accent); color: var(--accent); font: 12px var(--mono); }
+.it-q { font-weight: 600; font-size: 13px; line-height: 1.3; }
+.it-see { font-size: 12px; color: var(--muted); line-height: 1.4; }
+.it-where { margin-top: auto; font: 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.itinerary li.done .it-dot { background: rgba(79,209,165,.18); border-color: var(--t-est); color: var(--t-est); }
+.itinerary li.here button { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.itinerary li.here .it-dot { background: var(--accent); color: var(--bg); }
+
+/* ======================================================================
+   Small screens (D-029)
+   Portrait phones and tablets: the page scrolls as one column — header, then the stage (simulation
+   first), then the explanation. Short landscape phones keep side-by-side with a narrower panel.
+   ====================================================================== */
+#fl-canvas { touch-action: none; }   /* Flatland drags (rotate, move A Square) must not scroll the page */
+
+@media (max-width: 900px) and (orientation: portrait), (max-width: 600px) {
+  html, body { height: auto; min-height: 100%; }
+  body { display: block; }
+  header { padding: 8px 12px; gap: 8px; row-gap: 6px; }
+  .brand { order: 1; }
+  .hdr-right { order: 2; gap: 8px; }
+  nav { order: 3; flex: 1 1 100%; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding-bottom: 2px; scrollbar-width: none; }
+  nav::-webkit-scrollbar { display: none; }
+  nav, #fl-steps { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+  .navseg { flex-shrink: 0; }
+  .navseg button { white-space: nowrap; }
+  .helpbtn { padding: 5px 10px; }
+  .modesw button { padding: 4px 10px; }
+
+  main { display: flex; flex-direction: column; }
+  #stage { flex: none; }
+  #aside { width: auto; border-left: 0; border-top: 1px solid var(--line); overflow: visible; padding: 18px 16px 40px; }
+
+  /* canvas views get a fixed, generous height; everything else takes its natural height */
+  #lab, #flatland { flex: none; height: min(82vh, 760px); height: min(82svh, 760px); }
+  #doc, #benchview { flex: none; overflow: visible; }
+  #atlas { flex: none; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  #atlas svg { width: 980px; height: auto; max-width: none; }
+  #benchview { overflow-x: auto; padding: 12px; }
+  #benchview table { min-width: 680px; }
+  .toolbar { padding: 8px 12px; }
+
+  #fl-steps { flex-wrap: nowrap; overflow-x: auto; padding: 8px 12px; scrollbar-width: none; }
+  #fl-steps::-webkit-scrollbar { display: none; }
+  .flact { flex-shrink: 0; }
+  .flacts { grid-template-columns: 1fr; }
+  .flacts > div:nth-child(2) { grid-template-columns: 1fr; }
+  #fl-intro { padding: 16px 12px; }
+  .flintro h2 { font-size: 22px; }
+
+  #tourbar { padding: 8px 12px; gap: 8px; }
+  .tb-q { min-width: 0; flex-basis: 100%; order: 2; }
+  .tb-btns { order: 3; flex-wrap: wrap; }
+  .tb-q .meta { display: block; margin: 2px 0 0; }
+
+  .docwrap { padding: 16px 14px 28px; }
+  .home h1 { font-size: 28px; }
+  .home .lede { font-size: 15px; }
+  .th-go { align-items: stretch; width: 100%; }
+  .itinerary { grid-template-columns: 1fr 1fr; }
+  table.orph { display: block; overflow-x: auto; }
+  .helpbox { padding: 20px 16px; }
+}
+/* the Atlas map is wide by nature: say so on small screens */
+.atlas-hint { display: none; }
+@media (max-width: 900px) and (orientation: portrait), (max-width: 600px) {
+  .atlas-hint { display: block; padding: 8px 12px 0; font-size: 12px; color: var(--muted); }
+}
+/* short landscape phones: keep side by side, slimmer panel */
+@media (max-height: 520px) and (orientation: landscape) {
+  header { padding: 6px 12px; }
+  #aside { width: 300px; padding: 14px; }
+  .toolbar { padding: 6px 12px; }
+}

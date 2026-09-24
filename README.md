@@ -39,7 +39,7 @@ Every view has its own link (for example `#atlas/H5` or `#flatland/7`), so you c
 what you're looking at, and the browser's Back button works.
 
 The app opens on a home page: take the **7-stop guided tour** (about 20 minutes), explore the map, or go
-straight to a lab. Press **?** inside the app for the built-in guide. Designed for desktop browsers at 1024 px and wider.
+straight to a lab. Press **?** inside the app for the built-in guide. Works on phones and tablets (the page stacks: simulation first, explanation below); the Atlas map and the 3D Flatland views are at their best on a tablet or desktop.
 
 ## What's inside
 
@@ -55,7 +55,7 @@ straight to a lab. Press **?** inside the app for the built-in guide. Designed f
   time, internal, scale, state) the same questions, to make the gaps visible.
 
 **Labs** — small simulations that run the real equations
-- **Flatland** — seven chapters on why extra dimensions are hard to picture: Abbott's Flatland, sphere
+- **Flatland** — seven chapters in three acts (with a contents page to jump straight to the 4D chapters) on why extra dimensions are hard to picture: Abbott's Flatland, sphere
   and hypersphere slices, hypercone conics, tesseract slices and shadows, and time as a slice.
 - **Field Ocean** — particles as ripples in a field (Klein–Gordon equation). A massless ripple runs at
   light speed; a massive one lags, and its internal clock slows as it speeds up.
