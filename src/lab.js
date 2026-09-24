@@ -37,7 +37,21 @@
     line(x1, y1, x2, y2, color = C.line, w = 1) { ctx.strokeStyle = color; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); ctx.lineWidth = 1; },
     dot(x, y, r, color) { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill(); },
     ring(x, y, r, color, w = 1, dash) { ctx.strokeStyle = color; ctx.lineWidth = w; if (dash) ctx.setLineDash(dash); ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.stroke(); ctx.setLineDash([]); ctx.lineWidth = 1; },
-    bar(x, y, w, h, frac, color, bg = "#171b25") { ctx.fillStyle = bg; ctx.fillRect(x, y, w, h); ctx.fillStyle = color; ctx.fillRect(x, y, w * Math.max(0, Math.min(1, frac)), h); }
+    bar(x, y, w, h, frac, color, bg = "#171b25") { ctx.fillStyle = bg; ctx.fillRect(x, y, w, h); ctx.fillStyle = color; ctx.fillRect(x, y, w * Math.max(0, Math.min(1, frac)), h); },
+    /* Wrapped text for narrow panels; returns the height used. */
+    wrap(txt, x, y, maxW, lh = 15, color = C.muted, size = 11, font = "Inter, system-ui, sans-serif") {
+      ctx.font = `${size}px ${font}`; let line = "", n = 0;
+      txt.split(" ").forEach(w => { const t = line ? line + " " + w : w; if (line && ctx.measureText(t).width > maxW) { G.label(line, x, y + n * lh, color, size, "left", font); n++; line = w; } else line = t; });
+      if (line) { G.label(line, x, y + n * lh, color, size, "left", font); n++; }
+      return n * lh;
+    },
+    /* Two panes: side by side when wide, stacked (A on top) when tall — every two-pane lab uses this (D-029). */
+    split(frac) {
+      const pad = 16, W = G.W, H = G.H;
+      if (H <= W * 1.05) { const aw = Math.floor((W - pad * 3) * frac); return { stacked: false, A: { x: pad, y: pad, w: aw, h: H - pad * 2 }, B: { x: pad * 2 + aw, y: pad, w: W - pad * 3 - aw, h: H - pad * 2 } }; }
+      const ah = Math.floor((H - pad * 3) * Math.max(frac, 0.55));
+      return { stacked: true, A: { x: pad, y: pad, w: W - pad * 2, h: ah }, B: { x: pad, y: pad * 2 + ah, w: W - pad * 2, h: H - pad * 3 - ah } };
+    }
   };
 
   /* ---------- reduced motion ----------
@@ -119,6 +133,7 @@
       ${tier === "exploratory" ? Chrono.expBanner() : ""}
       ${def.predict ? predictCard(def) : ""}
       ${waiting ? "" : typeof def.aside === "function" ? def.aside() : (def.aside || "")}
+      ${waiting || !Chrono.threadsFor ? "" : Chrono.threadsFor(def.id)}
       ${def.next ? `<a class="nextq" href="${def.next.href}"><span class="eyebrow">Next question</span><span class="nq">${def.next.q}</span><span class="hgo">${def.next.label} →</span></a>` : ""}
       ${def.sources ? `<p class="caveat">Sources: ${def.sources}</p>` : ""}`;
     document.querySelectorAll("#aside [data-hole]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goHole(a.dataset.hole); });

@@ -169,7 +169,7 @@ calmer Atlas default. *Days, not weeks; biggest learner gain per hour.*
 **Phase B — the path.** *Delivered 2026-09-24 (D-026, D-027), except Flatland predict cards.* Home screen with three doors; the tour; predict-first prompts; progress marks;
 bench reasons + "I disagree".
 
-**Phase C — the models.** Spacetime diagram and Entropy box first (they unlock the tour), then Boot a
+**Phase C — the models.** *Spacetime diagram and Entropy box delivered 2026-09-24 (D-030); tour complete.* Spacetime diagram and Entropy box first (they unlock the tour), then Boot a
 Universe, Expanding universe, the Page–Wootters clock, cosmic timeline.
 
 Also still open from todo.md and relevant here: tablet/phone layout (many learners browse on an iPad),

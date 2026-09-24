@@ -1,11 +1,9 @@
 # ACTIVE
 
-**Focus:** Learner-review Phase B delivered (2026-09-24) — D-026, D-027. Follow-up D-028: Flatland chapter bar + contents card; Home previews the tour itinerary. D-029: phone and tablet layout.
+**Focus:** Three scales delivered (D-031): **Voyages** (Mission clocks, Talking to Mars, The 1 g voyage) and **Cosmos** (Expanding universe, Cosmic horizons, Boot a Universe, The Janus point), tied to Physics by drop-down nav groups, four threads (clocks · 'now' · arrow · 3+1) and a second tour (From the ISS to the edge of the universe).
 
-**State:** Opens on **Home** (hook + tour · map · labs). **7-stop tour** over existing views. **Predict first** in Field Ocean, Clock Lab, River, Two Films. Progress ✓ marks + continue-where-you-left-off. **Glossary** (33 terms, hover/tap). Test bench: a reason for every ◐/✗/? (59 cells), generic lines for ✓/n/a, visitor's own scores. Every physics idea (42) says what it predicts and what would overturn it. Learn/Lab modes and deep links from Phase A.
+**State:** 18 views. Home: two tours, three-scales strip, threads. Learn/Lab modes, deep links, predict-first everywhere, glossary, progress, phone layout. All views pass headless checks at desktop and phone width, full and school editions.
 
-**For Will to review:** `src/data3.js` — Claude's first-pass reasons, predictions and kill conditions (one sentence each). Tour wording in `src/home.js`.
+**For Will to review:** tour 2 wording (`src/home.js`), the new labs' text; `src/data3.js` still pending.
 
-**Parked (Will, 2026-09-24):** `learner-review.md` and `learning.md` stay public for now; clean up later.
-
-**Next step:** Phase C — Spacetime diagram and Entropy box first (they complete the tour), then Boot a Universe, Expanding universe, Page–Wootters clock, cosmic timeline.
+**Next options:** cosmic timeline; an arrow-of-time lab at human scale; Flatland predict cards; teacher notes + light theme for Space School; verify ☐ citations.

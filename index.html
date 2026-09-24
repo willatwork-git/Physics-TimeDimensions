@@ -12,21 +12,35 @@
 <header>
   <a class="brand" href="#home" title="Home"><b>CHRONOSCOPE</b><span class="brand-sub"> · the holes in time</span></a>
   <nav>
-    <div class="navseg g-explore"><span class="navgrp">Explore</span>
-      <button data-view="atlas" class="on">Atlas</button>
-      <button data-view="bench">Test bench</button>
-      <button data-view="dims" data-tier="exploratory">◌ Dimension Map</button>
-    </div>
-    <div class="navseg g-labs"><span class="navgrp">Labs</span>
-      <button data-view="flatland">Flatland</button>
-      <button data-view="field">Field Ocean</button>
-      <button data-view="clocks">Clock Lab</button>
-      <button data-view="river">River</button>
-      <button data-view="films" data-tier="frontier">Two Films</button>
-    </div>
-    <div class="navseg g-method"><span class="navgrp">Method</span>
-      <button data-view="sure">How sure are we?</button>
-    </div>
+    <div class="navgroup g-explore"><button class="navtop" aria-haspopup="true" aria-expanded="false">Explore</button><div class="navmenu">
+      <button data-view="atlas">Atlas<span>Eleven holes in physics' account of time, and a century of attempts</span></button>
+      <button data-view="bench">Test bench<span>Every idea against the same five hurdles — argue with the scores</span></button>
+      <button data-view="dims" data-tier="exploratory">◌ Dimension Map<span>Exploratory framework: groups of dimensions, the same questions</span></button>
+    </div></div>
+    <div class="navgroup g-voyages"><button class="navtop" aria-haspopup="true" aria-expanded="false">Voyages</button><div class="navmenu">
+      <div class="navscale">People and spacecraft</div>
+      <button data-view="missions">Mission clocks<span>How much younger the ISS, GPS or a Moon base makes you</span></button>
+      <button data-view="mars">Talking to Mars<span>Light delay, and what 'now' means across space</span></button>
+      <button data-view="voyage">The 1 g voyage<span>How far a crew could go in a lifetime</span></button>
+    </div></div>
+    <div class="navgroup g-labs"><button class="navtop" aria-haspopup="true" aria-expanded="false">Physics</button><div class="navmenu">
+      <div class="navscale">The laws underneath</div>
+      <button data-view="flatland">Flatland<span>Why extra dimensions are hard to picture — seven chapters</span></button>
+      <button data-view="field">Field Ocean<span>Particles as ripples; light's clock never ticks</span></button>
+      <button data-view="clocks">Clock Lab<span>The light clock and GPS corrections</span></button>
+      <button data-view="spacetime">Spacetime<span>Whose 'now'? and the twin paradox</span></button>
+      <button data-view="river">River<span>A black hole as space flowing inward</span></button>
+      <button data-view="entropy">Entropy box<span>Why a gas never gathers itself back up</span></button>
+      <button data-view="films" data-tier="frontier">Two Films<span>Two time directions: the present stops predicting the future</span></button>
+    </div></div>
+    <div class="navgroup g-cosmos"><button class="navtop" aria-haspopup="true" aria-expanded="false">Cosmos</button><div class="navmenu">
+      <div class="navscale">The universe as a whole</div>
+      <button data-view="expand">Expanding universe<span>Stand on any galaxy; the age of the universe</span></button>
+      <button data-view="horizons">Cosmic horizons<span>How far we can see, and how far we can ever reach</span></button>
+      <button data-view="boot">Boot a Universe<span>Try other numbers of space and time dimensions</span></button>
+      <button data-view="janus">The Janus point<span>An arrow of time from gravity, pointing both ways</span></button>
+    </div></div>
+    <div class="navgroup g-method"><button class="navtop" data-view="sure">How sure are we?</button></div>
   </nav>
   <div class="hdr-right"><div id="levelctl"></div><button class="helpbtn" id="helpbtn" title="Guide (press ?)">? Guide</button></div>
 </header>
@@ -68,9 +82,13 @@
 <script src="src/hypotheses.js"></script>
 <script src="src/lab.js"></script>
 <script src="src/labs.js"></script>
+<script src="src/labs2.js"></script>
+<script src="src/voyages.js"></script>
+<script src="src/cosmos.js"></script>
 <script src="src/docs.js"></script>
 <script src="src/home.js"></script>
 <script src="src/flatland.js"></script>
+<script src="src/nav.js"></script>
 <script src="src/atlas.js"></script>
 <script src="src/help.js"></script>
 <script src="src/glossary.js"></script>

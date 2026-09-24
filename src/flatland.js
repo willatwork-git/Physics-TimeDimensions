@@ -725,6 +725,7 @@
       <h2>${ch.title}</h2>
       <div class="pillrow"><span class="tag ANALOGY">Analogy</span> <span class="tag ESTABLISHED">Established geometry</span></div>
       ${body}
+      ${Chrono.threadsFor ? Chrono.threadsFor("flatland/" + (chapter + 1)) : ""}
       <div class="row" style="justify-content:space-between">
         <button class="btn" data-step="-1" ${chapter === 0 ? "disabled" : ""}>← Previous</button>
         <button class="btn primary" data-step="1" ${chapter === CH.length - 1 ? "disabled" : ""}>${chapter < CH.length - 1 ? `Next: ${SHORT[chapter + 1]} →` : "Next →"}</button>

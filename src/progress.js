@@ -17,10 +17,12 @@
     pred: id => d.pred[id] || {},
     setPred(id, p) { d.pred[id] = p; save(); },
 
+    /* one tour runs at a time: d.tour = stop index, d.tourId = which tour; d.done = { tourId: true } */
     tour: () => Number.isInteger(d.tour) ? d.tour : null,
-    setTour(i) { d.tour = i; save(); },
-    tourDone: () => !!d.tourDone,
-    finishTour() { d.tour = null; d.tourDone = true; save(); },
+    tourId: () => typeof d.tourId === "string" ? d.tourId : "puzzle",
+    setTour(i, id) { d.tour = i; if (id) d.tourId = id; save(); },
+    tourDone: id => !!(d.done && d.done[id || "puzzle"]) || (!id || id === "puzzle") && !!d.tourDone,
+    finishTour() { const id = Chrono.progress.tourId(); d.done = d.done || {}; d.done[id] = true; d.tour = null; save(); },
 
     score: (idea, hurdle) => (d.scores[idea] || {})[hurdle] || null,
     setScore(idea, hurdle, v) {

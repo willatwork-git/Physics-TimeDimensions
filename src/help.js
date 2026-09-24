@@ -8,12 +8,25 @@
       { v: "bench", n: "Test bench", d: "Every idea scored against the same hurdles: does it match relativity, keep the future predictable, allow stable matter, explain time's arrow, make a new testable prediction?" },
       { v: "dims", n: "Dimension Map", tier: "exploratory", d: "A working framework: sort dimensions into groups (space, time, charge, scale, state) and ask each the same questions. Gaps become visible." }
     ] },
-    { g: "labs", name: "Labs", blurb: "Hands-on simulations running real equations. Drag, slide and click.", items: [
+    { g: "voyages", name: "Voyages", blurb: "Time for people who travel — astronauts, rovers, starships.", items: [
+      { v: "missions", n: "Mission clocks", d: "How much younger the ISS, a GPS satellite or a Moon base makes you — gravity and speed pulling opposite ways." },
+      { v: "mars", n: "Talking to Mars", d: "Radio at light speed takes minutes: a conversation with a rover, drawn as a spacetime diagram." },
+      { v: "voyage", n: "The 1 g voyage", d: "Accelerate steadily and the galaxy's centre is 20 years away — by the crew's clocks. Plus the honest fuel bill." }
+    ] },
+    { g: "labs", name: "Physics", blurb: "The laws underneath — hands-on simulations running real equations. Drag, slide and click.", items: [
       { v: "flatland", n: "Flatland", d: "Why extra dimensions are so hard to picture. Seven chapters: a 2D world visited by a sphere, building a tesseract, 4D slices — and time as a slice." },
       { v: "field", n: "Field Ocean", d: "Particles as ripples in a field. Watch a massless ripple race at light speed while a massive one lags — and see why light's clock never ticks." },
       { v: "clocks", n: "Clock Lab", d: "Why moving clocks run slow (the light clock), and the real corrections GPS satellites need every day." },
+      { v: "spacetime", n: "Spacetime", d: "Drag events and change your speed: observers disagree about what happens 'at the same time'. Plus the twin paradox, drawn exactly." },
       { v: "river", n: "River", d: "A black hole pictured as space flowing inward. Fire light and see where it can and can't escape." },
+      { v: "entropy", n: "Entropy box", d: "A gas spreads out and never gathers back — unless you reverse every velocity exactly. Why time has a direction." },
       { v: "films", n: "Two Films", tier: "frontier", d: "If the universe had two time directions, could the present predict the future? Two identical starting frames, two different futures." }
+    ] },
+    { g: "cosmos", name: "Cosmos", blurb: "The universe as a whole.", items: [
+      { v: "expand", n: "Expanding universe", d: "Stand on any galaxy: everything recedes from everywhere. Change matter and dark energy; see the age and fate." },
+      { v: "horizons", n: "Cosmic horizons", d: "How far we can see (46 billion light-years) and how far our signals can ever reach." },
+      { v: "boot", n: "Boot a Universe", d: "Try other numbers of space and time dimensions and watch what breaks — orbits, atoms, prediction." },
+      { v: "janus", n: "The Janus point", d: "A gravitating swarm whose structure grows in both directions of time from one special moment." }
     ] },
     { g: "method", name: "Method", blurb: "How science decides.", items: [
       { v: "sure", n: "How sure are we?", d: "A worked example — is the universe really expanding? — showing how an idea earns the label 'established'." }

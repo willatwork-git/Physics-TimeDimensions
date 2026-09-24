@@ -329,6 +329,7 @@
       <button class="lab ${Chrono.mode() === "lab" ? "on" : ""}" data-lvl="3" title="The raw workbench: adds this project's own exploratory ideas, your hypotheses, the Dimension Map and every filter. Not mainstream physics.">◌ Lab</button></div>`;
     host.querySelectorAll("[data-lvl]").forEach(b => b.onclick = () => Chrono.setLevel(+b.dataset.lvl));
     document.querySelectorAll("nav button[data-tier]").forEach(b => b.style.display = Chrono.shows(b.dataset.tier) ? "" : "none");
+    if (Chrono.navSync) Chrono.navSync();
   }
   Chrono.onLevel.push(() => { if (Chrono.mode() === "learn") state.tags = new Set(Object.keys(Chrono.TAGS)); rendered = false; route(); });
   Chrono.views = Chrono.views || {};
@@ -360,6 +361,7 @@
     document.querySelectorAll("nav button[data-view]").forEach(x => { x.classList.toggle("on", x.dataset.view === v); x.classList.toggle("seen", Chrono.progress.seen(x.dataset.view)); });
     if (v === "flatland" && Chrono.flatland && arg) Chrono.flatland.setChapter(parseInt(arg, 10) - 1);
     Chrono.tour.renderBar();
+    if (Chrono.navSync) Chrono.navSync();
     if (same) { applyHighlight(); renderAside(); if (v === "bench") renderBench(); return; }
     rendered = true;
     renderAll();

@@ -54,21 +54,40 @@ straight to a lab. Press **?** inside the app for the built-in guide. Works on p
 - **Dimension Map** *(Lab)* — a working framework that asks every kind of dimension (space,
   time, internal, scale, state) the same questions, to make the gaps visible.
 
-**Labs** — small simulations that run the real equations
+**Voyages** — time for people who travel
+- **Mission clocks** — how much younger the ISS, a GPS satellite or a Moon base makes you (clocks on the
+  Moon gain about 56 µs a day — why a lunar time standard is being set up).
+- **Talking to Mars** — light delay across the solar system, the conversation drawn as a spacetime diagram.
+- **The 1 g voyage** — a steadily accelerating ship reaches the galaxy's centre in about 20 years of
+  crew time, 26,000 on Earth. Plus the honest fuel bill.
+
+**Physics labs** — small simulations that run the real equations
 - **Flatland** — seven chapters in three acts (with a contents page to jump straight to the 4D chapters) on why extra dimensions are hard to picture: Abbott's Flatland, sphere
   and hypersphere slices, hypercone conics, tesseract slices and shadows, and time as a slice.
 - **Field Ocean** — particles as ripples in a field (Klein–Gordon equation). A massless ripple runs at
   light speed; a massive one lags, and its internal clock slows as it speeds up.
 - **Clock Lab** — the light clock, and the real relativistic corrections GPS satellites need
   (about +38 µs a day) at any altitude.
+- **Spacetime** — drag events and change your speed: observers disagree about what happens "at the same
+  time". Includes the twin paradox, drawn exactly.
+- **Entropy box** — a gas spreads out and never gathers back. Reverse every velocity (exactly — the
+  arithmetic is integer) and it does; nudge one disc by a millionth first and it doesn't.
 - **River** — a black hole pictured as space flowing inward (the Gullstrand–Painlevé "river model").
   Fire light and see where it can escape.
 - **Two Films** — two exact solutions of a wave equation with *two* time directions that are identical
   at the starting frame and then diverge. With two times, a complete snapshot of "now" doesn't fix
   the future.
 
+**Cosmos** — the universe as a whole
+- **Expanding universe** — stand on any galaxy; change matter and dark energy; age and fate.
+- **Cosmic horizons** — how far we can see (46 billion light-years) and how far our signals can reach.
+- **Boot a Universe** — try other numbers of space and time dimensions and watch what breaks.
+- **The Janus point** — a gravitating swarm whose structure grows in both directions of time.
+
 **Learning aids**
-- **Guided tour** — seven stops from "Do clocks agree?" to "Is one time dimension a law of nature?"
+- **Two guided tours** — *The puzzle of time* (seven stops from "Do clocks agree?" to "Is one time
+  dimension a law of nature?") and *From the ISS to the edge of the universe*.
+- **Threads** — each lab links to the same question at the other scales (clocks, 'now', the arrow, 3 + 1).
 - **Predict first** — each lab asks for your guess before explaining (skippable).
 - **Glossary** — dotted-underlined terms show a plain definition on hover or tap.
 - **Progress** — ✓ marks on what you've seen, and "continue where you left off" (kept in your browser).
@@ -137,8 +156,12 @@ src/
   hypotheses.js     visitor hypotheses: storage, export, import
   lab.js            shared drawing helpers, lab harness, reduced-motion handling
   labs.js           Field Ocean, Clock Lab, River, Two Films
+  labs2.js          Spacetime diagram, Entropy box
+  voyages.js        Mission clocks, Talking to Mars, The 1 g voyage
+  cosmos.js         Expanding universe, Cosmic horizons, Boot a Universe, The Janus point
+  nav.js            header drop-down menus (Explore · Voyages · Physics · Cosmos · Method)
   docs.js           Dimension Map, How sure are we?
-  home.js           Home page and the guided tour
+  home.js           Home page, the two tours, the three scales and the threads
   flatland.js       the seven Flatland chapters (own engine)
   atlas.js          Atlas, Test bench, hypothesis form, mode switch, URL routing
   help.js           the Guide overlay

@@ -60,6 +60,25 @@ Confidence: **E** = established · **C** = contested · **S** = speculative. ☐
 - TED-Ed, "Exploring other dimensions" — Alex Rosenthal & George Zaidan (recommended by Will). ☐ link
 - 4D visualisation video shared by Will: https://www.youtube.com/watch?v=4URVJ3D8e8k — squashed-3D + w-axis diagram, hypersphere and hypercone slices, tesseract cell-by-cell slicing and rotations. ☐ creator name.
 
+## Spacetime diagram and Entropy box (D-030)
+- **E** Einstein, A. (1905). "Zur Elektrodynamik bewegter Körper." *Annalen der Physik* 17, 891. Minkowski, H. (1908/1909). "Raum und Zeit." *Physikalische Zeitschrift* 10, 104. ☐
+- **E** Hafele, J. C. & Keating, R. E. (1972) — see Build 2 section. Muon lifetime dilation: e.g. Bailey, J. et al. (1977) *Nature* 268, 301. ☐
+- **E** Loschmidt, J. (1876) — the reversibility objection; Boltzmann, L. (1877) — entropy as counting arrangements (S = k ln W). ☐
+- **E** Levesque, D. & Verlet, L. (1993). "Molecular dynamics and time reversibility." *J. Stat. Phys.* 72, 519. — Integer (bit-reversible) leapfrog; basis of the Entropy box. ☐
+
+## Voyages (D-031)
+- **E** Ashby, N. & Patla, B. (2024). "A relativistic framework to establish coordinate time on the Moon and beyond." *Astronomical Journal* 168. — Lunar clocks gain ≈ 56 µs/day; our model gives 55.9. ☐
+- **E** White House OSTP (2024) memo on Coordinated Lunar Time. ☐
+- **E** Garrett-Bakelman, F. E. et al. (2019). "The NASA Twins Study." *Science* 364, eaau8650 — Scott Kelly, 340 days on the ISS. ☐
+- **E** Relativistic rocket (constant proper acceleration): Misner, Thorne & Wheeler, *Gravitation* (1973) §6; Ackeret, J. (1946) photon-rocket equation. ☐
+- **E** Mars solar conjunction communication pause (~2 weeks): NASA/JPL mission communications. ☐
+
+## Cosmos (D-031)
+- **E** Friedmann, A. (1922) *Z. Phys.* 10, 377; Lemaître, G. (1927). Planck Collaboration (2020) *A&A* 641, A6 — Ωm = 0.315, H₀ = 67.4. ☐
+- **E** Davis, T. M. & Lineweaver, C. H. (2004). "Expanding confusion." *Publ. Astron. Soc. Aust.* 21, 97 — horizons, the teardrop past light cone. ☐
+- **C** (conclusion) / **E** (maths) Tegmark, M. (1997) — see above; Ehrenfest (1917); Dorling (1970); Craig & Weinstein (2009).
+- **E** (maths) / **C** (cosmology) Barbour, J., Koslowski, T. & Mercati, F. (2014) *PRL* 113, 181101; Barbour, J. (2020). *The Janus Point*. Basic Books. ☐
+
 ## Method (learner experience)
 - **E** Crouch, C. H., Fagen, A. P., Callan, J. P. & Mazur, E. (2004). "Classroom demonstrations: Learning tools or entertainment?" *Am. J. Phys.* 72, 835. — Students who predicted a demonstration's outcome before seeing it learned more than those who only watched. Basis for Predict first (D-026). ☐
 

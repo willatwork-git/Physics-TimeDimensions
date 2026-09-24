@@ -24,8 +24,10 @@ Delivery builds are named by date/content below; spec.md "Build order" numbers t
 - [ ] Predict-first for Flatland chapters (Flatland has its own aside engine)
 
 ## Learner review — Phase C (new models)
-- [ ] Spacetime diagram (simultaneity + twins) · Entropy box · Expanding universe · Page–Wootters clock · Cosmic timeline (Boot a Universe is below)
-- [ ] When Spacetime diagram + Entropy box exist: swap them into tour stops (see comment in `src/home.js`)
+- [x] Spacetime diagram (simultaneity + twins) · Entropy box — in the tour (D-030)
+- [x] Voyages (3 labs), Cosmos (4 labs), drop-down nav, threads, Tour 2 (D-031)
+- [ ] Cosmic timeline (orientation, log-time) · a Voyages lab on the arrow thread (e.g. Earth's energy budget)
+- [ ] README screenshots: add the home page and a Cosmos lab
 
 ## Space School readiness
 - [ ] Teacher notes per lab
