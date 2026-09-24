@@ -17,7 +17,7 @@ Every item carries a tier:
 - **Deep links:** every view has a URL — e.g. `index.html?edition=school#flatland/7` or `#atlas/H5` — handy for lesson handouts.
 
 ## Hosting
-- **Live:** https://willatwork-git.github.io/Physics-TimeDimensions/ (GitHub Pages, from `main`). School edition: add `?edition=school`.
+- **Live:** https://willatwork-git.github.io/Physics-TimeDimensions/index.html#home (GitHub Pages, from `main`). School edition: `index.html?edition=school#home`.
 - Static files only — no server code, no build step. Upload the folder (`index.html` + `src/`) anywhere, or embed in a page with an `<iframe src=".../index.html?edition=school" style="width:100%;height:90vh;border:0">`.
 - Only external request: Google Fonts (falls back to system fonts offline).
 - A built-in Guide ("? Guide" button, or press ?) explains the app for first-time visitors.

@@ -7,8 +7,9 @@ science from speculation.
 The hook: *why does our universe have exactly one time dimension?* The honest answer, which you reach
 by exploring, is that physics has strong constraints on it but no settled, model-independent answer.
 
-**▶ Try it live: [willatwork-git.github.io/Physics-TimeDimensions](https://willatwork-git.github.io/Physics-TimeDimensions/)**
-· classroom edition: [`?edition=school`](https://willatwork-git.github.io/Physics-TimeDimensions/?edition=school)
+**▶ Try it live: [willatwork-git.github.io/Physics-TimeDimensions](https://willatwork-git.github.io/Physics-TimeDimensions/index.html#home)**
+· [Lab mode](https://willatwork-git.github.io/Physics-TimeDimensions/index.html?mode=lab#home)
+· [classroom edition](https://willatwork-git.github.io/Physics-TimeDimensions/index.html?edition=school#home)
 
 ![The Atlas: open problems about time along the top, a century of attempts to solve them below](docs/screenshot-atlas.png)
 
@@ -116,7 +117,7 @@ The app is static files: `index.html`, `src/` and `docs/`, with no server code. 
 GitHub Pages from `main`. Put the folder on any other static host, or embed the classroom edition:
 
 ```html
-<iframe src="https://willatwork-git.github.io/Physics-TimeDimensions/?edition=school"
+<iframe src="https://willatwork-git.github.io/Physics-TimeDimensions/index.html?edition=school#home"
         style="width:100%;height:90vh;border:0"></iframe>
 ```
 
