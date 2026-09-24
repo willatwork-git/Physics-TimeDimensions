@@ -39,15 +39,15 @@
   };
   const SCALES = [
     { id: "quantum", name: "Quantum", sub: "The very small", col: "#5ee0e6", labs: [["delayed", "Delayed choice"], ["frozen", "The frozen universe"]] },
-    { id: "voyages", name: "Voyages", sub: "People and spacecraft", col: "var(--c-lens)", labs: [["missions", "Mission clocks"], ["mars", "Talking to Mars"], ["voyage", "The 1 g voyage"]] },
-    { id: "labs", name: "Physics", sub: "The laws underneath", col: "var(--t-est)", labs: [["flatland", "Flatland"], ["field", "Field Ocean"], ["clocks", "Clock Lab"], ["spacetime", "Spacetime"], ["river", "River"], ["entropy", "Entropy box"], ["films", "Two Films"], ["wormhole", "Wormholes"], ["loops", "Time loops"]] },
-    { id: "cosmos", name: "Cosmos", sub: "The universe as a whole", col: "var(--simple, #9b8cff)", labs: [["expand", "Expanding universe"], ["horizons", "Cosmic horizons"], ["boot", "Boot a Universe"], ["janus", "The Janus point"]] }
+    { id: "voyages", name: "Voyages", sub: "People and spacecraft", col: "var(--c-lens)", labs: [["missions", "Mission clocks"], ["mars", "Talking to Mars"], ["voyage", "The 1 g voyage"], ["energy", "Earth's energy budget"]] },
+    { id: "labs", name: "Physics", sub: "The laws underneath", col: "var(--t-est)", labs: [["flatland", "Flatland"], ["field", "Field Ocean"], ["clocks", "Clock Lab"], ["spacetime", "Spacetime"], ["river", "River"], ["hawking", "Black holes evaporate"], ["entropy", "Entropy box"], ["films", "Two Films"], ["wormhole", "Wormholes"], ["loops", "Time loops"]] },
+    { id: "cosmos", name: "Cosmos", sub: "The universe as a whole", col: "var(--simple, #9b8cff)", labs: [["timeline", "Cosmic timeline"], ["expand", "Expanding universe"], ["horizons", "Cosmic horizons"], ["boot", "Boot a Universe"], ["janus", "The Janus point"]] }
   ];
   /* Threads: [view key, label, scale] — scale V (voyages), P (physics), C (cosmos), A (atlas). */
   const THREADS = [
     { id: "clock", icon: "⏱", name: "Clocks disagree", stops: [["frozen", "A clock in a frozen universe", "Q"], ["missions", "Mission clocks", "V"], ["clocks", "Clock Lab", "P"], ["spacetime", "Twin paradox", "P"], ["river", "Clocks near a black hole", "P"], ["expand", "Cosmic clocks (redshift)", "C"]] },
     { id: "now", icon: "◬", name: "Light and 'now'", stops: [["delayed", "Delayed choice", "Q"], ["mars", "Talking to Mars", "V"], ["spacetime", "Whose 'now'?", "P"], ["flatland/7", "Time as a slice", "P"], ["films", "Two Films", "P"], ["horizons", "Cosmic horizons", "C"]] },
-    { id: "arrow", icon: "→", name: "The arrow of time", stops: [["entropy", "Entropy box", "P"], ["janus", "The Janus point", "C"], ["atlas/H3", "Hole H3: why the arrow?", "A"]] },
+    { id: "arrow", icon: "→", name: "The arrow of time", stops: [["entropy", "Entropy box", "P"], ["energy", "Earth's energy budget", "V"], ["hawking", "Black holes evaporate", "P"], ["timeline", "Cosmic timeline", "C"], ["janus", "The Janus point", "C"], ["atlas/H3", "Hole H3: why the arrow?", "A"]] },
     { id: "dims", icon: "◇", name: "Why 3 + 1?", stops: [["flatland/4", "A 4D visitor", "P"], ["films", "Two Films", "P"], ["boot", "Boot a Universe", "C"], ["atlas/H5", "Hole H5: why one time?", "A"]] }
   ];
   const SCALE_NAME = { Q: "Quantum", V: "Voyages", P: "Physics", C: "Cosmos", A: "Atlas" };
@@ -119,13 +119,14 @@
   }
   function page() {
     const t = P.tour(), last = P.last(), seen = TOTAL.filter(v => P.seen(v)).length;
-    const lb = last && document.querySelector(`nav button[data-view="${last.slice(1).split("/")[0]}"]`), lastName = lb && lb.firstChild.textContent.trim();
+    const lb = last && document.querySelector(`header button[data-view="${last.slice(1).split("/")[0]}"]`), lastName = lb && lb.firstChild.textContent.trim();
     const lab = Chrono.mode() === "lab";
     return `
       <div class="docwrap home">
-        <div class="eyebrow">Chronoscope · the holes in time</div>
-        <h1>Why does our universe have exactly one time dimension?</h1>
-        <p class="lede">Time is the one thing everyone uses and nobody in physics fully understands — two of our best theories disagree about what it even is. Nobody has a settled answer. Chronoscope is a place to find out why — and to explore the other places where physics' account of time doesn't add up: what physicists have tried, which ideas survived, and how to tell solid science from speculation. Every simulation runs the real equations.</p>
+        <div class="eyebrow">Chronoscope · time, at every scale</div>
+        <h1>What is time? Physics has more answers, and more open questions, than you'd think.</h1>
+        <p class="lede">Chronoscope is a free, hands-on guide to time in physics: more than twenty live simulations running the real equations, from a single photon to the edge of the universe. Every claim is tagged with how sure physicists are, so you can tell solid science from the frontier.</p>
+        <p class="hook">Why is there only one time dimension? Nobody knows for sure. <button class="linkish" data-go-tour="0" data-tour-id="puzzle">Tour 1 takes you to the edge of that question →</button></p>
         ${lastName && t === null ? `<a class="continue" href="${last}">Continue where you left off: <b>${lastName}</b> →</a>` : ""}
         ${Chrono.reviewDue && Chrono.reviewDue() ? `<a class="continue revdue" href="#review">🔁 <b>${Chrono.reviewDue()} question${Chrono.reviewDue() > 1 ? "s" : ""} to review</b> from labs you've explored. A minute or two →</a>` : ""}
         ${tourCard()}
@@ -156,7 +157,7 @@
     },
     aside: () => `
       <p>Everything here is labelled by how sure physicists are — you'll see these tags on every page.</p>
-      <p><b>Learn</b> mode (the default) shows physics as physicists hold and debate it, plus published ideas from the fringe — every claim tagged.${Chrono.maxLevel >= 3 ? ` <b>◌ Lab</b> mode adds this project's own exploratory ideas and your hypotheses. Switch top right.` : ""}</p>
+      <p><b>Learn</b> mode (the default) shows physics as physicists hold and debate it, plus published ideas from the fringe — every claim tagged.${Chrono.maxLevel >= 3 ? ` <b>◌ Lab</b> mode adds the Workbench: this project's own exploratory ideas, your hypotheses and the Dimension Map. Switch top right.` : ""}</p>
       ${Chrono.tierLegend()}
       <p class="meta">Press <b>?</b> any time for the Guide. Every view has its own link — share the address bar.</p>`
   });

@@ -736,7 +736,7 @@
     const ch = CH[chapter], pkey = "flatland/" + (chapter + 1), pred = PREDICT[chapter + 1];
     const waiting = pred && Chrono.progress.pred(pkey).guess === undefined;
     const body = waiting ? "" : ch.asideFn ? ch.asideFn() : ch.aside;
-    $("#aside").innerHTML = `
+    $("#aside").innerHTML = `${Chrono.crumb ? Chrono.crumb() : ""}
       <div class="flhead"><span class="eyebrow">Flatland · ${chapter + 1} of ${CH.length} · ${actOf(chapter).name}</span><button class="linkish" data-contents>☰ All chapters</button></div>
       <h2>${ch.title}</h2>
       <div class="pillrow"><span class="tag ANALOGY">Analogy</span> <span class="tag ESTABLISHED">Established geometry</span></div>

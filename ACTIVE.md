@@ -1,11 +1,11 @@
 # ACTIVE
 
-**Focus:** D-037 — Phase 3 done, *making it stick*: every lab has a **Picture it** analogy (with where it breaks) and a **Common trap**; each tour ends in a 7-question quiz; questions from explored labs come back for **review** after 1, 3, 7, 16, 35, 80 days (`#review`, under Explore; Home shows what's due). Code in `src/stick.js`; schedule in `progress.js`. Before that: D-036 — Quantum as fourth scale, Tour 3 *Is time travel possible?*
+**Focus:** D-039 — review fixes: header reorganised (⌂ Home · Explore · four scales · ◌ Workbench in Lab; Learn|Lab and a **Guide** menu on the right), breadcrumb in every side panel, show-only **Filter** menu for Atlas and Test bench in both modes, new **Exploratory ideas** page, new home text ("What is time?…", subtitle "time, at every scale"). Plus timeline stepping, greenhouse label, cache-busting `?v=39`. Before that: D-038 — deep time (Black holes evaporate, Cosmic timeline, Earth's energy budget; Spacetime hyperbolae + pole and barn).
 
-**State:** 17 canvas labs + Flatland in four scales, three tours with quizzes, 16 Concepts pages. All 32 routes pass headless checks in Learn, Lab and school edition; quiz and review click-through tested; phone width checked. Not yet committed.
+**State:** 20 canvas labs + Flatland in four scales, three tours with quizzes, 16 Concepts pages, Workbench in Lab. All 36 routes pass headless checks in Learn, Lab and school edition; header and new pages checked at desktop and phone width. Not yet committed.
 
-**For Will to review:** the analogies, traps and 20 questions in `src/stick.js`; Tour 3 and new-lab text; `src/data3.js`.
+**For Will to review:** home text (`src/home.js`), Exploratory ideas page, `src/deeptime.js`, pole-and-barn text, `src/stick.js`, `src/data3.js`.
 
-**Logged, not started:** the maths layer for students and scientists — research first (`todo.md`, "Idea — the maths layer").
+**Logged, not started:** the maths layer — research first; natural home is the ◌ Workbench (`todo.md`).
 
-**Next:** Phase 4 — deep time (Hawking evaporation / Page curve, cosmic timeline, Earth's energy budget, Spacetime hyperbolae + pole-and-barn).
+**Next:** Phase 5 — launch readiness: verify every ☐ citation, light theme, teacher notes, keyboard Atlas, tidy public files, move to chronoscope.com.au (DNS first, then CNAME). Bump `?v=` when shipping.

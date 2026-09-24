@@ -44,7 +44,7 @@ Tier pills (Mainstream / Frontier / ◌ Exploratory / Lens) sit beside the tags.
 - A new lab joins a **thread** by adding its view key to `THREADS` in `src/home.js`; the aside shows the thread automatically.
 
 ## Layout
-- **Small screens (D-029):** one column below 900 px portrait — stage first, explanation below. Two-pane canvases use `split()` (flatland.js) or a `tall` check (labs.js): side by side when wide, stacked when tall. New labs must do the same.
+- **Small screens (D-029):** one column below 900 px portrait — stage first, explanation below. Two-pane canvases use `split()` (flatland.js) or a `tall` check (labs.js): side by side when wide, stacked when tall. New labs must do the same. The canvas re-sizes whenever its box changes (ResizeObserver, D-038); when a pane is short, draw a compact variant (shorter legends, fewer labels) rather than letting text overflow.
 - Desktop-first, 1280–1920px. Min supported 1024px.
 - Panel 1: grid on the left (~55%), live-sim + explainer side panel on the right.
 - Explainers: one-line claim → two-sentence explanation → "Go deeper" expander.

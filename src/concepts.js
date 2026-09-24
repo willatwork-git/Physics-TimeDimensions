@@ -338,9 +338,11 @@
     field: ["dilation"], clocks: ["dilation", "clock"], spacetime: ["spacetime", "now", "dilation"], river: ["horizons", "dilation"],
     entropy: ["entropy", "arrow"], films: ["dims", "now"], expand: ["expansion"], horizons: ["horizons", "expansion"],
     boot: ["dims", "twotime"], janus: ["arrow", "entropy"],
+    hawking: ["horizons", "entropy", "holography"], timeline: ["expansion", "arrow", "scales"], energy: ["entropy", "arrow"],
     delayed: ["quantum"], frozen: ["quantum", "holography"], wormhole: ["horizons", "timetravel"], loops: ["timetravel", "spacetime"],
     "flatland/1": ["dims"], "flatland/2": ["dims"], "flatland/3": ["dims"], "flatland/4": ["dims"], "flatland/5": ["dims"], "flatland/6": ["dims"], "flatland/7": ["spacetime", "now"]
   };
+  Chrono.conceptTitle = k => PAGES[k] ? PAGES[k].title : "";
   Chrono.keyIdeas = key => KEY[key] ? `<div class="keyideas"><span class="ki-label">Key ideas</span>${KEY[key].map(k => `<span class="ki"><a href="#concepts/${k}">${PAGES[k].title}</a>${Chrono.info(k)}</span>`).join("")}</div>` : "";
   function article(k) {
     const c = PAGES[k];

@@ -14,7 +14,11 @@
   const relV = (a, b) => (a - b) / (1 - a * b);                                                   // velocity a, seen from a frame moving at b
   const EVENTS0 = [{ id: "A", t: 3, x: -3 }, { id: "B", t: 3, x: 3 }, { id: "C", t: 5.5, x: 0.5 }];
   const SP = { mode: "now", v: 0.6, view: 0, viewTarget: 0, drag: null, geo: null,
-    events: EVENTS0.map(e => ({ ...e })), twinV: 0.8, twinD: 4, twinT: 0, play: true };
+    events: EVENTS0.map(e => ({ ...e })), twinV: 0.8, twinD: 4, twinT: 0, play: true, hyp: false,
+    pbV: 0.8, pbView: 0, pbTarget: 0, pbT: 0.5 };
+  /* Pole and barn (after Tao's applet scene): barn from x = −2 to 2 (length 4); pole of rest length 5, centred in the
+     barn at t = 4 (barn frame); both doors shut for a moment at t = 4 in the barn frame. Everything else follows. */
+  const PB = { barn: 4, pole: 5, t0: 4, shut: 0.15 };
 
   function orderText(times) {
     const s = times.slice().sort((a, b) => a.t - b.t);
@@ -33,6 +37,15 @@
     // light cone of the origin event (same in every frame)
     ctx.fillStyle = g.alpha(C.amber, 0.05); ctx.beginPath(); ctx.moveTo(...P(0, 0)); ctx.lineTo(...P(10, -10)); ctx.lineTo(...P(10, 10)); ctx.closePath(); ctx.fill();
     [[10, 10], [10, -10], [-2, 2], [-2, -2]].forEach(([t, x]) => g.line(...P(0, 0), ...P(t, x), g.alpha(C.amber, 0.35), 1));
+    if (SP.hyp) {                                          // t² − x² = const: the same curves in every frame
+      const curve = f => { ctx.beginPath(); for (let i = 0; i <= 80; i++) { const q = P(...f(-3 + i * 6 / 80)); i ? ctx.lineTo(...q) : ctx.moveTo(...q); } ctx.stroke(); };
+      ctx.lineWidth = 1;
+      for (let k = 1; k <= 9; k++) {
+        ctx.strokeStyle = g.alpha(C.teal, k % 3 ? 0.18 : 0.4); curve(h => [k * Math.cosh(h), k * Math.sinh(h)]);
+        ctx.strokeStyle = g.alpha(C.violet || "#9b8cff", 0.14); curve(h => [k * Math.sinh(h), k * Math.cosh(h)]); curve(h => [k * Math.sinh(h), -k * Math.cosh(h)]);
+        if (k % 3 === 0) g.label(`τ = ${k}`, ...P(k + 0.15, 0.1), g.alpha(C.teal, 0.8), 9);
+      }
+    }
     // the two observers: their clocks' paths and their "now" lines
     [[0, C.accent, "you"], [SP.v, C.orange, "moving observer"]].forEach(([vf, col, who]) => {
       const u = relV(vf, d);
@@ -56,8 +69,10 @@
     const mine = SP.events.map(e => ({ id: e.id, t: e.t })), theirsT = SP.events.map(e => ({ id: e.id, t: boost(e.t, e.x, SP.v)[0] }));
     const x0 = B.x + 14, c1 = B.x + B.w * 0.36, c2 = B.x + B.w * 0.66;
     let y = B.y + 48;
-    g.label("EVENT", x0, y, C.muted, 10); g.label("YOUR TIME", c1, y, C.accent, 10); g.label("THEIR TIME", c2, y, C.orange, 10);
-    SP.events.forEach((e, i) => { y += 22; g.label(e.id, x0, y, C.pink, 13); g.label(mine[i].t.toFixed(2), c1, y, C.text, 13); g.label(theirsT[i].t.toFixed(2), c2, y, C.text, 13); });
+    const c3 = B.x + B.w - 14;
+    g.label("EVENT", x0, y, C.muted, 10); g.label(B.w < 420 ? "YOURS" : "YOUR TIME", c1, y, C.accent, 10); g.label(B.w < 420 ? "THEIRS" : "THEIR TIME", c2, y, C.orange, 10); g.label("t² − x²", c3, y, C.teal, 10, "right");
+    SP.events.forEach((e, i) => { y += 22; g.label(e.id, x0, y, C.pink, 13); g.label(mine[i].t.toFixed(2), c1, y, C.text, 13); g.label(theirsT[i].t.toFixed(2), c2, y, C.text, 13); g.label((e.t * e.t - e.x * e.x).toFixed(1), c3, y, C.teal, 13, "right"); });
+    y += 16; g.label("t² − x²: the same for both (the interval)", x0, y, C.muted, 10);
     y += 34; g.text(`Your order: ${orderText(mine)}`, x0, y, C.accent, 13);
     y += 20; g.text(`Their order: ${orderText(theirsT)}`, x0, y, C.orange, 13);
     const swapped = [];
@@ -109,6 +124,48 @@
     g.label("Model: special relativity, instant turnaround.", x0, B.y + B.h - 14, C.muted, 10);
   }
 
+  function drawBarn(g) {
+    const { ctx } = g, { A, B } = g.split(0.62), v = SP.pbV, ga = gam(v), d = SP.pbView, half = PB.pole / (2 * ga), fits = half < PB.barn / 2;
+    const inPole = Math.abs(d - v) < 0.02;
+    g.panel(A.x, A.y, A.w, A.h, inPole ? "Pole and barn — drawn in the pole's frame" : Math.abs(d) < 0.02 ? "Pole and barn — drawn in the barn's frame" : "Pole and barn — changing frame…");
+    const s = Math.min(A.w / 13.5, (A.h - 44) / 11), ox = A.x + A.w / 2, oy = A.y + A.h - 18 - s * 1.2;
+    const P = (t, x) => [ox + x * s, oy - t * s];
+    const tr = (t, x) => { const [a, b] = boost(t - PB.t0, x, d); return [PB.t0 + a, b]; };   // barn-frame event → display frame
+    const wl = xAt => [tr(-30, xAt(-30)), tr(40, xAt(40))];                                    // a straight worldline, as two display points
+    const xAtT = (L, T) => L[0][1] + (T - L[0][0]) * (L[1][1] - L[0][1]) / (L[1][0] - L[0][0]);
+    const lines = { back: wl(() => -PB.barn / 2), front: wl(() => PB.barn / 2), rear: wl(t => -half + v * (t - PB.t0)), nose: wl(t => half + v * (t - PB.t0)) };
+    const doors = [["entrance door", -PB.barn / 2], ["exit door", PB.barn / 2]].map(([n, x]) => ({ n, a: tr(PB.t0 - PB.shut, x), b: tr(PB.t0 + PB.shut, x), e: tr(PB.t0, x) }));
+    ctx.save(); ctx.beginPath(); ctx.rect(A.x + 1, A.y + 26, A.w - 2, A.h - 27); ctx.clip();
+    for (let t = -2; t <= 11; t++) g.line(...P(t, -8), ...P(t, 8), "rgba(255,255,255,0.035)");
+    ctx.fillStyle = g.alpha(C.orange, 0.13); ctx.beginPath(); ctx.moveTo(...P(...lines.rear[0])); ctx.lineTo(...P(...lines.nose[0])); ctx.lineTo(...P(...lines.nose[1])); ctx.lineTo(...P(...lines.rear[1])); ctx.closePath(); ctx.fill();
+    [lines.rear, lines.nose].forEach(L => g.line(...P(...L[0]), ...P(...L[1]), C.orange, 2));
+    [lines.back, lines.front].forEach(L => g.line(...P(...L[0]), ...P(...L[1]), C.accent, 2));
+    doors.forEach(D => { g.line(...P(...D.a), ...P(...D.b), C.pink, 7); });
+    doors.forEach(D => { const [px, py] = P(...D.e); g.label(`${D.n} shuts`, px + 8, py + 4, C.pink, 10); });
+    // the display frame's 'now', sweeping upward
+    g.line(...P(SP.pbT, -8), ...P(SP.pbT, 8), g.alpha(C.text, 0.5), 1);
+    ctx.restore();
+    g.label("space →", A.x + A.w - 14, oy + 14, C.muted, 10, "right"); g.label("time ↑", ox + 6, A.y + 40, C.muted, 10);
+    g.label("blue: the barn's walls · orange: the pole · pink: a door shut", A.x + 14, A.y + A.h - 10, C.muted, 10);
+
+    g.panel(B.x, B.y, B.w, B.h, "What you'd see at the white 'now' line");
+    const x0 = B.x + 14, T = SP.pbT, sx = (B.w - 40) / 13, mid = B.x + B.w / 2, sy = B.y + 70;
+    const X = x => mid + x * sx, xb = xAtT(lines.back, T), xf = xAtT(lines.front, T), xr = xAtT(lines.rear, T), xn = xAtT(lines.nose, T);
+    ctx.fillStyle = g.alpha(C.accent, 0.08); ctx.fillRect(X(xb), sy - 22, X(xf) - X(xb), 44);
+    g.line(X(xb), sy - 22, X(xf), sy - 22, C.accent, 2); g.line(X(xb), sy + 22, X(xf), sy + 22, C.accent, 2);
+    doors.forEach((D, i) => { const lo = Math.min(D.a[0], D.b[0]), hi = Math.max(D.a[0], D.b[0]), shut = T >= lo && T <= hi, x = X(i ? xf : xb);
+      g.line(x, sy - 22, x, sy + 22, shut ? C.pink : g.alpha(C.accent, 0.25), shut ? 4 : 1); });
+    ctx.fillStyle = C.orange; ctx.fillRect(X(xr), sy - 5, X(xn) - X(xr), 10);
+    g.label(`t = ${T.toFixed(1)}`, x0, B.y + 42, C.muted, 10);
+    let y = sy + 50;
+    const tIn = doors[0].e[0], tOut = doors[1].e[0], same = Math.abs(tIn - tOut) < 0.02;
+    y += g.wrap(`Barn's frame: the moving pole is ${(PB.pole / ga).toFixed(2)} long (rest length 5); the barn is 4. ${fits ? "It fits." : "It doesn't fit."}`, x0, y, B.w - 28, 16, C.accent, 12) + 6;
+    y += g.wrap(`Pole's frame: the moving barn is ${(PB.barn / ga).toFixed(2)} long; the pole is 5. It never fits.`, x0, y, B.w - 28, 16, C.orange, 12) + 10;
+    y += g.wrap(same ? "In this frame both doors shut at the same moment." : `In this frame the ${tOut < tIn ? "exit" : "entrance"} door shuts first — ${Math.abs(tIn - tOut).toFixed(2)} time units before the other.`, x0, y, B.w - 28, 16, C.text, 12) + 10;
+    y += g.wrap(fits ? "Neither door touches the pole, in either frame. Whether the door hits the pole is a single event — everyone agrees on it." : "At this speed the doors hit the pole — in every frame. A collision is an event, and everyone agrees on events.", x0, y, B.w - 28, 16, fits ? C.teal : C.pink, 12);
+    g.label("Model: special relativity, c = 1.", x0, B.y + B.h - 14, C.muted, 10);
+  }
+
   Chrono.lab.register({
     predict: { q: "Two lamps, far apart, flash at <b>exactly the same moment</b> for you. Someone flies past at high speed. For them, do the flashes still happen together?",
       options: ["Yes — 'the same moment' is the same for everyone", "No — for them one flash comes first", "Only if they fly exactly between the lamps"], answer: 1,
@@ -117,10 +174,16 @@
     controls() {
       return `<button class="btn ${SP.mode === "now" ? "primary" : ""}" id="sp-now">Whose 'now'?</button>
         <button class="btn ${SP.mode === "twins" ? "primary" : ""}" id="sp-twins">Twin paradox</button>
-        ${SP.mode === "now" ? `<label class="ctl">Moving observer's speed <input type="range" id="sp-v" min="-90" max="90" value="${Math.round(SP.v * 100)}"><output id="sp-vo">${SP.v.toFixed(2)} c</output></label>
+        <button class="btn ${SP.mode === "barn" ? "primary" : ""}" id="sp-barn">Pole and barn</button>
+        ${SP.mode === "barn" ? `<label class="ctl">Pole's speed <input type="range" id="pb-v" min="30" max="90" value="${Math.round(SP.pbV * 100)}"><output id="pb-vo">${SP.pbV.toFixed(2)} c</output></label>
+          <button class="btn ${SP.pbTarget === 0 ? "primary" : ""}" id="pb-barn">Barn's frame</button>
+          <button class="btn ${SP.pbTarget !== 0 ? "primary" : ""}" id="pb-pole">Pole's frame</button>
+          <button class="btn" id="tw-play">${SP.play ? "Pause" : "Play"}</button>`
+        : SP.mode === "now" ? `<label class="ctl">Moving observer's speed <input type="range" id="sp-v" min="-90" max="90" value="${Math.round(SP.v * 100)}"><output id="sp-vo">${SP.v.toFixed(2)} c</output></label>
           <button class="btn ${SP.viewTarget === 0 ? "primary" : ""}" id="sp-mine">Draw it your way</button>
           <button class="btn ${SP.viewTarget !== 0 ? "primary" : ""}" id="sp-theirs">Draw it their way</button>
-          <button class="btn" id="sp-reset">Reset events</button><span class="ctl">Drag the events</span>`
+          <button class="btn" id="sp-reset">Reset events</button>
+          <label class="ctl"><input type="checkbox" id="sp-hyp" ${SP.hyp ? "checked" : ""}> Equal-interval curves</label><span class="ctl">Drag the events</span>`
         : `<label class="ctl">Speed <input type="range" id="tw-v" min="30" max="99" value="${Math.round(SP.twinV * 100)}"><output id="tw-vo">${SP.twinV.toFixed(2)} c</output></label>
           <label class="ctl">Distance <input type="range" id="tw-d" min="1" max="10" value="${SP.twinD}"><output id="tw-do">${SP.twinD} ly</output></label>
           <button class="btn" id="tw-play">${SP.play ? "Pause" : "Play"}</button>`}`;
@@ -128,6 +191,11 @@
     wire() {
       $("#sp-now").onclick = () => { SP.mode = "now"; Chrono.lab.rebuild(); };
       $("#sp-twins").onclick = () => { SP.mode = "twins"; SP.twinT = 0; Chrono.lab.rebuild(); };
+      $("#sp-barn").onclick = () => { SP.mode = "barn"; SP.pbT = 0.5; Chrono.lab.rebuild(); };
+      const pv = $("#pb-v"); if (pv) pv.oninput = e => { SP.pbV = e.target.value / 100; $("#pb-vo").textContent = SP.pbV.toFixed(2) + " c"; if (SP.pbTarget !== 0) SP.pbTarget = SP.pbV; };
+      const pbb = $("#pb-barn"); if (pbb) pbb.onclick = () => { SP.pbTarget = 0; SP.pbT = 0.5; Chrono.lab.rebuild(); };
+      const pbp = $("#pb-pole"); if (pbp) pbp.onclick = () => { SP.pbTarget = SP.pbV; SP.pbT = -1.5; Chrono.lab.rebuild(); };
+      const hy = $("#sp-hyp"); if (hy) hy.onchange = e => { SP.hyp = e.target.checked; };
       const v = $("#sp-v"); if (v) v.oninput = e => { SP.v = e.target.value / 100; $("#sp-vo").textContent = SP.v.toFixed(2) + " c"; if (SP.viewTarget !== 0) SP.viewTarget = SP.v; };
       const m = $("#sp-mine"); if (m) m.onclick = () => { SP.viewTarget = 0; Chrono.lab.rebuild(); };
       const t = $("#sp-theirs"); if (t) t.onclick = () => { SP.viewTarget = SP.v; Chrono.lab.rebuild(); };
@@ -139,9 +207,12 @@
     tick(dt) {
       SP.view += (SP.viewTarget - SP.view) * Math.min(1, dt * 3);
       if (Math.abs(SP.viewTarget - SP.view) < 1e-4) SP.view = SP.viewTarget;
+      SP.pbView += (SP.pbTarget - SP.pbView) * Math.min(1, dt * 3);
+      if (Math.abs(SP.pbTarget - SP.pbView) < 1e-4) SP.pbView = SP.pbTarget;
+      if (SP.mode === "barn" && SP.play) { SP.pbT += dt * 0.9; if (SP.pbT > 10) SP.pbT = SP.pbTarget ? -1.5 : 0.5; }
       if (SP.mode === "twins" && SP.play) { const T = 2 * SP.twinD / SP.twinV; SP.twinT += dt * T / 9; if (SP.twinT > T + T * 0.15) SP.twinT = 0; }
     },
-    draw(g) { SP.mode === "now" ? drawNow(g) : drawTwins(g); },
+    draw(g) { SP.mode === "now" ? drawNow(g) : SP.mode === "twins" ? drawTwins(g) : drawBarn(g); },
     pointer(type, px, py) {
       if (SP.mode !== "now" || !SP.geo) return;
       const { s, ox, oy } = SP.geo, d = SP.view;
@@ -155,11 +226,17 @@
         const [rt, rx] = boost(t, x, -d); SP.drag.t = rt; SP.drag.x = rx;
       } else if (type === "pointerup") SP.drag = null;
     },
-    aside: () => SP.mode === "now" ? `
+    aside: () => SP.mode === "barn" ? `
+      <p>A classic puzzle. A pole 5 units long races through a barn only 4 units long. In the barn's frame the moving pole is shorter — at 0.8 c, just 3 — so for an instant both doors can be shut with the pole inside.</p>
+      <p>But in the pole's frame it's the <b>barn</b> that's moving and short: 2.4. A 5-unit pole can't fit in 2.4. Who's right?</p>
+      <div class="try"><b>Try:</b> watch the strip on the right in the barn's frame: both doors shut together. Then press <b>Pole's frame</b>. The exit door shuts and opens again <i>before</i> the pole reaches it; only later does the entrance door shut behind it. Then slow the pole below 0.6 c.</div>
+      <p><b>Both are right.</b> 'Both doors shut at the same moment' is a statement about simultaneity, and simultaneity depends on the frame. What every observer agrees on are <b>events</b>: whether a door ever strikes the pole. Below 0.6 c it does, in every frame.</p>
+      <p class="meta">Model assumption: special relativity, flat spacetime, c = 1; rigid doors that shut for 0.3 time units in the barn's frame. The diagram is the same history drawn two ways (a Lorentz transformation). <span class="tag ESTABLISHED">Established</span></p>` : SP.mode === "now" ? `
       <p>Even with one time dimension, 'now' is stranger than it looks. In relativity, observers moving relative to each other slice spacetime into moments <b>differently</b>.</p>
       <p><b style="color:var(--accent)">Blue</b>: your clock's path (straight up — you're at rest) and your 'now' (flat). <b style="color:#ff7a59">Orange</b>: someone moving at speed v. Their clock's path tilts toward the light ray — and so does their 'now', by the same angle.</p>
       <div class="try"><b>Try:</b> A and B are simultaneous for you. Set the speed to 0.6 and read the table: for the moving observer, B comes first. Then press <b>Draw it their way</b> — the diagram redraws so their 'now' is flat and yours tilts. Nobody's drawing is the 'real' one.</div>
       <p><b>Why nothing breaks:</b> order can only flip for events <i>outside each other's light cones</i> — too far apart, too close in time, for any signal to pass between them. If one event could cause the other, every observer agrees which came first. Drag C inside A's cone and try.</p>
+      <p><b>What everyone agrees on:</b> tick <b>Equal-interval curves</b>. Each curve joins the events at the same spacetime interval from the origin (t² − x², the table's last column). Switch between drawing it your way and theirs: the events slide <i>along</i> their curves. Times and distances change between observers; the interval doesn't.</p>
       <p>This is why relativity has no universal 'now' — hole <a href="#" data-hole="H4">H4</a>. It's also why many physicists picture spacetime as a block (see Flatland chapter 7).</p>
       <p class="meta">Model assumption: special relativity in flat spacetime; one space dimension drawn; units where light travels one unit of distance per unit of time, so light rays run at 45°. <span class="tag ESTABLISHED">Established</span></p>` : `
       <p>One twin stays on Earth. The other flies to a star and back at a steady speed. When they meet again, the traveller is <b>younger</b> — not an illusion, but the same effect measured in the Clock Lab.</p>

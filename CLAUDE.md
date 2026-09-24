@@ -28,6 +28,7 @@ Now a free public learning tool with a life of its own: four scales (Quantum · 
 ## Tech constraints
 - Plain HTML/CSS/JS. Opens by double-clicking `index.html`. No build step, no server.
 - External libs only via cdnjs / jsdelivr, and only if earned (Three.js for 3D, nothing else by default).
+- Cache-busting: every `src/` link in `index.html` carries `?v=N`. Bump N (one sed) whenever changed files ship, or returning visitors get stale code.
 - Split into `/src/*.js` modules (classic `<script>` tags, not ES modules — `file://` blocks module imports).
 - Must run smoothly on a MacBook; target 60fps, degrade gracefully.
 

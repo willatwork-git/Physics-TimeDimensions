@@ -85,6 +85,7 @@
   function initCanvas() {
     canvas = $("#lab-canvas"); ctx = canvas.getContext("2d"); G.ctx = ctx;
     window.addEventListener("resize", () => active && resize());
+    if (window.ResizeObserver) new ResizeObserver(() => active && resize()).observe(canvas.parentElement);   // layout settling after show (phones)
     ["pointerdown", "pointermove", "pointerup"].forEach(type => canvas.addEventListener(type, e => {
       if (active && active.pointer) { const [x, y] = pos(e); active.pointer(type, x, y, e); }
     }));
@@ -133,7 +134,7 @@
   function renderLabAside(def) {
     const tier = def.tier || "mainstream";
     const waiting = def.predict && Chrono.progress.pred(def.id).guess === undefined;
-    $("#aside").innerHTML = `
+    $("#aside").innerHTML = `${Chrono.crumb ? Chrono.crumb() : ""}
       <div class="eyebrow">${def.eyebrow || "Lab"}</div>
       <h2>${def.title}</h2>
       <div class="pillrow">${Chrono.tierPill(tier)} ${(def.tags || []).map(t => `<span class="tag ${t}">${Chrono.TAGS[t]}</span>`).join(" ")}</div>

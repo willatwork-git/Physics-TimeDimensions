@@ -161,3 +161,19 @@ Added 2026-09-25 from Claude's recall. All ☐ until checked against the primary
 - **E** Cepeda, N. J. et al. (2006). "Distributed practice in verbal recall tasks." *Psychological Bulletin* 132, 354. — Spaced review beats massed review. Basis for returning review (D-037). ☐
 - **Lens** Matuschak, A. & Nielsen, M. (2019). *Quantum Country* — the mnemonic medium: review prompts embedded in an essay (landscape-2026-09-25.md). ☐
 - **Lens** Greene, B. (2004). *The Fabric of the Cosmos*, ch. 5 — the "loaf of spacetime" image (Spacetime lab, Picture it). ☐
+
+## Deep time (D-038)
+Added 2026-09-25 from Claude's recall. All ☐ until checked against the primary source.
+- **E** (theory; unobserved) Hawking, S. W. (1974). "Black hole explosions?" *Nature* 248, 30; (1975) *Commun. Math. Phys.* 43, 199. ☐
+- **E** Page, D. N. (1976). "Particle emission rates from a black hole." *Phys. Rev. D* 13, 198 — lifetimes with all particle species. ☐
+- **C** Page, D. N. (1993). "Information in black hole radiation." *Phys. Rev. Lett.* 71, 3743 — the Page curve. ☐
+- **C** Penington, G. (2020) *JHEP* 09, 002; Almheiri, A., Engelhardt, N., Marolf, D. & Maxfield, H. (2019) *JHEP* 12, 063 — the Page curve from 'islands' in simplified models. ☐
+- **S** Carr, B. J., Kohri, K., Sendouda, Y. & Yokoyama, J. (2010). "New cosmological constraints on primordial black holes." *Phys. Rev. D* 81, 104019 — ≈ 5 × 10¹¹ kg evaporating today. ☐
+- **E** (projection) Adams, F. C. & Laughlin, G. (1997). "A dying universe." *Rev. Mod. Phys.* 69, 337. ☐
+- **E** (bound) Super-Kamiokande: Abe, K. et al. (2020) *Phys. Rev. D* 102, 112011 — proton lifetime > 2.4 × 10³⁴ yr (p → e⁺π⁰). ☐
+- **E** Carniani, S. et al. (2024). "A shining cosmic dawn: spectroscopic confirmation of two luminous galaxies at z ≈ 14." *Nature* 633, 318 (JWST). ☐
+- **Lens** Sagan, C. (1977). *The Dragons of Eden* — the cosmic calendar. ☐
+- **E** Schrödinger, E. (1944). *What is Life?* — life feeds on 'negative entropy'. Penrose, R. (1989). *The Emperor's New Mind*, ch. 7 — the Sun as a low-entropy source. ☐
+- **E** Kleidon, A. (2009). "Nonequilibrium thermodynamics and maximum entropy production in the Earth system." *Naturwissenschaften* 96, 653 — Earth's entropy export ≈ 1 W m⁻² K⁻¹. ☐
+- **E** Loeb, N. G. et al. (2021). "Satellite and ocean data reveal marked increase in Earth's heating rate." *Geophys. Res. Lett.* 48, e2021GL093047 — imbalance ≈ 1 W m⁻² (CERES). ☐
+- **E** Rindler, W. (1961). "Length contraction paradox." *Am. J. Phys.* 29, 365; Taylor, E. F. & Wheeler, J. A., *Spacetime Physics* (2nd ed., 1992) — pole and barn. Tao, T. (2026) spacetime diagram applet — equal-interval hyperbolae (see landscape-2026-09-25.md). ☐

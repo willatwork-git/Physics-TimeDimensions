@@ -12,7 +12,7 @@ Every item carries a tier:
 | Exploratory | Hypothesis | This project's own ideas and visitors' hypotheses — **not mainstream physics** (Lab mode) |
 | Lens | Analogy | History, stories and analogies (e.g. Flatland) |
 
-- **Full edition** (default): a **Learn | Lab** switch in the header. Learn (default for new visitors) = mainstream + frontier + lenses. Lab adds exploratory content, the Dimension Map and the hypothesis tools. `?mode=lab` opens in Lab.
+- **Full edition** (default): a **Learn | Lab** switch in the header. Learn (default for new visitors) = mainstream + frontier + lenses. Lab adds the ◌ Workbench menu: exploratory ideas, the Dimension Map and the hypothesis tools. `?mode=lab` opens in Lab.
 - **School edition**: open `index.html?edition=school`. Learn mode only, no switch. To make it the default, set `edition: "school"` in `src/config.js`.
 - **Deep links:** every view has a URL — e.g. `index.html?edition=school#flatland/7` or `#atlas/H5` — handy for lesson handouts.
 
@@ -21,7 +21,7 @@ Every item carries a tier:
 - **Domain:** chronoscope.com.au, registered to AgilityAI; not yet pointed at the site (todo.md, Phase 5).
 - Static files only — no server code, no build step. Upload the folder (`index.html` + `src/`) anywhere, or embed in a page with an `<iframe src=".../index.html?edition=school" style="width:100%;height:90vh;border:0">`.
 - Only external request: Google Fonts (falls back to system fonts offline).
-- A built-in Guide ("? Guide" button, or press ?) explains the app for first-time visitors.
+- A built-in guide (the **Guide** menu, top right, or press ?) explains the app; the same menu holds Concepts, quizzes and the three tours.
 - Visitor hypotheses, progress, predictions and own scores are stored in the visitor's own browser only; nothing is sent anywhere. Imported hypothesis files are sanitised (D-020).
 - Honours `prefers-reduced-motion`: simulations wait for the visitor to interact before moving.
 

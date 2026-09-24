@@ -8,8 +8,8 @@
 
   const state = {
     view: "atlas",
-    camps: new Set(Chrono.CAMPS.map(c => c.id)),
-    tags: new Set(Object.keys(Chrono.TAGS)),
+    camps: new Set(),                                    // filters are show-only: empty = show everything (D-039)
+    tags: new Set(),
     selected: null,   // {type:'hole'|'idea', id}
     hover: null
   };
@@ -25,7 +25,8 @@
   const campOf = id => Chrono.CAMPS.find(c => c.id === id);
   const holeOf = id => Chrono.HOLES.find(h => h.id === id);
   const allIdeas = () => Chrono.IDEAS.concat(Chrono.hyp.asIdeas());
-  const visible = i => state.camps.has(i.camp) && state.tags.has(i.tag) && Chrono.shows(Chrono.tierOf(i));
+  const campOn = id => !state.camps.size || state.camps.has(id);
+  const visible = i => campOn(i.camp) && (!state.tags.size || state.tags.has(i.tag)) && Chrono.shows(Chrono.tierOf(i));
   const visHoles = () => Chrono.HOLES.filter(h => Chrono.shows(Chrono.tierOf(h)));
   const isExp = x => Chrono.tierOf(x) === "exploratory";
   const xOf = y => X0 + (y - Y0) / (Y1 - Y0) * (X1 - X0);
@@ -33,31 +34,28 @@
   const holeX = i => { const n = visHoles().length; return n < 2 ? (X0 + X1) / 2 : X0 - 20 + i * ((X1 - X0 + 40) / (n - 1)); };
   const esc = s => String(s || "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-  /* ---------- filters toolbar ---------- */
+  /* ---------- filters toolbar: one Filter menu, tick to show only those (D-039) ---------- */
+  let fOpen = false;
   function renderFilters() {
-    const f = $("#filters");
-    f.innerHTML = "";
-    Chrono.CAMPS.forEach(c => {
-      const b = document.createElement("button");
-      b.className = "chip" + (state.camps.has(c.id) ? " on" : "");
-      b.title = c.desc;
-      b.innerHTML = `<i style="background:${campColor(c.id)}"></i>${c.name}`;
-      b.onclick = () => { toggle(state.camps, c.id); renderAll(); };
-      f.appendChild(b);
-    });
-    const sep = document.createElement("span"); sep.style.width = "12px"; f.appendChild(sep);
-    if (Chrono.mode() === "lab") Object.keys(Chrono.TAGS).filter(t => Chrono.shows(Chrono.TIER_OF_TAG[t])).forEach(t => {
-      const b = document.createElement("button");
-      b.className = "chip" + (state.tags.has(t) ? " on" : "");
-      b.innerHTML = `<span class="tag ${t}" style="border:none;padding:0">${Chrono.TAGS[t]}</span>`;
-      b.onclick = () => { toggle(state.tags, t); renderAll(); };
-      f.appendChild(b);
-    });
-    const sp = document.createElement("span"); sp.className = "spacer"; f.appendChild(sp);
-    if (Chrono.shows("exploratory")) [["+ Your hypothesis", "primary", openModal], ["Export", "", () => Chrono.hyp.exportJSON()], ["Import", "", () => $("#importfile").click()]]
-      .forEach(([t, cls, fn]) => { const b = document.createElement("button"); b.className = "btn " + cls; b.textContent = t; b.onclick = fn; f.appendChild(b); });
+    const f = $("#filters"), tags = Object.keys(Chrono.TAGS).filter(t => Chrono.shows(Chrono.TIER_OF_TAG[t])), n = state.camps.size + state.tags.size;
+    const names = [...state.camps].map(id => campOf(id).name).concat([...state.tags].map(t => Chrono.TAGS[t]));
+    f.innerHTML = `<div class="fdrop ${fOpen ? "open" : ""}"><button class="btn ${n ? "primary" : ""}" id="fbtn" aria-expanded="${fOpen}">Filter${n ? ` · ${n}` : ""} ▾</button>
+      <div class="fpanel"><div class="fcols">
+        <div class="fcol"><div class="eyebrow">Approach</div>${Chrono.CAMPS.map(c => `<label title="${esc(c.desc)}"><input type="checkbox" data-fc="${c.id}" ${state.camps.has(c.id) ? "checked" : ""}><i class="camp-dot" style="background:${campColor(c.id)}"></i>${esc(c.name)}</label>`).join("")}</div>
+        <div class="fcol"><div class="eyebrow">How sure</div>${tags.map(t => `<label><input type="checkbox" data-ft="${t}" ${state.tags.has(t) ? "checked" : ""}><span class="tag ${t}">${Chrono.TAGS[t]}</span></label>`).join("")}</div>
+      </div><p class="meta">Tick to show only those. Nothing ticked shows everything.</p>
+      <button class="linkish" data-fclear ${n ? "" : "disabled"}>Clear filters</button></div></div>
+      <span class="fsum meta">${n ? `Showing only: ${esc(names.join(", "))} · <button class="linkish" data-fclear>show everything</button>` : "Showing everything"}</span>
+      <span class="spacer"></span>`;
+    $("#fbtn").onclick = e => { e.stopPropagation(); fOpen = !fOpen; f.querySelector(".fdrop").classList.toggle("open", fOpen); $("#fbtn").setAttribute("aria-expanded", fOpen); };
+    f.querySelectorAll("[data-fc]").forEach(x => x.onchange = () => { toggle(state.camps, x.dataset.fc); renderAll(); });
+    f.querySelectorAll("[data-ft]").forEach(x => x.onchange = () => { toggle(state.tags, x.dataset.ft); renderAll(); });
+    f.querySelectorAll("[data-fclear]").forEach(x => x.onclick = () => { state.camps.clear(); state.tags.clear(); renderAll(); });
+    if (Chrono.shows("exploratory")) [["+ Your hypothesis", "primary", "add"], ["Export", "", "export"], ["Import", "", "import"]]
+      .forEach(([t, cls, a]) => { const b = document.createElement("button"); b.className = "btn " + cls; b.textContent = t; b.onclick = () => Chrono.hypAction(a); f.appendChild(b); });
   }
-  function toggle(set, v) { set.has(v) ? set.delete(v) : set.add(v); if (set.size === 0) set.add(v); }
+  function toggle(set, v) { set.has(v) ? set.delete(v) : set.add(v); }
+  document.addEventListener("click", e => { if (fOpen && !e.target.closest(".fdrop")) { fOpen = false; const d = $(".fdrop"); if (d) d.classList.remove("open"); } });
 
   /* ---------- atlas (SVG) ---------- */
   function renderAtlas() {
@@ -73,9 +71,9 @@
     // lanes + axis
     Chrono.CAMPS.forEach(c => {
       const y = laneY(c.id);
-      el("line", { x1: X0 - 10, x2: X1 + 20, y1: y, y2: y, stroke: "var(--line)", "stroke-dasharray": "2 6", opacity: state.camps.has(c.id) ? 1 : .3 }, svg);
+      el("line", { x1: X0 - 10, x2: X1 + 20, y1: y, y2: y, stroke: "var(--line)", "stroke-dasharray": "2 6", opacity: campOn(c.id) ? 1 : .3 }, svg);
       const t = el("text", { x: 20, y: y + 4, class: "lane-label", fill: campColor(c.id) }, svg);
-      t.style.fill = campColor(c.id); t.style.opacity = state.camps.has(c.id) ? .9 : .3;
+      t.style.fill = campColor(c.id); t.style.opacity = campOn(c.id) ? .9 : .3;
       t.textContent = c.name;
     });
     const ax = el("g", { class: "axis" }, svg);
@@ -180,12 +178,12 @@
 
   /* ---------- aside ---------- */
   function renderAside() {
-    const a = $("#aside");
+    const a = $("#aside"), cr = Chrono.crumb ? Chrono.crumb() : "";
     const s = state.selected;
-    if (!s) return a.innerHTML = state.view === "bench" ? benchIntroHTML() : introHTML();
-    if (s.type === "hole") return a.innerHTML = holeHTML(holeOf(s.id)), wireAside();
+    if (!s) return a.innerHTML = cr + (state.view === "bench" ? benchIntroHTML() : introHTML());
+    if (s.type === "hole") return a.innerHTML = cr + holeHTML(holeOf(s.id)), wireAside();
     const i = allIdeas().find(x => x.id === s.id);
-    a.innerHTML = i ? ideaHTML(i) : introHTML();
+    a.innerHTML = cr + (i ? ideaHTML(i) : introHTML());
     wireAside();
   }
   function wireAside() {
@@ -319,14 +317,38 @@
     const h = { id: "u" + Date.now(), name, camp: $("#h-camp").value, holes, plain: $("#h-plain").value.trim(),
       pred: $("#h-pred").value.trim(), kill: $("#h-kill").value.trim(), who: $("#h-who").value.trim() || "You" };
     Chrono.hyp.add(h);
-    state.camps.add(h.camp); state.tags.add("HYPOTHESIS");
+    if (state.camps.size) state.camps.add(h.camp); if (state.tags.size) state.tags.add("HYPOTHESIS");   // keep a new idea visible under active filters
     $("#modal").style.display = "none";
     Chrono.nav("#atlas/" + h.id);
   };
   $("#importfile").onchange = e => { const f = e.target.files[0]; if (f) Chrono.hyp.importJSON(f, (ok, added, skipped) => { if (!ok) alert("That file couldn't be read."); else if (skipped) alert(`Imported ${added} idea(s); skipped ${skipped} (already here, or missing a name, camp or known hole).`); renderAll(); }); e.target.value = ""; };
 
+  Chrono.hypAction = a => a === "add" ? openModal() : a === "export" ? Chrono.hyp.exportJSON() : $("#importfile").click();
+
+  /* ---------- ◌ Workbench: exploratory ideas, in one place (Lab mode, D-039) ---------- */
+  Chrono.lab.register({
+    id: "ideas", kind: "doc", title: "Exploratory ideas", eyebrow: "◌ Workbench", tier: "exploratory",
+    page() {
+      const ex = allIdeas().filter(isExp), ours = ex.filter(i => !i.user), mine = ex.filter(i => i.user), holes = Chrono.HOLES.filter(isExp);
+      const card = i => `<a class="xcard" href="#atlas/${esc(i.id)}"><span class="eyebrow">${i.user ? "Yours" : i.year} · ${esc((campOf(i.camp) || {}).name || "")}</span><b>${esc(i.name)}</b><span>${esc(i.plain || "")}</span><span class="hgo">On the Atlas →</span></a>`;
+      return `<div class="docwrap ideas">
+        <div class="eyebrow">◌ Workbench · Lab mode</div>
+        <h1>Exploratory ideas</h1>
+        <p class="lede">This project's own challenges to mainstream physics, and yours. Each one says what it would predict and what would kill it, and each gets scored on the Test bench like everything else. They're here to be tested, not believed.</p>
+        ${holes.length ? `<h2 class="sect">Open questions this project adds</h2><div class="xgrid">${holes.map(h => `<a class="xcard" href="#atlas/${esc(h.id)}"><span class="eyebrow">${esc(h.id)}</span><b>${esc(h.name)}</b><span>${esc(h.one || "")}</span><span class="hgo">On the Atlas →</span></a>`).join("")}</div>` : ""}
+        <h2 class="sect">This project's ideas</h2><div class="xgrid">${ours.map(card).join("")}</div>
+        <h2 class="sect">Your hypotheses</h2>${mine.length ? `<div class="xgrid">${mine.map(card).join("")}</div>` : `<p class="meta">None yet. Add one: name it, say which hole it fills, what it predicts, and what would prove it wrong.</p>`}
+        <div class="xbtns"><button class="btn primary" data-hyp2="add">+ Add your hypothesis</button> <button class="btn" data-hyp2="export">Export</button> <button class="btn" data-hyp2="import">Import</button></div>
+      </div>`;
+    },
+    wire() { document.querySelectorAll("[data-hyp2]").forEach(b => b.onclick = () => Chrono.hypAction(b.dataset.hyp2)); },
+    aside: () => `<p><b>◌ Lab mode</b> is the workbench: the place for ideas that aren't mainstream physics yet.</p>
+      <p>Here you'll find this project's own exploratory ideas and your hypotheses, the Dimension Map, and the tools to add, export and share ideas.</p>
+      <p class="meta">Everything here carries the <span class="tag HYPOTHESIS">Hypothesis</span> tag. Switch back to Learn (top right) for physics as physicists hold and debate it.</p>`
+  });
+
   /* ---------- views ---------- */
-  document.querySelectorAll("nav button[data-view]").forEach(b => b.onclick = () => Chrono.nav("#" + b.dataset.view));
+  document.querySelectorAll("header button[data-view]").forEach(b => b.onclick = () => Chrono.nav("#" + b.dataset.view));
   function renderAll() {
     const mod = Chrono.views && Chrono.views[state.view];
     ["#atlas", "#benchview", "#flatland", "#lab", "#doc"].forEach(sel => { const n = $(sel); if (n) n.style.display = "none"; });
@@ -346,12 +368,12 @@
     document.body.classList.toggle("mode-learn", Chrono.mode() === "learn");
     host.innerHTML = Chrono.maxLevel < 3 ? "" : `<div class="modesw" role="group" aria-label="Mode">
       <button class="${Chrono.mode() === "learn" ? "on" : ""}" data-lvl="2" title="Physics as physicists hold and debate it, plus published fringe proposals. Guided and uncluttered.">Learn</button>
-      <button class="lab ${Chrono.mode() === "lab" ? "on" : ""}" data-lvl="3" title="The raw workbench: adds this project's own exploratory ideas, your hypotheses, the Dimension Map and every filter. Not mainstream physics.">◌ Lab</button></div>`;
+      <button class="lab ${Chrono.mode() === "lab" ? "on" : ""}" data-lvl="3" title="The raw workbench: adds the ◌ Workbench menu — this project's own exploratory ideas, your hypotheses and the Dimension Map. Not mainstream physics.">◌ Lab</button></div>`;
     host.querySelectorAll("[data-lvl]").forEach(b => b.onclick = () => Chrono.setLevel(+b.dataset.lvl));
-    document.querySelectorAll("nav button[data-tier]").forEach(b => b.style.display = Chrono.shows(b.dataset.tier) ? "" : "none");
+    document.querySelectorAll("header [data-tier]").forEach(b => b.style.display = Chrono.shows(b.dataset.tier) ? "" : "none");
     if (Chrono.navSync) Chrono.navSync();
   }
-  Chrono.onLevel.push(() => { if (Chrono.mode() === "learn") state.tags = new Set(Object.keys(Chrono.TAGS)); rendered = false; route(); });
+  Chrono.onLevel.push(() => { state.tags = new Set([...state.tags].filter(t => Chrono.shows(Chrono.TIER_OF_TAG[t]))); rendered = false; route(); });
   Chrono.views = Chrono.views || {};
   if (Chrono.flatland) Chrono.views.flatland = { show: () => { $("#flatland").style.display = "flex"; Chrono.flatland.show(); }, hide: () => Chrono.flatland.hide() };
   Chrono.goView = v => Chrono.nav("#" + v);
@@ -363,7 +385,7 @@
   Chrono.nav = hash => { if (location.hash === hash) route(); else location.hash = hash; };
   function route() {
     const [v0, arg] = decodeURIComponent(location.hash.slice(1)).split("/");
-    const btn = document.querySelector(`nav button[data-view="${v0}"]`);
+    const btn = document.querySelector(`header button[data-view="${v0}"]`);
     const known = btn || v0 === "home";
     const v = !v0 ? "home" : known && (!btn || !btn.dataset.tier || Chrono.shows(btn.dataset.tier)) ? v0 : "atlas";
     if (v0 && v !== v0) history.replaceState(null, "", "#atlas");
@@ -378,7 +400,7 @@
     Chrono.progress.visit(v);
     const fl = v === "flatland" && parseInt(arg, 10);
     if (v !== "home") Chrono.progress.setLast("#" + v + (sel ? "/" + sel.id : fl ? "/" + fl : ""));
-    document.querySelectorAll("nav button[data-view]").forEach(x => { x.classList.toggle("on", x.dataset.view === v); x.classList.toggle("seen", Chrono.progress.seen(x.dataset.view)); });
+    document.querySelectorAll("header button[data-view]").forEach(x => { x.classList.toggle("on", x.dataset.view === v); x.classList.toggle("seen", Chrono.progress.seen(x.dataset.view)); });
     if (v === "flatland" && Chrono.flatland && arg) Chrono.flatland.setChapter(parseInt(arg, 10) - 1);
     if (v === "concepts") Chrono.conceptSel = arg || null;
     if (v === "review") Chrono.reviewSel = arg || null;

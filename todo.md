@@ -26,7 +26,7 @@ Delivery builds are named by date/content below; spec.md "Build order" numbers t
 ## Learner review — Phase C (new models)
 - [x] Spacetime diagram (simultaneity + twins) · Entropy box — in the tour (D-030)
 - [x] Voyages (3 labs), Cosmos (4 labs), drop-down nav, threads, Tour 2 (D-031)
-- [ ] Cosmic timeline (orientation, log-time) · a Voyages lab on the arrow thread (e.g. Earth's energy budget)
+- [x] Cosmic timeline (orientation, log-time) · a Voyages lab on the arrow thread (Earth's energy budget) — D-038
 - [ ] README screenshots: add the home page and a Cosmos lab
 
 ## Roadmap (2026-09-25) — toward its own domain
@@ -47,8 +47,12 @@ Priority: credibility before launch; build what unlocks structure (Quantum scale
 - [x] End-of-tour quizzes (one question per stop) · review questions that return after 1, 3, 7, 16, 35, 80 days
 - [ ] Will: review the analogies, traps and 20 questions (`src/stick.js`)
 - [ ] "Picture it" images: text only for now; Will to approve any images before they're added
-### Phase 4 — Deep time
-- [ ] Hawking evaporation lab (Page curve) · cosmic timeline · Earth's energy budget · Spacetime lab: hyperbolae, pole-and-barn
+### Phase 4 — Deep time ✅ 2026-09-25 (D-038)
+- [x] Hawking evaporation lab (Page curve) · cosmic timeline · Earth's energy budget · Spacetime lab: hyperbolae, pole-and-barn
+- [ ] Will: review the three new labs' text (`src/deeptime.js`) and the pole-and-barn wording (`src/labs2.js`)
+### Review fixes ✅ 2026-09-25 (D-039)
+- [x] Nav reorganised (⌂ Home, Guide menu, breadcrumb) · show-only Filter menu in both modes · ◌ Workbench for Lab · home text B
+- [ ] Will: check the new home text (`src/home.js`) and the Exploratory ideas page
 ### Phase 5 — Launch readiness
 - [ ] Verify every ☐ citation · light theme · teacher notes · keyboard Atlas · tidy public review/learning files
 - [x] Domain chronoscope.com.au registered (AgilityAI)
@@ -60,6 +64,7 @@ see the full physics (equations, derivations, the model's exact assumptions) wit
 - Form: a second marker per claim (e.g. **∑** beside ⓘ), a per-lab "The maths" panel, or a page-wide depth switch.
   Note: depth is a different axis from Learn/Lab (Learn/Lab = how sure; depth = how technical), so probably its
   own control rather than a third Learn/Lab state.
+  Update (D-039): the ◌ Workbench (Lab mode) is the natural home — Learn for understanding, Lab for working with the raw physics.
 - Research candidates: colour-coded equations whose terms highlight the matching part of the simulation
   (Stuart Riffle's colour-coded DFT; Better Explained); live equations whose numbers update with the sliders
   (Bret Victor, Ciechanowski); expandable derivations; KaTeX rendering (jsdelivr) with copy-as-LaTeX;

@@ -43,7 +43,13 @@
     wormhole: ["A drawbridge that rises as you drive onto it. The Einstein–Rosen bridge opens and closes again faster than light could cross it.",
       "Nobody raises it: the shape of spacetime itself changes. And black holes formed from collapsing stars have no bridge at all."],
     loops: ["A spiral staircase that brings you back to the same floor, but in time. Far enough from the centre, the rotation tips 'forwards in time' so far over that walking in a circle leads into your own past.",
-      "There's no staircase. What tips is the light cones, and only in a universe that rotates, which ours doesn't measurably."]
+      "There's no staircase. What tips is the light cones, and only in a universe that rotates, which ours doesn't measurably."],
+    hawking: ["A coal that gets hotter as it burns down: the smaller it gets, the fiercer it glows, until it flares out.",
+      "Real coals cool as they burn down. A black hole does the opposite because its temperature goes as one over its mass."],
+    timeline: ["Squeeze the universe so far into one calendar year. The Big Bang is the first instant of 1 January, the Sun forms in early September, and all of recorded history fits into the last 11 seconds of 31 December.",
+      "The calendar only covers the past. The universe's future would fill about 10⁹⁰ more calendar years."],
+    energy: ["Swapping a $20 note for twenty $1 coins: the same money, in many more pieces, with far more ways to arrange them. Earth swaps sunlight for infrared the same way.",
+      "Money isn't used up by the swap. What goes up here is the number of ways to arrange the photons: entropy."]
   };
 
   /* ---------- Common trap: [the belief, why it's tempting, what the lab shows, tag] ---------- */
@@ -81,7 +87,13 @@
     wormhole: ["Black holes are tunnels to other places.", "Science fiction uses them that way, and the maths does contain a bridge.",
       "The bridge pinches shut before even light can cross, and black holes formed from collapsing stars don't have one at all.", "ESTABLISHED"],
     loops: ["Relativity forbids travelling into the past.", "Everyone knows you can't go faster than light.",
-      "Einstein's equations have exact solutions with loops in time, and no faster-than-light travel is needed. Whether nature forbids them (Hawking's 'chronology protection') is still a conjecture.", "ESTABLISHED"]
+      "Einstein's equations have exact solutions with loops in time, and no faster-than-light travel is needed. Whether nature forbids them (Hawking's 'chronology protection') is still a conjecture.", "ESTABLISHED"],
+    hawking: ["Nothing ever comes out of a black hole.", "In classical physics, that's what makes it a black hole.",
+      "With quantum theory included, black holes glow faintly and slowly lose mass (Hawking, 1974). It has never been observed, but it follows from two well-tested theories.", "ESTABLISHED"],
+    timeline: ["Most of the universe's history is behind us.", "13.8 billion years sounds unimaginably old.",
+      "On an ordinary clock the universe has barely begun: stars will keep shining for thousands of times longer than they have so far.", "ESTABLISHED"],
+    energy: ["The Sun keeps Earth going by giving it energy.", "We talk about 'using' energy, and solar panels 'collect' it.",
+      "Earth sends almost all of that energy back out. What gets used up is low entropy: sunlight arrives as a few hot photons and leaves as many cold ones.", "ESTABLISHED"]
   };
 
   /* ---------- question bank: { q, o: options, a: answer index, why } ---------- */
@@ -125,10 +137,16 @@
     loops: { q: "How does Gödel's universe allow a trip into your own past?", o: ["By travelling faster than light", "Its rotation tips light cones over, so far out a slower-than-light circle loops back in time", "Through a black hole"], a: 1,
       why: "It's an exact solution of Einstein's equations. Our universe, though, shows no measurable rotation." },
     "concepts/timetravel": { q: "Which kind of time travel has actually been measured?", o: ["Into the past, with entangled photons", "Into the future: every moving or high-up clock does it", "Neither"], a: 1,
-      why: "Into the future: airliner clocks, GPS, astronauts. Into the past: allowed by some exact solutions, never observed, and every known recipe needs something our universe lacks." }
+      why: "Into the future: airliner clocks, GPS, astronauts. Into the past: allowed by some exact solutions, never observed, and every known recipe needs something our universe lacks." },
+    hawking: { q: "Why does a black hole evaporate faster and faster as it shrinks?", o: ["Nearby stars tear it apart", "Smaller black holes are hotter, so they radiate harder", "Its horizon gets leakier with age"], a: 1,
+      why: "Its temperature goes as one over its mass. Losing mass makes it hotter, and a hotter black hole loses mass faster: it ends in a flash." },
+    timeline: { q: "On a powers-of-ten timeline from the first instant to the last black hole, where is today?", o: ["Near the very end", "A little under halfway along", "At the very start"], a: 1,
+      why: "About 40% of the way along: as many powers of ten lie between the first instant and today as between today and the last black holes. On an ordinary clock we're at the very start." },
+    energy: { q: "Earth sends back almost all the energy it absorbs from the Sun. So what does it actually gain?", o: ["Nothing: it's a perfect balance", "Low entropy: sunlight arrives as a few hot photons and leaves as many cold ones", "Mass, from sunlight turning into matter"], a: 1,
+      why: "About 20 infrared photons leave for each photon of sunlight absorbed. Everything that builds order on Earth runs on that difference." }
   };
   const NAME = { "flatland/7": "Flatland · time as a slice", "atlas/H5": "Atlas · hole H5", "concepts/timetravel": "Concept · time travel" };
-  const nameOf = k => NAME[k] || ((document.querySelector(`nav button[data-view="${k}"]`) || {}).firstChild || {}).textContent || k;
+  const nameOf = k => NAME[k] || ((document.querySelector(`header button[data-view="${k}"]`) || {}).firstChild || {}).textContent || k;
 
   /* ---------- in each lab's aside, after Remember ---------- */
   Chrono.stickFor = key => {

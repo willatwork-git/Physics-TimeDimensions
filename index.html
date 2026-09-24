@@ -3,32 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chronoscope — the holes in time</title>
-<meta name="description" content="A free, interactive guide to the open questions about time: why clocks disagree, what 'now' means, why time runs one way, and why the universe has one time dimension. Real simulations; every claim tagged by how sure physicists are.">
+<title>Chronoscope — time, at every scale</title>
+<meta name="description" content="A free, hands-on guide to time in physics, from a single photon to the edge of the universe: live simulations running the real equations, every claim tagged by how sure physicists are.">
 <meta name="theme-color" content="#0b0d12">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- Link previews. Absolute URLs: update if the site moves to its own domain. -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Chronoscope — the holes in time">
-<meta property="og:description" content="Why does our universe have exactly one time dimension? A free, interactive guide to the open questions about time — real simulations, every claim tagged by how sure physicists are.">
+<meta property="og:title" content="Chronoscope — time, at every scale">
+<meta property="og:description" content="What is time? A free, hands-on guide to time in physics, from a single photon to the edge of the universe. Live simulations; every claim tagged by how sure physicists are.">
 <meta property="og:url" content="https://willatwork-git.github.io/Physics-TimeDimensions/">
 <meta property="og:image" content="https://willatwork-git.github.io/Physics-TimeDimensions/docs/og-image.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="src/style.css">
+<link rel="stylesheet" href="src/style.css?v=39">
 </head>
 <body>
 <header>
-  <a class="brand" href="#home" title="Home"><b>CHRONOSCOPE</b><span class="brand-sub"> · the holes in time</span></a>
+  <a class="brand" href="#home" title="Back to the start"><b>CHRONOSCOPE</b><span class="brand-sub"> · time, at every scale</span></a>
+  <a class="homebtn" href="#home" title="Home"><span aria-hidden="true">⌂</span><span class="hb-t"> Home</span></a>
   <nav>
     <div class="navgroup g-explore"><button class="navtop" aria-haspopup="true" aria-expanded="false">Explore</button><div class="navmenu">
       <button data-view="atlas">Atlas<span>The holes in physics' account of time, and a century of attempts to fill them</span></button>
-      <button data-view="concepts">Concepts<span>Why clocks disagree, what 'now' means, the arrow, 3 + 1 — explained</span></button>
-      <button data-view="review">Quizzes and review<span>Tour quizzes, and questions that come back to check what stuck</span></button>
       <button data-view="bench">Test bench<span>Every idea against the same five hurdles — argue with the scores</span></button>
-      <button data-view="dims" data-tier="exploratory">◌ Dimension Map<span>Exploratory framework: groups of dimensions, the same questions</span></button>
+      <button data-view="sure">How sure are we?<span>How a claim earns the label 'established' — worked through on the expanding universe</span></button>
     </div></div>
     <div class="navgroup g-quantum"><button class="navtop" aria-haspopup="true" aria-expanded="false">Quantum</button><div class="navmenu">
       <div class="navscale">The very small</div>
@@ -40,6 +39,7 @@
       <button data-view="missions">Mission clocks<span>How much younger the ISS, GPS or a Moon base makes you</span></button>
       <button data-view="mars">Talking to Mars<span>Light delay, and what 'now' means across space</span></button>
       <button data-view="voyage">The 1 g voyage<span>How far a crew could go in a lifetime</span></button>
+      <button data-view="energy">Earth's energy budget<span>Sunlight in, infrared out: the arrow of time on a planet</span></button>
       <button class="navtour" data-start-tour="zoom">▶ Tour 2 · From the ISS to the edge of the universe</button>
     </div></div>
     <div class="navgroup g-labs"><button class="navtop" aria-haspopup="true" aria-expanded="false">Physics</button><div class="navmenu">
@@ -47,8 +47,9 @@
       <button data-view="flatland">Flatland<span>Why extra dimensions are hard to picture — seven chapters</span></button>
       <button data-view="field">Field Ocean<span>Particles as ripples; light's clock never ticks</span></button>
       <button data-view="clocks">Clock Lab<span>The light clock and GPS corrections</span></button>
-      <button data-view="spacetime">Spacetime<span>Whose 'now'? and the twin paradox</span></button>
+      <button data-view="spacetime">Spacetime<span>Whose 'now'?, the twin paradox, and the pole and the barn</span></button>
       <button data-view="river">River<span>A black hole as space flowing inward</span></button>
+      <button data-view="hawking">Black holes evaporate<span>Hawking radiation, and where the information goes</span></button>
       <button data-view="entropy">Entropy box<span>Why a gas never gathers itself back up</span></button>
       <button data-view="films" data-tier="frontier">Two Films<span>Two time directions: the present stops predicting the future</span></button>
       <button data-view="wormhole">Wormholes<span>Einstein and Rosen's bridge — and why you can't cross it</span></button>
@@ -57,15 +58,33 @@
     </div></div>
     <div class="navgroup g-cosmos"><button class="navtop" aria-haspopup="true" aria-expanded="false">Cosmos</button><div class="navmenu">
       <div class="navscale">The universe as a whole</div>
+      <button data-view="timeline">Cosmic timeline<span>From the first instant to the last black hole</span></button>
       <button data-view="expand">Expanding universe<span>Stand on any galaxy; the age of the universe</span></button>
       <button data-view="horizons">Cosmic horizons<span>How far we can see, and how far we can ever reach</span></button>
       <button data-view="boot">Boot a Universe<span>Try other numbers of space and time dimensions</span></button>
       <button data-view="janus">The Janus point<span>An arrow of time from gravity, pointing both ways</span></button>
       <button class="navtour" data-start-tour="zoom">▶ Tour 2 · From the ISS to the edge of the universe</button>
     </div></div>
-    <div class="navgroup g-method"><button class="navtop" data-view="sure">How sure are we?</button></div>
+    <div class="navgroup g-work" data-tier="exploratory"><button class="navtop" aria-haspopup="true" aria-expanded="false">◌ Workbench</button><div class="navmenu">
+      <div class="navscale">Lab mode · not mainstream physics</div>
+      <button data-view="ideas" data-tier="exploratory">Exploratory ideas<span>This project's own challenges to mainstream physics, and yours</span></button>
+      <button data-view="dims" data-tier="exploratory">Dimension Map<span>Groups of dimensions, the same questions for each</span></button>
+      <button data-hyp="add">+ Add your hypothesis<span>Put your own idea on the Atlas: what it predicts, what would kill it</span></button>
+      <button data-hyp="export">Export your hypotheses<span>Save them to a file you can share</span></button>
+      <button data-hyp="import">Import hypotheses<span>Load a file someone shared with you</span></button>
+    </div></div>
   </nav>
-  <div class="hdr-right"><div id="levelctl"></div><button class="helpbtn" id="helpbtn" title="Guide (press ?)">? Guide</button></div>
+  <div class="hdr-right"><div id="levelctl"></div>
+    <div class="navgroup g-guide"><button class="navtop" id="helpbtn" aria-haspopup="true" aria-expanded="false">Guide</button><div class="navmenu">
+      <button data-help-open>How to use Chronoscope<span>What's here and how it works (press ?)</span></button>
+      <button data-view="concepts">Concepts<span>The big ideas, with the evidence — and every lab that shows them</span></button>
+      <button data-view="review">Quizzes and review<span>Tour quizzes, and questions that come back to check what stuck</span></button>
+      <div class="navscale">Guided tours</div>
+      <button class="navtour" data-start-tour="puzzle">▶ Tour 1 · The puzzle of time</button>
+      <button class="navtour" data-start-tour="zoom">▶ Tour 2 · From the ISS to the edge of the universe</button>
+      <button class="navtour" data-start-tour="time">▶ Tour 3 · Is time travel possible?</button>
+    </div></div>
+  </div>
 </header>
 <main>
   <section id="stage">
@@ -97,28 +116,29 @@
 <div id="hint">New here? <button id="hint-open">Open the guide</button> <button id="hint-x" aria-label="Dismiss">×</button></div>
 <input type="file" id="importfile" accept=".json" hidden>
 
-<script src="src/config.js"></script>
-<script src="src/progress.js"></script>
-<script src="src/data.js"></script>
-<script src="src/data2.js"></script>
-<script src="src/data3.js"></script>
-<script src="src/hypotheses.js"></script>
-<script src="src/lab.js"></script>
-<script src="src/guides.js"></script>
-<script src="src/labs.js"></script>
-<script src="src/labs2.js"></script>
-<script src="src/voyages.js"></script>
-<script src="src/cosmos.js"></script>
-<script src="src/quantum.js"></script>
-<script src="src/timetravel.js"></script>
-<script src="src/docs.js"></script>
-<script src="src/home.js"></script>
-<script src="src/stick.js"></script>
-<script src="src/concepts.js"></script>
-<script src="src/flatland.js"></script>
-<script src="src/nav.js"></script>
-<script src="src/atlas.js"></script>
-<script src="src/help.js"></script>
-<script src="src/glossary.js"></script>
+<script src="src/config.js?v=39"></script>
+<script src="src/progress.js?v=39"></script>
+<script src="src/data.js?v=39"></script>
+<script src="src/data2.js?v=39"></script>
+<script src="src/data3.js?v=39"></script>
+<script src="src/hypotheses.js?v=39"></script>
+<script src="src/lab.js?v=39"></script>
+<script src="src/guides.js?v=39"></script>
+<script src="src/labs.js?v=39"></script>
+<script src="src/labs2.js?v=39"></script>
+<script src="src/voyages.js?v=39"></script>
+<script src="src/cosmos.js?v=39"></script>
+<script src="src/quantum.js?v=39"></script>
+<script src="src/timetravel.js?v=39"></script>
+<script src="src/deeptime.js?v=39"></script>
+<script src="src/docs.js?v=39"></script>
+<script src="src/home.js?v=39"></script>
+<script src="src/stick.js?v=39"></script>
+<script src="src/concepts.js?v=39"></script>
+<script src="src/flatland.js?v=39"></script>
+<script src="src/nav.js?v=39"></script>
+<script src="src/atlas.js?v=39"></script>
+<script src="src/help.js?v=39"></script>
+<script src="src/glossary.js?v=39"></script>
 </body>
 </html>

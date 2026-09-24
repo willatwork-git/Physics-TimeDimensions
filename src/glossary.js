@@ -38,7 +38,7 @@
     ["gauge theory", "A theory in which a force arises from a hidden symmetry. Electromagnetism is the simplest example."]
   ].map(([pat, def]) => [new RegExp(`(?<![\\w-])(?:${pat})(?![\\w-])`, "i"), def]);
 
-  const SKIP = "a, button, h1, h2, h3, .eyebrow, .tag, .tier, code, dfn, label, select, .caveat, .popts, .labchips, table.bench, .th-name, .info, .ccard, .backlink";
+  const SKIP = "a, button, h1, h2, h3, .eyebrow, .tag, .tier, code, dfn, label, select, .caveat, .popts, .labchips, table.bench, .th-name, .info, .ccard, .backlink, .crumb, .xcard, .qcard .eyebrow";
 
   function annotate(root) {
     const used = new Set();

@@ -1,8 +1,11 @@
-# Chronoscope — the holes in time
+# Chronoscope — time, at every scale
 
-An interactive, browser-based guide to the open questions about **time**: where physics' account of time doesn't add up, what physicists have proposed over the last century, and how to tell solid science from speculation.
+A free, hands-on guide to **time in physics**, from a single photon to the edge of the universe: more than
+twenty live simulations running the real equations, with every claim tagged by how sure physicists are,
+so you can tell solid science from the frontier — and see where our account of time still doesn't add up.
 
-The hook: *why does our universe have exactly one time dimension?* The honest answer, which you reach by exploring, is that physics has strong constraints on it but no settled, model-independent answer.
+Where it started: *why does our universe have exactly one time dimension?* The honest answer, which Tour 1
+reaches, is that physics has strong constraints on it but no settled, model-independent answer.
 
 **▶ Try it live: [willatwork-git.github.io/Physics-TimeDimensions](https://willatwork-git.github.io/Physics-TimeDimensions/index.html#home)**
 · [Lab mode](https://willatwork-git.github.io/Physics-TimeDimensions/index.html?mode=lab#home)
@@ -28,15 +31,17 @@ Chronoscope has two audiences, split by one switch in the header.
 - **Learn** (the default) — physics as physicists hold and debate it, plus published proposals from
   the fringe, all tagged. The Atlas stays uncluttered (idea names appear as you hover) and each lab
   ends with the next question and a link to where it's explored.
-- **◌ Lab** — the raw workbench for experimenting with ideas. It adds this project's own exploratory
-  ideas, which deliberately challenge the mainstream, plus your own hypotheses, the Dimension Map,
-  exploratory overlays and every filter. None of it is mainstream physics; it's there to be tested.
+- **◌ Lab** — the raw workbench for experimenting with ideas. It adds a **◌ Workbench** menu: this
+  project's own exploratory ideas, which deliberately challenge the mainstream, your own hypotheses
+  (add, export, import) and the Dimension Map. None of it is mainstream physics; it's there to be tested.
 
 Every view has its own link (for example `#atlas/H5` or `#flatland/7`), so you can share exactly
 what you're looking at, and the browser's Back button works.
 
-The app opens on a home page: take the **7-stop guided tour** (about 20 minutes), explore the map, or go
-straight to a lab. Press **?** inside the app for the built-in guide. Works on phones and tablets (the page stacks: simulation first, explanation below); the Atlas map and the 3D Flatland views are at their best on a tablet or desktop.
+The app opens on a home page: take one of **three guided tours** (seven stops, about 20 minutes each),
+explore the map, or go straight to a lab. Content menus are on the left (Explore · Quantum · Voyages ·
+Physics · Cosmos); the **Guide** menu on the right holds the built-in guide (or press **?**), Concepts,
+quizzes and the tours. ⌂ Home is always one click away, and each side panel starts with where you are. Works on phones and tablets (the page stacks: simulation first, explanation below); the Atlas map and the 3D Flatland views are at their best on a tablet or desktop.
 
 ## What's inside
 
@@ -47,9 +52,10 @@ straight to a lab. Press **?** inside the app for the built-in guide. Works on p
 - **Test bench** — every idea scored against the same five hurdles: matches relativity tests, keeps the
   present predictive, allows stable matter, explains the arrow, makes a new testable prediction. Every
   partial, failing or unknown score has a written reason, and you can record your own score where you
-  disagree. Each idea also says what it predicts and what would overturn it.
-- **Dimension Map** *(Lab)* — a working framework that asks every kind of dimension (space,
-  time, internal, scale, state) the same questions, to make the gaps visible.
+  disagree. Each idea also says what it predicts and what would overturn it. One **Filter** menu (by
+  approach and by how sure) narrows both the Atlas and the Test bench.
+- **How sure are we?** — a worked example (expanding space vs "tired light") showing how a claim earns
+  the label *established*.
 
 **Quantum** — time at the smallest scale
 - **Delayed choice** — one photon, two routes, and a second beam splitter put in or taken out *after*
@@ -61,6 +67,8 @@ straight to a lab. Press **?** inside the app for the built-in guide. Works on p
 - **Mission clocks** — how much younger the ISS, a GPS satellite or a Moon base makes you (clocks on the
   Moon gain about 56 µs a day — why a lunar time standard is being set up).
 - **Talking to Mars** — light delay across the solar system, the conversation drawn as a spacetime diagram.
+- **Earth's energy budget** — Earth sends back all the energy it gets from the Sun, but as about twenty
+  times as many photons: what it really takes in is low entropy. The arrow of time on a planet.
 - **The 1 g voyage** — a steadily accelerating ship reaches the galaxy's centre in about 20 years of
   crew time, 26,000 on Earth. Plus the honest fuel bill.
 
@@ -72,11 +80,14 @@ straight to a lab. Press **?** inside the app for the built-in guide. Works on p
 - **Clock Lab** — the light clock, and the real relativistic corrections GPS satellites need
   (about +38 µs a day) at any altitude.
 - **Spacetime** — drag events and change your speed: observers disagree about what happens "at the same
-  time". Includes the twin paradox, drawn exactly.
+  time", but agree on the interval between events. Includes the twin paradox and the pole-and-barn puzzle,
+  drawn exactly.
 - **Entropy box** — a gas spreads out and never gathers back. Reverse every velocity (exactly — the
   arithmetic is integer) and it does; nudge one disc by a millionth first and it doesn't.
 - **River** — a black hole pictured as space flowing inward (the Gullstrand–Painlevé "river model").
   Fire light and see where it can escape.
+- **Black holes evaporate** — Hawking radiation: black holes glow, heat up as they shrink, and vanish.
+  Plus the Page curve: does the information come back out?
 - **Wormholes** — the complete black hole drawn so light runs at 45°, with its bridge to a second
   universe. Fire light at it: the bridge pinches shut before anything can cross.
 - **Time loops** — Gödel's rotating universe, an exact solution of Einstein's equations in which
@@ -86,6 +97,8 @@ straight to a lab. Press **?** inside the app for the built-in guide. Works on p
   the future.
 
 **Cosmos** — the universe as a whole
+- **Cosmic timeline** — from the first instant physics can describe to the last black hole, in powers of
+  ten, every event tagged by how sure we are; plus the universe so far as a one-year calendar.
 - **Expanding universe** — stand on any galaxy; change matter and dark energy; age and fate.
 - **Cosmic horizons** — how far we can see (46 billion light-years) and how far our signals can reach.
 - **Boot a Universe** — try other numbers of space and time dimensions and watch what breaks.
@@ -112,9 +125,10 @@ straight to a lab. Press **?** inside the app for the built-in guide. Works on p
 - **Glossary** — dotted-underlined terms show a plain definition on hover or tap.
 - **Progress** — ✓ marks on what you've seen, and "continue where you left off" (kept in your browser).
 
-**Method**
-- **How sure are we?** — a worked example (expanding space vs "tired light") showing how a claim earns
-  the label *established*.
+**◌ Workbench** *(Lab mode)*
+- **Exploratory ideas** — this project's own challenges to mainstream physics, and your hypotheses, in one place.
+- **Dimension Map** — a working framework that asks every kind of dimension (space, time, internal,
+  scale, state) the same questions, to make the gaps visible.
 
 ![Two Films: the hidden second time direction revealed](docs/screenshot-films.png)
 
@@ -179,9 +193,10 @@ src/
   labs2.js          Spacetime diagram, Entropy box
   quantum.js        Delayed choice, The frozen universe
   timetravel.js     Wormholes, Time loops
+  deeptime.js       Black holes evaporate, Cosmic timeline, Earth's energy budget
   voyages.js        Mission clocks, Talking to Mars, The 1 g voyage
   cosmos.js         Expanding universe, Cosmic horizons, Boot a Universe, The Janus point
-  nav.js            header drop-down menus (Explore · Quantum · Voyages · Physics · Cosmos · Method)
+  nav.js            header drop-down menus (Explore · Quantum · Voyages · Physics · Cosmos · ◌ Workbench; Guide), breadcrumb
   docs.js           Dimension Map, How sure are we?
   home.js           Home page, the three tours, the four scales and the threads
   stick.js          Picture it, Common trap, tour quizzes and returning review
@@ -224,7 +239,7 @@ id, year, name, who, camp, holes, tag, outcome, plain description, reasoning, hu
 
 Working and usable on desktop and phone: the Atlas, Test bench, all labs listed above across four
 scales, Learn and Lab modes, three guided tours, Concepts pages and the school edition. The roadmap is
-in [`todo.md`](todo.md): next is deep time (Hawking evaporation, a cosmic timeline), then launch readiness — verified citations, a light
+in [`todo.md`](todo.md): next is launch readiness — verified citations, a light
 theme, teacher notes, and a move to its own domain, **chronoscope.com.au**.
 
 ## Credits

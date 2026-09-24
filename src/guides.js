@@ -24,9 +24,31 @@
       ["Drag the events", "Move A, B and C anywhere; the table shows when each happens for each observer."],
       ["Draw it your way / their way", "Redraws the whole diagram from either observer's point of view (a Lorentz transformation)."],
       ["Reset events", "Puts A, B and C back where they started."],
+      ["Equal-interval curves", "Curves of equal t² − x² from the origin — the spacetime interval. They're the same for every observer: switch frames and the events slide along them."],
       ["", "Twin paradox"],
       ["Speed, Distance", "The traveller's speed and how far away the star is."],
-      ["Pause / Play", "The dots move along both paths together; the right panel shows each twin's clock."]
+      ["Pause / Play", "The dots move along both paths together; the right panel shows each twin's clock."],
+      ["", "Pole and barn"],
+      ["Pole's speed", "How fast the 5-unit pole runs through the 4-unit barn. Below 0.6 c it doesn't fit in either frame."],
+      ["Barn's frame / Pole's frame", "Redraws the same history from the barn's or the pole's point of view."],
+      ["The strip (right)", "What's where at the white 'now' line: the barn, its doors (pink when shut) and the pole."]
+    ],
+    hawking: [
+      ["Mass buttons", "Start from a black hole with the Sun's mass, the Moon's, a mountain's, or one that would be finishing right now."],
+      ["Starting mass", "Any mass from 10⁹ to 10³¹ kg (a logarithmic slider)."],
+      ["Through its life, Play its life", "Moves through the black hole's lifetime: it shrinks, heats up and radiates faster. The readouts are for that moment."],
+      ["The Page curve (right)", "Entropy of the radiation over the lifetime: Hawking's rising curve against Page's, which turns over at the Page time."]
+    ],
+    timeline: [
+      ["Powers of ten", "Each tick is ten times the one before, from 10⁻⁴⁴ s to 10¹⁰⁸ s."],
+      ["Ordinary time", "The universe so far on an ordinary clock: the first 100 million years shrink to a point at the left."],
+      ["Earlier / Later, or click an event", "Selects an event: when it happened, how sure we are, and where it falls on a one-year calendar."]
+    ],
+    energy: [
+      ["Earth today, No greenhouse, Snowball Earth", "Presets for how much sunlight is reflected and how much infrared the greenhouse layer absorbs."],
+      ["Reflected sunlight (albedo)", "The share of sunlight bounced straight back. More reflection: a colder Earth, radiating fewer photons."],
+      ["Greenhouse layer absorbs", "A one-layer atmosphere absorbing this share of the ground's infrared. It warms the surface; what leaves for space stays the same."],
+      ["Bars (right)", "Energy, photons and entropy in and out, per square metre."]
     ],
     river: [
       ["Click anywhere", "Fires a flash of light in every direction from that spot."],
@@ -166,8 +188,14 @@
       "Mass is what gives a particle an internal clock — and moving fast slows that clock."],
     clocks: ["Two identical clocks, one at rest and one moving. Do they keep the same time? A second mode does the same for real satellites in orbit.",
       "Every moving clock runs slow — not because it's broken, but because time itself does."],
-    spacetime: ["A map of events: space runs across, time runs up. Observers moving past each other slice this map into moments differently — here you can see how.",
+    spacetime: ["A map of events: space runs across, time runs up. Observers moving past each other slice this map into moments differently — here you can see how. Three scenes (buttons top left): whose 'now', the twin paradox, and the pole and the barn.",
       "'At the same time' depends on who's asking — but cause and effect never swap places."],
+    hawking: ["Black holes aren't quite black: quantum theory says they glow, and shrink. Where does everything that fell in go?",
+      "Black holes glow, heat up as they shrink, and vanish, and whether the information inside comes back out is still argued over."],
+    timeline: ["All of cosmic time on one line, from the first instant physics can describe to the last black hole evaporating.",
+      "On a log scale we're nearly halfway through cosmic time; on an ordinary clock, at the very start. Early on, a smooth universe: all the order since is running down from there."],
+    energy: ["Earth takes in sunlight and sends out infrared. The energy balances, so what does Earth actually get from the Sun?",
+      "Earth sends back the energy it gets, as twenty times as many photons: what it takes from the Sun is low entropy, and everything here runs on it."],
     river: ["Near a black hole, time and space behave strangely. This lab uses one exact way to picture it: space itself flowing inward like a river.",
       "Gravity slows clocks too — and at the horizon, not even light can swim against the current."],
     entropy: ["A box of gas, all on one side. Remove the wall and it spreads out. The question: why does it never gather itself back?",

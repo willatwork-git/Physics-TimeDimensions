@@ -550,3 +550,42 @@ button.info:hover, button.info:focus-visible { background: var(--accent); color:
 @media (max-width: 700px) { .qtours { grid-template-columns: 1fr; } }
 .continue.revdue { display: block; margin: 8px 0; padding: 10px 14px; border: 1px solid color-mix(in srgb, var(--t-est) 40%, var(--line)); border-radius: 8px; color: var(--text); }
 #doc a.qtour { color: var(--text); }
+
+/* ---------- Navigation, reorganised (D-039): Home, Workbench, Guide menu, breadcrumb, Filter menu ---------- */
+.homebtn { display: inline-flex; align-items: center; gap: 5px; height: 34px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--line); color: var(--text); text-decoration: none; font-size: 13px; flex-shrink: 0; }
+.homebtn span[aria-hidden] { font-size: 15px; }
+.homebtn:hover { border-color: var(--accent); color: var(--accent); }
+.navgroup.g-work { --gcol: #7cc4ff; } .navgroup.g-work .navtop { border-style: dashed; }
+.navgroup.g-guide { --gcol: #7cc4ff; }
+.hsec.g-guide { --gcol: #7cc4ff; } .hsec.g-work { --gcol: #7cc4ff; }
+.navmenu button[data-help-open], .navmenu button[data-hyp] { display: block; width: 100%; text-align: left; padding: 8px 10px; border: 0; border-radius: 8px; background: none; color: var(--text); font-size: 14px; cursor: pointer; }
+.navmenu button[data-help-open] span, .navmenu button[data-hyp] span { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+.navmenu button[data-help-open]:hover, .navmenu button[data-hyp]:hover { background: color-mix(in srgb, var(--gcol) 14%, transparent); }
+.g-guide .navmenu .navtour { margin-top: 0; border-top: 0; border-radius: 8px; }
+.g-guide .navmenu .navscale { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 10px; }
+.crumb { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; margin: -6px 0 12px; font-size: 12px; color: var(--muted); }
+.crumb a { color: var(--accent); text-decoration: none; }
+.crumb a:hover { text-decoration: underline; }
+.crumb i { font-style: normal; opacity: .6; }
+.home .hook { font-size: 16px; margin: 4px 0 10px; }
+.home .hook .linkish { color: var(--accent); font-size: 16px; text-decoration: none; }
+.home .hook .linkish:hover { text-decoration: underline; }
+/* Filter menu (Atlas and Test bench) */
+.fdrop { position: relative; }
+.fpanel { display: none; position: absolute; z-index: 25; top: calc(100% + 6px); left: 0; min-width: 420px; padding: 12px 14px; border-radius: 12px; background: var(--panel); border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(0,0,0,.45); }
+.fdrop.open .fpanel { display: block; }
+.fcols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fcol label { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 13px; cursor: pointer; }
+.fcol .eyebrow { margin-bottom: 4px; }
+.fpanel .meta { margin: 10px 0 4px; }
+.fsum { font-size: 12px; }
+.fsum .linkish { color: var(--accent); }
+@media (max-width: 600px) { .fpanel { min-width: 0; width: calc(100vw - 32px); } .fcols { grid-template-columns: 1fr; } }
+/* Workbench: exploratory ideas */
+.xgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin: 10px 0 8px; }
+.xcard { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border: 1px dashed color-mix(in srgb, var(--t-hyp) 45%, var(--line)); border-radius: 10px; background: var(--panel); color: var(--text); text-decoration: none; }
+.xcard:hover { border-style: solid; border-color: var(--t-hyp); }
+.xcard > span:not(.eyebrow):not(.hgo) { font-size: 13px; color: var(--muted); }
+#doc a.xcard { color: var(--text); }
+.xbtns { margin: 16px 0; }
+@media (max-width: 900px) and (orientation: portrait), (max-width: 600px) { .homebtn { display: none; } .brand::before { content: "⌂ "; color: var(--accent); } }
