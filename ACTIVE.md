@@ -1,11 +1,11 @@
 # ACTIVE
 
-**Focus:** D-039 — review fixes: header reorganised (⌂ Home · Explore · four scales · ◌ Workbench in Lab; Learn|Lab and a **Guide** menu on the right), breadcrumb in every side panel, show-only **Filter** menu for Atlas and Test bench in both modes, new **Exploratory ideas** page, new home text ("What is time?…", subtitle "time, at every scale"). Plus timeline stepping, greenhouse label, cache-busting `?v=39`. Before that: D-038 — deep time (Black holes evaporate, Cosmic timeline, Earth's energy budget; Spacetime hyperbolae + pole and barn).
+**Focus:** D-040 — **How it all connects**: a systems map of 12 mechanisms and 24 tagged claims, each linked to its lab, gaps in amber, four story paths, and a cosmic-time slider driven by the Friedmann equation (with a rough entropy ledger). Will's **black-hole cycle** is now an exploratory Atlas idea (Lab → Workbench). Before that: D-039 — nav reorganised (⌂ Home, Guide menu, breadcrumb), show-only Filter, Workbench, new home text.
 
-**State:** 20 canvas labs + Flatland in four scales, three tours with quizzes, 16 Concepts pages, Workbench in Lab. All 36 routes pass headless checks in Learn, Lab and school edition; header and new pages checked at desktop and phone width. Not yet committed.
+**State:** 21 canvas labs + Flatland, a systems map, three tours with quizzes, 16 Concepts pages. All 37 routes pass headless checks in Learn, Lab and school edition; map checked at desktop and phone width. Assets at `?v=40`. Not yet committed.
 
-**For Will to review:** home text (`src/home.js`), Exploratory ideas page, `src/deeptime.js`, pole-and-barn text, `src/stick.js`, `src/data3.js`.
+**Deferred:** *Stars forge the elements* — scope agreed; output blocked by a content filter on dense nuclear text. Retry smaller, astronomy-first (`todo.md`).
 
-**Logged, not started:** the maths layer — research first; natural home is the ◌ Workbench (`todo.md`).
+**For Will to review:** the map's 24 claims (`src/connect.js`), the black-hole cycle wording (`src/data2.js`), home text, `src/deeptime.js`, `src/stick.js`.
 
-**Next:** Phase 5 — launch readiness: verify every ☐ citation, light theme, teacher notes, keyboard Atlas, tidy public files, move to chronoscope.com.au (DNS first, then CNAME). Bump `?v=` when shipping.
+**Next:** Phase 5 — launch readiness (citations, light theme, teacher notes, keyboard Atlas, tidy public files, chronoscope.com.au).

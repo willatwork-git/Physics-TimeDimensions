@@ -38,6 +38,7 @@
       { v: "janus", n: "The Janus point", d: "A gravitating swarm whose structure grows in both directions of time from one special moment." }
     ] },
     { g: "guide", name: "Guide menu (top right)", blurb: "Ways into all of it.", items: [
+      { v: "connect", n: "How it all connects", d: "Gravity, light, time, entropy, the expanding universe, black holes and the dark sector on one map. Every arrow is one tagged claim, linked to the lab that shows it; the amber dashes are the gaps. Slide cosmic time to watch the balance shift." },
       { v: "concepts", n: "Concepts", d: "The ideas that run through the whole app — why clocks disagree, what 'now' means, the arrow of time, why 3 + 1 — with the evidence, and every lab that shows each one. Look for ⓘ markers for the short version." },
       { v: "review", n: "Quizzes and review", d: "A short quiz at the end of each tour, and questions from labs you've explored that come back after a day, then three, a week and longer, to check what stuck. Each lab also has a 'Picture it' analogy and a 'Common trap'." }
     ] },

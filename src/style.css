@@ -589,3 +589,13 @@ button.info:hover, button.info:focus-visible { background: var(--accent); color:
 #doc a.xcard { color: var(--text); }
 .xbtns { margin: 16px 0; }
 @media (max-width: 900px) and (orientation: portrait), (max-width: 600px) { .homebtn { display: none; } .brand::before { content: "⌂ "; color: var(--accent); } }
+
+/* ---------- How it all connects (D-040) ---------- */
+.cxsel { margin: 4px 0 16px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel2); }
+.cxsel h3 { margin: 4px 0 6px; font-size: 16px; }
+.cxsel .eyebrow { margin-top: 8px; }
+.cxl { display: block; width: 100%; text-align: left; margin: 4px 0; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--muted); font-size: 13px; cursor: pointer; }
+.cxl b { color: var(--text); font-weight: 600; }
+.cxl i { font-style: normal; color: var(--t-con); font-size: 11px; margin-left: 4px; }
+.cxl:hover { border-color: var(--accent); }
+.cxgap { color: var(--t-con); }

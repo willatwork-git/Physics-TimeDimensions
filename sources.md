@@ -177,3 +177,8 @@ Added 2026-09-25 from Claude's recall. All ☐ until checked against the primary
 - **E** Kleidon, A. (2009). "Nonequilibrium thermodynamics and maximum entropy production in the Earth system." *Naturwissenschaften* 96, 653 — Earth's entropy export ≈ 1 W m⁻² K⁻¹. ☐
 - **E** Loeb, N. G. et al. (2021). "Satellite and ocean data reveal marked increase in Earth's heating rate." *Geophys. Res. Lett.* 48, e2021GL093047 — imbalance ≈ 1 W m⁻² (CERES). ☐
 - **E** Rindler, W. (1961). "Length contraction paradox." *Am. J. Phys.* 29, 365; Taylor, E. F. & Wheeler, J. A., *Spacetime Physics* (2nd ed., 1992) — pole and barn. Tao, T. (2026) spacetime diagram applet — equal-interval hyperbolae (see landscape-2026-09-25.md). ☐
+
+## How it all connects (D-040)
+- **E** (estimates) Egan, C. A. & Lineweaver, C. H. (2010). "A larger estimate of the entropy of the universe." *ApJ* 710, 1825 — supermassive black holes ≈ 3 × 10¹⁰⁴ k; cosmic background photons ≈ 2 × 10⁸⁸ k. ☐
+- **E** Friedmann equation with Planck 2018 values — see Cosmos (D-031). Radiation density incl. neutrinos Ω_r ≈ 9.1 × 10⁻⁵. ☐
+- **C** Tolman, R. C. (1934). *Relativity, Thermodynamics and Cosmology* — entropy growth across cycles (the black-hole cycle's hurdle). ☐

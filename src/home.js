@@ -51,7 +51,7 @@
     { id: "dims", icon: "◇", name: "Why 3 + 1?", stops: [["flatland/4", "A 4D visitor", "P"], ["films", "Two Films", "P"], ["boot", "Boot a Universe", "C"], ["atlas/H5", "Hole H5: why one time?", "A"]] }
   ];
   const SCALE_NAME = { Q: "Quantum", V: "Voyages", P: "Physics", C: "Cosmos", A: "Atlas" };
-  const TOTAL = ["atlas", "bench", "concepts", "review", ...SCALES.flatMap(s => s.labs.map(l => l[0])), "sure"];
+  const TOTAL = ["atlas", "bench", "concepts", "review", "connect", ...SCALES.flatMap(s => s.labs.map(l => l[0])), "sure"];
 
   /* Threads a view belongs to, rendered for its aside. key: "clocks", "flatland/7", … */
   Chrono.threadsFor = key => {
@@ -138,6 +138,8 @@
         <div class="doors">
           <a class="door d-map" href="#atlas"><div class="eyebrow">Explore</div><h2>🗺 The map of holes</h2>
             <p>${Chrono.HOLES.filter(h => Chrono.shows(Chrono.tierOf(h))).length} open problems about time, and a century of attempts to fill them. Then put every idea on the <b>Test bench</b>.</p><span class="hgo">Open the Atlas →</span></a>
+          <a class="door d-map" href="#connect"><div class="eyebrow">The big picture</div><h2>🕸 How it all connects</h2>
+            <p>Gravity, light, time, entropy, black holes and the dark sector on one map: what drives what, how sure we are, and where the gaps are.</p><span class="hgo">Open the map →</span></a>
           <a class="door d-map" href="#sure"><div class="eyebrow">Method</div><h2>⚖ How sure are we?</h2>
             <p>How a claim earns the label 'established' — worked through on the expanding universe.</p><span class="hgo">Open →</span></a>
           ${lab ? `<a class="door d-lab" href="#dims"><div class="eyebrow">◌ Lab mode</div><h2>The workbench</h2>

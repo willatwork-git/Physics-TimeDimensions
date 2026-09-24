@@ -127,6 +127,16 @@ Chrono.IDEAS.push(
     "Other 'universes' may not be elsewhere but interwoven with ours — other groupings of dimensions we don't occupy, as Flatland is interwoven with Spaceland. Long human intuitions of 'higher realms' could be read this way.",
     "Brane-world physics makes a version of this concrete. The exploratory step extends it beyond gravity.",
     U, "The hard part: a layer that doesn't interact through gravity leaves no signature physics can detect.",
-    { predicts: "If gravity leaks between layers: hidden mass (dark matter?) and deviations in gravity's force law.", kill: "Gravity's law holding perfectly at all testable scales, and dark matter identified as ordinary particles." })
+    { predicts: "If gravity leaks between layers: hidden mass (dark matter?) and deviations in gravity's force law.", kill: "Gravity's law holding perfectly at all testable scales, and dark matter identified as ordinary particles." }),
+  E("wc-bhcycle", 2026, "The black-hole cycle", "Chronoscope project", "origin", ["H3", "H6", "H7"], "HYPOTHESIS", "Exploratory",
+    "The universe runs in cycles. Irreversible processes (starlight, the forging of elements) drive everything one way, and black holes are where that activity ends up: the densest store of entropy there is. In the far future the universe condenses into black holes and is reborn from one, and over very long times an internal process keeps the whole in balance.",
+    "Built on two mainstream facts: black holes hold most of the universe's entropy, and irreversible processes give time its direction. Close relatives: Penrose's conformal cyclic cosmology and Smolin's universes born in black holes. The exploratory step: black holes as the recycling stage of a universe that keeps an overall balance.",
+    { rel: "unk", pred: "unk", matter: "unk", arrow: "part", test: "part" },
+    "Two hurdles. The second law allows no overall balance without something that resets entropy between cycles. And today's accelerating expansion is pulling galaxy groups apart, not gathering everything into one black hole — unless dark energy changes.",
+    { predicts: "Dark energy weakening over time, enough to halt and reverse the expansion (DESI's 2024–25 hint is a first test); or traces of a previous cycle in the cosmic microwave background.",
+      kill: "Dark energy confirmed as a true constant that never changes; or no trace of a previous cycle in the microwave background at the sensitivity the idea needs.",
+      r: { rel: "Not yet written as equations, so it can't be checked against relativity's tests.", pred: "Unknown until the cycle's mechanism is written down.", matter: "Unknown: says nothing yet about how atoms survive, or are remade, between cycles.",
+        arrow: "Explains the arrow within a cycle, but needs a mechanism that resets entropy between cycles — otherwise each starts messier than the last (Tolman's problem).",
+        test: "Makes checkable claims — dark energy must weaken; a previous cycle might leave traces — but not yet sharp enough to be ruled out." } })
 );
 })();

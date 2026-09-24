@@ -72,7 +72,9 @@ see the full physics (equations, derivations, the model's exact assumptions) wit
 - Related: review-2026-09-25.md §1.4 "Show me the maths" expander. Existing hooks: every lab's model line.
 
 ### Later
-- [ ] Claude chat in the app (needs a small server) · concept map · notebook · live diagrams in Concepts · colour split (review 3.1)
+- [x] Concept map → **How it all connects** (D-040)
+- [ ] **Stars forge the elements** (Cosmos) — agreed with Will: onion-star countdown · why fusion stops at iron · periodic table of origins with a cosmic-time slider; entropy strip (one helium nucleus → ~20 million sunlight photons). Blocked by an automated output filter on dense nuclear text — retry smaller, astronomy-first
+- [ ] Claude chat in the app (needs a small server) · notebook · live diagrams in Concepts · colour split (review 3.1)
 
 ## Space School readiness
 - [ ] Teacher notes per lab
