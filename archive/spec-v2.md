@@ -1,0 +1,127 @@
+# spec.md — Chronoscope (v2, 2026-09-24)
+
+v1 archived at `archive/spec-v1.md`. Rationale for changes: `reviews.md`.
+
+## Hook
+**"Why does our universe have exactly one time dimension?"**
+Honest answer the visitor reaches: physics has strong constraints, not a settled, model-independent answer.
+
+## Structure: two investigations, one workspace
+These are **independent questions**. The UI must never imply one answers the other.
+- **Investigation I — How many time dimensions?** What changes when an equation gains a second time coordinate.
+- **Investigation II — Which way does time point?** Why irreversibility appears along a *single* time coordinate.
+Bridge: a visitor-controlled side-by-side comparison, not a claim that the theories agree.
+
+## Claim-tagging rules
+- Tag **claims, not papers.** "This equation has two valid solutions" = ESTABLISHED (maths); "our universe obeys it" = SPECULATIVE.
+- Every simulation shows a **Model assumption** line (e.g. "Assumes the metric ds² = dt₁² + dt₂² − dx²").
+- Every claim links to `sources.md`.
+
+## Learning outcomes
+1. Clocks can disagree in our one-time universe; that is not evidence of extra time.
+2. Adding a time coordinate changes the *type* of equation; a generic present no longer fixes the future.
+3. Even a perfectly accurate snapshot of "now" can be insufficient with two times (Two Films).
+4. The arrow of time and the number of time dimensions are separate questions.
+5. The laws are *nearly* time-symmetric (small measured violation); everyday irreversibility has a different origin.
+6. Multi-time theories exist, are speculative, and differ in what they would have to predict.
+
+---
+
+## Entrance — Boot a Universe
+Console-style hub. Visitor chooses (n space, m time) and presses **BOOT**. System returns a boot log ending in success (3,1) or a specific failure:
+`ERR_ORBIT_UNSTABLE` · `ERR_NO_EVOLUTION` · `ERR_ILL_POSED` · `ERR_MATTER_UNSTABLE` · `WARN_TOO_SIMPLE` · `WARN_TACHYONIC`
+Each failure opens its live demo. Grid view (Tegmark's diagram) available as a map of all boot results.
+**Tag:** Tegmark's overall conclusion **CONTESTED** ("for the classes of laws considered, 3+1 has especially favourable conditions"). Individual mathematical facts tagged separately.
+
+**Misconception card (small):** Twin clocks — dτ = dt√(1 − v²/c²). Speed + duration sliders; clocks reunite showing different elapsed times. "Different clock readings don't need another time dimension." ESTABLISHED.
+
+---
+
+## Investigation I — How many time dimensions?
+
+### I.1 Boot failures (from the Entrance)
+| Error | Demo | Equation | Tag |
+|---|---|---|---|
+| ERR_ORBIT_UNSTABLE (n>3, m=1) | Orbit with continuous n slider 2.0→5.0 + nudge | F ∝ 1/r^(n−1), velocity-Verlet | ESTABLISHED (maths) |
+| WARN_TOO_SIMPLE (n<3, m=1) | 2D network: wires can't cross | 2+1 gravity has no local d.o.f. | Gravity ESTABLISHED; complexity argument CONTESTED |
+| ERR_NO_EVOLUTION (m=0) | Laplace relaxation; drag boundary, interior snaps; no clock | ∇²φ = 0 | ESTABLISHED |
+| ERR_ILL_POSED (m≥2) | → I.3 Mode Explorer | u_tt + u_ss − u_xx = 0 | ESTABLISHED (maths) |
+| ERR_MATTER_UNSTABLE (m≥2) | Energy-vector triangle: drag product energy vectors in the (E₁, E₂) plane; parent of mass m decays into products with m₁ + m₂ > m because vectors partially cancel. Contrast 1-time case (collinear, m ≥ m₁ + m₂ forced) | E = E₁ + E₂, \|Eᵢ\| ≥ mᵢ | ESTABLISHED (kinematics permits it; whether it happens depends on dynamics) |
+| WARN_TACHYONIC (n=1, m≥2) | Text + diagram | — | verify against Tegmark Fig. 1 |
+Note: orbit instability is a **space**-dimension result. Never show orbits "breaking" because of a second time.
+
+### I.2 Future Compass  (opening image of Investigation I)
+Rotate a glowing direction arrow in the (t₁, t₂) plane. Readout of ds² = dt₁² + dt₂² − dx².
+- One-time mode: rotating from +t to −t must pass through spacelike; future and past cones are separate.
+- Two-time mode: at dx = 0 the arrow stays timelike all the way from +t₁ to −t₁ → no clean future/past split.
+- Caption: "Geometry of an assumed metric — not a claim that anyone can travel into their past."
+**Tag:** ESTABLISHED maths; SPECULATIVE physical premise.
+(This absorbs the "evolution angle" idea: the equation is rotationally symmetric in (t₁, t₂), so no direction is special.)
+
+### I.3 Mode Explorer
+Sliders: k_x (space frequency), k_s (second-time frequency), tiny starting amplitude.
+- |k_s| < |k_x| → oscillates at ω = √(k_x² − k_s²).
+- |k_s| > |k_x| → grows as cosh(λt), λ = √(k_s² − k_x²).
+- Spectrum view shows *which* modes grow. Add many random modes → tiny noise explodes.
+- **Constraint toggle:** restrict to |k_s| ≤ |k_x| (Craig & Weinstein) → stable.
+- **Sound (optional, mute default):** each mode sounds at ω; crossing into growth replaces pitch with a swelling amplitude at rate λ. Visual equivalent always present.
+- All values from **exact Fourier solutions**, not numerical integration.
+**Tag:** ESTABLISHED maths within the model.
+
+### I.4 Two Films  ← the "aha"
+Periodic x-strip. Visitor saves everything on the starting slice t = s = 0 (u, ∂ₜu, ∂ₛu) and presses **Predict**. Two films play from the identical frame and diverge.
+- u_A = cos(2x)·cos(2t)
+- u_B = u_A + ε·cos(3x)·[cos(3t) − cos(√5 t)·cos(2s)]
+- Both solve u_tt + u_ss − u_xx = 0; identical data at t = s = 0; all modes non-growing. (Verified.)
+- **Reveal:** slice view opens the hidden s-direction; their data away from s = 0 always differed.
+- Closing line: **"The frame was accurate. It just wasn't enough data."**
+- Slice view: an observer path through the (t, s) plane; features appear and vanish as the path cuts the surface.
+**Tag:** ESTABLISHED maths (toy instance of Craig & Weinstein non-uniqueness); physical relevance SPECULATIVE.
+
+---
+
+## Investigation II — Which way does time point?  (one time coordinate throughout)
+
+### II.1 Two Arrows
+- **Exact simple model (Pauli two-state):** p(t) = ½ + (p₀ − ½)·e^(−2γ|t|). Entropy rises away from t = 0 in both directions. Controls: p₀, γ, choice of origin. Label: "Simplified demonstration, not the full quantum bath of the Surrey paper."
+- **Spectacle model (harmonic chain):** ~200 oscillators, velocity-Verlet (exactly reversible). Excite one at t = 0; integrate both ways; tagged energy decays symmetrically. Buttons: reverse velocities (Loschmidt echo refocuses); add noise first (refocusing fails).
+- **Cosmic model (Janus point):** Newtonian N-body (~50–150 bodies, zero energy and angular momentum). From the moment of minimum complexity, integrate both directions; complexity/clustering grows away from it both ways. The cosmological twin of the Pauli "V". Label: Barbour–Koslowski–Mercati model; cosmological interpretation CONTESTED.
+**Tag:** Model results ESTABLISHED; broader interpretation of Surrey CONTESTED.
+
+### II.2 Almost symmetric
+Card: time-reversal violation measured directly in neutral B mesons (BABAR 2012). Tiny, microscopic, and not why eggs don't unbreak. ESTABLISHED.
+
+### II.3 Measured anchor
+Card: Landauer's principle probed in a quantum many-body system (Nature Physics 2025): the energy cost of erasing information, measured. ESTABLISHED (experiment); link to the arrow is interpretive.
+
+---
+
+### II.4 Memory and records
+Narrative thread: records (memories, photographs, fossils) form in the direction entropy increases — which is why we remember the past, not the future. Ties II.1 to II.3. CONTESTED as a full explanation; widely held.
+
+### II.5 Cards beyond the arrow
+- **Time from entanglement (Page–Wootters, 1983):** a static universe in which a subsystem clock and the rest are correlated; time emerges internally. ESTABLISHED formalism; cosmological relevance CONTESTED. Bridge to Reality OS.
+- **Indefinite causal order (quantum switch):** photonic experiments put the *order* of two operations in superposition — non-classical order without a second time dimension. ESTABLISHED (experiment); interpretation CONTESTED.
+
+---
+
+## Case Files — the frontier
+Each: claim · status · what it would have to predict · what would change our mind · sources. No fake "simulation" of these theories.
+- **Bars — two-time physics (4+2):** an Sp(2,ℝ) gauge symmetry removes ghosts; gauge constraints relate different effective one-time descriptions. SPECULATIVE as physics.
+- **Pettini — (3,2) spacetime and entanglement (2025; follow-up preprint 2026):** extra time used to model entanglement without nonlocal causation; proposes a test. SPECULATIVE.
+- **Kletetschka — three-dimensional time (2025):** claim file; separate *fits to known values* from *new predictions*. SPECULATIVE.
+- **"The future is a terrain, not a line":** what a two-time observer might experience — and where that speculation breaks (no derivation of experience from the metric alone). SPECULATIVE.
+
+---
+
+## Build order (proposed)
+1. Entrance: Boot a Universe + ERR_ORBIT_UNSTABLE demo (sets shell, look, tagging pattern)
+2. I.4 Two Films (the aha) + I.3 Mode Explorer (shared exact-mode engine) + ERR_MATTER_UNSTABLE
+3. I.2 Future Compass
+4. Investigation II (Pauli, harmonic chain, Janus point, cards)
+5. Remaining boot demos, Case Files, twin clocks
+6. Deferred: prediction wager, claim ledger, Reality OS shell
+
+## Non-goals (v1)
+- No simulation of Bars/Pettini/Kletetschka theories.
+- No JWST, holography, Wigner's friend (Reality OS, later).

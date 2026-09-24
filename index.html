@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chronoscope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+<header>
+  <div class="brand"><b>CHRONOSCOPE</b><span class="brand-sub"> · the holes in time</span></div>
+  <nav>
+    <div class="navseg g-explore"><span class="navgrp">Explore</span>
+      <button data-view="atlas" class="on">Atlas</button>
+      <button data-view="bench">Test bench</button>
+      <button data-view="dims" data-tier="exploratory">◌ Dimension Map</button>
+    </div>
+    <div class="navseg g-labs"><span class="navgrp">Labs</span>
+      <button data-view="flatland">Flatland</button>
+      <button data-view="field">Field Ocean</button>
+      <button data-view="clocks">Clock Lab</button>
+      <button data-view="river">River</button>
+      <button data-view="films" data-tier="frontier">Two Films</button>
+    </div>
+    <div class="navseg g-method"><span class="navgrp">Method</span>
+      <button data-view="sure">How sure are we?</button>
+    </div>
+  </nav>
+  <div class="hdr-right"><div id="levelctl"></div><button class="helpbtn" id="helpbtn" title="Guide (press ?)">? Guide</button></div>
+</header>
+<main>
+  <section id="stage">
+    <div class="toolbar" id="filters"></div>
+    <div id="atlas"></div>
+    <div id="benchview"></div>
+    <div id="lab"><div class="toolbar" id="lab-controls"></div><div id="lab-canvas-wrap"><canvas id="lab-canvas"></canvas></div></div>
+    <div id="doc"></div>
+    <div id="flatland"><div class="toolbar" id="fl-controls"></div><div id="fl-canvas-wrap"><canvas id="fl-canvas"></canvas></div></div>
+  </section>
+  <aside id="aside"></aside>
+</main>
+
+<div id="modal"><div class="box">
+  <div class="eyebrow">Your hypothesis</div>
+  <h2>Add an idea to the Atlas</h2>
+  <p class="meta">Loose ideas welcome. The point is to say what it would predict and what would kill it.</p>
+  <label>Name</label><input type="text" id="h-name" placeholder="e.g. Time folds at black-hole horizons">
+  <label>Camp</label><select id="h-camp"></select>
+  <label>Which holes does it try to fill?</label><div class="checks" id="h-holes"></div>
+  <label>The idea, in plain words</label><textarea id="h-plain"></textarea>
+  <label>What would it predict that we could look for?</label><textarea id="h-pred"></textarea>
+  <label>What observation would kill it?</label><textarea id="h-kill"></textarea>
+  <label>Author</label><input type="text" id="h-who" placeholder="Will">
+  <div class="row"><button class="btn" id="h-cancel">Cancel</button><button class="btn primary" id="h-save">Add to Atlas</button></div>
+</div></div>
+<div id="help" role="dialog" aria-modal="true" aria-labelledby="help-title"><div class="helpbox" id="helpbox"></div></div>
+<div id="hint">New here? <button id="hint-open">Open the guide</button> <button id="hint-x" aria-label="Dismiss">×</button></div>
+<input type="file" id="importfile" accept=".json" hidden>
+
+<script src="src/config.js"></script>
+<script src="src/data.js"></script>
+<script src="src/data2.js"></script>
+<script src="src/hypotheses.js"></script>
+<script src="src/lab.js"></script>
+<script src="src/labs.js"></script>
+<script src="src/docs.js"></script>
+<script src="src/flatland.js"></script>
+<script src="src/atlas.js"></script>
+<script src="src/help.js"></script>
+</body>
+</html>

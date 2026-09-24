@@ -1,0 +1,78 @@
+/* Chronoscope — Guide (help overlay). Opened from the header "? Guide" button or the ? key.
+   Not shown by default: first-time visitors get a small dismissible hint instead. */
+(function () {
+  const $ = s => document.querySelector(s);
+  const SECTIONS = [
+    { g: "explore", name: "Explore", blurb: "The big picture: where our account of time has gaps, and who has tried to fill them.", items: [
+      { v: "atlas", n: "Atlas", d: "The map. Glowing nodes along the top are <b>holes</b> — known gaps in physics' account of time. Dots below are a century of <b>ideas</b> that tried to fill them, placed by year and grouped by approach. Hover a hole to light up every attempt at it; click anything for the detail." },
+      { v: "bench", n: "Test bench", d: "Every idea scored against the same hurdles: does it match relativity, keep the future predictable, allow stable matter, explain time's arrow, make a new testable prediction?" },
+      { v: "dims", n: "Dimension Map", tier: "exploratory", d: "A working framework: sort dimensions into groups (space, time, charge, scale, state) and ask each the same questions. Gaps become visible." }
+    ] },
+    { g: "labs", name: "Labs", blurb: "Hands-on simulations running real equations. Drag, slide and click.", items: [
+      { v: "flatland", n: "Flatland", d: "Why extra dimensions are so hard to picture. Seven chapters: a 2D world visited by a sphere, building a tesseract, 4D slices — and time as a slice." },
+      { v: "field", n: "Field Ocean", d: "Particles as ripples in a field. Watch a massless ripple race at light speed while a massive one lags — and see why light's clock never ticks." },
+      { v: "clocks", n: "Clock Lab", d: "Why moving clocks run slow (the light clock), and the real corrections GPS satellites need every day." },
+      { v: "river", n: "River", d: "A black hole pictured as space flowing inward. Fire light and see where it can and can't escape." },
+      { v: "films", n: "Two Films", tier: "frontier", d: "If the universe had two time directions, could the present predict the future? Two identical starting frames, two different futures." }
+    ] },
+    { g: "method", name: "Method", blurb: "How science decides.", items: [
+      { v: "sure", n: "How sure are we?", d: "A worked example — is the universe really expanding? — showing how an idea earns the label 'established'." }
+    ] }
+  ];
+
+  function html() {
+    const secs = SECTIONS.map(s => {
+      const items = s.items.filter(i => !i.tier || Chrono.shows(i.tier)).map(i => `
+        <button class="hcard" data-go="${i.v}">
+          <span class="hname">${i.n}${i.tier === "exploratory" ? ' <span class="tier tier-exp">◌ Exploratory</span>' : i.tier === "frontier" ? ' <span class="tier tier-front">Frontier</span>' : ""}</span>
+          <span class="hdesc">${i.d}</span>
+          <span class="hgo">Open →</span>
+        </button>`).join("");
+      return `<section class="hsec g-${s.g}"><h3><span class="hdot"></span>${s.name}</h3><p class="meta">${s.blurb}</p><div class="hgrid">${items}</div></section>`;
+    }).join("");
+    return `
+      <button class="hclose" id="help-close" aria-label="Close guide">×</button>
+      <div class="eyebrow">Guide</div>
+      <h2 id="help-title">Chronoscope — the holes in time</h2>
+      <p class="hlead">Time is the most familiar thing in physics and one of the least understood. Chronoscope is a place to explore <b>where our account of time doesn't add up</b>, what physicists have proposed, and how to tell solid science from speculation — using interactive models rather than walls of text.</p>
+      ${secs}
+      <section class="hsec"><h3>Mainstream or not? The tags</h3>
+        <p class="meta">Every idea is labelled, so you always know what kind of claim you're looking at. The <b>Show</b> switch in the top bar lets you choose how far from mainstream physics you want to go.</p>
+        ${Chrono.tierLegend().replace('<h3>How to read the tags</h3>', '')}
+      </section>
+      <section class="hsec"><h3>Tips</h3>
+        <ul class="biglist">
+          <li>The panel on the right always explains what you're looking at, with a <b>Try:</b> box suggesting something to do.</li>
+          <li>Most 3D views can be <b>dragged</b> to turn them.</li>
+          <li>Links in the right panel jump between related labs and Atlas holes.</li>
+          ${Chrono.shows("exploratory") ? "<li><b>+ Your hypothesis</b> (in the Atlas) adds your own idea to the map. Say what it predicts and what would prove it wrong. <b>Export</b> saves your ideas to a file you can share; friends use <b>Import</b>.</li>" : ""}
+          <li>Press <b>?</b> at any time to reopen this guide; <b>Esc</b> closes it.</li>
+        </ul>
+      </section>
+      <p class="caveat">Built by Will (AgilityAI) with Claude. Sources are listed in each panel.${Chrono.CONFIG.edition === "school" ? " School edition: exploratory content is hidden." : ""}</p>`;
+  }
+  function open() {
+    $("#helpbox").innerHTML = html();
+    $("#help").style.display = "flex";
+    $("#help-close").onclick = close;
+    document.querySelectorAll("#helpbox [data-go]").forEach(b => b.onclick = () => { close(); Chrono.goView(b.dataset.go); });
+    $("#help-close").focus();
+    dismissHint();
+  }
+  function close() { $("#help").style.display = "none"; }
+  function dismissHint() { $("#hint").style.display = "none"; try { localStorage.setItem("chronoscope.hinted", "1"); } catch (e) { } }
+  Chrono.openHelp = open;
+
+  $("#helpbtn").onclick = open;
+  $("#help").addEventListener("click", e => { if (e.target.id === "help") close(); });
+  document.addEventListener("keydown", e => {
+    if (e.target.matches && e.target.matches("input, textarea, select")) return;
+    if (e.key === "?") { e.preventDefault(); open(); }
+    if (e.key === "Escape") close();
+  });
+  let hinted = false;
+  try { hinted = localStorage.getItem("chronoscope.hinted") === "1"; } catch (e) { }
+  if (!hinted) { $("#hint").style.display = "flex"; setTimeout(() => { const h = $("#hint"); if (h) h.classList.add("fade"); }, 12000); }
+  $("#hint-open").onclick = open;
+  $("#hint-x").onclick = dismissHint;
+})();

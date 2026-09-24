@@ -1,0 +1,332 @@
+/* Chronoscope — Atlas view, Test bench view, hypothesis modal. */
+(function () {
+  const NS = "http://www.w3.org/2000/svg";
+  const W = 1400, H = 740;
+  const HOLE_Y = 72, AXIS_Y = 660, Y0 = 1870, Y1 = 2030, X0 = 190, X1 = 1170, XEXP = 1262;
+  const SYM = { yes: "✓", part: "◐", no: "✗", na: "–", unk: "?" };
+  const SYM_WORD = { yes: "passes", part: "partly / evades", no: "fails or ignores", na: "not applicable", unk: "unknown" };
+
+  const state = {
+    view: "atlas",
+    camps: new Set(Chrono.CAMPS.map(c => c.id)),
+    tags: new Set(Object.keys(Chrono.TAGS)),
+    selected: null,   // {type:'hole'|'idea', id}
+    hover: null
+  };
+
+  const $ = s => document.querySelector(s);
+  const el = (tag, attrs = {}, parent) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  };
+  const campColor = id => `var(--c-${id})`;
+  const campOf = id => Chrono.CAMPS.find(c => c.id === id);
+  const holeOf = id => Chrono.HOLES.find(h => h.id === id);
+  const allIdeas = () => Chrono.IDEAS.concat(Chrono.hyp.asIdeas());
+  const visible = i => state.camps.has(i.camp) && state.tags.has(i.tag) && Chrono.shows(Chrono.tierOf(i));
+  const visHoles = () => Chrono.HOLES.filter(h => Chrono.shows(Chrono.tierOf(h)));
+  const isExp = x => Chrono.tierOf(x) === "exploratory";
+  const xOf = y => X0 + (y - Y0) / (Y1 - Y0) * (X1 - X0);
+  const laneY = camp => 226 + Chrono.CAMPS.findIndex(c => c.id === camp) * 62;
+  const holeX = i => { const n = visHoles().length; return n < 2 ? (X0 + X1) / 2 : X0 - 20 + i * ((X1 - X0 + 40) / (n - 1)); };
+  const esc = s => String(s || "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  /* ---------- filters toolbar ---------- */
+  function renderFilters() {
+    const f = $("#filters");
+    f.innerHTML = "";
+    Chrono.CAMPS.forEach(c => {
+      const b = document.createElement("button");
+      b.className = "chip" + (state.camps.has(c.id) ? " on" : "");
+      b.title = c.desc;
+      b.innerHTML = `<i style="background:${campColor(c.id)}"></i>${c.name}`;
+      b.onclick = () => { toggle(state.camps, c.id); renderAll(); };
+      f.appendChild(b);
+    });
+    const sep = document.createElement("span"); sep.style.width = "12px"; f.appendChild(sep);
+    Object.keys(Chrono.TAGS).filter(t => Chrono.shows(Chrono.TIER_OF_TAG[t])).forEach(t => {
+      const b = document.createElement("button");
+      b.className = "chip" + (state.tags.has(t) ? " on" : "");
+      b.innerHTML = `<span class="tag ${t}" style="border:none;padding:0">${Chrono.TAGS[t]}</span>`;
+      b.onclick = () => { toggle(state.tags, t); renderAll(); };
+      f.appendChild(b);
+    });
+    const sp = document.createElement("span"); sp.className = "spacer"; f.appendChild(sp);
+    if (Chrono.shows("exploratory")) [["+ Your hypothesis", "primary", openModal], ["Export", "", () => Chrono.hyp.exportJSON()], ["Import", "", () => $("#importfile").click()]]
+      .forEach(([t, cls, fn]) => { const b = document.createElement("button"); b.className = "btn " + cls; b.textContent = t; b.onclick = fn; f.appendChild(b); });
+  }
+  function toggle(set, v) { set.has(v) ? set.delete(v) : set.add(v); if (set.size === 0) set.add(v); }
+
+  /* ---------- atlas (SVG) ---------- */
+  function renderAtlas() {
+    const host = $("#atlas");
+    host.innerHTML = "";
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: "xMidYMid meet" }, host);
+    const defs = el("defs", {}, svg);
+    const glow = el("filter", { id: "glow", x: "-100%", y: "-100%", width: "300%", height: "300%" }, defs);
+    el("feGaussianBlur", { stdDeviation: "6", result: "b" }, glow);
+    const m = el("feMerge", {}, glow); el("feMergeNode", { in: "b" }, m); el("feMergeNode", { in: "SourceGraphic" }, m);
+    svg.addEventListener("click", e => { if (e.target === svg) { state.selected = null; renderAll(); } });
+
+    // lanes + axis
+    Chrono.CAMPS.forEach(c => {
+      const y = laneY(c.id);
+      el("line", { x1: X0 - 10, x2: X1 + 20, y1: y, y2: y, stroke: "var(--line)", "stroke-dasharray": "2 6", opacity: state.camps.has(c.id) ? 1 : .3 }, svg);
+      const t = el("text", { x: 20, y: y + 4, class: "lane-label", fill: campColor(c.id) }, svg);
+      t.style.fill = campColor(c.id); t.style.opacity = state.camps.has(c.id) ? .9 : .3;
+      t.textContent = c.name;
+    });
+    const ax = el("g", { class: "axis" }, svg);
+    el("line", { x1: X0, x2: X1, y1: AXIS_Y, y2: AXIS_Y, stroke: "var(--line)" }, ax);
+    for (let y = 1900; y <= 2030; y += 10) {
+      el("line", { x1: xOf(y), x2: xOf(y), y1: AXIS_Y, y2: AXIS_Y + (y % 50 ? 4 : 8), stroke: "var(--muted)" }, ax);
+      if (y % 20 === 0) { const t = el("text", { x: xOf(y), y: AXIS_Y + 22, "text-anchor": "middle" }, ax); t.textContent = y; }
+    }
+    [[1905, 1930, "relativity & quantum born"], [1960, 1972, "quantum gravity"], [1980, 2000, "quantum cosmology"], [2022, 2027, "JWST · DESI"]]
+      .forEach(([a, b, label]) => {
+        el("rect", { x: xOf(a), y: 190, width: xOf(b) - xOf(a), height: AXIS_Y - 190, fill: "var(--text)", opacity: .025 }, svg);
+        const t = el("text", { x: xOf(a) + 4, y: AXIS_Y - 8, class: "lane-label" }, svg);
+        t.style.fontSize = "9px"; t.style.opacity = .6; t.textContent = label;
+      });
+
+    if (Chrono.shows("exploratory")) {
+      el("line", { x1: XEXP - 44, x2: XEXP - 44, y1: 190, y2: AXIS_Y, stroke: "var(--t-hyp)", "stroke-dasharray": "3 5", opacity: .6 }, svg);
+      const t1 = el("text", { x: XEXP - 34, y: AXIS_Y - 22, class: "lane-label" }, svg); t1.style.fill = "var(--t-hyp)"; t1.textContent = "◌ Exploratory";
+      const t2 = el("text", { x: XEXP - 34, y: AXIS_Y - 9, class: "lane-label" }, svg); t2.style.fill = "var(--muted)"; t2.style.fontSize = "9px"; t2.textContent = "not mainstream";
+    }
+    // idea positions (nudge collisions within lane)
+    const ideas = allIdeas().filter(visible);
+    const placed = {};
+    const pos = {};
+    ideas.slice().sort((a, b) => a.year - b.year).forEach(i => {
+      const x = isExp(i) ? XEXP : xOf(i.year);
+      const lane = placed[i.camp] || (placed[i.camp] = []);
+      let dy = 0, k = 0;
+      while (lane.some(p => Math.abs(p.x - x) < 22 && p.dy === dy)) { k++; dy = (k % 2 ? -1 : 1) * Math.ceil(k / 2) * (isExp(i) ? 16 : 20); }
+      lane.push({ x, dy });
+      pos[i.id] = { x, y: laneY(i.camp) + dy };
+    });
+
+    // arcs
+    const arcs = el("g", {}, svg);
+    ideas.forEach(i => i.holes.forEach(hid => {
+      const hi = visHoles().findIndex(h => h.id === hid);
+      if (hi < 0) return;
+      const p = pos[i.id], hx = holeX(hi), hy = HOLE_Y + 22;
+      const path = el("path", {
+        d: `M${p.x},${p.y - 6} C${p.x},${p.y - 90} ${hx},${hy + 90} ${hx},${hy}`,
+        class: "arc", stroke: campColor(i.camp), "data-idea": i.id, "data-hole": hid
+      }, arcs);
+      if (isExp(i)) path.setAttribute("stroke-dasharray", "4 4");
+    }));
+
+    // holes
+    const counts = {};
+    ideas.forEach(i => i.holes.forEach(h => counts[h] = (counts[h] || 0) + 1));
+    visHoles().forEach((h, idx) => {
+      const g = el("g", { class: "node hole", "data-hole": h.id, transform: `translate(${holeX(idx)},${HOLE_Y})` }, svg);
+      const r = 12 + Math.min(10, (counts[h.id] || 0) * 1.3);
+      el("circle", { r: r + 6, fill: "none", stroke: "var(--accent)", opacity: .15 }, g);
+      el("circle", { r, fill: "var(--bg)", stroke: isExp(h) ? "var(--t-hyp)" : "var(--accent)", "stroke-width": 1.5, filter: "url(#glow)", "stroke-dasharray": isExp(h) ? "4 3" : "none" }, g);
+      const id = el("text", { y: 4, class: "hole-id" }, g); id.textContent = h.id;
+      const words = h.name.split(" "); const lines = [""];
+      words.forEach(w => { if ((lines[lines.length - 1] + " " + w).trim().length > 15) lines.push(w); else lines[lines.length - 1] = (lines[lines.length - 1] + " " + w).trim(); });
+      lines.forEach((ln, li) => { const t = el("text", { y: r + 22 + li * 15, class: "hole-label" }, g); t.textContent = ln; });
+      const c = el("text", { y: r + 22 + lines.length * 15 + 2, class: "hole-id" }, g); c.textContent = `${counts[h.id] || 0} attempts`;
+      g.addEventListener("mouseenter", () => setHover({ type: "hole", id: h.id }));
+      g.addEventListener("mouseleave", () => setHover(null));
+      g.addEventListener("click", () => select({ type: "hole", id: h.id }));
+    });
+
+    // idea nodes
+    ideas.forEach(i => {
+      const p = pos[i.id];
+      const g = el("g", { class: "node idea", "data-idea": i.id, transform: `translate(${p.x},${p.y})` }, svg);
+      el("circle", { r: 14, fill: "transparent" }, g);
+      if (isExp(i)) { el("circle", { r: 8, fill: "none", stroke: campColor(i.camp), "stroke-dasharray": "3 3" }, g); el("circle", { r: 2.5, fill: campColor(i.camp) }, g); }
+      else el("circle", { r: 6, fill: campColor(i.camp), stroke: "var(--bg)", "stroke-width": 2 }, g);
+      const t = isExp(i) ? el("text", { x: 11, y: 4, class: "idea-label" }, g) : el("text", { x: 7, y: -9, class: "idea-label", transform: "rotate(-28)" }, g);
+      const lim = isExp(i) ? 17 : 30;
+      t.textContent = i.name.length > lim ? i.name.slice(0, lim - 1) + "…" : i.name;
+      if (isExp(i)) t.style.fill = "var(--t-hyp)";
+      g.addEventListener("mouseenter", () => setHover({ type: "idea", id: i.id }));
+      g.addEventListener("mouseleave", () => setHover(null));
+      g.addEventListener("click", e => { e.stopPropagation(); select({ type: "idea", id: i.id }); });
+    });
+    applyHighlight();
+  }
+
+  function focusSets(f) {
+    if (!f) return null;
+    const ideas = allIdeas().filter(visible);
+    if (f.type === "hole") return { holes: new Set([f.id]), ideas: new Set(ideas.filter(i => i.holes.includes(f.id)).map(i => i.id)) };
+    const i = ideas.find(x => x.id === f.id);
+    return i ? { holes: new Set(i.holes), ideas: new Set([i.id]) } : null;
+  }
+  function applyHighlight() {
+    const f = focusSets(state.hover || state.selected);
+    document.querySelectorAll("#atlas .hole").forEach(n => n.classList.toggle("dim", !!f && !f.holes.has(n.dataset.hole)));
+    document.querySelectorAll("#atlas .idea").forEach(n => n.classList.toggle("dim", !!f && !f.ideas.has(n.dataset.idea)));
+    document.querySelectorAll("#atlas .arc").forEach(n => {
+      const on = f && f.ideas.has(n.dataset.idea) && f.holes.has(n.dataset.hole);
+      n.style.opacity = f ? (on ? .95 : .03) : .16;
+      n.style.strokeWidth = on ? 2 : 1.2;
+    });
+  }
+  function setHover(h) { state.hover = h; applyHighlight(); }
+  function select(s) { state.selected = s; applyHighlight(); renderAside(); if (state.view === "bench") renderBench(); }
+
+  /* ---------- aside ---------- */
+  function renderAside() {
+    const a = $("#aside");
+    const s = state.selected;
+    if (!s) return a.innerHTML = introHTML();
+    if (s.type === "hole") return a.innerHTML = holeHTML(holeOf(s.id)), wireAside();
+    const i = allIdeas().find(x => x.id === s.id);
+    a.innerHTML = i ? ideaHTML(i) : introHTML();
+    wireAside();
+  }
+  function wireAside() {
+    document.querySelectorAll("#aside [data-go-hole]").forEach(b => b.onclick = () => select({ type: "hole", id: b.dataset.goHole }));
+    document.querySelectorAll("#aside [data-go-idea]").forEach(b => b.onclick = () => select({ type: "idea", id: b.dataset.goIdea }));
+    const del = $("#aside [data-del]");
+    if (del) del.onclick = () => { Chrono.hyp.remove(del.dataset.del); state.selected = null; renderAll(); };
+    const back = $("#aside [data-back]");
+    if (back) back.onclick = () => { state.selected = null; renderAll(); };
+  }
+  function introHTML() {
+    const ideas = allIdeas().filter(visible);
+    const bars = visHoles().map(h => {
+      const on = ideas.filter(i => i.holes.includes(h.id));
+      const seg = Chrono.CAMPS.map(c => { const n = on.filter(i => i.camp === c.id).length; return n ? `<span style="flex:${n};background:${campColor(c.id)}" title="${c.name}: ${n}"></span>` : ""; }).join("");
+      return `<div class="barrow" data-go-hole="${h.id}"><span>${h.id}</span><div class="stack">${seg}</div><span>${on.length}</span></div>`;
+    }).join("");
+    setTimeout(wireAside);
+    return `
+      <div class="eyebrow">The Atlas</div>
+      <h2>Where our account of time doesn't add up</h2>
+      <p>The glowing nodes along the top are <b>holes</b>: known gaps in physics' account of time. The dots below are a century of <b>attempts</b> to fill them, placed by year and sorted into camps.</p>
+      <p>Hover a hole to see who has tried to fill it. Click anything to read the detail.</p>
+      <h3>Who attacks which hole</h3>
+      <div class="bars">${bars}</div>
+      <p class="meta" style="margin-top:8px">Colour = camp. Notice where "more time" and "less time" aim at the same hole — two opposite repairs for one crack.</p>
+      ${Chrono.shows("exploratory") ? `<h3>Add your own</h3>
+      <p>Use <b>+ Your hypothesis</b> to put a loose idea on the map. Say what it would predict and what would kill it. Export the file to share with friends; they import it to see yours.</p>` : ""}
+      ${Chrono.tierLegend()}
+      <p class="caveat">Test-bench scores are Claude's first-pass judgement, made to be argued with.</p>`;
+  }
+  function holeHTML(h) {
+    const ideas = allIdeas().filter(visible).filter(i => i.holes.includes(h.id)).sort((a, b) => a.year - b.year);
+    const list = ideas.map(i => `<div class="barrow" style="grid-template-columns:44px 1fr" data-go-idea="${i.id}"><span>${i.year}</span><span style="color:var(--text)"><i class="camp-dot" style="background:${campColor(i.camp)}"></i>${esc(i.name)}</span></div>`).join("");
+    return `
+      <button class="btn" data-back>← Atlas</button>
+      <div class="eyebrow" style="margin-top:14px">Hole ${h.id}</div>
+      <h2>${esc(h.name)}</h2>
+      ${isExp(h) ? Chrono.expBanner() : ""}
+      <span class="tag ${h.tag}">${Chrono.TAGS[h.tag]}</span> <span class="meta">${isExp(h) ? "our framing" : "that this is an open problem"}</span>
+      <p style="margin-top:12px">${esc(h.plain)}</p>
+      <h3>Why physicists take it seriously</h3>
+      <p>${esc(h.why)}</p>
+      <h3>Attempts to fill it (${ideas.length})</h3>
+      ${list || '<p class="meta">None visible with current filters.</p>'}`;
+  }
+  function ideaHTML(i) {
+    const camp = campOf(i.camp);
+    const holes = i.holes.map(h => `<span class="holepill" data-go-hole="${h}">${h} · ${esc(holeOf(h).name)}</span>`).join("");
+    const bench = Chrono.CONSTRAINTS.map(c => `<tr><td>${c.name}</td><td class="v-${i.c[c.id]}">${SYM[i.c[c.id]]} ${SYM_WORD[i.c[c.id]]}</td></tr>`).join("");
+    const benchBlock = i.camp === "bench"
+      ? `<h3>Role</h3><p>This is a <b>constraint</b>: a result other ideas are tested against, not an attempt to fill a hole.</p>`
+      : i.tag === "ANALOGY" ? "" : `<h3>Test bench ${i.user ? "(unscored — yours to argue)" : ""}</h3><table class="bench">${bench}</table>`;
+    return `
+      <button class="btn" data-back>← Atlas</button>
+      <div class="eyebrow" style="margin-top:14px"><i class="camp-dot" style="background:${campColor(i.camp)}"></i>${camp.name} · ${i.user ? "your hypothesis" : i.year}</div>
+      <h2>${esc(i.name)}</h2>
+      ${isExp(i) ? Chrono.expBanner(i.user) : ""}
+      <div class="meta">${esc(i.who)} · ${esc(i.outcome)}</div>
+      <span class="tag ${i.tag}">${Chrono.TAGS[i.tag]}</span>
+      <p style="margin-top:12px">${esc(i.plain)}</p>
+      ${i.why ? `<h3>The thinking behind it</h3><p>${esc(i.why)}</p>` : ""}
+      ${i.predicts ? `<h3>Would predict</h3><p>${esc(i.predicts)}</p>` : ""}
+      ${i.kill ? `<h3>Would be killed by</h3><p>${esc(i.kill)}</p>` : ""}
+      <h3>Holes it targets</h3><div class="pillrow">${holes}</div>
+      ${benchBlock}
+      ${i.note ? `<p class="note" style="margin-top:14px">${esc(i.note)}</p>` : ""}
+      ${i.user ? `<div class="row" style="justify-content:flex-start"><button class="btn" data-del="${i.id}">Remove</button></div>` : ""}`;
+  }
+
+  /* ---------- test bench table ---------- */
+  function renderBench() {
+    const v = $("#benchview");
+    const ideas = allIdeas().filter(visible).filter(i => i.camp !== "bench" && i.tag !== "ANALOGY").sort((a, b) => a.year - b.year);
+    const head = Chrono.CONSTRAINTS.map(c => `<th style="text-align:center" title="${c.name}">${c.short}</th>`).join("");
+    const rows = ideas.map(i => `<tr data-go-idea="${i.id}" style="${state.selected && state.selected.id === i.id ? "outline:1px solid var(--accent)" : ""}">
+      <td>${i.user ? "yours" : i.year}${isExp(i) ? ' <span class="expdot" title="Exploratory">◌</span>' : ""}</td>
+      <td><i class="camp-dot" style="background:${campColor(i.camp)}"></i>${esc(i.name)}</td>
+      <td><span class="tag ${i.tag}">${Chrono.TAGS[i.tag]}</span></td>
+      ${Chrono.CONSTRAINTS.map(c => `<td class="sym v-${i.c[c.id]}" title="${SYM_WORD[i.c[c.id]]}">${SYM[i.c[c.id]]}</td>`).join("")}
+    </tr>`).join("");
+    v.innerHTML = `<p class="meta">Every attempt against the same hurdles. ✓ passes · ◐ partly / evades · ✗ fails or ignores · – n/a · ? unknown. First-pass scores by Claude — challenge them.</p>
+      <table><thead><tr><th>Year</th><th>Idea</th><th>Status</th>${head}</tr></thead><tbody>${rows}</tbody></table>`;
+    v.querySelectorAll("[data-go-idea]").forEach(r => r.onclick = () => select({ type: "idea", id: r.dataset.goIdea }));
+  }
+
+  /* ---------- modal ---------- */
+  function openModal() {
+    $("#h-camp").innerHTML = Chrono.CAMPS.filter(c => c.id !== "bench").map(c => `<option value="${c.id}"${c.id === "more" ? " selected" : ""}>${c.name}</option>`).join("");
+    $("#h-holes").innerHTML = visHoles().map(h => `<label><input type="checkbox" value="${h.id}">${h.id} ${esc(h.name)}</label>`).join("");
+    ["#h-name", "#h-plain", "#h-pred", "#h-kill"].forEach(s => $(s).value = "");
+    $("#modal").style.display = "flex";
+    $("#h-name").focus();
+  }
+  $("#h-cancel").onclick = () => $("#modal").style.display = "none";
+  $("#h-save").onclick = () => {
+    const name = $("#h-name").value.trim();
+    const holes = [...document.querySelectorAll("#h-holes input:checked")].map(x => x.value);
+    if (!name || !holes.length) { alert("Give it a name and at least one hole."); return; }
+    const h = { id: "u" + Date.now(), name, camp: $("#h-camp").value, holes, plain: $("#h-plain").value.trim(),
+      pred: $("#h-pred").value.trim(), kill: $("#h-kill").value.trim(), who: $("#h-who").value.trim() || "You" };
+    Chrono.hyp.add(h);
+    state.camps.add(h.camp); state.tags.add("HYPOTHESIS");
+    $("#modal").style.display = "none";
+    state.selected = { type: "idea", id: h.id };
+    renderAll();
+  };
+  $("#importfile").onchange = e => { const f = e.target.files[0]; if (f) Chrono.hyp.importJSON(f, ok => { if (!ok) alert("That file couldn't be read."); renderAll(); }); e.target.value = ""; };
+
+  /* ---------- views ---------- */
+  document.querySelectorAll("nav button[data-view]").forEach(b => b.onclick = () => {
+    state.view = b.dataset.view;
+    document.querySelectorAll("nav button[data-view]").forEach(x => x.classList.toggle("on", x === b));
+    renderAll();
+  });
+  function renderAll() {
+    const mod = Chrono.views && Chrono.views[state.view];
+    ["#atlas", "#benchview", "#flatland", "#lab", "#doc"].forEach(sel => { const n = $(sel); if (n) n.style.display = "none"; });
+    Object.keys(Chrono.views || {}).forEach(k => { if (k !== state.view && Chrono.views[k].hide) Chrono.views[k].hide(); });
+    renderLevel();
+    if (mod) { $("#filters").style.display = "none"; mod.show(); return; }
+    $("#filters").style.display = "";
+    $("#atlas").style.display = state.view === "atlas" ? "" : "none";
+    $("#benchview").style.display = state.view === "bench" ? "block" : "none";
+    renderFilters();
+    if (state.view === "atlas") renderAtlas(); else renderBench();
+    renderAside();
+  }
+  function renderLevel() {
+    const host = $("#levelctl"); if (!host) return;
+    const opts = [[1, "Mainstream"], [2, "+ Frontier"], [3, "+ Exploratory"]].filter(o => o[0] <= Chrono.maxLevel);
+    host.innerHTML = `<span class="lvl-label">Show</span>` + opts.map(([n, t]) => `<button class="lvl lvl${n} ${Chrono.level >= n ? "on" : ""}" data-lvl="${n}" title="${["", "Established and contested physics, plus lenses", "Adds speculative proposals by physicists", "Adds Will & Claude's ideas and visitor hypotheses — not mainstream physics"][n]}">${t}</button>`).join("");
+    host.querySelectorAll("[data-lvl]").forEach(b => b.onclick = () => Chrono.setLevel(+b.dataset.lvl));
+    document.querySelectorAll("nav button[data-tier]").forEach(b => b.style.display = Chrono.shows(b.dataset.tier) ? "" : "none");
+  }
+  Chrono.onLevel.push(() => {
+    const cur = document.querySelector(`nav button[data-view="${state.view}"]`);
+    if (cur && cur.dataset.tier && !Chrono.shows(cur.dataset.tier)) { state.view = "atlas"; document.querySelectorAll("nav button[data-view]").forEach(x => x.classList.toggle("on", x.dataset.view === "atlas")); } if (state.selected) { const x = state.selected.type === "hole" ? holeOf(state.selected.id) : allIdeas().find(i => i.id === state.selected.id); if (!x || !Chrono.shows(Chrono.tierOf(x))) state.selected = null; } renderAll(); });
+  Chrono.views = Chrono.views || {};
+  if (Chrono.flatland) Chrono.views.flatland = { show: () => { $("#flatland").style.display = "flex"; Chrono.flatland.show(); }, hide: () => Chrono.flatland.hide() };
+  Chrono.goView = v => { state.view = v; document.querySelectorAll("nav button[data-view]").forEach(x => x.classList.toggle("on", x.dataset.view === v)); renderAll(); };
+  Chrono.goHole = id => { state.view = "atlas"; document.querySelectorAll("nav button").forEach(x => x.classList.toggle("on", x.dataset.view === "atlas")); state.selected = { type: "hole", id }; renderAll(); };
+  renderAll();
+})();
