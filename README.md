@@ -123,7 +123,8 @@ quizzes and the tours. ⌂ Home is always one click away, and each side panel st
   story with the evidence: why clocks disagree, what 'now' means, the arrow of time, why 3 + 1, quantum
   time, time travel, holography, two-time physics — plus
   links to other free sites that explore each idea well.
-- **Predict first** — each lab asks for your guess before explaining (skippable).
+- **Predict first** — each lab asks for your guess first and stays paused, and hidden, until you've made it
+  (or chosen "Just show me"); then "Run it" shows whether you were right.
 - **Picture it and Common trap** — each lab has one everyday analogy (and where it breaks) and one common
   misconception, with what the lab shows instead.
 - **Quizzes and review** — a short quiz at the end of each tour, and questions from labs you've explored
@@ -234,8 +235,7 @@ id, year, name, who, camp, holes, tag, outcome, plain description, reasoning, hu
 | [`DESIGN.md`](DESIGN.md) | Visual language and physics-fidelity rules |
 | [`decisions.md`](decisions.md) | Decision records (D-001 onward) |
 | [`sources.md`](sources.md) | References, with confidence tags |
-| [`reviews.md`](reviews.md) | Design reviews from other AI systems, and what was adopted or rejected (and why) |
-| [`learner-review.md`](learner-review.md) | The app reviewed from a newcomer's point of view, with a phased plan |
+| [`reviews/`](reviews/) | Reviews of the app: [`reviews.md`](reviews/reviews.md) (other AI systems — adopted or rejected, and why), [`learner-review.md`](reviews/learner-review.md) (a newcomer's view), the 2026-09-25 teaching and text reviews, and the [UX, flow and stickiness design spec](reviews/Chronoscope%20%E2%80%94%20UX,%20Flow%20%26%20Stickiness%20Design%20Spec.md) |
 | [`todo.md`](todo.md) | Task list |
 | [`ACTIVE.md`](ACTIVE.md) | Current focus |
 | [`HANDOVER.md`](HANDOVER.md) | Notes for hosting and school use |
@@ -253,7 +253,7 @@ theme, teacher notes, and a move to its own domain, **chronoscope.com.au**.
 
 Concept and direction: Will ([AgilityAI](https://agilityai.com.au)). Built with Claude (Anthropic).
 Design critiques from ChatGPT, Gemini and Google AI Overview are recorded, with what was adopted and
-rejected, in [`reviews.md`](reviews.md). The *Flatland* text (E. A. Abbott, 1884) is public domain.
+rejected, in [`reviews/reviews.md`](reviews/reviews.md). The *Flatland* text (E. A. Abbott, 1884) is public domain.
 
 ## Licence
 

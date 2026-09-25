@@ -124,8 +124,8 @@
     return `
       <div class="docwrap home">
         <div class="eyebrow">Chronoscope · time, at every scale</div>
-        <h1>What is time? Physics has more answers, and more open questions, than you'd think.</h1>
-        <p class="lede">Chronoscope is a free, hands-on guide to time in physics: more than twenty live simulations running the real equations, from a single photon to the edge of the universe. Every claim is tagged with how sure physicists are, so you can tell solid science from the frontier.</p>
+        <h1>Two perfect clocks. One is moving. They disagree.</h1>
+        <p class="lede">Chronoscope looks at physics through the lens of time, from a single photon to the edge of the universe: more than twenty live simulations running the real equations, and every claim tagged by how sure physicists are.</p>
         <p class="hook">Why is there only one time dimension? Nobody knows for sure. <button class="linkish" data-go-tour="0" data-tour-id="puzzle">Tour 1 takes you to the edge of that question →</button></p>
         ${lastName && t === null ? `<a class="continue" href="${last}">Continue where you left off: <b>${lastName}</b> →</a>` : ""}
         ${Chrono.reviewDue && Chrono.reviewDue() ? `<a class="continue revdue" href="#review">🔁 <b>${Chrono.reviewDue()} question${Chrono.reviewDue() > 1 ? "s" : ""} to review</b> from labs you've explored. A minute or two →</a>` : ""}

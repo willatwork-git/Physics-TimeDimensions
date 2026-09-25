@@ -1,6 +1,6 @@
 # spec.md — Chronoscope (v3, 2026-09-24)
 
-v1, v2 archived in `archive/`. Rationale: `reviews.md`, `learning.md`.
+v1, v2 archived in `archive/`. Rationale: `reviews/reviews.md`, `learning.md`.
 
 ## Audience and purpose (v3)
 - **Primary:** Will, learning the topic from zero; **secondary:** friends, as a shared discussion tool.

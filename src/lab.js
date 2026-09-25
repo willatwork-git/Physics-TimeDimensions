@@ -75,7 +75,7 @@
   function frame(ts) {
     if (!active) return;
     const dt = Math.min(0.05, (ts - (last || ts)) / 1000); last = ts;
-    if (active.tick) active.tick(Chrono.motion.dt(dt));
+    if (active.tick && lockState(active) === "free") active.tick(Chrono.motion.dt(dt));   // paused on the question's setup until the guess is run
     ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
     G.ctx = ctx; G.W = W; G.H = H;
     active.draw(G);
@@ -103,44 +103,69 @@
           if (!canvas) initCanvas();
           $("#lab").style.display = "flex"; active = def; resize(); Chrono.motion.reset();
           if (def.enter) def.enter(G);
+          if (lockState(def) !== "free" && def.predict.setup) def.predict.setup();
           Chrono.lab.rebuild();
+          if (lockState(def) !== "free" && def.predict.setup) def.predict.setup();   // some setups press a control, so run again once controls exist
           cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(frame);
         },
-        hide() { if (active === def) { active = null; cancelAnimationFrame(raf); } }
+        hide() { if (active === def) { active = null; cancelAnimationFrame(raf); } applyLock(null); }
       };
     },
     size: () => [W, H]
   };
-  /* Predict first: the visitor commits to a guess before the explanation opens (predict → observe →
-     explain). def.predict = { q, options: [...], answer: index, explain }. Skippable. */
+  /* Predict first: the visitor commits to a guess before anything can give the answer away (D-042, UX spec P0).
+     def.predict = { q, options: [...], answer: index, explain, setup? }. States:
+       locked  — no guess yet: sim paused on the question's setup, blurred (so no readout gives it away), controls off
+       guessed — guess made: still locked; "Run it" unlocks
+       free    — ran it, skipped ("Just show me"), or no prediction: normal sandbox.
+     setup() puts the lab in the exact state the question describes (e.g. Clock Lab at 0.87 c).
+     On phones the card sits above the sim, not below it. */
+  const NARROW = "(max-width: 900px) and (orientation: portrait), (max-width: 600px)";
+  function lockState(def) {
+    if (!def || !def.predict) return "free";
+    const g = Chrono.progress.pred(def.id);
+    return g.guess === undefined ? "locked" : g.guess >= 0 && !g.checked ? "guessed" : "free";
+  }
+  function applyLock(def) {
+    const st = lockState(def), on = def && st !== "free", wrap = $("#lab-canvas-wrap"), veil = $("#lab-veil");
+    if (wrap) wrap.classList.toggle("locked", on);
+    const ctl = $("#lab-controls"); if (ctl) { ctl.classList.toggle("locked", on); ctl.inert = on; }
+    if (veil) veil.innerHTML = !on ? "" : st === "locked"
+      ? `<div class="veil-msg"><b>Make your guess first</b><span>The answer is in here — it opens when you've guessed.</span></div>`
+      : `<div class="veil-msg"><button class="btn primary big" data-pcheck>▶ Run it</button><span>See if you were right.</span></div>`;
+  }
   /* Shared with Flatland: Chrono.predictCard(key, p) renders the card; Chrono.wirePredict(key, rerender) wires it. */
-  function predictCard(def) { return Chrono.predictCard(def.id, def.predict); }
-  Chrono.predictCard = function (key, p) {
+  function predictCard(def) { return Chrono.predictCard(def.id, def.predict, "▶ Run it"); }
+  Chrono.predictCard = function (key, p, run) {
     const g = Chrono.progress.pred(key);
     if (g.guess === undefined) return `<div class="predict"><div class="eyebrow">Predict first</div><p>${p.q}</p>
       <div class="popts">${p.options.map((o, i) => `<button class="btn" data-guess="${i}">${o}</button>`).join("")}</div>
-      <button class="linkish" data-guess="-1">Skip — just show me</button></div>`;
+      <button class="linkish" data-guess="-1">Just show me</button></div>`;
     if (g.guess < 0) return "";
     const right = g.guess === p.answer;
     return `<div class="predict">${!g.checked
-      ? `<div class="eyebrow">Your prediction</div><p><b>${p.options[g.guess]}</b></p><p class="meta">Now try it in the lab, then check.</p><button class="btn primary" data-pcheck>Check my prediction</button>`
+      ? `<div class="eyebrow">Your guess</div><p><b>${p.options[g.guess]}</b></p>${run ? "" : `<p class="meta">Now try it, then check.</p>`}<button class="btn primary" data-pcheck>${run || "Check my prediction"}</button>`
       : `<div class="eyebrow">${right ? "✓ You predicted it" : "Not quite — and that's the useful kind of wrong"}</div><p class="meta">You said: ${p.options[g.guess]}${right ? "" : ` · Answer: <b>${p.options[p.answer]}</b>`}</p><p>${p.explain}</p><button class="linkish" data-pagain>Ask me again</button>`}</div>`;
   }
   Chrono.wirePredict = function (key, rerender) {
-    document.querySelectorAll("#aside [data-guess]").forEach(b => b.onclick = () => { Chrono.progress.setPred(key, { guess: +b.dataset.guess }); rerender(); });
-    const chk = $("#aside [data-pcheck]"); if (chk) chk.onclick = () => { Chrono.progress.setPred(key, Object.assign(Chrono.progress.pred(key), { checked: true })); rerender(); };
-    const again = $("#aside [data-pagain]"); if (again) again.onclick = () => { Chrono.progress.setPred(key, {}); rerender(); };
+    const W = "#aside, #lab-predict, #lab-veil", q = s => document.querySelectorAll(W.split(", ").map(w => `${w} ${s}`).join(", "));
+    q("[data-guess]").forEach(b => b.onclick = () => { Chrono.progress.setPred(key, { guess: +b.dataset.guess }); rerender(); });
+    q("[data-pcheck]").forEach(b => b.onclick = () => { Chrono.progress.setPred(key, Object.assign(Chrono.progress.pred(key), { checked: true })); rerender(); });
+    q("[data-pagain]").forEach(b => b.onclick = () => { Chrono.progress.setPred(key, {}); rerender(); });
   };
   function renderLabAside(def) {
-    const tier = def.tier || "mainstream";
-    const waiting = def.predict && Chrono.progress.pred(def.id).guess === undefined;
+    const tier = def.tier || "mainstream", st = lockState(def), waiting = st !== "free";
+    if (st !== "free" && def.lastLock === "free" && def.predict.setup) def.predict.setup();   // "Ask me again": back to the question's setup
+    def.lastLock = st;
+    const above = waiting && def.kind !== "doc" && window.matchMedia(NARROW).matches;   // phones: the card goes above the sim
+    const lp = $("#lab-predict"); if (lp) lp.innerHTML = above ? predictCard(def) : "";
     $("#aside").innerHTML = `${Chrono.crumb ? Chrono.crumb() : ""}
       <div class="eyebrow">${def.eyebrow || "Lab"}</div>
       <h2>${def.title}</h2>
       <div class="pillrow">${Chrono.tierPill(tier)} ${(def.tags || []).map(t => `<span class="tag ${t}">${Chrono.TAGS[t]}</span>`).join(" ")}</div>
       ${tier === "exploratory" ? Chrono.expBanner() : ""}
       ${Chrono.introFor ? Chrono.introFor(def.id) : ""}
-      ${def.predict ? predictCard(def) : ""}
+      ${def.predict && !above ? predictCard(def) : ""}
       ${waiting && Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
       ${waiting ? "" : typeof def.aside === "function" ? def.aside() : (def.aside || "")}
       ${!waiting && Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
@@ -152,6 +177,7 @@
       ${def.sources ? `<p class="caveat">Sources: ${def.sources}</p>` : ""}`;
     document.querySelectorAll("#aside [data-hole]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goHole(a.dataset.hole); });
     document.querySelectorAll("#aside [data-view-link]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goView(a.dataset.viewLink); });
+    if (def.kind !== "doc") applyLock(def);
     Chrono.wirePredict(def.id, () => renderLabAside(def));
     if (def.wireAside) def.wireAside();
   }

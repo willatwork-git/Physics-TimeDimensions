@@ -34,7 +34,7 @@ Priority: credibility before launch; build what unlocks structure (Quantum scale
 ### Phase 1 — Quick wins ✅ 2026-09-25 (D-035)
 - [x] "Further exploring" links on Concepts pages (landscape-2026-09-25.md)
 - [x] Newton vs Einstein switch on the 1 g voyage (after Lansdell)
-- [x] Boot a Universe: Bars two-time note on (4, 2) — SPECULATIVE (reviews.md, 2026-09-25)
+- [x] Boot a Universe: Bars two-time note on (4, 2) — SPECULATIVE (reviews/reviews.md, 2026-09-25)
 - [x] Predict-first for Flatland chapters
 - [x] Launch basics: meta description, link preview (Open Graph image), favicon
 ### Phase 2 — Quantum and time travel ✅ 2026-09-25 (D-036)
@@ -69,12 +69,20 @@ see the full physics (equations, derivations, the model's exact assumptions) wit
   (Stuart Riffle's colour-coded DFT; Better Explained); live equations whose numbers update with the sliders
   (Bret Victor, Ciechanowski); expandable derivations; KaTeX rendering (jsdelivr) with copy-as-LaTeX;
   "view the code" showing the actual JS that runs; export parameters/data; links to the paper and equation number.
-- Related: review-2026-09-25.md §1.4 "Show me the maths" expander. Existing hooks: every lab's model line.
+- Related: reviews/review-2026-09-25.md §1.4 "Show me the maths" expander. Existing hooks: every lab's model line.
 
 ### Later
 - [x] Concept map → How it all connects (D-040) → replaced by **How it all fits together**, a comic strip (D-041)
 - [ ] Will: read the eight panels and the epilogue (`src/story.js`); illustrations could be replaced by approved artwork if wanted
-- [ ] **Stars forge the elements** (Cosmos, `src/stars.js`, D-042 reserved) — IN PROGRESS
+## UX spec roadmap (D-042) — `reviews/Chronoscope — UX, Flow & Stickiness Design Spec.md`
+- [x] P0 · Predict first, honestly: locked / guessed / free states, setups, phone card above sim (2026-09-26)
+- [ ] Phase 0 · Stop plans for all 21 tour stops — Claude drafts, Will edits (arrives with · already knows · new here · do · look at · takeaway · limit · handoff)
+- [ ] Phase 1 · Clock Lab prototype: stop framings (per-tour prediction keys `lab:tour:question`), 2 missions, end card with handoff; then the River. Quick wins: Continue card, "Resume tour" chip replacing the paused banner
+- [ ] Phase 2 · Structure: top bar Home · Tours · Explore (mega-menu) · Guide, mode switch inside Guide (Learn / Workbench); home cut to 5 blocks with the hero light-clock sim; lab template; threads → "Where this leads"
+- [ ] Phase 3 · Roll out: framings on all 21 stops; tokens and three emphasis levels; sim scaling + readout bars; missions for every lab (rewrite the "not a wall you hit" reveal)
+- [ ] Phase 4 · Return loop: passport (#passport), review sheet, challenge links, teacher mode level 1, print worksheets. Guess counter and analytics wait for the domain move (static until then)
+
+- [ ] **Stars forge the elements** (Cosmos, `src/stars.js`, D-043 reserved) — IN PROGRESS, fit in between UX phases
   - [x] Scene 1 drawing: onion star + countdown of burning stages (25 Sun masses; WHW 2002 times: H 6.7 Myr · He 0.84 Myr · C 522 yr · Ne 0.89 yr · O 0.40 yr · Si ~2 days · collapse < 1 s)
   - [ ] Scene 2: periodic table of origins, Z 1–92, rounded shares after Johnson (2019) / Kobayashi et al. (2020); sources: Big Bang · cosmic rays · exploding massive stars · exploding white dwarfs · ageing giant stars · colliding neutron stars (site split CONTESTED) · made by people (Tc, Pm) · decay chains (Po–Ac, Pa); cosmic-time steps: 3 min → ~200 Myr → ~500 Myr → ~1 Gyr → Sun forms 9.2 Gyr → today; click an element for its story (H, Li, C, O, Fe, Tc, Eu, Au, Pb, U)
   - [ ] register (predict: where does core fusion stop? → iron), aside with the entropy strip (one fusion → ~20 million sunlight photons → ~400 million infrared from Earth), Picture it / Common trap ("the Sun will make gold") / quiz question

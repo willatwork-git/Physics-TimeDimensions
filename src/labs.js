@@ -121,7 +121,8 @@
     return { grav, vel, net: grav + vel, v: hkm < 100 ? 0 : Math.sqrt(GM / r) };
   }
   Chrono.lab.register({
-    predict: { q: "A perfect clock moves past you at 0.87 of light speed. For every 2 ticks of your clock, how many does it make?",
+    predict: { setup() { CL.mode = "light"; CL.v = 0.87; CL.T = 0; CL.trail = []; },
+      q: "A perfect clock moves past you at 0.87 of light speed. For every 2 ticks of your clock, how many does it make?",
       options: ["2 — a clock is a clock", "About 1 — it runs at half speed", "About 4 — motion speeds it up"], answer: 1,
       explain: "At 0.87 c the slowing factor γ is about 2, so the moving clock ticks about once for every two of yours. Set the slider to 0.87 and count. Not a fault in the clock: every process on board — atoms, heartbeats — slows the same way." },
     id: "clocks", title: "Clock Lab", eyebrow: "Lab · why clocks disagree", tier: "mainstream", tags: ["ESTABLISHED"],

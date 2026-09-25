@@ -3,6 +3,8 @@
 ## Purpose
 An interactive, browser-based educational model with two independent investigations: **how many time dimensions?** and **which way does time point?** Hook: why does our universe have one time dimension (answer: strong constraints, no settled model-independent answer). Part of a wider "Reality OS" concept: a fake desktop where each app breaks one classical assumption about reality.
 
+**Positioning (Will, 2026-09-26):** the app is a *lens over time* — every model is seen from time's point of view — but it isn't limited to time; it has grown into physics more broadly, with time as the central theme.
+
 Now a free public learning tool with a life of its own: four scales (Quantum · Voyages · Physics · Cosmos), three tours, Concepts pages; **Learn** mode for newcomers, **Lab** mode for labelled exploratory ideas that challenge the mainstream (intentional). Later: an in-app Claude chat (needs a small server).
 
 ## Hosting and domain
@@ -41,8 +43,7 @@ Now a free public learning tool with a life of its own: four scales (Quantum · 
 | `decisions.md` | Decision records |
 | `todo.md` | Tasks |
 | `sources.md` | References with confidence tags |
-| `reviews.md` | External AI reviews: adopted / rejected |
-| `learner-review.md` | Newcomer's-eye review; phases A (done) → B → C |
+| `reviews/` | All reviews: `reviews.md` (external AI reviews, adopted / rejected), `learner-review.md`, the 2026-09-25 teaching and text reviews, and the UX, flow & stickiness design spec |
 | `learning.md` | Will's questions, intuitions, aha moments |
 | `HANDOVER.md` | Hosting + school edition notes |
 | `README.md` | Public-facing (repo is public on GitHub) — keep in sync with features |

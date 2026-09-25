@@ -620,3 +620,15 @@ button.info:hover, button.info:focus-visible { background: var(--accent); color:
 .stq .sthyp { list-style: "◌  "; color: var(--text); }
 @media (max-width: 900px) { .story .stcast { grid-template-columns: 1fr; } }
 @media (max-width: 900px) and (orientation: portrait), (max-width: 600px) { .g-guide .navtop b { display: none; } }
+
+/* ---------- Predict first, honestly (D-042, UX spec P0): nothing gives the answer away until the guess is run ---------- */
+#lab-canvas-wrap.locked #lab-canvas { filter: blur(9px) brightness(.5) saturate(.6); }
+#lab-veil { position: absolute; inset: 0; display: none; place-items: center; pointer-events: none; }
+#lab-canvas-wrap.locked #lab-veil { display: grid; pointer-events: auto; }
+.veil-msg { display: flex; flex-direction: column; align-items: center; gap: 8px; max-width: 340px; padding: 18px 22px; text-align: center; border-radius: 12px; background: rgba(11,13,18,.72); border: 1px solid var(--t-con); }
+.veil-msg b { font-size: 17px; }
+.veil-msg span { font-size: 13px; color: var(--muted); }
+#lab-controls.locked { opacity: .35; pointer-events: none; }
+#lab-predict:empty { display: none; }
+#lab-predict { padding: 10px 12px 0; }
+#lab-predict .predict { margin: 0; }
