@@ -1,9 +1,9 @@
 # ACTIVE
 
-**Focus:** UX spec — **Phases 1 and 2 complete** (D-043–D-046). Phase 2: top bar (Home · Tours · Explore mega-menu · Guide with the Learn / Workbench switch), Home in five blocks with the live hero clock, and one lab template everywhere — the panel order, collapsed Picture it / Common trap, one end card on every lab (takeaway, Next, Where this leads, review line), controls help as an overlay button.
+**Focus:** UX spec **Phase 3** (roll-out). **3a in progress (D-047):** missions now on six labs, 15 in all — Clock Lab, River, Spacetime, Entropy box, 1 g voyage, Talking to Mars. Rule: every target achievable and never met where the lab or a tour starts. Phases 1–2 complete (D-043–D-046).
 
-**Next:** Phase 3 — roll-out: design tokens and three emphasis levels, sims scaled to fill their zone with readout bars, missions for every lab (Tour 1 labs first), one-line control hints, explanations trimmed to three paragraphs, Flatland onto the template. Stars lab (`src/stars.js`, D-047) fitted in between. Suggest a SOL spot-check once pushed.
+**Next:** 3a continued (missions for the remaining labs), then 3b visual system (tokens, three emphasis levels, readout bars), 3c content pass (control hints, ≤ 3-paragraph explanations, Try → missions), 3d Flatland onto the template + a phone pass across all labs. Stars lab (`src/stars.js`, D-048) fitted in between.
 
-**State:** 36 routes pass in Learn, Lab and school edition, with no errors and **no blank lab canvases** (new check, after a render-loop name clash). Assets at `?v=60`. Uncommitted: all of Phase 1a, SOL review fixes, headline.
+**State:** 36 routes pass in Learn, Lab and school edition, with no errors and **no blank lab canvases** (new check, after a render-loop name clash). Assets at `?v=61`. Uncommitted: all of Phase 1a, SOL review fixes, headline.
 
-**SOL live spot-check (2026-09-26):** passed on the core; four fixes adopted and built — overlay offers all three starts, tour "done" needs every stop visited, Clock Lab example matches the stop, quiz labelled optional. Assets at `?v=60`.
+**SOL live spot-check (2026-09-26):** passed on the core; four fixes adopted and built — overlay offers all three starts, tour "done" needs every stop visited, Clock Lab example matches the stop, quiz labelled optional. Assets at `?v=61`.

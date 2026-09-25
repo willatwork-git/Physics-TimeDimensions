@@ -116,7 +116,15 @@
       q: "Mars is at its farthest from Earth, on the far side of the Sun. You radio a rover a question. How long until you hear its answer?",
       options: ["About 40 seconds", "About 40 minutes", "About 4 hours"], answer: 1,
       explain: "Radio travels at light speed: about 21 minutes each way at Mars's farthest, so a question-and-answer takes about three-quarters of an hour. At its closest, about 7 minutes. (And right behind the Sun, the Sun's glare blocks the signal: missions pause commands for about two weeks.)" },
-    applySetup(o) { if (o.far) { const b = document.querySelector("#tm-far"); if (b) b.click(); } },
+    applySetup(o) {
+      if (o.far) { const b = document.querySelector("#tm-far"); if (b) b.click(); }
+      if (o.near) { const b = document.querySelector("#tm-near"); if (b) b.click(); }
+      if (o.send) send();
+    },
+    state() {                                              // read-only, for missions
+      const d = distAU(TM.day), m = TM.msgs.length ? TM.msgs[1] : null;
+      return { dist: d, near: (d - (R_MARS - 1)) / 2, oneWay: d * LT_AU_MIN, answered: !!m && TM.clock >= m.t1, roundTrip: m ? m.t1 : null };
+    },
     id: "mars", title: "Talking to Mars", eyebrow: "Voyages · what does 'now' mean across space?", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {
       return `<button class="btn primary" id="tm-send">Send a message to the rover</button>
@@ -213,7 +221,8 @@
       q: "A ship accelerates at a steady 1 g — the push of Earth's gravity — then turns and brakes at 1 g. How long does the crew, by their own clocks, take to reach the centre of our galaxy, 26,000 light-years away?",
       options: ["About 26,000 years", "About 20 years", "It can't be done — nothing gets that far that fast"], answer: 1,
       explain: "About 20 years by the crew's clocks. Nothing passes light speed, but the ship's clocks slow more and more as it approaches it (the twin paradox again), so a ship accelerating steadily can cross huge distances within a crew's lifetime. On Earth, 26,000 years pass. The catch is fuel: even a perfect matter–antimatter rocket would need about 700 million tonnes of fuel for each tonne of ship." },
-    applySetup(o) { if (o.dest) VY.dest = DEST.find(d => d.id === o.dest) || VY.dest; VY.p = 0; VY.play = true; },
+    applySetup(o) { if (o.dest) VY.dest = DEST.find(d => d.id === o.dest) || VY.dest; if (o.gs) VY.gs = o.gs; VY.p = 0; VY.play = true; },
+    state() { const tr = trip(); return { dest: VY.dest.id, gs: VY.gs, tau: tr.tau, T: tr.T }; },   // read-only, for missions
     id: "voyage", title: "The 1 g voyage", eyebrow: "Voyages · how far in a lifetime?", tier: "mainstream", tags: ["ESTABLISHED", "SPECULATIVE"],
     controls() {
       return DEST.map(d => `<button class="btn ${VY.dest.id === d.id ? "primary" : ""}" data-dest="${d.id}">${d.n}</button>`).join("") +

@@ -171,6 +171,11 @@
       options: ["Yes — 'the same moment' is the same for everyone", "No — for them one flash comes first", "Only if they fly exactly between the lamps"], answer: 1,
       explain: "Relativity has no single 'now' shared by everyone: each observer's line of simultaneity tilts with their speed. For events too far apart for any signal to connect them, different observers can even disagree about which came first. Events A and B start out as your two lamps — set the speed and read the table." },
     applySetup(o) { Object.assign(SP, o); SP.twinT = 0; SP.view = SP.viewTarget = 0; SP.pbView = SP.pbTarget = 0; },
+    state() {                                              // read-only, for missions
+      const A = SP.events.find(e => e.id === "A"), B = SP.events.find(e => e.id === "B"), g = gam(SP.twinV), T = 2 * SP.twinD / SP.twinV;
+      return { mode: SP.mode, v: SP.v, simul: Math.abs(A.t - B.t) < 0.1, aFirst: boost(A.t, A.x, SP.v)[0] < boost(B.t, B.x, SP.v)[0] - 0.1,
+        twinDiff: T - T / g, pbV: SP.pbV, fits: PB.pole / (2 * gam(SP.pbV)) < PB.barn / 2 };
+    },
     id: "spacetime", title: "Spacetime diagram", eyebrow: "Lab · whose 'now'?", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {
       return `<button class="btn ${SP.mode === "now" ? "primary" : ""}" id="sp-now">Whose 'now'?</button>
@@ -323,6 +328,11 @@
     predict: { q: "The gas has spread through the whole box. You reverse the velocity of <b>every</b> disc, exactly. What happens?",
       options: ["Nothing special — it stays spread out", "It gathers itself back into the left half", "It gathers back partly, then gives up"], answer: 1,
       explain: "Newton's laws run just as well backwards, so an exact reversal retraces every collision and the gas un-mixes — entropy goes down. The catch: it needs perfection. Nudge one disc by a millionth of the box first, and the error grows with every collision until the reversal fails. That's why nobody ever sees it happen." },
+    applySetup(o) {
+      if (o.open && EB.part) { EB.part = false; EB.removedAt = EB.t; EB.msg = ""; }
+      if (o.reverse !== undefined) EB.auto = o.reverse === "nudge";   // reverse (or nudge, then reverse) as soon as the gas has spread
+    },
+    state() { const m = EB.x ? measure() : { left: 1 }; return { open: !EB.part, left: m.left, last: EB.last || null }; },   // read-only, for missions
     id: "entropy", title: "Entropy box", eyebrow: "Lab · why time runs one way", tier: "mainstream", tags: ["ESTABLISHED"],
     enter() { if (!EB.x) ebReset(); },
     controls() {
@@ -341,6 +351,7 @@
     tick(dt) {
       if (!dt) return;
       if (EB.hold > 0) { EB.hold -= dt; return; }
+      if (EB.auto !== undefined && spread() && EB.revTarget === null) { reverse(EB.auto); EB.auto = undefined; Chrono.lab.rebuild(); }   // a mission's "Show me"
       const wasSpread = spread();
       for (let n = 0; n < 3; n++) {
         step();
@@ -350,6 +361,7 @@
             const m = measure();
             EB.msg = EB.nudged ? `Back at the moment the partition came out — but only ${(m.left * 100).toFixed(0)}% are in the left half. The nudge wrecked it.`
               : "Back to the exact starting arrangement — every disc in the left half. Now it spreads again.";
+            EB.last = { nudged: EB.nudged, left: m.left };
             EB.hold = 2.5; EB.revTarget = null; EB.removedAt = EB.t; break;
           }
         }

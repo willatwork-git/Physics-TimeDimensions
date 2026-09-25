@@ -125,8 +125,9 @@ built-in guide — or press **?** — Concepts, quizzes, and the Learn / Workben
 - **Predict first** — each lab asks for your guess first and stays paused, and hidden, until you've made it
   — or chosen to read the explanation first, or explore freely; nothing is held back. "Run it" shows whether
   you were right.
-- **Missions** — short, optional goals inside a lab (Clock Lab first: make the moving clock tick half as fast;
-  find the orbit height where the two clock effects cancel), with a live progress bar, a hint and "Show me".
+- **Missions** — short, optional goals inside a lab (e.g. make the moving clock tick a third as fast; send the
+  travelling twin home 10 years younger; run the gas backwards; reach Andromeda within a working life), with a
+  live progress bar, a hint and "Show me". Fifteen so far, across six labs.
 - **Picture it and Common trap** — each lab has one everyday analogy (and where it breaks) and one common
   misconception, with what the lab shows instead.
 - **Quizzes and review** — a short quiz at the end of each tour, and questions from labs you've explored
