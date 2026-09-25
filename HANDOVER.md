@@ -9,10 +9,10 @@ Every item carries a tier:
 |---|---|---|
 | Mainstream | Established, Contested, Ruled out | Held, actively debated, or tested and rejected by working physicists |
 | Frontier | Speculative | Published proposals without supporting evidence yet |
-| Exploratory | Hypothesis | This project's own ideas and visitors' hypotheses — **not mainstream physics** (Lab mode) |
+| Exploratory | Hypothesis | This project's own ideas and visitors' hypotheses — **not mainstream physics** (Workbench mode) |
 | Lens | Analogy | History, stories and analogies (e.g. Flatland) |
 
-- **Full edition** (default): a **Learn | Lab** switch in the header. Learn (default for new visitors) = mainstream + frontier + lenses. Lab adds the ◌ Workbench menu: exploratory ideas, the Dimension Map and the hypothesis tools. `?mode=lab` opens in Lab.
+- **Full edition** (default): a **Learn | Workbench** switch in the Guide menu. Learn (default for new visitors) = mainstream + frontier + lenses. Lab adds the ◌ Workbench menu: exploratory ideas, the Dimension Map and the hypothesis tools. `?mode=lab` opens in Lab.
 - **School edition**: open `index.html?edition=school`. Learn mode only, no switch. To make it the default, set `edition: "school"` in `src/config.js`.
 - **Deep links:** every view has a URL — e.g. `index.html?edition=school#flatland/7` or `#atlas/H5` — handy for lesson handouts.
 

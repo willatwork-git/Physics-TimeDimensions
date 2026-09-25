@@ -1,5 +1,5 @@
 /* Chronoscope — edition settings.
-   edition "full"   : Learn and Lab modes; Lab adds this project's exploratory ideas and visitor hypotheses.
+   edition "full"   : Learn and Workbench modes (internally "lab"; ?mode=lab); Workbench adds this project's exploratory ideas and visitor hypotheses.
    edition "school" : Learn mode only (mainstream + frontier physics and lenses). Exploratory content and the
                       hypothesis tools are hidden. Use this for classroom / Space School embedding.
    Override in the URL: index.html?edition=school

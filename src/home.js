@@ -34,6 +34,7 @@
 
   /* ---------- tour bar ---------- */
   const cur = () => TOURS[P.tourId()] || TOURS.puzzle;
+  const TOUR_NUM = { puzzle: 1, zoom: 2, time: 3 };
   function startTour(i, id) { P.setTour(i, id); P.visit("tour:" + id); P.tourVisit(id, i); Chrono.nav(TOURS[id].stops[i].href); }
   Chrono.startTour = startTour;
   /* The stop this view is, if a tour is running and we're on its current stop: { tourId, i, stop, next } */
@@ -46,26 +47,37 @@
     if (i >= T.stops.length - 1) { P.finishTour(T.stops.length); Chrono.nav("#review/" + id); } else startTour(i + 1, id); };
   Chrono.tourList = () => ["puzzle", "zoom", "time"].map(id => ({ id, name: TOURS[id].name }));
   Chrono.tourStops = id => TOURS[id] ? TOURS[id].stops.map(s => s.href.slice(1)) : [];
+  /* The Tours menu (UX spec §3): three tours with progress; resumes a running tour, else starts at the first stop not yet visited. */
+  function renderToursMenu() {
+    const m = $("#toursmenu"); if (!m) return;
+    const ICON = { puzzle: "🧩", zoom: "🚀", time: "⏳" }, run = P.tour(), rid = P.tourId();
+    m.innerHTML = `<div class="navscale">Guided tours · about 20 minutes each</div>` + ["puzzle", "zoom", "time"].map(id => {
+      const T = TOURS[id], n = T.stops.length, vis = P.tourVisited(id), on = run !== null && rid === id, done = P.tourDone(id);
+      const at = on ? run : Math.max(0, T.stops.findIndex((s, i) => !vis.includes(i)));
+      return `<button class="tmenu" data-start-tour="${id}" data-at="${at}"><span class="tm-icon" aria-hidden="true">${ICON[id]}</span><span class="tm-body"><b>Tour ${TOUR_NUM[id]} · ${T.name}</b>
+        <span>${on ? `On stop ${run + 1} of ${n} — continue` : done ? `✓ Done · ${n} stops` : vis.length ? `${vis.length} of ${n} stops visited` : `${n} stops`}</span></span></button>`;
+    }).join("");
+    m.querySelectorAll("[data-at]").forEach(b => b.onclick = () => startTour(+b.dataset.at, b.dataset.startTour));
+  }
   Chrono.tour = {
     renderBar() {
-      const bar = $("#tourbar"), i = P.tour(), T = cur(), id = P.tourId(), S = T.stops;
+      renderToursMenu();
+      const bar = $("#tourbar"), chip = $("#tourchip"), i = P.tour(), T = cur(), id = P.tourId(), S = T.stops;
       document.body.classList.toggle("touring", i !== null);
-      if (i === null || !S[i]) { bar.style.display = "none"; bar.innerHTML = ""; return; }
-      const s = S[i], on = location.hash === s.href, last = i === S.length - 1;
-      bar.style.display = "flex";
-      bar.innerHTML = on ? `
+      if (i === null || !S[i]) { bar.style.display = "none"; bar.innerHTML = ""; if (chip) chip.innerHTML = ""; return; }
+      const s = S[i], on = location.hash === s.href, last = i === S.length - 1, home = !location.hash || location.hash === "#home";
+      /* Off the route: no banner (UX spec §3) — a small "Resume" chip in the header instead; Home has its Continue card. */
+      if (chip) chip.innerHTML = on || home ? "" : `<button class="tchip" data-tb="resume" title="Back to stop ${i + 1}: ${s.q}">▶ Resume Tour ${TOUR_NUM[id]} · stop ${i + 1}</button><button class="tchip-x" data-tb="leave" title="Leave the tour" aria-label="Leave the tour">×</button>`;
+      bar.style.display = on ? "flex" : "none";
+      bar.innerHTML = !on ? "" : `
         <span class="tb-step">${T.name} · ${i + 1} / ${S.length}</span>
         <span class="tb-q"><b>${s.q}</b> <span class="meta">${s.say}</span></span>
         <span class="tb-btns">
           <button class="btn" data-tb="prev" ${i === 0 ? "disabled" : ""}>←</button>
           <button class="btn primary" data-tb="next">${last ? "Finish the tour ✓" : `Next: ${S[i + 1].q} →`}</button>
           <button class="btn" data-tb="leave" title="Leave the tour (you can resume from Home)">×</button>
-        </span>` : `
-        <span class="tb-step">Tour paused</span>
-        <span class="tb-q meta">You've stepped off the tour route — explore freely.</span>
-        <span class="tb-btns"><button class="btn primary" data-tb="resume">Back to stop ${i + 1}: ${s.q}</button>
-          <button class="btn" data-tb="leave" title="Leave the tour">×</button></span>`;
-      bar.querySelectorAll("[data-tb]").forEach(b => b.onclick = () => {
+        </span>`;
+      document.querySelectorAll("#tourbar [data-tb], #tourchip [data-tb]").forEach(b => b.onclick = () => {
         const a = b.dataset.tb;
         if (a === "prev") startTour(i - 1, id);
         else if (a === "next") Chrono.tourNext();
@@ -76,70 +88,85 @@
   };
 
   /* ---------- home ---------- */
-  let tab = null;                                          // which tour the Home card shows
-  function tourCard() {
-    const running = P.tour(), rid = P.tourId();
-    const id = tab || (running !== null ? rid : "puzzle"), T = TOURS[id], mine = running !== null && rid === id, done = P.tourDone(id);
-    const ICON = { puzzle: "🧩", zoom: "🚀", time: "⏳" }, NUM = { puzzle: "Tour 1", zoom: "Tour 2", time: "Tour 3" };
-    return `<section class="tourhero">
-      <div class="eyebrow">Start here · three guided tours — pick one</div>
-      <div class="tourpick">${["puzzle", "zoom", "time"].map(k => [k, TOURS[k]]).map(([k, t]) => `<button class="tp tp-${k} ${k === id ? "on" : ""}" data-tab="${k}" aria-pressed="${k === id}">
-          <span class="tp-icon" aria-hidden="true">${ICON[k]}</span>
-          <span class="tp-body"><span class="tp-num">${NUM[k]}${k !== "puzzle" && !P.seen("tour:" + k) ? ' <em class="tp-new">New</em>' : ""}${P.tourDone(k) ? ' <em class="tp-done">✓ done</em>' : ""}</span>
-          <span class="tp-name">${t.name}</span><span class="tp-blurb">${t.blurb}</span></span></button>`).join("")}</div>
-      <div class="th-head">
-        <div><h2>${ICON[id]} ${T.name}</h2><p>${["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"][T.stops.length] || T.stops.length} stops, about ${Math.max(10, Math.round(T.stops.length * 3 / 5) * 5)} minutes. No physics background needed.</p></div>
-        <div class="th-go"><button class="btn primary big" data-go-tour="${mine ? running : 0}" data-tour-id="${id}">${mine ? `▶ Resume at stop ${running + 1}` : done ? "▶ Take it again" : "▶ Start the tour"}</button>
-          ${!done && !mine && P.tourFinale(id) ? `<span class="meta">You reached the finale · ${P.tourVisited(id).length} of ${T.stops.length} stops visited</span>` : ""}
-          ${done && !mine ? `<span class="meta">✓ You've completed this tour${P.quiz(id) ? ` · quiz best ${P.quiz(id).best} of ${P.quiz(id).n}` : ""} · <a href="#review/${id}">${P.quiz(id) ? "Retake" : "Take"} the quiz →</a></span>` : ""}</div>
-      </div>
-      <ol class="itinerary">${T.stops.map((s, i) => { const vis = P.tourVisited(id), st = mine && running === i ? "here" : vis.includes(i) ? "done" : "";
-        return `<li class="${st}"><button data-go-tour="${i}" data-tour-id="${id}" title="Go to stop ${i + 1}"><span class="it-dot">${st === "done" ? "✓" : i + 1}</span><span class="it-q">${s.q}</span><span class="it-see">${s.see}</span><span class="it-where">${s.where}</span></button></li>`; }).join("")}</ol>
-    </section>`;
-  }
+
   function page() {
     const t = P.tour(), last = P.last(), seen = TOTAL.filter(v => P.seen(v)).length;
     const lb = last && document.querySelector(`header button[data-view="${last.slice(1).split("/")[0]}"]`), lastName = lb && lb.firstChild.textContent.trim();
-    const lab = Chrono.mode() === "lab";
+    const lab = Chrono.mode() === "lab", rid = P.tourId(), running = t !== null && TOURS[rid] && TOURS[rid].stops[t];
+    const ICON = { puzzle: "🧩", zoom: "🚀", time: "⏳" }, H = Chrono.heroClock ? Chrono.heroClock.state : { v: 0.6 };
+    const firstOpen = id => Math.max(0, TOURS[id].stops.findIndex((x, i) => !P.tourVisited(id).includes(i)));
+    /* UX spec §5: five blocks — Continue · Hero · Pick a tour · Four scales · Go deeper. No sidebar on Home. */
     return `
-      <div class="docwrap home">
-        <div class="eyebrow">Chronoscope · time, at every scale</div>
-        <h1>Two perfect clocks. One is moving. They disagree.</h1>
-        <p class="lede">Chronoscope looks at physics through the lens of time, from a single photon to the edge of the universe: more than twenty live simulations running the real equations, and every claim tagged by how sure physicists are.</p>
-        <p class="hook">Why is there only one time dimension? Nobody knows for sure. <button class="linkish" data-go-tour="0" data-tour-id="puzzle">Tour 1 takes you to the edge of that question →</button></p>
-        ${lastName && t === null ? `<a class="continue" href="${last}">Continue where you left off: <b>${lastName}</b> →</a>` : ""}
-        ${Chrono.reviewDue && Chrono.reviewDue() ? `<a class="continue revdue" href="#review">🔁 <b>${Chrono.reviewDue()} question${Chrono.reviewDue() > 1 ? "s" : ""} to review</b> from labs you've explored. A minute or two →</a>` : ""}
-        ${tourCard()}
+      <div class="docwrap home home2">
+        ${running ? `<div class="contcard"><div class="eyebrow">Continue</div>
+          <p><b>Tour ${TOUR_NUM[rid]} · stop ${t + 1} of ${TOURS[rid].stops.length}:</b> ${TOURS[rid].stops[t].q} <span class="meta">— ${TOURS[rid].stops[t].where}</span></p>
+          <button class="btn primary big" data-go-tour="${t}" data-tour-id="${rid}">▶ Continue the tour</button></div>`
+          : lastName ? `<div class="contcard"><div class="eyebrow">Continue</div><p>Where you left off: <b>${lastName}</b></p><a class="btn primary" href="${last}">Continue →</a></div>` : ""}
+        ${Chrono.reviewDue && Chrono.reviewDue() ? `<a class="continue revdue" href="#review">🔁 <b>${Chrono.reviewDue()} question${Chrono.reviewDue() > 1 ? "s" : ""} ready</b> · about a minute →</a>` : ""}
+        <section class="hero">
+          <div class="hero-text">
+            <div class="eyebrow">Chronoscope · time, at every scale</div>
+            <h1>Two perfect clocks. One is moving. They disagree.</h1>
+            <p class="lede">Chronoscope looks at physics through the lens of time, from a single photon to the edge of the universe: more than twenty live simulations running the real equations, and every claim tagged by how sure physicists are.</p>
+            <button class="btn ${running || lastName ? "ghost" : "primary"} big" data-go-tour="${P.tourVisited("puzzle").length ? firstOpen("puzzle") : 0}" data-tour-id="puzzle">▶ ${P.tourVisited("puzzle").length ? "Continue" : "Start"} Tour 1: The puzzle of time</button>
+            <p class="hook meta">Why is there only one time dimension? Nobody knows for sure — Tour 1 takes you to the edge of that question.</p>
+          </div>
+          <div class="hero-sim">
+            <canvas id="hero-cv" aria-label="Two light clocks, one at rest and one moving"></canvas>
+            <label class="hero-ctl"><b>Drag me</b> · speed of the moving clock <input type="range" id="hero-v" min="0" max="99" value="${Math.round(H.v * 100)}"><output id="hero-vo">${H.v.toFixed(2)} c</output></label>
+            <p class="meta">Special relativity, an ideal light clock — the same code as <a href="#clocks">Clock Lab</a>. ${Chrono.info ? Chrono.info("dilation") : ""}</p>
+          </div>
+        </section>
+        <h2 class="sect">Pick a tour</h2>
+        <div class="tourpick3">${["puzzle", "zoom", "time"].map(id => { const T = TOURS[id], n = T.stops.length, vis = P.tourVisited(id), on = t !== null && rid === id, done = P.tourDone(id);
+          return `<button class="tp tp-${id}" data-go-tour="${on ? t : firstOpen(id)}" data-tour-id="${id}">
+            <span class="tp-icon" aria-hidden="true">${ICON[id]}</span>
+            <span class="tp-body"><span class="tp-num">Tour ${TOUR_NUM[id]}${done ? ' <em class="tp-done">✓ done</em>' : ""}</span><span class="tp-name">${T.name}</span><span class="tp-blurb">${T.blurb}</span>
+              <span class="tp-meta">${n} stops · about 20 minutes · ${on ? `on stop ${t + 1} — continue` : vis.length ? `${vis.length} of ${n} visited` : "not started"}</span>
+              <span class="tp-prog"><i style="width:${Math.round(vis.length / n * 100)}%"></i></span></span></button>`; }).join("")}</div>
+        <details class="allstops"><summary>See every stop</summary><div class="allstops-grid">${["puzzle", "zoom", "time"].map(id => `<div><div class="eyebrow">Tour ${TOUR_NUM[id]} · ${TOURS[id].name}</div><ol>${TOURS[id].stops.map((x, i) => `<li><button class="linkish" data-go-tour="${i}" data-tour-id="${id}">${P.tourVisited(id).includes(i) ? "✓ " : ""}${x.q}</button> <span class="meta">${x.where}</span></li>`).join("")}</ol></div>`).join("")}</div></details>
         <h2 class="sect">Four scales of time</h2>
-        <p class="meta">The same questions about time turn up at every scale — from an astronaut's watch to the edge of the universe. <a href="#" data-tab-jump="zoom">Take Tour 2, from astronauts to the whole cosmos →</a></p>
         <div class="scales">${SCALES.map(s => `<div class="scale" style="--sc:${s.col}"><div class="eyebrow">${s.sub}</div><h3>${s.name} ${Chrono.info ? Chrono.info("sc-" + s.id) : ""}</h3>
           <div class="labchips">${s.labs.map(([v, n]) => `<a href="#${v}" class="${P.seen(v) ? "seen" : ""}">${P.seen(v) ? "✓ " : ""}${n}</a>`).join("")}</div></div>`).join("")}</div>
-        <div class="threadlist">${THREADS.map(th => `<div class="thread"><span class="th-name">${th.icon} ${th.name} ${Chrono.info ? Chrono.info(th.id) : ""}</span><span class="th-stops">${th.stops.map(([k, n, sc]) => `<a href="#${k}"><i>${SCALE_NAME[sc]}</i> ${n}</a>`).join(" → ")}</span></div>`).join("")}</div>
-        <div class="doors">
-          <a class="door d-map" href="#atlas"><div class="eyebrow">Explore</div><h2>🗺 The map of holes</h2>
-            <p>${Chrono.HOLES.filter(h => Chrono.shows(Chrono.tierOf(h))).length} open problems about time, and a century of attempts to fill them. Then put every idea on the <b>Test bench</b>.</p><span class="hgo">Open the Atlas →</span></a>
-          <a class="door d-map" href="#story"><div class="eyebrow">The big picture</div><h2>📖 How it all fits together</h2>
-            <p>The whole story in eight illustrated panels: gravity gathers, stars shine, light carries entropy away, black holes collect it — and the clock only runs forward.</p><span class="hgo">Read the story →</span></a>
-          <a class="door d-map" href="#sure"><div class="eyebrow">Method</div><h2>⚖ How sure are we?</h2>
-            <p>How a claim earns the label 'established' — worked through on the expanding universe.</p><span class="hgo">Open →</span></a>
-          ${lab ? `<a class="door d-lab" href="#dims"><div class="eyebrow">◌ Lab mode</div><h2>The workbench</h2>
-            <p>This project's own challenges to mainstream physics, your hypotheses in the Atlas, and the Dimension Map. Not mainstream physics — here to be tested.</p><span class="hgo">Open the Dimension Map →</span></a>` : ""}
+        <h2 class="sect">Go deeper</h2>
+        <div class="deeper">
+          <a class="dcard" href="#story"><b>📖 How it all fits together</b><span>The big picture in eight illustrated panels.</span></a>
+          <a class="dcard" href="#atlas"><b>🗺 The Atlas</b><span>${Chrono.HOLES.filter(h => Chrono.shows(Chrono.tierOf(h))).length} open problems about time, and a century of attempts to fill them.</span></a>
+          <a class="dcard" href="#sure"><b>⚖ How sure are we?</b><span>How a claim earns the label 'established'.</span></a>
+          ${lab ? `<a class="dcard d-lab" href="#ideas"><b>◌ The Workbench</b><span>This project's own exploratory ideas and your hypotheses. Not mainstream physics.</span></a>` : ""}
         </div>
-        <p class="meta">You've explored ${seen} of ${TOTAL.length} sections. Progress is kept in this browser only.</p>
+        <p class="meta">You've explored ${seen} of ${TOTAL.length} sections. Every claim is tagged by how sure physicists are — the Guide menu explains the tags. Progress is kept in this browser only.</p>
       </div>`;
   }
+  /* The hero light clock: drawn by Clock Lab's own code on its own canvas; paused off-screen; still under reduced motion. */
+  let heroRaf = 0, heroVis = true;
+  function runHero() {
+    cancelAnimationFrame(heroRaf);
+    const cv = $("#hero-cv"); if (!cv || !Chrono.heroClock || !Chrono.lab.drawOn) return;
+    const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (window.IntersectionObserver) new IntersectionObserver(es => { heroVis = es[0].isIntersecting; }).observe(cv);
+    let last = 0;
+    const loop = ts => {
+      if (!document.body.contains(cv)) return;
+      const dt = Math.min(0.05, (ts - (last || ts)) / 1000); last = ts;
+      if (heroVis) { if (!still) Chrono.heroClock.tick(dt); Chrono.lab.drawOn(cv, g => Chrono.heroClock.draw(g)); }
+      if (!still) heroRaf = requestAnimationFrame(loop);
+    };
+    heroRaf = requestAnimationFrame(loop);
+    const r = $("#hero-v"); if (r) r.oninput = e => { const H = Chrono.heroClock.state; H.v = e.target.value / 100; H.T = 0; H.trail = []; $("#hero-vo").textContent = H.v.toFixed(2) + " c"; if (still) Chrono.lab.drawOn(cv, g => Chrono.heroClock.draw(g)); };
+  }
+
 
   Chrono.lab.register({
     id: "home", kind: "doc", title: "How this works", eyebrow: "About", tier: "none",
     page,
     wire() {
       document.querySelectorAll("[data-go-tour]").forEach(b => b.onclick = () => startTour(+b.dataset.goTour, b.dataset.tourId));
-      document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => { tab = b.dataset.tab; $("#doc").innerHTML = page(); this.wire(); });
-      document.querySelectorAll("[data-tab-jump]").forEach(a => a.onclick = e => { e.preventDefault(); tab = a.dataset.tabJump; $("#doc").innerHTML = page(); this.wire(); $(".tourhero").scrollIntoView({ behavior: "smooth", block: "start" }); });
+      runHero();
     },
     aside: () => `
       <p>Everything here is labelled by how sure physicists are — you'll see these tags on every page.</p>
-      <p><b>Learn</b> mode (the default) shows physics as physicists hold and debate it, plus published ideas from the fringe — every claim tagged.${Chrono.maxLevel >= 3 ? ` <b>◌ Lab</b> mode adds the Workbench: this project's own exploratory ideas, your hypotheses and the Dimension Map. Switch top right.` : ""}</p>
+      <p><b>Learn</b> mode (the default) shows physics as physicists hold and debate it, plus published ideas from the fringe — every claim tagged.${Chrono.maxLevel >= 3 ? ` <b>◌ Workbench</b> mode adds: this project's own exploratory ideas, your hypotheses and the Dimension Map. Switch top right.` : ""}</p>
       ${Chrono.tierLegend()}
       <p class="meta">Press <b>?</b> any time for the Guide. Every view has its own link — share the address bar.</p>`
   });

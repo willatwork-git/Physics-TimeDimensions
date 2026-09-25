@@ -1,4 +1,4 @@
-/* Chronoscope — Stars forge the elements (D-044), Cosmos.
+/* Chronoscope — Stars forge the elements (D-046), Cosmos.
    Scene 1 · Inside a massive star: the burning stages of a 25-Sun-mass star, each far shorter than the last
    (published model values: Woosley, Heger & Weaver 2002), drawn as an onion of shells and a countdown.
    Scene 2 · Where each element came from: the periodic table coloured by origin, filling in as cosmic time

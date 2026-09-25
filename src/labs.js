@@ -113,6 +113,7 @@
      CLOCK LAB — light clock (special relativity) and orbit clocks (GPS)
      ===================================================================== */
   const CL = { mode: "light", v: 0.6, T: 0, trail: [], alt: 20200 };
+  const CL_LAB = CL, HERO = { mode: "light", v: 0.6, T: 0, trail: [], hero: true };   // the Home hero runs this same light clock with its own state
   const GM = 3.986004e14, c = 2.99792458e8, RE = 6.371e6, DAY_US = 86400e6;
   function orbitShift(hkm) {
     const r = RE + hkm * 1000;
@@ -126,6 +127,7 @@
       options: ["2 — a clock is a clock", "About 1 — it runs at half speed", "About 4 — motion speeds it up"], answer: 1,
       explain: "At 0.87 c the slowing factor γ is about 2, so the moving clock ticks about once for every two of yours. Set the slider to 0.87 and count. Not a fault in the clock: every process on board — atoms, heartbeats — slows the same way." },
     applySetup(o) { Object.assign(CL, o); CL.T = 0; CL.trail = []; },
+    state() { const o = orbitShift(CL.alt); return { mode: CL.mode, v: CL.v, gamma: 1 / Math.sqrt(1 - CL.v * CL.v), alt: CL.alt, net: o.net }; },   // read-only, for missions
     id: "clocks", title: "Clock Lab", eyebrow: "Lab · why clocks disagree", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {
       return `<button class="btn ${CL.mode === "light" ? "primary" : ""}" id="cl-light">Light clock</button>
@@ -155,12 +157,13 @@
     next: { q: "Speed slows clocks, and so does gravity. What happens where gravity is strongest of all?", href: "#river", label: "The River" },
     sources: "Einstein (1905, 1915); Hafele–Keating (1971); GPS relativistic corrections (Ashby, Living Reviews in Relativity, 2003)."
   });
-  function drawLightClock(g) {
-    const { W, H } = g, pad = 16, narrow = W < 640, foot = narrow ? 140 : 120, pw = (W - pad * 3) / 2, ph = H - pad * 2 - foot;
+  function drawLightClock(g, st) {
+    const CL = st || CL_LAB;
+    const { W, H } = g, pad = 16, narrow = W < 640, foot = CL.hero ? 34 : narrow ? 140 : 120, pw = (W - pad * 3) / 2, ph = H - pad * 2 - foot;
     const Lpx = Math.min(ph * 0.55, 260), gamma = 1 / Math.sqrt(1 - CL.v * CL.v), vert = Math.sqrt(1 - CL.v * CL.v);
     [0, 1].forEach(k => {
       const x0 = pad + k * (pw + pad), y0 = pad;
-      g.panel(x0, y0, pw, ph, k === 0 ? "Clock at rest (next to you)" : `Clock moving at ${CL.v.toFixed(2)} c`);
+      g.panel(x0, y0, pw, ph, CL.hero && narrow ? (k === 0 ? "At rest" : `Moving · ${CL.v.toFixed(2)} c`) : k === 0 ? "Clock at rest (next to you)" : `Clock moving at ${CL.v.toFixed(2)} c`);
       const top = y0 + (ph - Lpx) / 2 + 10, bot = top + Lpx;
       const speed = k === 0 ? 1 : vert, t = CL.T * speed, ph2 = t % 2, yN = ph2 < 1 ? bot - ph2 * Lpx : top + (ph2 - 1) * Lpx;
       let cx;
@@ -174,12 +177,14 @@
     });
     const by = H - pad - foot + 20, bw = Math.min(320, W - pad * 2);
     g.text(`γ = ${gamma.toFixed(3)}  —  ${narrow ? "" : "the moving clock "}ticks ${gamma.toFixed(2)}× slower`, pad, by + 10, C.text, 14);
+    if (CL.hero) return;                                   // the hero shows only the clocks and γ
     g.label(`In your frame: 1 year on the moving clock = ${gamma < 10 ? gamma.toFixed(1) : Math.round(gamma)} years on yours`, narrow ? pad : pad + 340, narrow ? by + 26 : by + 34, C.amber, narrow ? 10 : 12, "left", "Inter, system-ui, sans-serif");
     g.label("MOTION THROUGH SPACE", pad, by + 38, C.muted, 10); g.bar(pad, by + 44, bw, 8, CL.v, C.amber);
     g.label("MOTION THROUGH TIME (clock rate)", pad, by + 70, C.muted, 10); g.bar(pad, by + 76, bw, 8, vert, C.teal);
     if (narrow) g.label("One budget: faster through space = slower through time.", pad, by + 104, C.muted, 10);
     else g.label("Every clock shares one budget: faster through space means slower through time.", pad + 340, by + 60, C.muted, 11);
   }
+  Chrono.heroClock = { state: HERO, tick(dt) { HERO.T += dt * 0.9; }, draw(g) { drawLightClock(g, HERO); } };
   function drawGPS(g) {
     const { W, H, ctx } = g, pad = 16, tall = H > W * 1.05, lw = Math.floor((W - pad * 3) * 0.55);
     const L = tall ? { x: pad, y: pad, w: W - pad * 2, h: Math.floor((H - pad * 3) * 0.5) } : { x: pad, y: pad, w: lw, h: H - pad * 2 };
@@ -214,11 +219,17 @@
      THE RIVER — Gullstrand–Painlevé "river model": space flows inward at
      v(r) = c·√(rs/r); light moves at c relative to the local flow.
      ===================================================================== */
-  const RV = { dots: null, flashes: [], cursor: null, eddies: false, T: 0 };
+  const RV = { dots: null, flashes: [], cursor: null, eddies: false, T: 0, log: [] };   // log: finished flashes { r0, esc }, for missions
   Chrono.lab.register({
     predict: { q: "A flash of light is fired straight outward from <b>just outside</b> a black hole's horizon. What happens to it?",
       options: ["It escapes easily", "It escapes, but crawls away very slowly at first", "It is swept in"], answer: 1,
       explain: "Just outside the horizon the inflow is almost light speed, so outward light barely gains ground — but the current weakens as it climbs, and it gets away. From inside the horizon it would be swept in. Press <b>Fire outward from 3 distances</b>: the middle flash starts just outside." },
+    applySetup(o) { if (o.fire) fire(o.fire, 0, true); },
+    state() {                                               // read-only, for missions: where flashes started and whether they got out
+      const esc = RV.log.concat(RV.flashes).filter(f => f.esc && f.r0 > 1).map(f => f.r0);
+      const climb = Math.max(0, ...RV.flashes.filter(f => f.r0 > 1 && f.r0 < 1.2 && !f.esc).map(f => Math.max(0, ...f.pts.filter(p => !p.dead).map(p => Math.hypot(p.x, p.y)))));
+      return { escMin: esc.length ? Math.min(...esc) : Infinity, climb, innerFell: RV.log.some(f => f.r0 < 1 && !f.esc), innerLive: RV.flashes.some(f => f.r0 < 1) };
+    },
     id: "river", title: "The River", eyebrow: "Lab · time and space near a black hole", tier: "mainstream", tags: ["ESTABLISHED"],
     enter() { if (!RV.dots) RV.dots = Array.from({ length: 520 }, () => ({ a: Math.random() * TAU, r: 0.3 + Math.random() * 5 })); },
     controls() {
@@ -247,6 +258,9 @@
         p.trail.push([p.x, p.y]); if (p.trail.length > 60) p.trail.shift();
         if (r < 0.05 || r > 7) p.dead = true;
       }));
+      RV.flashes.forEach(f => { if (!f.esc && f.pts.some(p => !p.dead && Math.hypot(p.x, p.y) >= 2)) f.esc = true; });   // clear of the slow zone: it got out
+      RV.flashes.forEach(f => { if (!f.pts.some(p => !p.dead)) RV.log.push({ r0: f.r0, esc: !!f.esc }); });
+      RV.log = RV.log.slice(-30);
       RV.flashes = RV.flashes.filter(f => f.pts.some(p => !p.dead)).slice(-12);
     },
     draw(g) {
@@ -281,9 +295,9 @@
   });
   function fire(r, a, radialOnly) {
     const x = r * Math.cos(a), y = r * Math.sin(a), pts = [];
-    if (radialOnly) { const n = 3; for (let i = 0; i < n; i++) { const b = -Math.PI / 2 + (i - 1) * 0.5, px = r * Math.cos(b), py = r * Math.sin(b); pts.push({ x: px, y: py, nx: Math.cos(b), ny: Math.sin(b), trail: [] }); } RV.flashes.push({ pts }); return; }
+    if (radialOnly) { const n = 3; for (let i = 0; i < n; i++) { const b = -Math.PI / 2 + (i - 1) * 0.5, px = r * Math.cos(b), py = r * Math.sin(b); pts.push({ x: px, y: py, nx: Math.cos(b), ny: Math.sin(b), trail: [] }); } RV.flashes.push({ pts, r0: r }); return; }
     for (let i = 0; i < 40; i++) { const b = i / 40 * TAU; pts.push({ x, y, nx: Math.cos(b), ny: Math.sin(b), trail: [] }); }
-    RV.flashes.push({ pts });
+    RV.flashes.push({ pts, r0: r });
   }
 
   /* =====================================================================

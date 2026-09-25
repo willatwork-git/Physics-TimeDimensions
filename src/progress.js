@@ -41,6 +41,11 @@
       const r = d.rev[k] || { lv: 0 }, lv = right ? Math.min(r.lv + 1, LADDER.length - 1) : 0;
       d.rev[k] = { lv, due: Date.now() + (right ? LADDER[lv] : 1) * DAY }; save();
     },
+    /* missions (D-044): d.ms[lab] = ids done */
+    missionDone: (lab, id) => !!(d.ms && d.ms[lab] && d.ms[lab].includes(id)),
+    setMissionDone(lab, id) { d.ms = d.ms || {}; const a = d.ms[lab] || (d.ms[lab] = []); if (!a.includes(id)) { a.push(id); save(); } },
+    missionReset(lab) { if (d.ms) { delete d.ms[lab]; save(); } },
+    missionCount: () => d.ms ? Object.values(d.ms).reduce((n, a) => n + a.length, 0) : 0,
     quiz: id => d.quiz[id] || null,
     setQuiz(id, got, n) { const q = d.quiz[id] || { best: 0 }; d.quiz[id] = { best: Math.max(q.best, got), last: got, n }; save(); },
 

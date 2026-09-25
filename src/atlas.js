@@ -325,14 +325,14 @@
 
   Chrono.hypAction = a => a === "add" ? openModal() : a === "export" ? Chrono.hyp.exportJSON() : $("#importfile").click();
 
-  /* ---------- ◌ Workbench: exploratory ideas, in one place (Lab mode, D-039) ---------- */
+  /* ---------- ◌ Workbench: exploratory ideas, in one place (Workbench mode, D-039) ---------- */
   Chrono.lab.register({
     id: "ideas", kind: "doc", title: "Exploratory ideas", eyebrow: "◌ Workbench", tier: "exploratory",
     page() {
       const ex = allIdeas().filter(isExp), ours = ex.filter(i => !i.user), mine = ex.filter(i => i.user), holes = Chrono.HOLES.filter(isExp);
       const card = i => `<a class="xcard" href="#atlas/${esc(i.id)}"><span class="eyebrow">${i.user ? "Yours" : i.year} · ${esc((campOf(i.camp) || {}).name || "")}</span><b>${esc(i.name)}</b><span>${esc(i.plain || "")}</span><span class="hgo">On the Atlas →</span></a>`;
       return `<div class="docwrap ideas">
-        <div class="eyebrow">◌ Workbench · Lab mode</div>
+        <div class="eyebrow">◌ Workbench mode</div>
         <h1>Exploratory ideas</h1>
         <p class="lede">This project's own challenges to mainstream physics, and yours. Each one says what it would predict and what would kill it, and each gets scored on the Test bench like everything else. They're here to be tested, not believed.</p>
         ${holes.length ? `<h2 class="sect">Open questions this project adds</h2><div class="xgrid">${holes.map(h => `<a class="xcard" href="#atlas/${esc(h.id)}"><span class="eyebrow">${esc(h.id)}</span><b>${esc(h.name)}</b><span>${esc(h.one || "")}</span><span class="hgo">On the Atlas →</span></a>`).join("")}</div>` : ""}
@@ -342,7 +342,7 @@
       </div>`;
     },
     wire() { document.querySelectorAll("[data-hyp2]").forEach(b => b.onclick = () => Chrono.hypAction(b.dataset.hyp2)); },
-    aside: () => `<p><b>◌ Lab mode</b> is the workbench: the place for ideas that aren't mainstream physics yet.</p>
+    aside: () => `<p><b>◌ Workbench mode</b> is the place for ideas that aren't mainstream physics yet.</p>
       <p>Here you'll find this project's own exploratory ideas and your hypotheses, the Dimension Map, and the tools to add, export and share ideas.</p>
       <p class="meta">Everything here carries the <span class="tag HYPOTHESIS">Hypothesis</span> tag. Switch back to Learn (top right) for physics as physicists hold and debate it.</p>`
   });
@@ -368,7 +368,7 @@
     document.body.classList.toggle("mode-learn", Chrono.mode() === "learn");
     host.innerHTML = Chrono.maxLevel < 3 ? "" : `<div class="modesw" role="group" aria-label="Mode">
       <button class="${Chrono.mode() === "learn" ? "on" : ""}" data-lvl="2" title="Physics as physicists hold and debate it, plus published fringe proposals. Guided and uncluttered.">Learn</button>
-      <button class="lab ${Chrono.mode() === "lab" ? "on" : ""}" data-lvl="3" title="The raw workbench: adds the ◌ Workbench menu — this project's own exploratory ideas, your hypotheses and the Dimension Map. Not mainstream physics.">◌ Lab</button></div>`;
+      <button class="lab ${Chrono.mode() === "lab" ? "on" : ""}" data-lvl="3" title="Workbench mode: adds this project's own exploratory ideas, your hypotheses and the Dimension Map (under Explore). Not mainstream physics.">◌ Workbench</button></div>`;
     host.querySelectorAll("[data-lvl]").forEach(b => b.onclick = () => Chrono.setLevel(+b.dataset.lvl));
     document.querySelectorAll("header [data-tier]").forEach(b => b.style.display = Chrono.shows(b.dataset.tier) ? "" : "none");
     if (Chrono.navSync) Chrono.navSync();
@@ -404,6 +404,7 @@
     if (v === "flatland" && Chrono.flatland && arg) Chrono.flatland.setChapter(parseInt(arg, 10) - 1);
     if (v === "concepts") Chrono.conceptSel = arg || null;
     if (v === "review") Chrono.reviewSel = arg || null;
+    document.body.classList.toggle("onhome", v === "home");   // Home has no sidebar (UX spec §5)
     Chrono.tour.renderBar();
     if (Chrono.navSync) Chrono.navSync();
     if (same) { applyHighlight(); renderAside(); if (v === "bench") renderBench(); return; }

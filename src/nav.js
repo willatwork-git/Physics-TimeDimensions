@@ -1,5 +1,6 @@
 /* Chronoscope — header navigation (D-039). Left: content — Explore · Quantum · Voyages · Physics · Cosmos, plus
-   ◌ Workbench in Lab mode. Right: Learn|Lab and the Guide menu (the guide, Concepts, quizzes, tours).
+   UX spec Phase 2 (D-045): Home · Tours · Explore (a mega-menu: four scales, the Workbench column in Workbench mode,
+   and a row for the story, Atlas, Test bench, How sure) · Guide (the guide, Concepts, quizzes, and the mode switch).
    Menus are positioned with fixed coordinates so they work inside the phone's scrolling nav row. Items are
    ordinary header buttons with data-view, so routing (atlas.js) finds them wherever they sit. */
 (function () {
@@ -28,7 +29,7 @@
       g.addEventListener("mouseleave", () => { clearTimeout(timer); timer = setTimeout(() => { if (open === g) close(); }, 280); });
     }
   });
-  $$("header [data-start-tour]").forEach(b => b.addEventListener("click", () => Chrono.startTour && Chrono.startTour(0, b.dataset.startTour)));
+  $$("header [data-start-tour]:not([data-at])").forEach(b => b.addEventListener("click", () => Chrono.startTour && Chrono.startTour(0, b.dataset.startTour)));
   $$("header [data-help-open]").forEach(b => b.addEventListener("click", () => Chrono.openHelp && Chrono.openHelp()));
   $$("header [data-hyp]").forEach(b => b.addEventListener("click", () => Chrono.hypAction && Chrono.hypAction(b.dataset.hyp)));
   document.addEventListener("click", e => { if (open && !open.contains(e.target)) close(); });

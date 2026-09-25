@@ -30,7 +30,7 @@ Tier pills (Mainstream / Frontier / ◌ Exploratory / Lens) sit beside the tags.
 
 ## Modes (D-023)
 - **Learn**: calm by default — Atlas idea names only on hover/select (`.mode-learn`), camp filters only, every lab aside ends with a **Next question** card linking onward. Never show exploratory content.
-- **Lab**: dense and raw — all labels, tag filters, hypothesis tools, exploratory overlays. The switch shows Lab with the dashed exploratory style.
+- **Workbench** (internally `lab`): dense and raw — all labels, tag filters, hypothesis tools, exploratory overlays. The switch shows Lab with the dashed exploratory style.
 - Every view is a URL (`Chrono.nav`, D-024). Link between views with plain `href="#view"`.
 - **Flatland**: chapter bar above the stage in three acts, ★ = 4D chapters; contents card on first visit (D-028).
 - **Home** is the landing view, with the tour as its hero and a 7-stop itinerary; the **tour bar** sits above the stage while touring and hides next-question cards (the tour owns the path).
@@ -40,7 +40,7 @@ Tier pills (Mainstream / Frontier / ◌ Exploratory / Lens) sit beside the tags.
 - **Glossary**: dotted underline, first use per panel only; never inside headings, buttons, tags or links.
 
 ## Scales and threads (D-031)
-- Four scales, colour-coded in the nav, smallest first: **Quantum** cyan `#5ee0e6` (D-036), **Voyages** pink, **Physics** teal, **Cosmos** violet (Explore blue, Method amber).
+- Four scales, colour-coded as columns in the Explore mega-menu (D-045), smallest first: **Quantum** cyan `#5ee0e6` (D-036), **Voyages** pink, **Physics** teal, **Cosmos** violet (Explore blue, Method amber).
 - A new lab joins a **thread** by adding its view key to `THREADS` in `src/home.js`; the aside shows the thread automatically.
 
 ## Layout
@@ -69,3 +69,8 @@ Tier pills (Mainstream / Frontier / ◌ Exploratory / Lens) sit beside the tags.
 
 ## Future: Reality OS
 Chronoscope becomes one "app" window. Keep each panel self-contained (own canvas, own state, init/destroy functions) so it can be lifted into a window manager later.
+
+## Navigation and page layout (D-045)
+- Top bar: ⌂ Home · Tours · Explore (mega-menu) · Guide (with the mode switch). Never a row of buttons; new pages go into Explore's columns or its bottom row.
+- Every side panel starts with a breadcrumb. Home has no sidebar.
+- Predict-first is honest (D-042): a lab stays paused and blurred on the question's setup until the visitor guesses, reads, or explores. Nothing is ever locked behind a guess or a mission.

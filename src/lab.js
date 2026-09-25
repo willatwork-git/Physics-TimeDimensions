@@ -21,7 +21,7 @@
     <div class="legend">
       <div>${Chrono.tierPill("mainstream")} <span class="tag ESTABLISHED">Established</span> <span class="tag CONTESTED">Contested</span> <span class="tag RULEDOUT">Ruled out</span> ${Chrono.info ? Chrono.info("tier-mainstream") : ""}<br><span class="meta">What working physicists hold, actively debate — or have tested and rejected.</span></div>
       ${Chrono.shows("frontier") ? `<div>${Chrono.tierPill("frontier")} <span class="tag SPECULATIVE">Speculative</span> ${Chrono.info ? Chrono.info("tier-frontier") : ""}<br><span class="meta">Published proposals, not yet supported by evidence.</span></div>` : ""}
-      ${Chrono.shows("exploratory") ? `<div>${Chrono.tierPill("exploratory")} <span class="tag HYPOTHESIS">Hypothesis</span> ${Chrono.info ? Chrono.info("tier-exploratory") : ""}<br><span class="meta">This project's own ideas and visitors' hypotheses (Lab mode). Dashed outlines. Not mainstream physics.</span></div>` : ""}
+      ${Chrono.shows("exploratory") ? `<div>${Chrono.tierPill("exploratory")} <span class="tag HYPOTHESIS">Hypothesis</span> ${Chrono.info ? Chrono.info("tier-exploratory") : ""}<br><span class="meta">This project's own ideas and visitors' hypotheses (Workbench mode). Dashed outlines. Not mainstream physics.</span></div>` : ""}
       <div>${Chrono.tierPill("lens")} <span class="tag ANALOGY">Analogy</span> ${Chrono.info ? Chrono.info("tier-lens") : ""}<br><span class="meta">Stories, history and analogies that help thinking.</span></div>
     </div>`;
 
@@ -79,6 +79,7 @@
     ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
     G.ctx = ctx; G.W = W; G.H = H;
     active.draw(G);
+    if (Chrono.missions && lockState(active) === "free") Chrono.missions.tick(active, dt);
     raf = requestAnimationFrame(frame);
   }
   function pos(e) { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
@@ -112,7 +113,17 @@
         hide() { if (active === def) { active = null; cancelAnimationFrame(raf); } applyLock(null); }
       };
     },
-    size: () => [W, H]
+    size: () => [W, H],
+    def: id => labs[id],
+    /* Draw with the shared helpers on another canvas (the Home hero), then restore the lab's own canvas. */
+    drawOn(cv, fn) {
+      const w = cv.clientWidth, h = cv.clientHeight, dpr = window.devicePixelRatio || 1; if (!w || !h) return;
+      if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+      const c2 = cv.getContext("2d"), keep = [ctx, G.ctx, G.W, G.H];
+      c2.setTransform(dpr, 0, 0, dpr, 0, 0); c2.fillStyle = C.bg; c2.fillRect(0, 0, w, h);
+      ctx = c2; G.ctx = c2; G.W = w; G.H = h;
+      try { fn(G); } finally { [ctx, G.ctx, G.W, G.H] = keep; }
+    }                                    // read-only lookup (tests step a lab's physics directly)
   };
   /* Predict first: the visitor commits to a guess before anything can give the answer away (D-042, UX spec P0).
      def.predict = { q, options: [...], answer: index, explain, setup? }. States:
@@ -195,6 +206,7 @@
       ${tier === "exploratory" ? Chrono.expBanner() : ""}
       ${Chrono.introFor ? Chrono.introFor(def.id) : ""}
       ${!above ? predictCard(def) : ""}
+      ${!waiting && def.kind !== "doc" && Chrono.missions ? Chrono.missions.card(def) : ""}
       ${waiting && Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
       ${waiting ? "" : typeof def.aside === "function" ? def.aside() : (def.aside || "")}
       ${!waiting && Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
@@ -207,6 +219,7 @@
     document.querySelectorAll("#aside [data-hole]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goHole(a.dataset.hole); });
     document.querySelectorAll("#aside [data-view-link]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goView(a.dataset.viewLink); });
     if (def.kind !== "doc") applyLock(def);
+    if (Chrono.missions && !waiting) Chrono.missions.wire(def);
     Chrono.wirePredict(fr.key, () => renderLabAside(def));
     document.querySelectorAll("#aside [data-tour-next]").forEach(b => b.onclick = () => Chrono.tourNext && Chrono.tourNext());
     if (def.wireAside) def.wireAside();

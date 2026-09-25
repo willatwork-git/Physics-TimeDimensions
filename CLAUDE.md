@@ -5,7 +5,7 @@ An interactive, browser-based educational model with two independent investigati
 
 **Positioning (Will, 2026-09-26):** the app is a *lens over time* — every model is seen from time's point of view — but it isn't limited to time; it has grown into physics more broadly, with time as the central theme.
 
-Now a free public learning tool with a life of its own: four scales (Quantum · Voyages · Physics · Cosmos), three tours, Concepts pages; **Learn** mode for newcomers, **Lab** mode for labelled exploratory ideas that challenge the mainstream (intentional). Later: an in-app Claude chat (needs a small server).
+Now a free public learning tool with a life of its own: four scales (Quantum · Voyages · Physics · Cosmos), three tours, Concepts pages; **Learn** mode for newcomers, **Workbench** mode (internally `lab`, `?mode=lab`) for labelled exploratory ideas that challenge the mainstream (intentional). Later: an in-app Claude chat (needs a small server).
 
 ## Hosting and domain
 - Live on GitHub Pages: `willatwork-git/Physics-TimeDimensions` → https://willatwork-git.github.io/Physics-TimeDimensions/
@@ -19,6 +19,9 @@ Now a free public learning tool with a life of its own: four scales (Quantum · 
 - Keep `ACTIVE.md` current — **replace, never append**. Archive finished material to `/archive`.
 - Keep this file under ~60 lines.
 - The GitHub repo is public: anything committed is published.
+- External review: ChatGPT ("SOL") reviews plans and spot-checks the live site. Judge each point on its merits, log adopted/rejected in `reviews/reviews.md`; Will arbitrates.
+- UX work follows `reviews/Chronoscope — UX, Flow & Stickiness Design Spec.md` (D-042); tour content lives in `src/stops.js`, from `stop-plans.md`.
+- Tests: headless Chrome runs no animation frames under simulated time — test frame-driven logic by stepping labs (`Chrono.lab.def(id)`); the regression also fails on blank lab canvases.
 
 ## Physics integrity (non-negotiable)
 - Every on-screen claim carries a tag: **ESTABLISHED / CONTESTED / SPECULATIVE / ANALOGY / HYPOTHESIS** — tag claims, not papers. Loose ideas are welcome; they must be labelled, and should say what they predict and what would kill them.

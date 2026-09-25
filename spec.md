@@ -33,7 +33,7 @@ Tags: ANALOGY (the story) + ESTABLISHED (the geometry).
 - See `HANDOVER.md` for hosting and the school edition.
 
 ## Modes (D-023)
-**Learn** (default): Mainstream + Frontier + Lens, guided. **Lab**: adds Exploratory content and the ◌ Workbench menu (exploratory ideas, hypothesis tools, Dimension Map). Filters (show-only, by approach and by tag) are in both modes (D-039).
+**Learn** (default): Mainstream + Frontier + Lens, guided. **Workbench** (internally `lab`): adds Exploratory content and the ◌ Workbench menu (exploratory ideas, hypothesis tools, Dimension Map). Filters (show-only, by approach and by tag) are in both modes (D-039).
 
 ## Learning layer (D-026, D-027)
 Home (hook + doors) · 7-stop tours · Predict first per lab · Picture it + Common trap per lab · end-of-tour quiz + spaced review (D-037) · progress marks · glossary · reasons for every non-✓ bench score and visitor's own scores · predicts / overturned-by for every physics idea.

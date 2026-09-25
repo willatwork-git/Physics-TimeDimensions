@@ -642,3 +642,86 @@ button.info:hover, button.info:focus-visible { background: var(--accent); color:
 .endcard .btn.primary { width: 100%; padding: 9px 12px; font-size: 14px; white-space: normal; text-align: left; }
 .endcard .ec-go { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; font-size: 13px; }
 .veil-routes { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 4px; }
+
+/* ---------- Missions (D-044, UX spec §8) ---------- */
+.mission { margin: 14px 0; padding: 12px 14px; border-radius: 10px; background: var(--panel2); border: 1px solid color-mix(in srgb, var(--t-est) 35%, var(--line)); }
+.mission .m-title { font-weight: 600; margin: 4px 0 8px; }
+.m-bar { height: 8px; border-radius: 4px; background: var(--bg); overflow: hidden; }
+.m-bar i { display: block; height: 100%; width: 0; background: var(--t-est); transition: width .15s linear; }
+.mission .m-status { margin: 6px 0 2px; }
+.m-btns { font-size: 12px; color: var(--muted); }
+.m-btns .linkish, .mission .linkish { color: var(--accent); }
+.mission.done { border-color: var(--t-est); background: color-mix(in srgb, var(--t-est) 8%, var(--panel2)); }
+.mission.done .eyebrow { color: var(--t-est); }
+@keyframes mpulse { 0% { box-shadow: inset 0 0 0 0 rgba(79,209,165,.0); } 30% { box-shadow: inset 0 0 0 6px rgba(79,209,165,.55); } 100% { box-shadow: inset 0 0 0 0 rgba(79,209,165,0); } }
+#lab-canvas-wrap.pulse { animation: mpulse 1s ease-out; }
+
+/* ---------- Continue card and resume chip (UX spec §3, §5) ---------- */
+.contcard { margin: 14px 0 6px; padding: 14px 16px; border-radius: 12px; background: color-mix(in srgb, var(--accent) 8%, var(--panel)); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line)); max-width: 760px; }
+.contcard p { margin: 4px 0 10px; }
+#doc a.btn.primary { color: var(--accent); text-decoration: none; display: inline-block; }
+#tourchip { display: flex; align-items: center; }
+#tourchip:empty { display: none; }
+.tchip { height: 30px; padding: 0 10px; border-radius: 15px 0 0 15px; border: 1px solid var(--t-con); background: color-mix(in srgb, var(--t-con) 12%, transparent); color: var(--t-con); font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.tchip-x { height: 30px; width: 26px; border-radius: 0 15px 15px 0; border: 1px solid var(--t-con); border-left: 0; background: transparent; color: var(--t-con); cursor: pointer; }
+@media (max-width: 900px) and (orientation: portrait), (max-width: 600px) { .tchip { font-size: 11px; padding: 0 8px; } }
+
+/* ---------- Top bar, UX spec Phase 2 (D-045): Tours · Explore mega-menu · Guide with the mode switch ---------- */
+.navgroup.g-tours { --gcol: #f2c94c; }
+.navmenu.tourmenu { min-width: 340px; }
+.tmenu { display: flex; gap: 10px; align-items: flex-start; width: 100%; text-align: left; padding: 9px 10px; border: 0; border-radius: 8px; background: none; color: var(--text); cursor: pointer; }
+.tmenu:hover { background: color-mix(in srgb, var(--gcol) 14%, transparent); }
+.tm-icon { font-size: 20px; line-height: 1.2; }
+.tm-body { display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
+.tm-body span { font-size: 12px; color: var(--muted); }
+.navmenu.mega { min-width: min(980px, calc(100vw - 16px)); max-width: calc(100vw - 16px); padding: 10px; }
+.mcols { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 4px 10px; }
+.mcol.g-quantum { --gcol: #5ee0e6; } .mcol.g-voyages { --gcol: #e36bd0; } .mcol.g-labs { --gcol: #4fd1a5; } .mcol.g-cosmos { --gcol: #9b8cff; } .mcol.g-work { --gcol: #7cc4ff; }
+.mcol .navscale { border-bottom: 1px solid color-mix(in srgb, var(--gcol) 35%, transparent); margin-bottom: 4px; }
+.mcol.g-work { border: 1px dashed color-mix(in srgb, var(--gcol) 45%, var(--line)); border-radius: 10px; }
+.mrow { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4px 10px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+.mega button[data-view] span { display: none; }
+.mega .mrow button[data-view] span { display: block; }
+#levelctl { padding: 4px 10px 8px; }
+#levelctl .modesw { display: inline-flex; }
+.wbbadge { display: none; height: 30px; align-items: center; padding: 0 10px; border-radius: 15px; border: 1px dashed var(--t-hyp); color: var(--t-hyp); font-size: 12px; text-decoration: none; white-space: nowrap; }
+body.mode-lab .wbbadge { display: inline-flex; }
+@media (max-width: 900px) and (orientation: portrait), (max-width: 600px) { .mcols, .mrow { grid-template-columns: 1fr 1fr; } .wbbadge { padding: 0 8px; font-size: 11px; } }
+.navmenu.mega { min-width: min(1180px, calc(100vw - 16px)); overflow-y: auto; }
+.mcols { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
+@media (max-width: 1100px) { .mcols { grid-auto-flow: row; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); } }
+@media (max-width: 900px) and (orientation: portrait), (max-width: 600px) { .mcols { grid-auto-flow: row; grid-template-columns: 1fr 1fr; } }
+
+/* ---------- Home, UX spec §5 (D-045): five blocks, no sidebar ---------- */
+body.onhome #aside { display: none; }
+.home2 { max-width: 1180px; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 24px; align-items: center; margin: 10px 0 8px; }
+.hero h1 { margin: 6px 0 10px; }
+.hero .btn.big { margin: 8px 0 4px; }
+.hero-sim { display: flex; flex-direction: column; gap: 6px; }
+#hero-cv { width: 100%; height: 360px; border-radius: 12px; background: var(--bg); box-shadow: 0 0 0 1px color-mix(in srgb, var(--t-est) 30%, transparent), 0 0 40px color-mix(in srgb, var(--t-est) 10%, transparent); }
+.hero-ctl { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+.hero-ctl b { color: var(--t-est); }
+.hero-ctl input { flex: 1; }
+.hero-sim .meta a { color: var(--accent); }
+.tourpick3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tourpick3 .tp { text-align: left; }
+.tp-meta { display: block; margin-top: 8px; font-size: 12px; color: var(--muted); }
+.tp-prog { display: block; height: 4px; margin-top: 6px; border-radius: 2px; background: var(--bg); overflow: hidden; }
+.tp-prog i { display: block; height: 100%; background: var(--t-est); }
+.allstops { margin: 10px 0 0; font-size: 13px; }
+.allstops summary { cursor: pointer; color: var(--accent); }
+.allstops-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 8px; }
+.allstops ol { margin: 4px 0; padding-left: 18px; }
+.allstops .linkish { color: var(--text); font-size: 13px; text-decoration: none; text-align: left; }
+.deeper { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.dcard { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); text-decoration: none; }
+#doc a.dcard { color: var(--text); }
+.dcard span { font-size: 13px; color: var(--muted); }
+.dcard:hover { border-color: var(--accent); }
+.dcard.d-lab { border-style: dashed; }
+@media (max-width: 1100px) { .tourpick3, .allstops-grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .hero { grid-template-columns: 1fr; } #hero-cv { height: 220px; } }
+.btn.ghost { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+@media (max-width: 900px) { #hero-cv { height: 270px; } }
+@media (max-width: 600px) { .hero-ctl { flex-wrap: wrap; } .hero-ctl input { flex: 1 1 100%; order: 3; } }

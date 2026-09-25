@@ -42,7 +42,7 @@
       { v: "concepts", n: "Concepts", d: "The ideas that run through the whole app — why clocks disagree, what 'now' means, the arrow of time, why 3 + 1 — with the evidence, and every lab that shows each one. Look for ⓘ markers for the short version." },
       { v: "review", n: "Quizzes and review", d: "A short quiz at the end of each tour, and questions from labs you've explored that come back after a day, then three, a week and longer, to check what stuck. Each lab also has a 'Picture it' analogy and a 'Common trap'." }
     ] },
-    { g: "work", name: "◌ Workbench (Lab mode)", blurb: "Ideas that aren't mainstream physics yet — to be tested, not believed.", items: [
+    { g: "work", name: "◌ Workbench (Workbench mode)", blurb: "Ideas that aren't mainstream physics yet — to be tested, not believed.", items: [
       { v: "ideas", n: "Exploratory ideas", tier: "exploratory", d: "This project's own challenges to mainstream physics and your hypotheses, in one place, with the tools to add, export and share them." },
       { v: "dims", n: "Dimension Map", tier: "exploratory", d: "A working framework: sort dimensions into groups (space, time, charge, scale, state) and ask each the same questions. Gaps become visible." }
     ] }
@@ -64,10 +64,10 @@
       <div class="eyebrow">Guide</div>
       <h2 id="help-title">Chronoscope — time, at every scale</h2>
       <p class="hlead">A free, hands-on guide to time in physics, from a single photon to the edge of the universe. Live simulations run the real equations, and every claim is tagged with how sure physicists are, so you can tell solid science from the frontier — and see <b>where our account of time still doesn't add up</b>.</p>
-      ${Chrono.maxLevel >= 3 ? `<section class="hsec"><h3>Two modes: Learn and Lab</h3>
+      ${Chrono.maxLevel >= 3 ? `<section class="hsec"><h3>Two modes: Learn and Workbench</h3>
         <p><b>Learn</b> (the default) shows physics as physicists hold and debate it, plus published proposals from the fringe — clearly tagged. The map stays uncluttered and each lab hands you on to the next question.</p>
-        <p><b>◌ Lab</b> is the raw workbench. It adds the <b>◌ Workbench</b> menu: this project's own exploratory ideas, which deliberately challenge the mainstream, your own hypotheses, and the Dimension Map. Not mainstream physics — shown to be tested, not believed.</p>
-        <p class="meta">Switch any time, top right. You're in <b>${Chrono.mode() === "lab" ? "Lab" : "Learn"}</b> mode.</p>
+        <p><b>◌ Workbench</b> mode is for working with ideas. It adds a Workbench column under Explore: this project's own exploratory ideas, which deliberately challenge the mainstream, your own hypotheses, and the Dimension Map. Not mainstream physics — shown to be tested, not believed.</p>
+        <p class="meta">Switch any time in the Guide menu (top right). You're in <b>${Chrono.mode() === "lab" ? "Workbench" : "Learn"}</b> mode.</p>
       </section>` : ""}
       ${secs}
       <section class="hsec"><h3>Mainstream or not? The tags</h3>

@@ -54,7 +54,7 @@
       ["Click anywhere", "Fires a flash of light in every direction from that spot."],
       ["Fire outward from 3 distances", "Sends light straight out from well outside, just outside and inside the horizon."],
       ["Hover", "Shows how fast space flows there and how fast a clock held still would tick."],
-      ["◌ Turbulent-river overlay", "Lab mode only: this project's illustrative idea — no equations behind it."]
+      ["◌ Turbulent-river overlay", "Workbench mode only: this project's illustrative idea — no equations behind it."]
     ],
     entropy: [
       ["Remove the partition", "Lets the gas spread into the whole box."],

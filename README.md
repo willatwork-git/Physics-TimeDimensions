@@ -8,7 +8,7 @@ Where it started: *why does our universe have exactly one time dimension?* The h
 reaches, is that physics has strong constraints on it but no settled, model-independent answer.
 
 **▶ Try it live: [willatwork-git.github.io/Physics-TimeDimensions](https://willatwork-git.github.io/Physics-TimeDimensions/index.html#home)**
-· [Lab mode](https://willatwork-git.github.io/Physics-TimeDimensions/index.html?mode=lab#home)
+· [Workbench mode](https://willatwork-git.github.io/Physics-TimeDimensions/index.html?mode=lab#home)
 · [classroom edition](https://willatwork-git.github.io/Physics-TimeDimensions/index.html?edition=school#home)
 
 ![Home: the hook, three guided tours and the four scales of time](docs/screenshot-home.png)
@@ -21,17 +21,17 @@ It works offline; fonts fall back to system fonts without a connection.
 | Want | Open |
 |---|---|
 | Learn mode (default): mainstream and frontier physics, guided | `index.html` |
-| Lab mode: the raw workbench, including exploratory ideas | `index.html?mode=lab` |
+| Workbench mode: exploratory ideas and your hypotheses | `index.html?mode=lab` |
 | Classroom version (Learn only, no switch) | `index.html?edition=school` |
 
-## Two modes: Learn and Lab
+## Two modes: Learn and Workbench
 
-Chronoscope has two audiences, split by one switch in the header.
+Chronoscope has two audiences, split by one switch in the Guide menu.
 
 - **Learn** (the default) — physics as physicists hold and debate it, plus published proposals from
   the fringe, all tagged. The Atlas stays uncluttered (idea names appear as you hover) and each lab
   ends with the next question and a link to where it's explored.
-- **◌ Lab** — the raw workbench for experimenting with ideas. It adds a **◌ Workbench** menu: this
+- **◌ Workbench** — for experimenting with ideas (the URL keeps `?mode=lab`). It adds a Workbench column under Explore: this
   project's own exploratory ideas, which deliberately challenge the mainstream, your own hypotheses
   (add, export, import) and the Dimension Map. None of it is mainstream physics; it's there to be tested.
 
@@ -39,9 +39,8 @@ Every view has its own link (for example `#atlas/H5` or `#flatland/7`), so you c
 what you're looking at, and the browser's Back button works.
 
 The app opens on a home page: take one of **three guided tours** (seven stops, about 20 minutes each),
-explore the map, or go straight to a lab. Content menus are on the left (Explore · Quantum · Voyages ·
-Physics · Cosmos); the **Guide** menu on the right holds the built-in guide (or press **?**), Concepts,
-quizzes and the tours. ⌂ Home is always one click away, and each side panel starts with where you are. Works on phones and tablets (the page stacks: simulation first, explanation below); the Atlas map and the 3D Flatland views are at their best on a tablet or desktop.
+explore the map, or go straight to a lab. The top bar is ⌂ Home · **Tours** (with your progress) · **Explore** (every lab, by scale) · **Guide** (the
+built-in guide — or press **?** — Concepts, quizzes, and the Learn / Workbench switch). ⌂ Home is always one click away, and each side panel starts with where you are. Works on phones and tablets (the page stacks: simulation first, explanation below); the Atlas map and the 3D Flatland views are at their best on a tablet or desktop.
 
 ## What's inside
 
@@ -126,6 +125,8 @@ quizzes and the tours. ⌂ Home is always one click away, and each side panel st
 - **Predict first** — each lab asks for your guess first and stays paused, and hidden, until you've made it
   — or chosen to read the explanation first, or explore freely; nothing is held back. "Run it" shows whether
   you were right.
+- **Missions** — short, optional goals inside a lab (Clock Lab first: make the moving clock tick half as fast;
+  find the orbit height where the two clock effects cancel), with a live progress bar, a hint and "Show me".
 - **Picture it and Common trap** — each lab has one everyday analogy (and where it breaks) and one common
   misconception, with what the lab shows instead.
 - **Quizzes and review** — a short quiz at the end of each tour, and questions from labs you've explored
@@ -133,7 +134,7 @@ quizzes and the tours. ⌂ Home is always one click away, and each side panel st
 - **Glossary** — dotted-underlined terms show a plain definition on hover or tap.
 - **Progress** — ✓ marks on what you've seen, and "continue where you left off" (kept in your browser).
 
-**◌ Workbench** *(Lab mode)*
+**◌ Workbench** *(Workbench mode)*
 - **Exploratory ideas** — this project's own challenges to mainstream physics, and your hypotheses, in one place.
 - **Dimension Map** — a working framework that asks every kind of dimension (space, time, internal,
   scale, state) the same questions, to make the gaps visible.
@@ -149,7 +150,7 @@ paper can contain established maths and speculative physics.
 |---|---|---|
 | Mainstream | Established · Contested · Ruled out | Held, actively debated, or tested and rejected by working physicists |
 | Frontier | Speculative | Published proposals without supporting evidence yet |
-| Exploratory | Hypothesis | This project's own ideas and visitors' hypotheses (Lab mode). **Not mainstream physics.** Drawn with dashed outlines |
+| Exploratory | Hypothesis | This project's own ideas and visitors' hypotheses (Workbench mode). **Not mainstream physics.** Drawn with dashed outlines |
 | Lens | Analogy | History, stories and analogies that help thinking |
 
 Learn mode shows Mainstream, Frontier and Lens; Lab adds Exploratory.
@@ -166,7 +167,7 @@ Other rules the project follows:
 
 ## Your own hypotheses
 
-In Lab mode, **+ Your hypothesis** adds an idea to the Atlas. You're asked what it would
+In Workbench mode, **+ Your hypothesis** adds an idea to the Atlas. You're asked what it would
 predict and what observation would rule it out. Ideas are stored **only in your browser**
 (`localStorage`); nothing is sent anywhere. **Export** saves them to a JSON file you can send a friend,
 who uses **Import** to add them to their own Atlas. Imported files are treated as untrusted: only
@@ -206,7 +207,7 @@ src/
   story.js          How it all fits together (the comic strip)
   voyages.js        Mission clocks, Talking to Mars, The 1 g voyage
   cosmos.js         Expanding universe, Cosmic horizons, Boot a Universe, The Janus point
-  nav.js            header drop-down menus (Explore · Quantum · Voyages · Physics · Cosmos · ◌ Workbench; Guide), breadcrumb
+  nav.js            the top bar: Home · Tours · Explore (mega-menu by scale) · Guide; breadcrumb
   docs.js           Dimension Map, How sure are we?
   home.js           Home page, the three tours, the four scales and the threads
   stick.js          Picture it, Common trap, tour quizzes and returning review
@@ -247,7 +248,7 @@ id, year, name, who, camp, holes, tag, outcome, plain description, reasoning, hu
 ## Status
 
 Working and usable on desktop and phone: the Atlas, Test bench, all labs listed above across four
-scales, Learn and Lab modes, three guided tours, Concepts pages and the school edition. The roadmap is
+scales, Learn and Workbench modes, three guided tours, Concepts pages and the school edition. The roadmap is
 in [`todo.md`](todo.md): next is launch readiness — verified citations, a light
 theme, teacher notes, and a move to its own domain, **chronoscope.com.au**.
 
