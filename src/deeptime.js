@@ -216,7 +216,7 @@
       g.label(`${when(e.t)} · ${Chrono.TAGS[e.tag].toUpperCase()}`, x0, y, C.muted, 10); y += 18;
       y += g.wrap(e.d, x0, y, bw, 16, C.text, 12) + 6;
       if (e.t <= TODAY_S && e.t > 1e4 * YR) g.wrap(`On a calendar with the universe so far squeezed into one year: ${calendar(e.t)}.`, x0, y, bw, 16, C.teal, 12);
-      g.label("Times: published values (Planck 2018; far future from Adams & Laughlin 1997).", A.x + 14, A.y + A.h - 12, C.muted, 10);
+      g.label(A.w < 520 ? "Times: Planck 2018; far future: Adams & Laughlin 1997." : "Times: published values (Planck 2018; far future from Adams & Laughlin 1997).", A.x + 14, A.y + A.h - 12, C.muted, 10);
     },
     aside: () => `
       <p>Everything from the Planck-time boundary, where today's physics stops being reliable, to the last black hole, on one line. The trick is <b>powers of ten</b>: each tick is ten times longer than the one before, so a trillionth of a second and a trillion years both fit.</p>

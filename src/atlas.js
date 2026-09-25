@@ -209,11 +209,16 @@
       return `<div class="barrow" data-go-hole="${h.id}"><span>${h.id}</span><div class="stack">${seg}</div><span>${on.length}</span></div>`;
     }).join("");
     setTimeout(wireAside);
+    /* Phones get the holes as a tappable list (UX spec: a list view on mobile); touch screens get tap wording, not hover. */
+    const narrow = window.matchMedia("(max-width: 900px) and (orientation: portrait), (max-width: 600px)").matches, touch = window.matchMedia("(hover: none)").matches;
     return `
       <div class="eyebrow">The Atlas</div>
       <h2>Why does our universe have exactly one time dimension?</h2>
       <p>Nobody knows for sure — and that's one of the holes in physics' account of time. Think of that account as a map with holes in it: places where the theories don't add up. The ${visHoles().length} glowing nodes along the top are those <b>holes</b>. Every dot below is someone's <b>attempt</b> to fill one, placed by year and coloured by approach.</p>
-      <p>Hover a hole to see who has tried to fill it${Chrono.mode() === "learn" ? " — names appear as you hover" : ""}. Click anything to read the detail.</p>
+      ${touch ? `<p>Tap a hole to see who has tried to fill it, or tap any dot for its story. The map scrolls sideways; the list below has every hole.</p>`
+        : `<p>Hover a hole to see who has tried to fill it${Chrono.mode() === "learn" ? " — names appear as you hover" : ""}. Click anything to read the detail.</p>`}
+      ${narrow ? `<h3>The holes</h3><div class="holelist">${visHoles().map(h => { const n = Chrono.IDEAS.filter(i => i.holes.includes(h.id) && Chrono.shows(Chrono.tierOf(i))).length;
+        return `<button class="hl" data-go-hole="${h.id}"><b>${h.id} · ${h.name}</b><span>${h.one} · ${n} attempt${n === 1 ? "" : "s"}</span></button>`; }).join("")}</div>` : ""}
       ${Chrono.mode() === "learn" && Chrono.maxLevel >= 3 ? `<p class="meta">Want the raw version — this project's own challenges to the mainstream, your own hypotheses, every label? Switch to <b>◌ Workbench</b> in the Guide menu (top right).</p>` : ""}
       <h3>Who attacks which hole</h3>
       <div class="bars">${bars}</div>

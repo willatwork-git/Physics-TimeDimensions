@@ -24,7 +24,7 @@ make_probe_copy() {
 # usage: run_page <file-url> <virtual-ms>
 run_page() {
   "$CHROME_BIN" --headless=new --disable-gpu --allow-file-access-from-files --window-size=1440,900 --virtual-time-budget="$2" --dump-dom "$1" 2>/dev/null \
-    | perl -0ne 'print $1 if /<pre id="RES">(.*?)<\/pre>/s'
+    | perl -0ne 'if (/<pre id="RES">(.*?)<\/pre>/s) { my $r = $1; $r =~ s/&lt;/</g; $r =~ s/&gt;/>/g; $r =~ s/&quot;/"/g; $r =~ s/&#39;/\x27/g; $r =~ s/&amp;/&/g; print $r }'   # the dump is HTML-escaped
 }
 
 # Output contract for checks: exactly one summary line per result, detail to $LOG.

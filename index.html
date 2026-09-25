@@ -17,11 +17,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="src/style.css?v=77">
+<link rel="stylesheet" href="src/style.css?v=85">
 </head>
 <body>
 <header>
   <a class="brand" href="#home" title="Back to the start"><b>CHRONOSCOPE</b><span class="brand-sub"> · time, at every scale</span></a>
+  <a id="progbar" href="#passport" title="Your passport"><span class="pb-track"><i></i></span><span class="pb-n"></span></a>
   <a class="homebtn" href="#home" title="Home"><span aria-hidden="true">⌂</span><span class="hb-t"> Home</span></a>
   <nav>
     <div class="navgroup g-tours"><button class="navtop" aria-haspopup="true" aria-expanded="false">Tours</button><div class="navmenu tourmenu" id="toursmenu"></div></div>
@@ -76,6 +77,7 @@
     <div class="navgroup g-guide"><button class="navtop" id="helpbtn" aria-haspopup="true" aria-expanded="false">Guide</button><div class="navmenu">
       <button data-help-open>How to use Chronoscope<span>What's here and how it works (press ?)</span></button>
       <button data-view="concepts">Concepts<span>The big ideas, with the evidence — and every lab that shows them</span></button>
+      <button data-view="passport">Your passport<span>Tour stamps, missions, your prediction record — and save it to a file</span></button>
       <button data-view="review">Quizzes and review<span>Tour quizzes, and questions that come back to check what stuck</span></button>
       <div class="navscale">Mode</div>
       <div id="levelctl"></div>
@@ -112,32 +114,33 @@
 <div id="hint">New here? <button id="hint-open">Open the guide</button> <button id="hint-x" aria-label="Dismiss">×</button></div>
 <input type="file" id="importfile" accept=".json" hidden>
 
-<script src="src/config.js?v=77"></script>
-<script src="src/progress.js?v=77"></script>
-<script src="src/data.js?v=77"></script>
-<script src="src/data2.js?v=77"></script>
-<script src="src/data3.js?v=77"></script>
-<script src="src/hypotheses.js?v=77"></script>
-<script src="src/lab.js?v=77"></script>
-<script src="src/guides.js?v=77"></script>
-<script src="src/labs.js?v=77"></script>
-<script src="src/labs2.js?v=77"></script>
-<script src="src/voyages.js?v=77"></script>
-<script src="src/cosmos.js?v=77"></script>
-<script src="src/quantum.js?v=77"></script>
-<script src="src/timetravel.js?v=77"></script>
-<script src="src/deeptime.js?v=77"></script>
-<script src="src/story.js?v=77"></script>
-<script src="src/docs.js?v=77"></script>
-<script src="src/stops.js?v=77"></script>
-<script src="src/missions.js?v=77"></script>
-<script src="src/home.js?v=77"></script>
-<script src="src/stick.js?v=77"></script>
-<script src="src/concepts.js?v=77"></script>
-<script src="src/flatland.js?v=77"></script>
-<script src="src/nav.js?v=77"></script>
-<script src="src/atlas.js?v=77"></script>
-<script src="src/help.js?v=77"></script>
-<script src="src/glossary.js?v=77"></script>
+<script src="src/config.js?v=85"></script>
+<script src="src/progress.js?v=85"></script>
+<script src="src/data.js?v=85"></script>
+<script src="src/data2.js?v=85"></script>
+<script src="src/data3.js?v=85"></script>
+<script src="src/hypotheses.js?v=85"></script>
+<script src="src/lab.js?v=85"></script>
+<script src="src/guides.js?v=85"></script>
+<script src="src/labs.js?v=85"></script>
+<script src="src/labs2.js?v=85"></script>
+<script src="src/voyages.js?v=85"></script>
+<script src="src/cosmos.js?v=85"></script>
+<script src="src/quantum.js?v=85"></script>
+<script src="src/timetravel.js?v=85"></script>
+<script src="src/deeptime.js?v=85"></script>
+<script src="src/story.js?v=85"></script>
+<script src="src/docs.js?v=85"></script>
+<script src="src/stops.js?v=85"></script>
+<script src="src/missions.js?v=85"></script>
+<script src="src/home.js?v=85"></script>
+<script src="src/passport.js?v=85"></script>
+<script src="src/stick.js?v=85"></script>
+<script src="src/concepts.js?v=85"></script>
+<script src="src/flatland.js?v=85"></script>
+<script src="src/nav.js?v=85"></script>
+<script src="src/atlas.js?v=85"></script>
+<script src="src/help.js?v=85"></script>
+<script src="src/glossary.js?v=85"></script>
 </body>
 </html>

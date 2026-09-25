@@ -71,7 +71,10 @@
 
   /* ---------- drawing helpers ---------- */
   function label(txt, x, y, color = C.muted, size = 11, align = "left", font = "JetBrains Mono, monospace") {
-    ctx.fillStyle = color; ctx.font = `${size}px ${font}`; ctx.textAlign = align; ctx.fillText(txt, x, y);
+    ctx.fillStyle = color; ctx.font = `${size}px ${font}`; ctx.textAlign = align;
+    const room = align === "center" ? 2 * Math.min(x, W - x) - 8 : align === "right" ? x - 4 : W - x - 4, w = ctx.measureText(txt).width;
+    if (W && room > 0 && w > room) ctx.font = `${Math.max(8, Math.floor(size * room / w))}px ${font}`;   // narrow screens: shrink to fit, not below 8 px
+    ctx.fillText(txt, x, y);
   }
   function panel(x, y, w, h, title) {                     // a surface, not a border (3b), same as the labs
     ctx.fillStyle = "rgba(255,255,255,0.025)"; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, 10) : ctx.rect(x, y, w, h); ctx.fill();
@@ -732,6 +735,7 @@
       options: ["A circle", "A sphere", "A straight line"], answer: 1,
       explain: "A sphere. The Flatlanders lived it as an event in time — a circle appearing, growing, shrinking — but in the block of their whole history it's simply a shape. That's the block-universe picture of time." }
   };
+  F.predictFor = n => PREDICT[n] || null;                  // the passport's prediction record
   function renderAside() {
     const ch = CH[chapter], pkey = "flatland/" + (chapter + 1), pred = PREDICT[chapter + 1];
     const waiting = pred && Chrono.progress.pred(pkey).guess === undefined;

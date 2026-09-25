@@ -24,6 +24,7 @@
   ];
   const SCALE_NAME = { Q: "Quantum", V: "Voyages", P: "Physics", C: "Cosmos", A: "Atlas" };
   const TOTAL = ["atlas", "bench", "concepts", "review", "story", ...SCALES.flatMap(s => s.labs.map(l => l[0])), "sure"];
+  Chrono.SCALES = SCALES; Chrono.TOTAL = TOTAL;                // the passport and the header bar count against the same list
 
   /* Threads a view belongs to, rendered for its aside. key: "clocks", "flatland/7", … */
   /* "Where this leads" (UX spec §6): the next stop along each thread this view is on (or the one before, at a thread's end); up to three. */
@@ -103,11 +104,15 @@
     const lab = Chrono.mode() === "lab", rid = P.tourId(), running = t !== null && TOURS[rid] && TOURS[rid].stops[t];
     const ICON = { puzzle: "🧩", zoom: "🚀", time: "⏳" }, H = Chrono.heroClock ? Chrono.heroClock.state : { v: 0.6 };
     const firstOpen = id => Math.max(0, TOURS[id].stops.findIndex((x, i) => !P.tourVisited(id).includes(i)));
+    /* Back after 14+ days mid-tour: offer the takeaways of the stops already visited (UX spec §Resume). */
+    const recap = id => { const at = P.lastAt(), done = P.tourVisited(id).slice().sort((a, b) => a - b).filter(i => TOURS[id].stops[i] && TOURS[id].stops[i].takeaway);
+      return at && Date.now() - at > 14 * 864e5 && done.length ? `<details class="recap"><summary>It's been a while — quick recap first?</summary><ol>${done.map(i => `<li><b>${TOURS[id].stops[i].where}</b> — ${TOURS[id].stops[i].takeaway}</li>`).join("")}</ol></details>` : ""; };
     /* UX spec §5: five blocks — Continue · Hero · Pick a tour · Four scales · Go deeper. No sidebar on Home. */
     return `
       <div class="docwrap home home2">
         ${running ? `<div class="contcard"><button class="cc-x" data-cc-x="tour" title="Leave the tour. Stops you've visited stay recorded; resume any time from the Tours menu.">Not now ×</button><div class="eyebrow">Continue</div>
           <p><b>Tour ${TOUR_NUM[rid]} · stop ${t + 1} of ${TOURS[rid].stops.length}:</b> ${TOURS[rid].stops[t].q} <span class="meta">— ${TOURS[rid].stops[t].where}</span></p>
+          ${recap(rid)}
           <button class="btn primary big" data-go-tour="${t}" data-tour-id="${rid}">▶ Continue the tour</button></div>`
           : lastName ? `<div class="contcard"><button class="cc-x" data-cc-x="last" title="Hide this">Not now ×</button><div class="eyebrow">Continue</div><p>Where you left off: <b>${lastName}</b></p><a class="btn primary" href="${last}">Continue →</a></div>` : ""}
         ${Chrono.reviewDue && Chrono.reviewDue() ? `<a class="continue revdue" href="#review">🔁 <b>${Chrono.reviewDue()} question${Chrono.reviewDue() > 1 ? "s" : ""} ready</b> · about a minute →</a>` : ""}

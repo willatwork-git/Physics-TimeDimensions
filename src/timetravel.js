@@ -66,7 +66,7 @@
       g.label("time ↑   space →   · violet line: 'now' at time V", A.x + 14, A.y + A.h - 14, C.muted, 10);
 
       g.panel(B.x, B.y, B.w, B.h, "The bridge, at the violet 'now'");
-      const rt = throat(Math.abs(WH.V)), cx = B.x + B.w / 2, cy = B.y + 40 + (B.h - 160) / 2, W = B.w - 50, Hh = Math.min(B.h - 190, W * 0.55);
+      const rt = throat(Math.abs(WH.V)), cx = B.x + B.w / 2, cy = B.y + 40 + (B.h - 160) / 2, W = B.w - 50, Hh = Math.max(30, Math.min(B.h - 190, W * 0.55));   // short panes on phones: never negative
       ctx.strokeStyle = g.alpha(C.violet, 0.8); ctx.lineWidth = 2;
       [1, -1].forEach(sg => { ctx.beginPath(); for (let i = 0; i <= 80; i++) { const u = -1 + i / 80 * 2, half = rt * 0.28 + (1 - rt * 0.28) * (Math.abs(u) ** 1.6) * 0.9; const q = [cx + u * W / 2, cy + sg * half * Hh / 2]; i ? ctx.lineTo(...q) : ctx.moveTo(...q); } ctx.stroke(); });
       ctx.lineWidth = 1;
@@ -133,7 +133,7 @@
       });
       if (GD.walk > 0) { const a = GD.walk * TAU + 0.2, p = Pt(GD.rr, a, 0); ctx.shadowColor = C.pink; ctx.shadowBlur = 12; g.dot(...p, 6, C.pink); ctx.shadowBlur = 0; }
       g.dot(cx, cy, 4, C.text); g.label("wedges: the future light cone, sliced along each circle", A.x + 14, A.y + A.h - 14, C.muted, 10);
-      g.label("Gödel's universe looks the same from every point — the centre is just where we stand.", A.x + 14, A.y + A.h - 30, C.muted, 10);
+      g.label(A.w < 520 ? "Every point looks the same; the centre is where we stand." : "Gödel's universe looks the same from every point — the centre is just where we stand.", A.x + 14, A.y + A.h - 30, C.muted, 10);
 
       g.panel(B.x, B.y, B.w, B.h, "Your light cone, along the circle");
       const px = B.x + B.w / 2, py = B.y + 40 + (B.h - 200) * 0.55, L2 = Math.min(B.w * 0.36, (B.h - 200) * 0.5);

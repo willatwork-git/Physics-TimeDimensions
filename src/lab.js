@@ -35,7 +35,12 @@
     TAU, C,
     shade(hex, k) { const n = parseInt(hex.slice(1), 16); return `rgb(${Math.round(((n >> 16) & 255) * k)},${Math.round(((n >> 8) & 255) * k)},${Math.round((n & 255) * k)})`; },
     alpha(hex, a) { const n = parseInt(hex.slice(1), 16); return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`; },
-    label(txt, x, y, color = C.muted, size = 11, align = "left", font = "JetBrains Mono, monospace") { ctx.fillStyle = color; ctx.font = `${size}px ${font}`; ctx.textAlign = align; ctx.fillText(txt, x, y); },
+    label(txt, x, y, color = C.muted, size = 11, align = "left", font = "JetBrains Mono, monospace") {
+      ctx.fillStyle = color; ctx.font = `${size}px ${font}`; ctx.textAlign = align;
+      const room = align === "center" ? 2 * Math.min(x, G.W - x) - 8 : align === "right" || align === "end" ? x - 4 : G.W - x - 4, w = ctx.measureText(txt).width;
+      if (G.W && room > 0 && w > room) ctx.font = `${Math.max(8, Math.floor(size * room / w))}px ${font}`;   // narrow screens: shrink to fit the canvas, not below 8 px
+      ctx.fillText(txt, x, y);
+    },
     text(txt, x, y, color = C.text, size = 13, align = "left") { G.label(txt, x, y, color, size, align, "Inter, system-ui, sans-serif"); },
     panel(x, y, w, h, title) { ctx.fillStyle = "rgba(255,255,255,0.025)"; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, 10) : ctx.rect(x, y, w, h); ctx.fill();   // a surface, not a border (3b)
       if (title) G.label(Chrono.capsTitle(title), x + 12, y + 20, C.muted, 10); },
@@ -208,16 +213,39 @@
   }
   /* Shared with Flatland: Chrono.predictCard(key, p) renders the card; Chrono.wirePredict(key, rerender) wires it. */
   function predictCard(def) { const f = framing(def); return f.P ? Chrono.predictCard(f.key, f.P, "▶ Run it") : ""; }
+  /* Challenge links (UX spec §Shareable challenges, Phase 4b). A link carries only the question and the sender's option:
+     index.html?c=<question>&g=<option>#<lab>. The question is a lab's own (or a Flatland chapter's); a tour stop that
+     asks its own framed question isn't shareable, since a friend outside the tour wouldn't see that question. */
+  const shareId = key => {
+    const [lab, tour, i] = String(key).split(":");
+    if (tour === undefined) return lab;
+    const stop = Chrono.STOPS && Chrono.STOPS[tour] && Chrono.STOPS[tour].stops[+i];
+    return stop && stop.predict === undefined ? lab : null;
+  };
+  Chrono.challengeLink = (key, g) => { const id = shareId(key); if (id === null) return null;
+    return `${location.origin === "null" ? location.href.split(/[?#]/)[0] : location.origin + location.pathname}?c=${encodeURIComponent(id)}&g=${g}#${id}`; };
+  Chrono.challenge = null;                                  // { id, g } from the link this visit arrived by
+  (function readChallenge() {
+    const q = new URLSearchParams(location.search), id = q.get("c"), g = parseInt(q.get("g"), 10);
+    if (!id || !Number.isInteger(g) || g < 0) return;
+    Chrono.challenge = { id, g };
+    q.delete("c"); q.delete("g");                           // don't let the link stick to the address bar
+    try { history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : "") + location.hash); } catch (e) { }
+    const had = Chrono.progress.pred(id);                   // came to answer a friend: ask the question even if skipped before
+    if (had.guess === undefined || had.guess < 0) Chrono.progress.setPred(id, {});
+  })();
+  const friend = (key, p) => { const c = Chrono.challenge; return c && c.id === shareId(key) && p.options[c.g] !== undefined ? p.options[c.g] : null; };
   Chrono.predictCard = function (key, p, run) {
-    const g = Chrono.progress.pred(key);
-    if (g.guess === undefined) return `<div class="predict"><div class="eyebrow">Predict first</div><p>${p.q}</p>
+    const g = Chrono.progress.pred(key), fr = friend(key, p);
+    if (g.guess === undefined) return `<div class="predict">${fr ? `<p class="pfriend">A friend guessed <b>“${fr}”</b>. What's your guess?</p>` : ""}<div class="eyebrow">Predict first</div><p>${p.q}</p>
       <div class="popts">${p.options.map((o, i) => `<button class="btn" data-guess="${i}">${o}</button>`).join("")}</div>
       <div class="proutes"><span>Or, without guessing:</span> <button class="linkish" data-guess="-1" data-read>Read the explanation first</button> · <button class="linkish" data-guess="-1">Explore freely</button></div></div>`;
     if (g.guess < 0) return "";
     const right = g.guess === p.answer;
     return `<div class="predict">${!g.checked
       ? `<div class="eyebrow">Your guess</div><p><b>${p.options[g.guess]}</b></p>${run ? "" : `<p class="meta">Now try it, then check.</p>`}<button class="btn primary" data-pcheck>${run || "Check my prediction"}</button>`
-      : `<div class="eyebrow">${right ? "✓ You predicted it" : "Not quite — and that's the useful kind of wrong"}</div><p class="meta">You said: ${p.options[g.guess]}${right ? "" : ` · Answer: <b>${p.options[p.answer]}</b>`}</p><p>${p.explain}</p><button class="linkish" data-pagain>Ask me again</button>`}</div>`;
+      : `<div class="eyebrow">${right ? "✓ You predicted it" : "Not quite — and that's the useful kind of wrong"}</div><p class="meta">You said: ${p.options[g.guess]}${right ? "" : ` · Answer: <b>${p.options[p.answer]}</b>`}</p>${fr ? `<p class="pfriend">Your friend guessed <b>“${fr}”</b>${Chrono.challenge.g === p.answer ? " — right" : " — not quite"}.</p>` : ""}<p>${p.explain}</p>
+        <div class="pshare">${Chrono.challengeLink(key, g.guess) ? `<button class="btn" data-pshare>↗ Challenge a friend</button> ` : ""}<button class="linkish" data-pagain>Ask me again</button><span class="meta" data-pshare-msg></span></div>`}</div>`;
   }
   Chrono.wirePredict = function (key, rerender) {
     const W = "#aside, #lab-predict, #lab-veil", q = s => document.querySelectorAll(W.split(", ").map(w => `${w} ${s}`).join(", "));
@@ -228,6 +256,16 @@
     });
     q("[data-pcheck]").forEach(b => b.onclick = () => { Chrono.progress.setPred(key, Object.assign(Chrono.progress.pred(key), { checked: true })); rerender(); });
     q("[data-pagain]").forEach(b => b.onclick = () => { Chrono.progress.setPred(key, {}); rerender(); });
+    q("[data-pshare]").forEach(b => b.onclick = async () => {
+      const g = Chrono.progress.pred(key).guess, url = Chrono.challengeLink(key, g), msg = b.parentElement.querySelector("[data-pshare-msg]");
+      const say = t => { if (msg) msg.textContent = " " + t; };
+      if (!url) return;
+      if (navigator.share && window.matchMedia("(pointer: coarse)").matches) {   // phones: the system share sheet
+        try { await navigator.share({ title: "A Chronoscope challenge", text: "I made my guess. What's yours?", url }); return; } catch (e) { if (e && e.name === "AbortError") return; }
+      }
+      try { await navigator.clipboard.writeText(url); say("Link copied — send it to a friend."); }
+      catch (e) { window.prompt("Copy this link and send it to a friend:", url); }
+    });
   };
   /* End card at a tour stop: what you just saw, its limit, the handoff, and one primary action (UX spec §6). */
   /* One end card for every lab (UX spec §6). In a tour: the stop's takeaway, limit, handoff and Next. Otherwise: the

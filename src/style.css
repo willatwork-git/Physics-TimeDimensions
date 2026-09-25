@@ -332,7 +332,9 @@ sup.mine { font-size: 10px; margin-left: 2px; }
   #aside { width: auto; border-left: 0; border-top: 1px solid var(--line); overflow: visible; padding: 18px 16px 40px; }
 
   /* canvas views get a fixed, generous height; everything else takes its natural height */
-  #lab, #flatland { flex: none; height: min(82vh, 760px); height: min(82svh, 760px); }
+  #lab, #flatland { flex: none; height: auto; }
+  /* the stage sets its own height: taller than wide, so two-panel labs stack at full width instead of two ~170 px columns */
+  #lab-canvas-wrap, #fl-canvas-wrap { flex: none; height: min(125vw, 78vh); height: min(125vw, 78svh); }
   #doc, #benchview { flex: none; overflow: visible; }
   #atlas { flex: none; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   #atlas svg { width: 980px; height: auto; max-width: none; }
@@ -835,3 +837,60 @@ body[data-scale="cosmos"] { --scale: var(--cosmos); }
   #fl-readouts { gap: 4px 14px; padding: 8px 16px 10px; flex-wrap: nowrap; } #fl-readouts .ro { min-width: 0; flex: 1 1 auto; }
   #fl-readouts .ro b { font-size: 20px; } #fl-readouts .ro span { font-size: 10.5px; display: block; line-height: 1.3; }
 }
+
+/* Atlas on phones: the holes as a tappable list */
+.holelist { display: flex; flex-direction: column; gap: 6px; margin: 8px 0 18px; }
+.holelist .hl { text-align: left; padding: 10px 12px; border: 0; border-radius: var(--radius-m); background: var(--surface-1); color: var(--text); cursor: pointer; }
+.holelist .hl b { display: block; font-size: 14px; font-weight: 600; }
+.holelist .hl span { display: block; font-size: 13px; color: var(--text-3); margin-top: 2px; }
+.holelist .hl:hover, .holelist .hl:focus-visible { background: color-mix(in srgb, var(--accent) 10%, var(--surface-1)); }
+
+/* ===== Phase 4a · the passport and its header bar ===== */
+#progbar { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text-3); font: 11px var(--mono); }
+#progbar .pb-track { position: relative; display: block; width: 72px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08); overflow: hidden; }
+#progbar .pb-track i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--accent); border-radius: 2px; transition: width .4s; }
+#progbar:hover, #progbar:focus-visible { color: var(--text); }
+header #progbar { order: 5; margin-left: auto; } header .hdr-right { order: 6; margin-left: 0; }
+@media (max-width: 900px) and (orientation: portrait), (max-width: 600px) {
+  /* phones: a thin bar right across the screen between the brand and the buttons; the whole strip is the tap target */
+  .brand { flex: 1 1 100%; }
+  header #progbar { order: 1; flex: 1 1 100%; margin: -2px 0 0; padding: 2px 0; }
+  #progbar .pb-track { flex: 1; width: auto; height: 3px; }
+  header nav { order: 2; } header .hdr-right { order: 3; }
+}
+.passport { max-width: 1100px; }
+.passport h1 { margin: 4px 0 6px; }
+.pp-sum { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 16px 0 6px; }
+.pp-sum div { padding: 12px 14px; border-radius: var(--radius-m); background: var(--surface-1); }
+.pp-sum b { display: block; font: 600 28px/1.1 var(--sans); } .pp-sum b i { font-style: normal; font-size: 16px; color: var(--text-3); }
+.pp-sum span { font: 12px var(--mono); color: var(--text-3); }
+.stamps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+.stamp { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-radius: var(--radius-m); background: var(--surface-1); }
+.stamp svg { width: 72px; height: 72px; flex-shrink: 0; }
+.stamp .st-ring { fill: none; stroke: rgba(255,255,255,0.14); stroke-width: 3; stroke-dasharray: 6 5; }
+.stamp .st-inner { fill: none; stroke: rgba(255,255,255,0.08); stroke-width: 1.5; }
+.stamp .st-icon { font-size: 34px; opacity: .25; filter: grayscale(1); }
+.stamp.on .st-ring { stroke: var(--sc); stroke-dasharray: none; } .stamp.on .st-inner { stroke: var(--sc); fill: color-mix(in srgb, var(--sc) 12%, transparent); }
+.stamp.on .st-icon { opacity: 1; filter: none; }
+.stamp.on svg { transform: rotate(-8deg); }
+.stamp b { display: block; margin: 2px 0; } .stamp .meta { font-size: 12.5px; }
+.pp-labs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+#doc .pp-lab, .pp-lab { padding: 5px 10px; border-radius: 999px; font-size: 13px; text-decoration: none; color: var(--text-3); background: rgba(255,255,255,0.03); }
+#doc .pp-lab.seen, .pp-lab.seen { color: var(--text); background: color-mix(in srgb, var(--sc, var(--accent)) 12%, transparent); }
+.pp-lab i { font-style: normal; color: var(--t-con); letter-spacing: 1px; }
+.pp-docs { margin: 12px 0 4px; align-items: center; } .pp-docs .eyebrow { margin-right: 6px; }
+.pp-missed { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+#doc .pp-missed a, .pp-missed a { display: block; padding: 10px 12px; border-radius: var(--radius-m); background: var(--surface-1); text-decoration: none; color: var(--text); }
+.pp-missed a span { display: block; font-size: 13px; color: var(--text-3); margin-top: 2px; }
+.recap { margin: 6px 0 10px; } .recap summary { cursor: pointer; color: var(--accent); font-size: 14px; }
+.recap ol { margin: 8px 0 0; padding-left: 20px; font-size: 14px; } .recap li { margin: 4px 0; }
+@media (max-width: 700px) { .pp-sum { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Home on wide screens: centre the column, and line the header up with it, so nothing sits orphaned at the far edges.
+   Labs keep the full width (sim + side panel), header included. */
+body.onhome .home2 { margin-inline: auto; }
+@media (min-width: 1300px) { body.onhome header { padding-inline: calc((100% - 1180px) / 2 + 24px); } }
+
+/* challenge links (4b) */
+.pfriend { margin: 0 0 8px; padding: 8px 10px; border-radius: var(--radius-s); background: color-mix(in srgb, var(--accent) 10%, transparent); font-size: 14px; }
+.pshare { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 8px; }

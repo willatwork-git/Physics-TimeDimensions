@@ -88,7 +88,7 @@
         g.dot(x, y, i === EX.home ? 6 : 3, i === EX.home ? C.accent : C.violet);
       });
       ctx.restore();
-      g.label("you are here (click any galaxy to move)", cx + 10, cy + 4, C.accent, 10);
+      g.label(A.w < 520 ? "you are here (tap a galaxy)" : "you are here (click any galaxy to move)", cx + 10, cy + 4, C.accent, 10);
       g.label("arrows: recession speed, proportional to distance — from every galaxy", A.x + 14, A.y + A.h - 14, C.muted, 10);
 
       g.panel(B.x, B.y, B.w, B.h, "Size of the universe over time");

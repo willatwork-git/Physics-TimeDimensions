@@ -13,24 +13,40 @@
     visit(key) { if (!d.seen[key]) { d.seen[key] = 1; save(); } },
     seen: key => !!d.seen[key],
     last: () => typeof d.last === "string" ? d.last : null,
-    setLast(hash) { if (d.last !== hash) { d.last = hash; save(); } },
+    setLast(hash) { d.lastAt = Date.now(); if (d.last !== hash) d.last = hash; save(); },
+    lastAt: () => typeof d.lastAt === "number" ? d.lastAt : null,     // when the visitor was last in a lab (the 14-day recap)
     clearLast() { delete d.last; save(); },
 
     pred: id => d.pred[id] || {},
+    preds: () => Object.assign({}, d.pred),                          // every prediction key → { guess, checked } (the passport's record)
+    /* Save / load the whole passport as a file: moving device, or storage cleared. No accounts, nothing sent. */
+    exportAll: () => JSON.stringify({ app: "chronoscope", v: 1, saved: new Date().toISOString(), data: d }, null, 1),
+    importAll(text) {
+      const o = JSON.parse(text), nd = o && o.app === "chronoscope" && o.data;
+      if (!nd || typeof nd !== "object" || typeof nd.seen !== "object") throw new Error("That file isn't a Chronoscope passport.");
+      d = nd; ["seen", "pred", "scores", "rev", "quiz"].forEach(k => { if (!d[k] || typeof d[k] !== "object") d[k] = {}; }); save();
+    },
     setPred(id, p) { d.pred[id] = p; save(); },
 
     /* one tour runs at a time: d.tour = stop index, d.tourId = which tour; d.done = { tourId: true } */
     tour: () => Number.isInteger(d.tour) ? d.tour : null,
     tourId: () => typeof d.tourId === "string" ? d.tourId : "puzzle",
     setTour(i, id) { d.tour = i; if (id) d.tourId = id; save(); },
-    tourDone: id => !!(d.done && d.done[id || "puzzle"]) || (!id || id === "puzzle") && !!d.tourDone,
+    /* Done means every stop visited. The stored flag alone isn't trusted: builds before per-stop tracking set it when a
+       visitor jumped to the last stop, and those flags are still in some browsers. */
+    tourDone(id) {
+      id = id || "puzzle";
+      const flag = !!(d.done && d.done[id]) || id === "puzzle" && !!d.tourDone, T = Chrono.STOPS && Chrono.STOPS[id];
+      return flag && (!T || Chrono.progress.tourVisited(id).length >= T.stops.length);
+    },
     /* d.tv[tourId] = stop indices visited in that tour. A tour is "done" only when every stop was visited;
        jumping to the last stop and finishing just records reaching the finale (d.fin). */
     tourVisit(id, i) { d.tv = d.tv || {}; const a = d.tv[id] || (d.tv[id] = []); if (!a.includes(i)) { a.push(i); save(); } },
     tourVisited: id => (d.tv && d.tv[id]) || [],
     tourFinale: id => !!(d.fin && d.fin[id]),
+    tourDoneAt: id => (d.doneAt && d.doneAt[id]) || null,             // the passport stamp's date
     finishTour(n) { const id = Chrono.progress.tourId(), all = n && Chrono.progress.tourVisited(id).length >= n;
-      if (all) { d.done = d.done || {}; d.done[id] = true; } else { d.fin = d.fin || {}; d.fin[id] = true; }
+      if (all) { d.done = d.done || {}; d.done[id] = true; d.doneAt = d.doneAt || {}; if (!d.doneAt[id]) d.doneAt[id] = Date.now(); } else { d.fin = d.fin || {}; d.fin[id] = true; }
       d.tour = null; save(); return all; },
 
     /* review (D-037): d.rev[key] = { lv, due } — due is a timestamp; a right answer moves up the ladder */
