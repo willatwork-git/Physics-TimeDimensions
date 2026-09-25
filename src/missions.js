@@ -174,6 +174,26 @@
         reveal: "About 65% of the way through its life, the black hole has lost half its entropy. If information escapes at all, it must start coming out around here: the radiation's entropy has to turn down and follow the black hole's to zero. That turn is the Page curve. How the information gets out is still being worked out.",
         tags: ["CONTESTED"], show: { play: true } }
     ],
+    stars: [
+      { id: "year", title: "Run the star to its first stage that lasts less than a year",
+        hint: "Inside a star: step the Stage slider, or play the countdown, and watch how long each stage lasts.",
+        check: s => s.scene === "star" && s.stage === 3,
+        near: s => s.scene === "star" ? Math.min(1, s.stage / 3) : 0, hold: 600,
+        reveal: "Neon burning: under a year, after carbon's 500-odd years. Oxygen then lasts months and silicon about two days. The hotter the core, the faster it burns, and much of the energy leaves as neutrinos that pass straight out of the star.",
+        tags: ["ESTABLISHED"], show: { scene: "star", s: 3, play: false } },
+      { id: "gold", title: "Find the earliest time there was any gold",
+        hint: "Switch to Where the elements came from, select gold (Au), and step Cosmic time back until it goes dark.",
+        check: s => s.scene === "table" && s.step === 2,
+        near: s => s.scene === "table" ? 1 - Math.min(1, Math.abs(s.step - 2) / 3) : 0, hold: 800,
+        reveal: "About half a billion years in, once the first neutron stars had time to collide. The exact timing is uncertain: some astronomers think rare exploding stars made heavy elements even earlier.",
+        tags: ["CONTESTED"], show: { scene: "table", step: 2, sel: 79 } },
+      { id: "iron", title: "Find the smallest star that makes iron in its core",
+        hint: "Where the elements came from: move Star size up from our Sun until iron (Fe) lights up.",
+        check: s => s.scene === "table" && s.star === 12,
+        near: s => s.scene === "table" && s.star ? Math.min(1, s.star / 12) : 0, hold: 800,
+        reveal: "About ten times the Sun's mass (12 is the first size on this slider that gets there). Smaller stars stop at oxygen, or at neon and magnesium, and end as white dwarfs. Our Sun will never make iron: every iron atom in your blood came from a star at least ten times heavier, or from an exploding white dwarf. Where exactly the line falls, between 8 and 10 Suns, is still being refined.",
+        tags: ["ESTABLISHED", "CONTESTED"], show: { scene: "table", star: 5, sel: 26 } }
+    ],
     energy: [
       { id: "freeze", title: "With today's greenhouse, make Earth icy enough to average 0 °C",
         hint: "Keep the greenhouse at 78% and raise the reflected sunlight: ice and cloud send light straight back to space.",

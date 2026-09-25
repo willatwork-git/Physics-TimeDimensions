@@ -34,6 +34,7 @@
       { v: "expand", n: "Expanding universe", d: "Stand on any galaxy: everything recedes from everywhere. Change matter and dark energy; see the age and fate." },
       { v: "timeline", n: "Cosmic timeline", d: "Everything from the Planck time to the last black hole, in powers of ten, each event tagged by how sure we are. Plus the universe so far as a one-year calendar." },
       { v: "horizons", n: "Cosmic horizons", d: "How far we can see (46 billion light-years) and how far our signals can ever reach." },
+      { v: "stars", n: "Stars forge the elements", d: "Inside a massive star: burning stages from millions of years down to days, ending at iron. Then the periodic table, coloured by where each element was made." },
       { v: "boot", n: "Boot a Universe", d: "Try other numbers of space and time dimensions and watch what breaks — orbits, atoms, prediction." },
       { v: "janus", n: "The Janus point", d: "A gravitating swarm whose structure grows in both directions of time from one special moment." }
     ] },

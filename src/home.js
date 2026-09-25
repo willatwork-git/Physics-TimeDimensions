@@ -12,14 +12,14 @@
     { id: "quantum", name: "Quantum", sub: "The very small", col: "var(--quantum)", labs: [["delayed", "Delayed choice"], ["frozen", "The frozen universe"]] },
     { id: "voyages", name: "Voyages", sub: "People and spacecraft", col: "var(--voyages)", labs: [["missions", "Mission clocks"], ["mars", "Talking to Mars"], ["voyage", "The 1 g voyage"], ["energy", "Earth's energy budget"]] },
     { id: "labs", name: "Physics", sub: "The laws underneath", col: "var(--physics)", labs: [["flatland", "Flatland"], ["field", "Field Ocean"], ["clocks", "Clock Lab"], ["spacetime", "Spacetime"], ["river", "River"], ["hawking", "Black holes evaporate"], ["entropy", "Entropy box"], ["films", "Two Films"], ["wormhole", "Wormholes"], ["loops", "Time loops"]] },
-    { id: "cosmos", name: "Cosmos", sub: "The universe as a whole", col: "var(--cosmos)", labs: [["timeline", "Cosmic timeline"], ["expand", "Expanding universe"], ["horizons", "Cosmic horizons"], ["boot", "Boot a Universe"], ["janus", "The Janus point"]] }
+    { id: "cosmos", name: "Cosmos", sub: "The universe as a whole", col: "var(--cosmos)", labs: [["timeline", "Cosmic timeline"], ["stars", "Stars forge the elements"], ["expand", "Expanding universe"], ["horizons", "Cosmic horizons"], ["boot", "Boot a Universe"], ["janus", "The Janus point"]] }
   ];
   Chrono.scaleOf = id => (SCALES.find(s => s.labs.some(l => l[0] === id)) || {}).id || "";   // which scale a lab belongs to (its stage glow colour)
   /* Threads: [view key, label, scale] — scale V (voyages), P (physics), C (cosmos), A (atlas). */
   const THREADS = [
     { id: "clock", icon: "⏱", name: "Clocks disagree", stops: [["frozen", "A clock in a frozen universe", "Q"], ["missions", "Mission clocks", "V"], ["clocks", "Clock Lab", "P"], ["spacetime", "Twin paradox", "P"], ["river", "Clocks near a black hole", "P"], ["expand", "Cosmic clocks (redshift)", "C"]] },
     { id: "now", icon: "◬", name: "Light and 'now'", stops: [["delayed", "Delayed choice", "Q"], ["mars", "Talking to Mars", "V"], ["spacetime", "Whose 'now'?", "P"], ["flatland/7", "Time as a slice", "P"], ["films", "Two Films", "P"], ["horizons", "Cosmic horizons", "C"]] },
-    { id: "arrow", icon: "→", name: "The arrow of time", stops: [["entropy", "Entropy box", "P"], ["energy", "Earth's energy budget", "V"], ["hawking", "Black holes evaporate", "P"], ["timeline", "Cosmic timeline", "C"], ["janus", "The Janus point", "C"], ["atlas/H3", "Hole H3: why the arrow?", "A"]] },
+    { id: "arrow", icon: "→", name: "The arrow of time", stops: [["entropy", "Entropy box", "P"], ["stars", "Stars forge the elements", "C"], ["energy", "Earth's energy budget", "V"], ["hawking", "Black holes evaporate", "P"], ["timeline", "Cosmic timeline", "C"], ["janus", "The Janus point", "C"], ["atlas/H3", "Hole H3: why the arrow?", "A"]] },
     { id: "dims", icon: "◇", name: "Why 3 + 1?", stops: [["flatland/4", "A 4D visitor", "P"], ["films", "Two Films", "P"], ["boot", "Boot a Universe", "C"], ["atlas/H5", "Hole H5: why one time?", "A"]] }
   ];
   const SCALE_NAME = { Q: "Quantum", V: "Voyages", P: "Physics", C: "Cosmos", A: "Atlas" };

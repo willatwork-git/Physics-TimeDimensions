@@ -11,6 +11,7 @@ Now a free public learning tool with a life of its own: four scales (Quantum · 
 - Live on GitHub Pages: `willatwork-git/Physics-TimeDimensions` → https://willatwork-git.github.io/Physics-TimeDimensions/
 - Domain **chronoscope.com.au** registered to AgilityAI (Will's business). Not yet pointed at the site.
 - Move order: DNS at registrar first → `CNAME` file + Pages custom domain → update og:url / og:image and README links. A CNAME before DNS works breaks the live site.
+- Planned (D-053): at launch a clean public copy syncs to a Cloudflare site; this repo keeps the working notes.
 - Will commits and pushes; Claude only offers.
 
 ## Ways of working

@@ -98,6 +98,8 @@ built-in guide — or press **?** — Concepts, quizzes, and the Learn / Workben
 **Cosmos** — the universe as a whole
 - **Cosmic timeline** — from the first instant physics can describe to the last black hole, in powers of
   ten, every event tagged by how sure we are; plus the universe so far as a one-year calendar.
+- **Stars forge the elements** — inside a massive star as it burns down to iron, then the periodic table coloured
+  by where each element was made, filling in across cosmic time. A star-size slider shows why our Sun can't make iron.
 - **Expanding universe** — stand on any galaxy; change matter and dark energy; age and fate.
 - **Cosmic horizons** — how far we can see (46 billion light-years) and how far our signals can reach.
 - **Boot a Universe** — try other numbers of space and time dimensions and watch what breaks.
@@ -220,6 +222,7 @@ src/
   quantum.js        Delayed choice, The frozen universe
   timetravel.js     Wormholes, Time loops
   deeptime.js       Black holes evaporate, Cosmic timeline, Earth's energy budget
+  stars.js          Stars forge the elements
   stops.js          the three tours' stops: question, setup, prediction, takeaway, handoff
   story.js          How it all fits together (the comic strip)
   voyages.js        Mission clocks, Talking to Mars, The 1 g voyage

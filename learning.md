@@ -23,6 +23,12 @@ How Will's understanding develops, in his words where possible. Doubles as a scr
 
 - (2026-09-24) Slicing is the key tool: Flatlanders see slices of 3D objects; we'd see slices of 4D objects; and the block universe treats 'now' as a slice of 4D spacetime.
 
+## Black holes as a stage, not the end (2026-09-25 → 26)
+- **Will's first reasoning:** black holes hold the most entropy, and everything runs towards more entropy, so perhaps everything ends up inside one big black hole.
+- **The correction:** black holes can't keep what they hold. They evaporate, and the radiation carries away more entropy than the hole held (about 1.5×). Meanwhile dark energy keeps groups of galaxies apart, so they never all merge. In Will's words, black holes are **"an intermediate stage"**, not the end of the process. Now in the app (D-052).
+- **Aha:** gravity and entropy work as a pair, like an engine. Gravity makes clumping the likely direction; clumps ignite as stars; stars turn a little order into many photons and forge the elements; black holes store entropy, then give it back as radiation. Expansion decides how far it all runs.
+- Fusion, not fission: light nuclei join (hydrogen into helium and upward, as far as iron). Hydrogen, helium and a trace of lithium came from the first few minutes; everything else came from stars.
+
 ## Resources Will found
 - TED-Ed, "Exploring other dimensions" (Rosenthal & Zaidan).
 - 4D visualisation video: https://www.youtube.com/watch?v=4URVJ3D8e8k — "we are the Flatlanders of a four-dimensional world".

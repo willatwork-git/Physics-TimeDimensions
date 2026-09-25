@@ -112,19 +112,19 @@
     { d: "gravity", t: "Gravity pulls", doer: ["gravity"], on: ["gas", "dark"], tags: ["ESTABLISHED"],
       c: "After the Big Bang, gas and dark matter were spread almost perfectly evenly. Gravity pulls them into clumps, with dark matter as the scaffolding. With gravity, clumping is the likely direction.", go: [["#janus", "The Janus point"]] },
     { d: "ignite", t: "A star lights up", doer: ["gravity", "fusion"], on: ["star"], tags: ["ESTABLISHED"],
-      c: "Squeeze a clump hard enough and its core gets hot enough to ignite. Fusion turns a little of the star's mass into energy and builds heavier elements from lighter ones.", go: [["#timeline", "Cosmic timeline"]] },
+      c: "Squeeze a clump hard enough and its core gets hot enough to ignite. Fusion turns a little of the star's mass into energy and builds heavier elements from lighter ones.", go: [["#stars", "Stars forge the elements"], ["#timeline", "Cosmic timeline"]] },
     { d: "shine", t: "Light carries it away", doer: ["radiation"], on: ["light"], tags: ["ESTABLISHED"],
       c: "The energy leaves as light. Each fusion reaction in a star like the Sun ends up as about 20 million photons of sunlight, streaming into space. They never come back.", go: [["#entropy", "Entropy box"]] },
     { d: "planet", t: "A planet catches some", doer: ["radiation"], on: ["planet"], tags: ["ESTABLISHED"],
       c: "Earth catches a little sunlight and sends the same energy back out as about twenty times as many infrared photons. Weather, plants and people all run on that difference.", go: [["#energy", "Earth's energy budget"]] },
     { d: "die", t: "Big stars die", doer: ["gravity"], on: ["star", "gas"], tags: ["ESTABLISHED"],
-      c: "Big stars burn fast and die young: they collapse and explode, scattering the elements they made. New stars and planets form from that dust. The iron in your blood was made inside stars that died before the Sun was born.", go: [["#timeline", "Cosmic timeline"]] },
+      c: "Big stars burn fast and die young: they collapse and explode, scattering the elements they made. New stars and planets form from that dust. The iron in your blood was made inside stars that died before the Sun was born.", go: [["#stars", "Stars forge the elements"]] },
     { d: "hole", t: "Some collapse completely", doer: ["gravity"], on: ["hole"], tags: ["ESTABLISHED"],
-      c: "The biggest collapse all the way into black holes. They swallow whatever comes too close, and now hold far more entropy than everything else in the universe combined.", go: [["#river", "The River"], ["#hawking", "Black holes evaporate"]] },
+      c: "The biggest collapse all the way into black holes. They swallow whatever comes too close, and now hold far more entropy than everything else in the universe combined. They hold it, but they can't keep it.", go: [["#river", "The River"], ["#hawking", "Black holes evaporate"]] },
     { d: "stretch", t: "Meanwhile, space stretches", doer: ["darkenergy"], on: ["light"], tags: ["ESTABLISHED", "CONTESTED"],
       c: "All the while, dark energy stretches space. Galaxy groups drift apart, light stretches redder on its way, and faraway clocks appear to run slow. What dark energy is, nobody knows.", go: [["#expand", "Expanding universe"], ["#horizons", "Cosmic horizons"]] },
     { d: "wait", t: "The long wait", doer: ["radiation"], on: ["hole", "light"], tags: ["ESTABLISHED"],
-      c: "The stars go out. Over up to 10¹⁰⁰ years even black holes evaporate back into faint light. Everything ends spread impossibly thin, and the clock has only ever run one way. (Physics we trust, projected far ahead.)", go: [["#hawking", "Black holes evaporate"], ["#timeline", "Cosmic timeline"]] }
+      c: "The stars go out. Over up to 10¹⁰⁰ years even black holes evaporate back into faint light, which carries away more entropy than they held. Dark energy keeps them too far apart to merge into one. Everything ends spread impossibly thin, and the clock has only ever run one way. (Physics we trust, projected far ahead.)", go: [["#hawking", "Black holes evaporate"], ["#timeline", "Cosmic timeline"]] }
   ];
   const METER = [4, 10, 28, 40, 52, 82, 86, 100];            // entropy gauge per panel: schematic, not to scale
 

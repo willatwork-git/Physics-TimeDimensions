@@ -338,7 +338,7 @@
     field: ["dilation"], clocks: ["dilation", "clock"], spacetime: ["spacetime", "now", "dilation"], river: ["horizons", "dilation"],
     entropy: ["entropy", "arrow"], films: ["dims", "now"], expand: ["expansion"], horizons: ["horizons", "expansion"],
     boot: ["dims", "twotime"], janus: ["arrow", "entropy"],
-    story: ["arrow", "entropy", "expansion", "horizons"], hawking: ["horizons", "entropy", "holography"], timeline: ["expansion", "arrow", "scales"], energy: ["entropy", "arrow"],
+    story: ["arrow", "entropy", "expansion", "horizons"], hawking: ["horizons", "entropy", "holography"], timeline: ["expansion", "arrow", "scales"], energy: ["entropy", "arrow"], stars: ["entropy", "arrow"],
     delayed: ["quantum"], frozen: ["quantum", "holography"], wormhole: ["horizons", "timetravel"], loops: ["timetravel", "spacetime"],
     "flatland/1": ["dims"], "flatland/2": ["dims"], "flatland/3": ["dims"], "flatland/4": ["dims"], "flatland/5": ["dims"], "flatland/6": ["dims"], "flatland/7": ["spacetime", "now"]
   };

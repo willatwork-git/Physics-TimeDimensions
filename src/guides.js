@@ -44,6 +44,14 @@
       ["Ordinary time", "The universe so far on an ordinary clock: the first 100 million years shrink to a point at the left."],
       ["Earlier / Later, or click an event", "Selects an event: when it happened, how sure we are, and where it falls on a one-year calendar."]
     ],
+    stars: [
+      ["Inside a star, Where the elements came from", "Two scenes: the burning stages of one massive star, and the periodic table coloured by where each element was made."],
+      ["Stage", "Steps through the star's burning stages, from hydrogen to the final collapse. Each is far shorter than the one before."],
+      ["Play the countdown", "Runs the stages in order, ending in the collapse."],
+      ["Cosmic time", "Steps through cosmic history. Only the sources that had made anything by then are coloured in."],
+      ["Star size", "Picks one star and lights up the elements its own core can make in its normal life. Off shows every source."],
+      ["Tap an element", "Shows its sources, share by share, its story, and a picture of its atom: electrons in their shells, not to scale."]
+    ],
     energy: [
       ["Earth today, No greenhouse, Snowball Earth", "Presets for how much sunlight is reflected and how much infrared the greenhouse layer absorbs."],
       ["Reflected sunlight (albedo)", "The share of sunlight bounced straight back. More reflection: a colder Earth, radiating fewer photons."],
@@ -196,6 +204,8 @@
       "Black holes glow, heat up as they shrink, and vanish, and whether the information inside comes back out is still argued over."],
     timeline: ["All of cosmic time on one line, from the Planck time — where today's physics stops being reliable — to the last black hole evaporating.",
       "On this powers-of-ten chart, today sits about 40% across — a place on the chart, not a share of the universe's life. On an ordinary clock, the story has barely begun. Early on, a smooth universe: all the order since is running down from there."],
+    stars: ["The Big Bang made hydrogen, helium and a trace of lithium. Where did the rest of the periodic table come from?",
+      "Stars build elements up to iron, then die and scatter them; heavier ones come from giant stars and colliding neutron stars. Each fusion also turns one photon's worth of order into millions of photons: time's arrow, running."],
     energy: ["Earth takes in sunlight and sends out infrared. The energy balances, so what does Earth actually get from the Sun?",
       "Earth sends back the energy it gets, as twenty times as many photons: what it takes from the Sun is low entropy, and everything here runs on it."],
     river: ["Near a black hole, time and space behave strangely. This lab uses one exact way to picture it: space itself flowing inward like a river.",

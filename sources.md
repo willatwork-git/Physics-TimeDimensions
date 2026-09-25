@@ -183,3 +183,17 @@ Added 2026-09-25 from Claude's recall. All ☐ until checked against the primary
 - **E** (estimates) Egan, C. A. & Lineweaver, C. H. (2010). "A larger estimate of the entropy of the universe." *ApJ* 710, 1825 — supermassive black holes ≈ 3 × 10¹⁰⁴ k; cosmic background photons ≈ 2 × 10⁸⁸ k. ☐
 - **E** Friedmann equation with Planck 2018 values — see Cosmos (D-031). Radiation density incl. neutrinos Ω_r ≈ 9.1 × 10⁻⁵. ☐
 - **C** Tolman, R. C. (1934). *Relativity, Thermodynamics and Cosmology* — entropy growth across cycles (the black-hole cycle's hurdle). ☐
+
+## Stars forge the elements (D-048) and black-hole entropy (D-052)
+Added 2026-09-26 from Claude's recall. All ☐ until checked against the primary source.
+- **E** Woosley, S. E., Heger, A. & Weaver, T. A. (2002). "The evolution and explosion of massive stars." *Rev. Mod. Phys.* 74, 1015 — stage times and core temperatures for 25 Sun masses. ☐
+- **E** (overall) / **C** (neutron-capture site split) Johnson, J. A. (2019). "Populating the periodic table: nucleosynthesis of the elements." *Science* 363, 474 — origin shares by element. ☐
+- **E** / **C** Kobayashi, C., Karakas, A. I. & Lugaro, M. (2020). "The origin of elements from carbon to uranium." *ApJ* 900, 179. ☐
+- **E** Burbidge, E. M., Burbidge, G. R., Fowler, W. A. & Hoyle, F. (1957). "Synthesis of the elements in stars." *Rev. Mod. Phys.* 29, 547. ☐
+- **E** Abbott, B. P. et al. (2017). "GW170817: observation of gravitational waves from a binary neutron star inspiral." *Phys. Rev. Lett.* 119, 161101 — with the kilonova seen in light. ☐
+- **E** Lithium problem: old halo stars show ~3× less lithium than Big Bang predictions (Fields, B. D. (2011). *Annu. Rev. Nucl. Part. Sci.* 61, 47). ☐
+- **E** (theory; unobserved) Zurek, W. H. (1982). "Entropy evaporated by a black hole." *Phys. Rev. Lett.* 49, 1683; Page, D. N. (1983). *Phys. Rev. Lett.* 50, 1013 — radiation entropy ≈ 4/3 to ~1.5 times the hole's entropy loss. ☐
+- **E** (thresholds rounded; 8–10 Sun boundary **C**) Karakas, A. I. & Lattanzio, J. C. (2014). "The Dawes Review 2: nucleosynthesis and stellar yields of low- and intermediate-mass single stars." *PASA* 31, e030 — star size vs how far fusion gets; giant stars' slow route. Woosley, Heger & Weaver (2002), above, for massive stars. ☐
+- **E** Laughlin, G., Bodenheimer, P. & Adams, F. C. (1997). "The end of the main sequence." *ApJ* 482, 420 — red dwarfs live trillions of years. ☐
+- **E** Ground-state electron configurations (shell counts for the atom picture): NIST Atomic Spectra Database, ionization energies and configurations. ☐
+- **C** DESI Collaboration (2025). DR2 BAO results, arXiv:2503.14738 — hints that dark energy may evolve. ☐

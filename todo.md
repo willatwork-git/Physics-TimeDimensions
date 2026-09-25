@@ -55,6 +55,8 @@ Priority: credibility before launch; build what unlocks structure (Quantum scale
 - [ ] Will: check the new home text (`src/home.js`) and the Exploratory ideas page
 ### Phase 5 — Launch readiness
 - [ ] Verify every ☐ citation · light theme · teacher notes · keyboard Atlas · tidy public review/learning files
+- [ ] Phone: canvas labels overlap in 10 labs (delayed, frozen, missions, mars, energy, field, wormhole, loops, timeline, horizons — mostly the model footnote hitting the text above). `35-phone` warns; make it fail once they're fixed
+- [ ] Hosting (D-053): a clean public copy syncs to a Cloudflare site; this repo keeps the notes. Settle what's copied and whether this repo goes private — note that git history keeps anything already pushed
 - [x] Domain chronoscope.com.au registered (AgilityAI)
 - [ ] Domain move: set DNS at the registrar first → then add `CNAME` file + custom domain in GitHub Pages settings → update og:url / og:image and README links. Adding CNAME before DNS works breaks the live site
 ### Idea — the maths layer (research first, then decide) · Will, 2026-09-25
@@ -117,11 +119,9 @@ see the full physics (equations, derivations, the model's exact assumptions) wit
 - [x] Phase 4d · Regression `45-tours` (the spec's Phase 4 test list), every stop of every tour: a locked prediction gives nothing away (readout bar hidden; no right-answer text or explanation outside the question card); every setup inside its lab's slider ranges; no prediction key shared between stops. Negative-tested (leak and out-of-range both caught)
 - [x] **Phase 4 complete** except the guess counter ("63% of visitors guessed…") — needs a small server; waits for the domain move
 
-- [ ] **Stars forge the elements** (Cosmos, `src/stars.js`, D-048 reserved) — IN PROGRESS, fit in between UX phases
-  - [x] Scene 1 drawing: onion star + countdown of burning stages (25 Sun masses; WHW 2002 times: H 6.7 Myr · He 0.84 Myr · C 522 yr · Ne 0.89 yr · O 0.40 yr · Si ~2 days · collapse < 1 s)
-  - [ ] Scene 2: periodic table of origins, Z 1–92, rounded shares after Johnson (2019) / Kobayashi et al. (2020); sources: Big Bang · cosmic rays · exploding massive stars · exploding white dwarfs · ageing giant stars · colliding neutron stars (site split CONTESTED) · made by people (Tc, Pm) · decay chains (Po–Ac, Pa); cosmic-time steps: 3 min → ~200 Myr → ~500 Myr → ~1 Gyr → Sun forms 9.2 Gyr → today; click an element for its story (H, Li, C, O, Fe, Tc, Eu, Au, Pb, U)
-  - [ ] register (predict: where does core fusion stop? → iron), aside with the entropy strip (one fusion → ~20 million sunlight photons → ~400 million infrared from Earth), Picture it / Common trap ("the Sun will make gold") / quiz question
-  - [ ] wire: index.html script + Cosmos nav, home SCALES, arrow thread (Entropy box → Stars → Earth's energy budget), guides, concepts KEY, timeline next → #stars, story panels 2 and 5 link to #stars; bump ?v=
+- [x] **Stars forge the elements** (Cosmos, `src/stars.js`, D-048) — done 2026-09-26: two scenes (inside a 25-Sun-mass star; the periodic table by origin, six cosmic-time steps), 2 missions, wired everywhere (nav, home, arrow thread, guides, stick, concepts, help, timeline next, story panels 2 and 5)
+  - [ ] Will: read the element stories (H, He, Li, C, O, Fe, Au, Pb) and the aside
+  - [ ] Optional: stories for Tc, Pm and U — left out on purpose (content filter); Will may draft them elsewhere. Astronomy angles: Tc in red giants (Merrill 1952); U as the clock that dates Earth
   - Working note: an automated output filter has blocked long, dense nuclear-physics passages. Write in small chunks, astronomy-first wording; the nuclear-energy curve is left out for now
 - [ ] Claude chat in the app (needs a small server) · notebook · live diagrams in Concepts · colour split (review 3.1)
 

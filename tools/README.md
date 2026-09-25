@@ -18,7 +18,7 @@ AI session's context. Exit code 1 if anything failed.
 | `10-syntax` | Every `src/*.js` parses (`node --check`) |
 | `20-version` | Every `src/` link in `index.html` carries the same `?v=N`; fails if `src/` changed since the last commit but `?v=` didn't move (prints the fix) |
 | `30-views` | Every `header [data-view]`, tour stop, tour quiz, Flatland chapter and worksheet loads — and stays where it was sent (a silent redirect fails, except Workbench-only views in Learn) in Learn, Workbench (`?mode=lab`) and school edition (`?edition=school`) with no JS errors and no blank lab canvas |
-| `35-phone` | At a real phone width (390 × 844 frame): every lab and Flatland chapter has no sideways overflow, the three header menus on one row, a stage ≥ 260 px, no blank canvas, and no canvas text running off the edge (the probe wraps `fillText` to measure every label); the Atlas shows its holes as a tappable list |
+| `35-phone` | At a real phone width (390 × 844 frame): every lab and Flatland chapter has no sideways overflow, the three header menus on one row, a stage ≥ 260 px, no blank canvas, and no canvas text running off the edge (the probe wraps `fillText` to measure every label), and no two canvas labels drawn on top of each other (a warning until the known ten are fixed — todo.md → Phase 5); the Atlas shows its holes as a tappable list |
 | `45-tours` | Every stop of every tour: a locked prediction gives nothing away (readout bar hidden; the right answer's text and the explanation appear only after a guess); each setup inside its lab's slider ranges (a value attribute outside min–max would be clamped silently); no prediction key shared by two stops |
 | `50-passport` | The Passport's logic: save / load round trip (and a non-passport file refused without harm), prediction scoring for a lab's own and a tour stop's question, tour stamps dated only when every stop was visited, the header bar's count |
 | `55-challenge` | Challenge links end to end: open `?c=clocks&g=0#clocks`, the link is cleared from the address bar, the friend's guess shows before guessing and beside yours after the reveal, Share appears; the app builds correct links, refuses one for a tour stop's own question, and ignores a malformed link |
@@ -31,7 +31,7 @@ changed but ACTIVE.md or README.md not staged) only warn. Emergency bypass: `git
 
 ## Known gaps — not checked yet
 - Flatland engine internals (`#flatland` views load, but the step logic isn't driven)
-- Visual layout: overlaps, text overflow, contrast. Phone widths: headless Chrome won't go below ~485 px, so a "390 px" screenshot is a cropped wider page — for a true phone view, load the app in a 390 px `<iframe>`
+- Visual layout: contrast, and overlaps between canvas text and drawn shapes (label-on-label overlap is checked). To see a canvas headless, export it with `toDataURL` from a probe — `--screenshot` fires before timers run. Phone widths: headless Chrome won't go below ~485 px, so a "390 px" screenshot is a cropped wider page — for a true phone view, load the app in a 390 px `<iframe>`
 - Predict-first flow (lock → guess → reveal), tour completion and Continue card state
 - Physics values against `sources.md` — correctness of numbers is still by review
 - `src/stars.js` (not loaded yet)

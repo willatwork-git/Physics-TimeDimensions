@@ -1,6 +1,7 @@
 #!/bin/bash
 # Every lab and Flatland chapter at a real phone width (390 × 844, inside a frame): no sideways overflow, the three
-# header menus on one row, a stage at least 260 px tall, no blank canvas, and no canvas text off the edge.
+# header menus on one row, a stage at least 260 px tall, no blank canvas, no canvas text off the edge, and no canvas
+# labels drawn on top of each other (warning for now).
 source "$REPO/tools/lib.sh"
 [ -z "$CHROME_BIN" ] && { warn "phone: Chrome not found — set \$CHROME; skipped"; exit 0; }
 make_probe_copy "$WORK/phone" "$REPO/tools/probes/phone.js"
@@ -15,5 +16,7 @@ log "phone: $res"
 n=$(jget "$res" routes); bad=""
 for k in errors overflow header small blank atlas; do v=$(jfirst "$res" $k); [ -n "$v" ] && { fail "phone $k: $v"; bad=1; }; done
 [ -z "$bad" ] && pass "phone: $n labs and chapters at 390 px — no overflow, header on one row, stage ≥ 260 px, nothing blank; Atlas lists $(jget "$res" holes) holes"
+o=$(jget "$res" overlap); log "phone overlap: $o"
+[ -n "$o" ] && warn "phone: canvas labels overlap in $(echo "$o" | tr '|' '\n' | cut -d: -f1 | sort -u | wc -l | tr -d ' ') labs — $(jfirst "$res" overlap)"   # warn until the known ones are fixed (todo.md → Phase 5)
 c=$(jfirst "$res" clipped); [ -n "$c" ] && fail "phone: canvas text off the edge (shrinking stops at 8 px — shorten it for narrow panels) — $c"
 exit 0
