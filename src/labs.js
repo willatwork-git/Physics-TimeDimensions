@@ -169,36 +169,45 @@
   });
   function drawLightClock(g, st) {
     const CL = st || CL_LAB;
-    const { W, H } = g, pad = 16, narrow = W < 640, foot = CL.hero ? 34 : narrow ? 140 : 120, pw = (W - pad * 3) / 2, ph = H - pad * 2 - foot;
+    const { W, H } = g, pad = 16, narrow = W < 640, foot = CL.hero ? 34 : narrow ? 140 : 120, ph = H - pad * 2 - foot;
+    const split = CL.hero ? 0.5 : 0.36, pwA = (W - pad * 3) * split, pwB = (W - pad * 3) - pwA;   // the moving clock gets the room
     const gamma = 1 / Math.sqrt(1 - CL.v * CL.v), vert = Math.sqrt(1 - CL.v * CL.v);
     /* Display scale only — the physics is unchanged (light at c, zig-zag angle set by v). A short clock and a quick
        beat put many ticks on screen; the view follows the moving clock so its light path streams out behind it and
        never resets; a tick tape (one pip per tick, restarting every 20 rest ticks) shows the rates pull apart. */
-    const tape = 22, room = ph - 34 - tape - 44, Lpx = Math.max(34, Math.min(pw * 0.14, room * 0.8)), cpx = Lpx / 0.3, tickT = 2 * Lpx / cpx;
+    /* Lab (3b-3): the clock is as tall as it can be — up to 60% of the panel — while one moving tick, which covers
+       2vγ mirror-gaps sideways, still leaves about 1¼ zig-zags in view. It eases as the speed changes; tick timing
+       (0.6 s a rest tick) and the physics don't depend on the size. The hero keeps its short clock. */
+    const tape = 22, room = ph - 34 - tape - 44;
+    let Lpx;
+    if (CL.hero) Lpx = Math.max(34, Math.min((W - pad * 3) / 2 * 0.14, room * 0.8));
+    else { const want = Math.max(34, Math.min(room * 0.6, (pwB - 60) / (1.25 * 2 * CL.v * gamma || 1e-9)));
+      CL.Lz = CL.Lz ? CL.Lz + (want - CL.Lz) * 0.15 : want; Lpx = CL.Lz; }
+    const cpx = Lpx / 0.3, tickT = 2 * Lpx / cpx;
     const restTicks = Math.floor(CL.T / tickT), movTicks = Math.floor(CL.T * vert / tickT), CYC = 20, epoch = Math.floor(restTicks / CYC) * CYC;
     const shown = [restTicks - epoch, movTicks - Math.floor(epoch * vert)];
     [0, 1].forEach(k => {
-      const x0 = pad + k * (pw + pad), y0 = pad;
-      g.panel(x0, y0, pw, ph, CL.hero && narrow ? (k === 0 ? "At rest" : `Moving · ${CL.v.toFixed(2)} c`) : k === 0 ? "Clock at rest (next to you)" : `Clock moving at ${CL.v.toFixed(2)} c`);
+      const pk = k ? pwB : pwA, x0 = k ? pad * 2 + pwA : pad, y0 = pad;
+      g.panel(x0, y0, pk, ph, narrow ? (k === 0 ? "At rest" : `Moving · ${CL.v.toFixed(2)} c`) : k === 0 ? "Clock at rest (next to you)" : `Clock moving at ${CL.v.toFixed(2)} c`);
       const top = y0 + 34 + (room - Lpx) / 2, bot = top + Lpx;
       const u = (CL.T * (k === 0 ? 1 : vert) * cpx / Lpx) % 2, yN = u < 1 ? bot - u * Lpx : top + (u - 1) * Lpx;
       let cx;
-      if (k === 0) cx = x0 + pw / 2;
+      if (k === 0) cx = x0 + pk / 2;
       else {
-        cx = x0 + pw - 44;                                  // the view travels with the moving clock
+        cx = x0 + pk - 44;                                  // the view travels with the moving clock
         const d = CL.T * CL.v, last = CL.trail[CL.trail.length - 1];   // trail in physics units (distance in light-seconds, height 0–1), so a resize just rescales it
         if (!last || d < last[0]) CL.trail = [];
         CL.trail.push([d, (yN - top) / Lpx]);
-        while (CL.trail.length > 1 && (d - CL.trail[0][0]) * cpx > pw - 60) CL.trail.shift();
+        while (CL.trail.length > 1 && (d - CL.trail[0][0]) * cpx > pk - 60) CL.trail.shift();
         if (CL.trail.length > 2400) CL.trail.shift();
-        if (CL.trail.length > 1) { const ctx = g.ctx; ctx.save(); ctx.beginPath(); ctx.rect(x0 + 1, y0 + 1, pw - 2, ph - 2); ctx.clip();
+        if (CL.trail.length > 1) { const ctx = g.ctx; ctx.save(); ctx.beginPath(); ctx.rect(x0 + 1, y0 + 1, pk - 2, ph - 2); ctx.clip();
           ctx.strokeStyle = g.alpha(C.amber, 0.5); ctx.lineWidth = 1.5; ctx.beginPath();
           CL.trail.forEach((q, i) => { const x = cx - (d - q[0]) * cpx, y = top + q[1] * Lpx; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.stroke(); ctx.restore(); ctx.lineWidth = 1; }
       }
       g.line(cx - 30, top, cx + 30, top, C.muted, 3); g.line(cx - 30, bot, cx + 30, bot, C.muted, 3);
       g.ctx.shadowColor = C.amber; g.ctx.shadowBlur = 14; g.dot(cx, yN, 5, C.amber); g.ctx.shadowBlur = 0;
-      if (CL.hero) g.text(`${k === 0 ? restTicks : movTicks} tick${(k === 0 ? restTicks : movTicks) === 1 ? "" : "s"}`, x0 + pw / 2, y0 + ph - tape - 16, C.text, 16, "center");
-      const ty = y0 + ph - 10, step = (pw - 40) / CYC;
+      if (CL.hero) g.text(`${k === 0 ? restTicks : movTicks} tick${(k === 0 ? restTicks : movTicks) === 1 ? "" : "s"}`, x0 + pk / 2, y0 + ph - tape - 16, C.text, 16, "center");
+      const ty = y0 + ph - 10, step = (pk - 40) / CYC;
       for (let i = 0; i < CYC; i++) g.line(x0 + 20 + i * step + step / 2, ty - 10, x0 + 20 + i * step + step / 2, ty, i < shown[k] ? (k === 0 ? C.teal : C.amber) : "rgba(255,255,255,0.08)", 3);
     });
     const by = H - pad - foot + 20, bw = Math.min(320, W - pad * 2);
@@ -292,7 +301,7 @@
     draw(g) {
       const { W, H, ctx } = g, pad = 16;
       g.panel(pad, pad, W - pad * 2, H - pad * 2, "Space flowing into a black hole (top view)");
-      const cx = W / 2, cy = H / 2 + 10, Rs = Math.min(W, H) * 0.11; RV.geo = { cx, cy, Rs };
+      const cx = W / 2, cy = H / 2 + 10, Rs = Math.min(W, H) * 0.15; RV.geo = { cx, cy, Rs };
       const P = (r, a) => [cx + r * Rs * Math.cos(a), cy + r * Rs * Math.sin(a)];
       RV.dots.forEach(d => { const [x, y] = P(d.r, d.a), v = Math.min(1.5, Math.sqrt(1 / d.r)); g.dot(x, y, 1.2, RV.eddies && Chrono.shows("exploratory") ? g.alpha(C.hyp, 0.5) : g.alpha(C.violet, 0.25 + 0.4 * Math.min(1, v))); });
       const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Rs); grd.addColorStop(0, "#000"); grd.addColorStop(1, "#05060a");

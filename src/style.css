@@ -312,9 +312,9 @@ sup.mine { font-size: 10px; margin-left: 2px; }
   html, body { height: auto; min-height: 100%; }
   body { display: block; }
   header { padding: 8px 12px; gap: 8px; row-gap: 6px; }
-  .brand { order: 1; }
-  .hdr-right { order: 2; gap: 8px; }
-  nav { order: 3; flex: 1 1 100%; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding-bottom: 2px; scrollbar-width: none; }
+  .brand { order: 1; flex: 1 1 100%; }                     /* row 1: the brand alone; row 2: Tours · Explore · Guide, aligned */
+  .hdr-right { order: 3; gap: 8px; flex-shrink: 0; }
+  nav { order: 2; flex: 1 1 0; min-width: 0; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding-bottom: 2px; scrollbar-width: none; }
   nav::-webkit-scrollbar { display: none; }
   /* Fade at the right edge says 'swipe for more'. Not a mask: a mask would also hide the drop-down menus inside nav. */
   #fl-steps { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
@@ -809,5 +809,25 @@ body[data-scale="cosmos"] { --scale: var(--cosmos); }
 #lab-readouts .ro b { display: block; font: 600 30px/1.15 var(--sans); font-variant-numeric: tabular-nums; color: var(--text); }
 #lab-readouts .ro span { font: 12px var(--mono); letter-spacing: .02em; color: var(--text-3); }   /* no uppercasing: it would turn γ into Γ */
 @media (max-width: 900px) and (orientation: portrait), (max-width: 600px) {
-  #lab-readouts { gap: 6px 20px; padding: 8px 16px 10px; } #lab-readouts .ro b { font-size: 22px; }
+  #lab-readouts { gap: 4px 14px; padding: 8px 16px 10px; flex-wrap: nowrap; } #lab-readouts .ro { min-width: 0; flex: 1 1 auto; }
+  #lab-readouts .ro b { font-size: 20px; } #lab-readouts .ro span { font-size: 10.5px; display: block; line-height: 1.3; }
 }
+
+/* mission circles: where you are among a lab's missions; each one can be picked or replayed */
+.mission .m-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.m-dots { display: flex; gap: 7px; flex-shrink: 0; }
+.m-dot { width: 20px; height: 20px; padding: 0; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--t-est) 55%, transparent);
+  background: transparent; color: var(--bg); font: 700 11px/1 var(--sans); cursor: pointer; display: grid; place-items: center; }
+.m-dot.done { background: var(--t-est); border-color: var(--t-est); }
+.m-dot.cur { border-color: var(--t-est); box-shadow: 0 0 0 3px color-mix(in srgb, var(--t-est) 30%, transparent); }
+.m-dot:hover { border-color: var(--t-est); }
+@media (pointer: coarse) { .m-dot { width: 30px; height: 30px; } }
+
+/* control hints (3c): a grey line under a slider, in Learn mode until it's first used */
+.ctl.has-hint { flex-wrap: wrap; row-gap: 2px; }
+.ctl .hint { flex: 0 0 100%; contain: inline-size; font-size: 11.5px; line-height: 1.35; color: var(--text-3); font-style: normal; }
+
+/* "Go deeper" tiles: a small moving picture at the top of each card */
+.dcard .dcv { display: block; width: 100%; height: 60px; margin-top: auto; border-radius: var(--radius-m); background: var(--surface-2); }
+.dcard span + .dcv { margin-top: auto; } .dcard span { margin-bottom: 12px; }   /* text first; the picture is a quiet strip along the bottom */
+.dcard .dcv { transition: opacity .3s; }

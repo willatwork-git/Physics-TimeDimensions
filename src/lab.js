@@ -86,6 +86,28 @@
     const html = r ? r.slice(0, 3).map(([k, v]) => `<div class="ro"><b>${v}</b><span>${k}</span></div>`).join("") : "";
     if (html !== roHTML) { roHTML = html; el.innerHTML = html; el.hidden = !html; }
   }
+  /* Control hints (UX 3c): each control is matched by name to its row in guides.js. Sliders get the row's first sentence
+     as a grey line underneath — in Learn mode, until that slider is first moved (remembered in this browser). Every
+     matched control also gets the full row as its tooltip. Workbench mode keeps the toolbar compact. */
+  const HINT_KEY = "chronoscope.hintsUsed.v1";
+  const hintsUsed = () => { try { return JSON.parse(localStorage.getItem(HINT_KEY)) || {}; } catch (e) { return {}; } };
+  function controlHints(def) {
+    const rows = Chrono.guideRows ? Chrono.guideRows(def.id) : []; if (!rows.length) return;
+    const norm = t => String(t).toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
+    const parts = k => String(k).split(/,|\/| or /).map(norm).filter(q => q.length >= 3);   // "Matter, Dark energy" names two controls
+    const find = t => { const n = norm(t).slice(0, 14); return n.length < 3 ? null : rows.find(([k]) => k && parts(k).some(q => q.startsWith(n) || n.startsWith(q.slice(0, 14)))); };
+    const learn = !Chrono.mode || Chrono.mode() !== "lab", used = hintsUsed(), shown = new Set();
+    document.querySelectorAll("#lab-controls label.ctl").forEach(lb => {
+      const input = lb.querySelector('input[type="range"]'); if (!input) return;
+      const row = find([...lb.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join(" ")); if (!row) return;
+      lb.title = row[1]; const key = def.id + ":" + row[0];
+      if (!learn || used[key] || lb.querySelector(".hint") || shown.has(row)) return;   // a row naming two sliders hints once
+      shown.add(row);
+      const h = document.createElement("small"); h.className = "hint"; h.textContent = row[1].split(/(?<=\.)\s/)[0]; lb.appendChild(h); lb.classList.add("has-hint");
+      input.addEventListener("input", () => { const u = hintsUsed(); u[key] = 1; try { localStorage.setItem(HINT_KEY, JSON.stringify(u)); } catch (e) { } h.remove(); lb.classList.remove("has-hint"); }, { once: true });
+    });
+    document.querySelectorAll("#lab-controls .btn:not([data-ctlhelp])").forEach(b => { if (b.title) return; const row = find(b.textContent); if (row) b.title = row[1]; });
+  }
   function frame(ts) {
     if (!active) return;
     const dt = Math.min(0.05, (ts - (last || ts)) / 1000); last = ts;
@@ -113,7 +135,7 @@
       $("#lab-controls").innerHTML = (active.controls ? active.controls() : "") + (help ? `<button class="btn ctlhelp" data-ctlhelp aria-expanded="false" title="What each control does">ⓘ What the controls do</button>` : "");
       if (pop) { pop.hidden = true; pop.innerHTML = help; }
       const b = $("#lab-controls [data-ctlhelp]"); if (b && pop) b.onclick = () => { pop.hidden = !pop.hidden; b.setAttribute("aria-expanded", !pop.hidden); };
-      if (active.wire) active.wire(); renderLabAside(active); readouts();
+      if (active.wire) active.wire(); renderLabAside(active); readouts(); controlHints(active);
     },
     register(def) {
       labs[def.id] = def;

@@ -270,22 +270,42 @@
 
   let run = null;                                           // { lab, m, held, done }
   const next = id => (Chrono.MISSIONS[id] || []).find(m => !Chrono.progress.missionDone(id, m.id));
+  const pick = {};                                          // lab → mission chosen from the circles (replay or jump ahead); cleared on completion
+  /* One circle per mission, at the right of the card's header: hollow = not done, filled ✓ = done, ringed = the
+     current one. Each is a button, so any mission can be picked or replayed. */
+  function dots(def, cur) {
+    return `<span class="m-dots" role="group" aria-label="Missions in this lab">${Chrono.MISSIONS[def.id].map((x, i) => {
+      const done = Chrono.progress.missionDone(def.id, x.id);
+      return `<button class="m-dot${done ? " done" : ""}${cur && x.id === cur.id ? " cur" : ""}" data-m-pick="${x.id}" title="${i + 1}. ${x.title}${done ? " — done" : ""}" aria-label="Mission ${i + 1}${done ? ", done" : ""}${cur && x.id === cur.id ? ", current" : ""}">${done ? "✓" : ""}</button>`; }).join("")}</span>`;
+  }
 
   function card(def) {
     const list = Chrono.MISSIONS[def.id]; if (!list || !def.state) { run = null; return ""; }
-    const m = next(def.id), k = m ? list.indexOf(m) : list.length;
-    if (!m) { run = null; return `<div class="mission done"><div class="eyebrow">Missions</div><p>✓ All ${list.length} done here. <button class="linkish" data-m-reset>Try them again</button></p></div>`; }
+    const m = (pick[def.id] && list.find(x => x.id === pick[def.id])) || next(def.id), k = m ? list.indexOf(m) : list.length;
+    if (!m) { run = null; return `<div class="mission done"><div class="m-head"><div class="eyebrow">Missions</div>${dots(def, null)}</div><p>✓ All ${list.length} done here. Pick a circle to replay one, or <button class="linkish" data-m-reset>start them all again</button>.</p></div>`; }
     run = { lab: def.id, m, held: 0, done: false };
-    return `<div class="mission" id="mission"><div class="eyebrow">Mission · ${k + 1} of ${list.length} · optional</div>
+    return `<div class="mission" id="mission"><div class="m-head"><div class="eyebrow">Mission ${k + 1} of ${list.length} · optional</div>${dots(def, m)}</div>
       <p class="m-title">${m.title}</p><div class="m-bar"><i style="width:0%"></i></div><p class="m-status meta">Not there yet.</p>
       <p class="m-hint meta" hidden>${m.hint}</p>
       <div class="m-btns"><button class="linkish" data-m-hint>Hint</button> · <button class="linkish" data-m-show>Show me</button></div></div>`;
   }
+  /* Try boxes (3c): in a lab with missions, the "Try:" suggestions would give missions away, so they wait until every
+     mission there is done, then reappear as "More to try". Labs without missions keep them as they are. */
+  function tryBoxes(def) {
+    const list = Chrono.MISSIONS[def.id]; if (!list) return;
+    const open = !next(def.id);
+    document.querySelectorAll("#aside .try").forEach(t => {
+      t.hidden = !open;
+      const b = t.querySelector("b"); if (open && b && /^Try:?$/.test(b.textContent.trim())) b.textContent = "More to try:";
+    });
+  }
   function wire(def) {
+    tryBoxes(def);
     const h = $("#aside [data-m-hint]"); if (h) h.onclick = () => { const p = $("#aside .m-hint"); p.hidden = !p.hidden; };
     const sh = $("#aside [data-m-show]"); if (sh) sh.onclick = () => { if (run && def.applySetup) { def.applySetup(run.m.show); Chrono.lab.rebuild(); } };
     const r = $("#aside [data-m-reset]"); if (r) r.onclick = () => { Chrono.progress.missionReset(def.id); Chrono.lab.rebuild(); };
     const n = $("#aside [data-m-next]"); if (n) n.onclick = () => Chrono.lab.rebuild();
+    document.querySelectorAll("#aside [data-m-pick]").forEach(b => b.onclick = () => { pick[def.id] = b.dataset.mPick; Chrono.lab.rebuild(); });
   }
   function tick(def, dt) {                                  // called each frame while the lab is unlocked
     if (!run || run.done || run.lab !== def.id || !def.state) return;
@@ -295,11 +315,12 @@
     el.querySelector(".m-bar i").style.width = Math.round((ok ? 0.85 + 0.15 * Math.min(1, run.held / run.m.hold) : 0.85 * Math.max(0, run.m.near(s))) * 100) + "%";
     el.querySelector(".m-status").textContent = ok ? "That's it — hold it there…" : run.m.near(s) > 0.8 ? "Very close." : run.m.near(s) > 0.4 ? "Getting closer." : "Not there yet.";
     if (run.held >= run.m.hold) {
-      run.done = true; Chrono.progress.setMissionDone(def.id, run.m.id);
+      run.done = true; Chrono.progress.setMissionDone(def.id, run.m.id); delete pick[def.id];
       const w = $("#lab-canvas-wrap"); if (w) { w.classList.remove("pulse"); void w.offsetWidth; w.classList.add("pulse"); }
       const more = next(def.id);
       el.classList.add("done");
-      el.innerHTML = `<div class="eyebrow">✓ Mission done</div><p class="m-title">${run.m.title}</p><p>${run.m.reveal} ${(run.m.tags || []).map(TG).join(" ")}</p>
+      if (!more) tryBoxes(def);
+      el.innerHTML = `<div class="m-head"><div class="eyebrow">✓ Mission done</div>${dots(def, run.m)}</div><p class="m-title">${run.m.title}</p><p>${run.m.reveal} ${(run.m.tags || []).map(TG).join(" ")}</p>
         ${more ? `<button class="btn" data-m-next>Next mission →</button>` : `<p class="meta">That's every mission here.</p>`}`;
       wire(def);
     }

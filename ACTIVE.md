@@ -1,8 +1,8 @@
 # ACTIVE
 
-**Focus:** UX spec **Phase 3** (roll-out). **3b-1 and 3b-2 done** (visual system: tokens, three levels, scale glow, a11y; readout bars on all 20 labs). **3a complete (D-047):** 38 missions across 18 labs — Clock Lab, River, Spacetime, Entropy box, 1 g voyage, Talking to Mars, Mission clocks, Expanding universe, Cosmic horizons, Boot, Black holes evaporate, Earth's energy budget, Field Ocean, Wormholes, Time loops, Two Films. Janus and Timeline have none by design (nothing to steer). Delayed choice, Frozen universe. Rule: every target achievable and never met where the lab or a tour starts. Phases 1–2 complete (D-043–D-046).
+**Focus:** UX spec **Phase 3** (roll-out). **3b complete** (visual system: tokens, three levels, scale glow, a11y; readout bars on all 20 labs; Clock Lab and River fill their zone). **3a complete (D-047):** 38 missions across 18 labs — Clock Lab, River, Spacetime, Entropy box, 1 g voyage, Talking to Mars, Mission clocks, Expanding universe, Cosmic horizons, Boot, Black holes evaporate, Earth's energy budget, Field Ocean, Wormholes, Time loops, Two Films. Janus and Timeline have none by design (nothing to steer). Delayed choice, Frozen universe. Rule: every target achievable and never met where the lab or a tour starts. Phases 1–2 complete (D-043–D-046).
 
-**Next:** 3b-3 sims fill their zone, 3c content pass (control hints, ≤ 3-paragraph explanations, Try → missions), 3d Flatland onto the template + a phone pass across all labs. Stars lab (`src/stars.js`, D-048) fitted in between.
+**3c done** (control hints in Learn mode, mission circles, Try boxes wait for missions; explanation length deferred by Will). **Next:** 3d Flatland onto the template + a phone pass across all labs. Stars lab (`src/stars.js`, D-048) fitted in between.
 
 **State:** 36 routes pass in Learn, Lab and school edition, with no errors and **no blank lab canvases** (new check, after a render-loop name clash). Assets at `?v=61`. Uncommitted: all of Phase 1a, SOL review fixes, headline.
 

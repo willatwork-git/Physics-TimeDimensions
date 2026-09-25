@@ -138,9 +138,9 @@
           <div class="labchips">${s.labs.map(([v, n]) => `<a href="#${v}" class="${P.seen(v) ? "seen" : ""}">${P.seen(v) ? "✓ " : ""}${n}</a>`).join("")}</div></div>`).join("")}</div>
         <h2 class="sect">Go deeper</h2>
         <div class="deeper">
-          <a class="dcard" href="#story"><b>📖 How it all fits together</b><span>The big picture in eight illustrated panels.</span></a>
-          <a class="dcard" href="#atlas"><b>🗺 The Atlas</b><span>${Chrono.HOLES.filter(h => Chrono.shows(Chrono.tierOf(h))).length} open problems about time, and a century of attempts to fill them.</span></a>
-          <a class="dcard" href="#sure"><b>⚖ How sure are we?</b><span>How a claim earns the label 'established'.</span></a>
+          <a class="dcard" href="#story"><b>📖 How it all fits together</b><span>The big picture in eight illustrated panels.</span><canvas class="dcv" data-dcv="story" aria-hidden="true"></canvas></a>
+          <a class="dcard" href="#atlas"><b>🗺 The Atlas</b><span>${Chrono.HOLES.filter(h => Chrono.shows(Chrono.tierOf(h))).length} open problems about time, and a century of attempts to fill them.</span><canvas class="dcv" data-dcv="atlas" aria-hidden="true"></canvas></a>
+          <a class="dcard" href="#sure"><b>⚖ How sure are we?</b><span>How a claim earns the label 'established'.</span><canvas class="dcv" data-dcv="sure" aria-hidden="true"></canvas></a>
           ${lab ? `<a class="dcard d-lab" href="#ideas"><b>◌ The Workbench</b><span>This project's own exploratory ideas and your hypotheses. Not mainstream physics.</span></a>` : ""}
         </div>
         <p class="meta">You've explored ${seen} of ${TOTAL.length} sections. Every claim is tagged by how sure physicists are — the Guide menu explains the tags. Progress is kept in this browser only.</p>
@@ -164,13 +164,86 @@
     const r = $("#hero-v"); if (r) r.oninput = e => { const H = Chrono.heroClock.state; H.v = e.target.value / 100; H.T = 0; H.trail = []; $("#hero-vo").textContent = H.v.toFixed(2) + " c"; if (still) Chrono.lab.drawOn(cv, g => Chrono.heroClock.draw(g)); };
   }
 
+  /* "Go deeper" tiles: a small moving picture of what's behind each link — decoration, not a simulation. Same loop
+     rules as the hero: paused off-screen, stopped once Home is left, one still frame under reduced motion. */
+  const TAUd = Math.PI * 2;
+  const rr = (c, x, y, w, h, r) => { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); };
+  const pr = (k => () => (k = (k * 16807) % 2147483647) / 2147483647)(7);
+  const ATT = Array.from({ length: 18 }, (_, i) => ({ x: pr(), y: pr(), col: i % 4, to: [Math.floor(pr() * 10), Math.floor(pr() * 10)] }));
+  const DEEP = {
+    story(c, w, h, t) {                                    // three panels light up in turn: cause → effect
+      const C = Chrono.C, gap = 18, pw = (w - 2 * gap - 16) / 3, on = Math.floor(t / 3) % 3;
+      for (let i = 0; i < 3; i++) {
+        const x = 8 + i * (pw + gap), y = 10, ph = h - 20, act = i === on, cx = x + pw / 2, cy = y + ph / 2, u = t * 2.2;
+        rr(c, x, y, pw, ph, 8); c.fillStyle = act ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.025)"; c.fill();
+        if (act) { c.strokeStyle = "rgba(124,196,255,0.45)"; c.lineWidth = 1; c.stroke(); }
+        c.globalAlpha = act ? 1 : 0.45;
+        if (i === 0) { const s = ph * 0.26, q = (u % 2), yy = q < 1 ? cy + s - q * 2 * s : cy - s + (q - 1) * 2 * s;   // a light clock
+          c.fillStyle = C.muted; c.fillRect(cx - 14, cy - s - 3, 28, 2); c.fillRect(cx - 14, cy + s + 1, 28, 2);
+          c.fillStyle = C.amber; c.beginPath(); c.arc(cx, yy, 3.5, 0, TAUd); c.fill(); }
+        else if (i === 1) { for (let k = 0; k < 3; k++) { const r = ((t * 0.6 + k / 3) % 1) * ph * 0.45;   // a spreading ripple
+          c.strokeStyle = `rgba(155,140,255,${1 - r / (ph * 0.45)})`; c.beginPath(); c.arc(cx, cy, r, 0, TAUd); c.stroke(); } }
+        else { const f = (t * 0.25) % 1;                  // a gas spreading out
+          for (let k = 0; k < 14; k++) { const a = k * 2.39996, d = (4 + 12 * (k % 4)) * (0.25 + 0.75 * f);
+            c.fillStyle = C.teal; c.beginPath(); c.arc(cx - pw * 0.25 + Math.cos(a) * d + f * pw * 0.25, cy + Math.sin(a) * d * 0.7, 2, 0, TAUd); c.fill(); } }
+        c.globalAlpha = 1;
+        if (i < 2) { c.fillStyle = C.muted; c.font = "12px Inter, sans-serif"; c.textAlign = "center"; c.fillText("→", x + pw + gap / 2, cy + 4); }
+      }
+    },
+    atlas(c, w, h, t, awake) {                                    // ten holes, attempts below, pulses along the links
+      const C = Chrono.C, cols = [C.teal, "#5ee0e6", C.pink, C.violet], nx = i => 16 + i * (w - 32) / 9, ny = 18;
+      const ax = a => 20 + a.x * (w - 40), ay = a => 42 + a.y * (h - 54);
+      c.lineWidth = 1;
+      ATT.forEach(a => a.to.forEach(j => { c.strokeStyle = "rgba(255,255,255,0.07)"; c.beginPath(); c.moveTo(ax(a), ay(a)); c.lineTo(nx(j), ny); c.stroke(); }));
+      for (let k = 0; k < (awake ? 3 : 1); k++) {          // one pulse at rest, three when the card is hovered
+        const n = Math.floor(t / 0.9) + k * 7, a = ATT[n % ATT.length], j = a.to[n % 2], f = ((t / 0.9) % 1);
+        const x = ax(a) + (nx(j) - ax(a)) * f, y = ay(a) + (ny - ay(a)) * f;
+        c.fillStyle = cols[a.col]; c.shadowColor = cols[a.col]; c.shadowBlur = 8; c.beginPath(); c.arc(x, y, 2.2, 0, TAUd); c.fill(); c.shadowBlur = 0;
+      }
+      ATT.forEach(a => { c.fillStyle = cols[a.col]; c.globalAlpha = 0.8; c.beginPath(); c.arc(ax(a), ay(a), 2.4, 0, TAUd); c.fill(); c.globalAlpha = 1; });
+      for (let i = 0; i < 10; i++) { const g = 0.55 + 0.45 * Math.sin(t * 1.6 + i);
+        c.strokeStyle = `rgba(124,196,255,${0.35 + 0.4 * g})`; c.lineWidth = 1.5; c.beginPath(); c.arc(nx(i), ny, 5.5, 0, TAUd); c.stroke(); c.lineWidth = 1; }
+    },
+    sure(c, w, h, t) {                                     // evidence drops into one pan until the claim tips to 'established'
+      const C = Chrono.C, P = 7, q = t % P, n = Math.min(8, Math.floor(q / 0.55)), tilt = -0.14 * Math.min(1, n / 8), k = h / 84;   // drawn to the strip's height
+      const px = w / 2, py = 16 * k, L = Math.min(w * 0.3, 110), ends = [-1, 1].map(s => [px + s * L * Math.cos(tilt), py + s * L * Math.sin(tilt)]);
+      c.strokeStyle = C.muted; c.lineWidth = 2; c.beginPath(); c.moveTo(...ends[0]); c.lineTo(...ends[1]); c.stroke(); c.lineWidth = 1;
+      c.fillStyle = C.muted; c.beginPath(); c.moveTo(px, py); c.lineTo(px - 6, h - 8); c.lineTo(px + 6, h - 8); c.closePath(); c.fill();
+      ends.forEach(([x, y], s) => { const by = y + 26 * k; c.strokeStyle = "rgba(255,255,255,0.25)"; c.beginPath(); c.moveTo(x, y); c.lineTo(x - 16, by); c.moveTo(x, y); c.lineTo(x + 16, by); c.stroke();
+        c.strokeStyle = C.muted; c.beginPath(); c.arc(x, by, 18 * k, 0.15, Math.PI - 0.15); c.stroke();
+        if (s === 0) for (let j = 0; j < n; j++) { c.fillStyle = C.teal; c.beginPath(); c.arc(x - 10 + (j % 4) * 6.5, by + 6 * k - Math.floor(j / 4) * 5, 2.4, 0, TAUd); c.fill(); } });
+      if (n < 8) { const f = (q % 0.55) / 0.55, [x, y] = ends[0]; c.fillStyle = C.teal; c.globalAlpha = 1 - f * 0.3; c.beginPath(); c.arc(x, 4 + f * (y + 26 * k - 4), 2.4, 0, TAUd); c.fill(); c.globalAlpha = 1; }
+      else { c.globalAlpha = Math.min(1, (q - 8 * 0.55) / 0.6); c.fillStyle = C.teal; c.font = "600 10px 'JetBrains Mono', monospace"; c.textAlign = "left"; c.fillText("ESTABLISHED", ends[0][0] + 26 * k, Math.min(h - 6, ends[0][1] + 30 * k)); c.globalAlpha = 1; }
+    }
+  };
+  let deepRaf = 0;
+  function runDeeper() {
+    cancelAnimationFrame(deepRaf);
+    const cvs = [...document.querySelectorAll("canvas[data-dcv]")]; if (!cvs.length) return;
+    /* Calm at rest (a third of the speed, 60% bright) so the text leads; a card wakes up when hovered or focused. */
+    const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches, vis = new Map(cvs.map(cv => [cv, true]));
+    const clock = new Map(cvs.map(cv => [cv, 0])), awake = cv => cv.parentElement.matches(":hover, :focus-visible");
+    let last = 0;
+    if (window.IntersectionObserver) { const io = new IntersectionObserver(es => es.forEach(e => vis.set(e.target, e.isIntersecting))); cvs.forEach(cv => io.observe(cv)); }
+    const frame = now => {
+      if (!document.body.contains(cvs[0])) return;
+      const dt = Math.min(0.05, Math.max(0, now - (last || now)) / 1000), dpr = window.devicePixelRatio || 1; last = now;
+      cvs.forEach(cv => { if (!vis.get(cv)) return; const w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) return;
+        const on = awake(cv), t = still ? 5.2 : clock.get(cv) + dt * (on ? 1 : 0.35); clock.set(cv, t);
+        if (cv.width !== Math.round(w * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+        const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, w, h);
+        c.globalAlpha = 1; DEEP[cv.dataset.dcv](c, w, h, t, on); cv.style.opacity = on || still ? 1 : 0.6; });
+      if (!still) deepRaf = requestAnimationFrame(frame);
+    };
+    deepRaf = requestAnimationFrame(frame);
+  }
 
   Chrono.lab.register({
     id: "home", kind: "doc", title: "How this works", eyebrow: "About", tier: "none",
     page,
     wire() {
       document.querySelectorAll("[data-go-tour]").forEach(b => b.onclick = () => startTour(+b.dataset.goTour, b.dataset.tourId));
-      runHero();
+      runHero(); runDeeper();
       document.querySelectorAll("[data-cc-x]").forEach(b => b.onclick = () => { if (b.dataset.ccX === "tour") P.setTour(null); P.clearLast(); Chrono.tour.renderBar(); $("#doc").innerHTML = page(); this.wire(); });
     },
     aside: () => `

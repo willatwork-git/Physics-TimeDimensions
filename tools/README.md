@@ -18,7 +18,7 @@ AI session's context. Exit code 1 if anything failed.
 | `10-syntax` | Every `src/*.js` parses (`node --check`) |
 | `20-version` | Every `src/` link in `index.html` carries the same `?v=N`; fails if `src/` changed since the last commit but `?v=` didn't move (prints the fix) |
 | `30-views` | Every `header [data-view]`, tour stop and tour quiz loads in Learn, Workbench (`?mode=lab`) and school edition (`?edition=school`) with no JS errors and no blank lab canvas |
-| `40-labs` | Every lab's `tick` + `draw` steps without error; every lab has `readouts()` giving up to 3 `[label, value]` pairs with real values; every mission in `Chrono.MISSIONS` is **not** passed on arrival and **does** complete via "Show me", then advances |
+| `40-labs` | Every lab's `tick` + `draw` steps without error; every lab has `readouts()` giving up to 3 `[label, value]` pairs with real values; every mission in `Chrono.MISSIONS` is **not** passed on arrival and **does** complete via "Show me", then advances; mission circles (one per mission, filled when done, each reopens its mission); Try boxes hidden until a lab's missions are done; every slider matches a guide row (control hints — a WARN names any that don't) |
 
 **Pre-commit hook** (`tools/hooks/pre-commit`, enable once per clone: `git config core.hooksPath tools/hooks`):
 if `src/` or `index.html` is staged it runs the regression and a failure blocks the commit. Doc gaps (src/

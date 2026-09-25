@@ -98,7 +98,7 @@
     ],
     horizons: [
       ["Light at 45° / Ordinary distance and time", "Two drawings of the same cosmic history."],
-      ["The galaxy slider, or drag in the left view", "Picks a galaxy by its distance today. The right panel says when its light left, how stretched it arrives, and whether a signal could ever reach it."],
+      ["A galaxy, today at — the slider, or drag in the left view", "Picks a galaxy by its distance today. The right panel says when its light left, how stretched it arrives, and whether a signal could ever reach it."],
       ["The lines", "Blue: our past light cone — everything we can see. Pink dashed: the event horizon. Orange: when the microwave background was released."]
     ],
     boot: [
@@ -232,6 +232,7 @@
   Chrono.rememberText = key => TEXT[key] && TEXT[key][1] || "";
   Chrono.rememberFor = key => TEXT[key] && TEXT[key][1] ? `<p class="remember"><b>Remember</b>${TEXT[key][1]}</p>` : "";
 
+  Chrono.guideRows = key => G[key] || [];                 // raw [control, what it does] rows, for the hint lines under controls
   Chrono.guideFor = key => {
     const g = G[key]; if (!g) return "";
     return `<details class="guide" open><summary>The controls</summary><dl>${g.map(([k, v]) => k ? `<dt>${k}</dt><dd>${v}</dd>` : `<dt class="gsub">${v}</dt>`).join("")}</dl></details>`;
