@@ -23,7 +23,7 @@ make_probe_copy() {
 # Load a page headless and print whatever the probe wrote into <pre id="RES">.
 # usage: run_page <file-url> <virtual-ms>
 run_page() {
-  "$CHROME_BIN" --headless=new --disable-gpu --window-size=1440,900 --virtual-time-budget="$2" --dump-dom "$1" 2>/dev/null \
+  "$CHROME_BIN" --headless=new --disable-gpu --allow-file-access-from-files --window-size=1440,900 --virtual-time-budget="$2" --dump-dom "$1" 2>/dev/null \
     | perl -0ne 'print $1 if /<pre id="RES">(.*?)<\/pre>/s'
 }
 

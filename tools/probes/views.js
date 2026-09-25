@@ -1,6 +1,6 @@
 /* tools/probes/views.js — injected before the app's scripts. Visits every header [data-view], every tour stop and
    every tour quiz; records JS errors and lab canvases left blank. Writes JSON into <pre id="RES">. */
-window.__E = []; window.addEventListener("error", e => __E.push(`${e.message} @${(e.filename || "").split("/").pop()}:${e.lineno}`));
+window.__E = []; window.addEventListener("error", e => __E.push(`${e.message} @${(e.filename || "").split("/").pop()}:${e.lineno} [${location.hash || "home"}]${e.error && e.error.stack ? " " + e.error.stack.split("\n").slice(1, 3).map(s => s.trim()).join(" ← ") : ""}`));
 try { localStorage.clear(); } catch (e) { }
 const drawn = () => {                                         // null when no lab canvas is showing
   const c = document.querySelector("#lab-canvas"), lab = document.querySelector("#lab");

@@ -46,6 +46,8 @@
     predict: { q: "A black hole slowly radiates away its mass and shrinks. As it gets smaller, does it get hotter or colder?",
       options: ["Colder, like a coal burning down", "Hotter, and it radiates faster and faster", "Its temperature stays the same"], answer: 1,
       explain: "Hotter. A black hole's temperature goes as one over its mass, so as it shrinks it heats up, radiates faster, and shrinks faster still. It ends in a final flash. A black hole with the Sun's mass is colder than the cosmic background (60 billionths of a degree), so real ones aren't shrinking yet." },
+    applySetup(o) { Object.assign(HK, o); if (o.M0) { HK.f = 0; HK.parts = []; } },
+    state() { return { M0: HK.M0, f: HK.f, T: hawkT(HK.M0), page: PAGE_F }; },   // read-only, for missions
     id: "hawking", title: "Black holes evaporate", eyebrow: "Physics · do black holes last forever?", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     controls() {
       return PRESETS.map(([id, n, M]) => `<button class="btn ${Math.abs(HK.M0 / M - 1) < 1e-6 ? "primary" : ""}" data-hk="${id}">${n}</button>`).join("") +
@@ -238,6 +240,8 @@
     predict: { q: "Earth absorbs a huge amount of energy from the Sun every day. Over a year, how much of it does Earth send back out into space?",
       options: ["Almost none: oceans, air and life store it", "About half", "Almost exactly all of it"], answer: 2,
       explain: "Almost all of it: if Earth kept much, it would heat up fast. (The small imbalance measured today, well under 1%, is what's warming the planet.) So what Earth gets from the Sun isn't really energy. It's low entropy: each photon of sunlight that's absorbed leaves again as about 20 photons of infrared." },
+    applySetup(o) { Object.assign(EN, o); },
+    state() { return { A: EN.A, eps: EN.eps, Tc: budget().Ts - 273.15 }; },   // read-only, for missions
     id: "energy", title: "Earth's energy budget", eyebrow: "Voyages · what keeps time's arrow running here?", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {
       return EPRE.map(([id, n, a, e]) => `<button class="btn ${EN.A === a && EN.eps === e ? "primary" : ""}" data-en="${id}">${n}</button>`).join("") +

@@ -49,6 +49,8 @@
     predict: { q: "Almost every distant galaxy is moving away from us — the farther, the faster. Does that put us at the centre of the universe?",
       options: ["Yes — we're at the centre of the expansion", "No — every galaxy sees exactly the same thing", "Nobody knows"], answer: 1,
       explain: "Space itself is stretching, everywhere at once. From <i>any</i> galaxy, the others recede with speed proportional to distance (Hubble's law), so every galaxy looks like the centre and none is. Click any galaxy in the lab to stand on it." },
+    applySetup(o) { Object.assign(EX, o, { preset: null, t: 0.02, play: true }); exSolve(); },
+    state() { if (!EX.S) exSolve(); return { m: EX.m, l: EX.l, H0: EX.H0, fate: EX.S.fate, age: EX.S.t0 ? EX.S.t0 * GYR(EX.H0) : null }; },   // read-only, for missions
     id: "expand", title: "Expanding universe", eyebrow: "Cosmos · is everything flying away from us?", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     enter() { if (!EX.S) exSolve(); },
     controls() {
@@ -135,6 +137,12 @@
     predict: { q: "The universe is 13.8 billion years old. How far away — today — is the most distant matter whose light we can see?",
       options: ["13.8 billion light-years", "About 46 billion light-years", "Infinitely far"], answer: 1,
       explain: "While the oldest light was travelling towards us, space kept stretching behind it. The matter that sent it is now about 46 billion light-years away — the edge of the observable universe. And because expansion is accelerating, there's another edge: galaxies beyond about 16 billion light-years today can never receive a signal we send now." },
+    applySetup(o) { Object.assign(HZ, o); },
+    state() {                                              // read-only, for missions
+      if (!HZ.T) HZ.T = hzTables();
+      const T = HZ.T, gy = T.gy, e0 = T.eta0 * gy, eEm = e0 - HZ.chi;
+      return { chi: HZ.chi, horizon: T.etaInf * gy - e0, reach: HZ.chi < T.etaInf * gy - e0, tE: eEm > T.etaLS * gy ? T.tOfEta(eEm / gy) * gy : null };
+    },
     id: "horizons", title: "Cosmic horizons", eyebrow: "Cosmos · how far can we ever see?", tier: "mainstream", tags: ["ESTABLISHED"],
     enter() { if (!HZ.T) HZ.T = hzTables(); },
     controls() {
@@ -260,6 +268,8 @@
     predict: { q: "Suppose space had four dimensions instead of three (and time still one). Gravity would then weaken as 1/r³ instead of 1/r². What happens to planets' orbits?",
       options: ["Nothing much — orbits work the same", "Orbits become unstable: planets spiral in or fly away", "Planets orbit twice as fast"], answer: 1,
       explain: "With gravity falling off as 1/r³ or faster, a circular orbit is balanced on a knife-edge: the slightest nudge sends the planet spiralling in or flying off. Only with three space dimensions (or fewer) are orbits — and, similarly, atoms — stable. Switch to Orbits mode and slide the number of dimensions." },
+    applySetup(o) { if (o.boot) { BT.mode = "boot"; boot(...o.boot); } if (o.on) { BT.mode = "orbit"; BT.on = o.on; orbReset(); } },
+    state() { const o = BT.orb || {}; return { mode: BT.mode, n: BT.n, m: BT.m, read: BT.shown >= BT.log.length, on: BT.on, dead: !!o.dead, t: o.t || 0 }; },   // read-only, for missions
     id: "boot", title: "Boot a Universe", eyebrow: "Cosmos · why 3 + 1?", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     enter() { if (!BT.log.length) boot(3, 1); if (!BT.orb) orbReset(); },
     controls() {

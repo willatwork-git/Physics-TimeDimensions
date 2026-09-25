@@ -20,6 +20,8 @@
     predict: { q: "Einstein and Rosen found that a black hole's complete solution joins two separate universes through a 'bridge'. Could you travel through it to the other side?",
       options: ["Yes, if you go fast enough", "No — it pinches shut faster than anything, even light, can cross", "Only light can cross"], answer: 1,
       explain: "No. The bridge's throat opens and closes again so quickly that not even light can get from one side to the other — anything that tries ends up in the black hole. Real black holes, formed from collapsing stars, don't even have the second universe. Wormholes you could cross would need 'exotic' matter with negative energy, which isn't known to exist in the amounts needed." },
+    applySetup(o) { if (o.fire) { const r = ray(...o.fire); if (r) WH.rays.push(r); } if (o.V !== undefined) { WH.V = o.V; WH.play = false; } },
+    state() { return { V: WH.V, throat: throat(WH.V), sing: WH.rays.some(r => r.fate === "sing") }; },   // read-only, for missions
     id: "wormhole", title: "Wormholes", eyebrow: "Physics · can you cross the bridge?", tier: "mainstream", tags: ["ESTABLISHED", "SPECULATIVE"],
     controls() {
       return `<span class="ctl">Click in our universe (right) to fire light:</span>
@@ -96,6 +98,8 @@
     predict: { q: "In Gödel's spinning universe, could you travel into your own past without ever going faster than light?",
       options: ["No — going back in time always needs faster-than-light travel", "Yes — far enough out, circling the universe brings you back to the moment you left", "Only by standing still"], answer: 1,
       explain: "Yes, in that universe. Its rotation tips light cones over as you go outwards; beyond a critical distance they tip so far that simply circling round, always slower than light, is a path into your own past. It's an exact solution of Einstein's equations (Gödel, 1949). But our universe isn't spinning measurably — and it expands, which Gödel's doesn't." },
+    applySetup(o) { Object.assign(GD, o); },
+    state() { return { rr: GD.rr, loop: GD.rr > RC, walked: GD.walk >= 1, P: GD.P, Rc: 0.1984 * GD.P }; },   // read-only, for missions
     id: "loops", title: "Time loops", eyebrow: "Physics · can you meet your past self?", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     controls() {
       return `<label class="ctl">Your distance from the centre <input type="range" id="gd-r" min="5" max="160" value="${Math.round(GD.rr / RC * 100)}"><output id="gd-ro">${(GD.rr / RC).toFixed(2)} × critical</output></label>

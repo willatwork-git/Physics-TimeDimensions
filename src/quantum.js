@@ -28,6 +28,8 @@
     predict: { q: "A single photon has <b>already passed</b> the first beam splitter. Only then do you decide whether to put the second one in. Can your late decision still change what you see?",
       options: ["No — too late, the photon has already taken one path", "Yes — the results always match whatever is there when the photon arrives", "It breaks the experiment"], answer: 1,
       explain: "The results match the set-up at the moment of detection: second beam splitter in → interference; out → each photon shows up on the detector for one arm. That's been done with real single photons (2007). But nothing travels back in time: the pattern only appears when you sort the records afterwards, so no signal reaches the past. The lesson is subtler — don't picture the photon as having taken one path before it's measured." },
+    applySetup(o) { Object.assign(DC, o); },
+    state() { return { mode: DC.mode, pIn: pD1(true, DC.phi), inD2: DC.counts.in[1], filled: DC.fr.filter(b => b[0] + b[1] >= 5).length / BINS }; },   // read-only, for missions
     id: "delayed", title: "Delayed choice", eyebrow: "Quantum · when is a photon's path decided?", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     controls() {
       return `<span class="ctl">Second beam splitter:</span>
@@ -131,6 +133,8 @@
     predict: { q: "This whole universe is in <b>one unchanging quantum state</b> — it never evolves. Can anything inside it experience time passing?",
       options: ["No — if nothing changes, there's no time", "Yes — a part that reads a clock sees the rest change", "Only if you add a clock from outside"], answer: 1,
       explain: "Yes. The universe as a whole is frozen, but its parts are correlated (entangled): whenever the clock reads 3, the spin points one way; when it reads 4, another. Anything inside that uses the clock sees the spin turn — time appears from the correlation. Remove the entanglement and the spin looks the same at every clock reading: no time at all. This is the Page–Wootters idea (1983), demonstrated in miniature with photons (2014)." },
+    applySetup(o) { Object.assign(FZ, o); if (o.evolve) FZ.check = { o: globalOverlap(), age: 0 }; },
+    state() { return { ent: FZ.ent, play: FZ.play, k: FZ.k, cos: Math.cos(spinAt(FZ.k)), overlap: FZ.check ? FZ.check.o : null }; },   // read-only, for missions
     id: "frozen", title: "The frozen universe", eyebrow: "Quantum · time from entanglement", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     controls() {
       return `<button class="btn ${FZ.ent ? "primary" : ""}" id="fz-ent">Entangled (clock ↔ spin)</button><button class="btn ${!FZ.ent ? "primary" : ""}" id="fz-prod">Not entangled</button>

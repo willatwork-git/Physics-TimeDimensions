@@ -1,6 +1,6 @@
 /* tools/probes/labs.js — steps every lab's physics and drawing directly (headless Chrome runs no animation frames
    under simulated time), then tests every mission: it must not pass on arrival, and must complete via "Show me". */
-window.__E = []; window.addEventListener("error", e => __E.push(`${e.message} @${(e.filename || "").split("/").pop()}:${e.lineno}`));
+window.__E = []; window.addEventListener("error", e => __E.push(`${e.message} @${(e.filename || "").split("/").pop()}:${e.lineno} [${location.hash || "home"}]${e.error && e.error.stack ? " " + e.error.stack.split("\n").slice(1, 3).map(s => s.trim()).join(" ← ") : ""}`));
 try { localStorage.clear(); } catch (e) { }
 const W = ms => new Promise(r => setTimeout(r, ms)), $ = s => document.querySelector(s);
 window.addEventListener("load", () => setTimeout(async () => {
@@ -24,7 +24,7 @@ window.addEventListener("load", () => setTimeout(async () => {
       if ($("#aside .mission.done")) arrival.push(`${id}: "${title}"`);
       else {
         $("#aside [data-m-show]").click(); await W(80);
-        for (let k = 0; k < 1600 && !$("#aside .mission.done"); k++) { d.tick(0.05); Chrono.missions.tick(d, 0.05); }
+        for (let k = 0; k < 1600 && !$("#aside .mission.done"); k++) { if (d.tick) d.tick(0.05); Chrono.missions.tick(d, 0.05); }
         if (!$("#aside .mission.done")) unfinished.push(`${id}: "${title}" — state ${JSON.stringify(d.state && d.state()).slice(0, 160)}`);
       }
       const nx = $("#aside [data-m-next]"); if (!nx) break; nx.click(); await W(80);

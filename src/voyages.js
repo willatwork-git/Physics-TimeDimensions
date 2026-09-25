@@ -32,6 +32,8 @@
     predict: { q: "An astronaut spends six months on the International Space Station. When they come home, compared with a twin who stayed on the ground, they are…",
       options: ["Younger, by about 5 thousandths of a second", "Older, by about 5 thousandths of a second", "Younger, by about 5 minutes"], answer: 0,
       explain: "Two effects pull opposite ways: higher up, in weaker gravity, clocks run <i>faster</i>; moving fast, they run <i>slower</i>. At the ISS's low, fast orbit, speed wins — about 25 microseconds a day, 4.5 milliseconds over six months. For GPS satellites, higher up, gravity wins. On the Moon, clocks gain about 56 µs a day — which is why a lunar time standard is being set up." },
+    applySetup(o) { Object.assign(MC, { m: null, moon: false }, o); },
+    state() { const R = mcRates(); return { alt: MC.alt, days: MC.days, moon: MC.moon, net: R.net, total: R.net * MC.days }; },   // read-only, for missions
     id: "missions", title: "Mission clocks", eyebrow: "Voyages · how much younger does space make you?", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {
       return MISSIONS.map(m => `<button class="btn ${MC.m && MC.m.id === m.id ? "primary" : ""}" data-mission="${m.id}">${m.n.split(" · ")[0].replace(" (ISS, 340 days)", "")}</button>`).join("") +

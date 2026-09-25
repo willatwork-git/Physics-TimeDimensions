@@ -87,7 +87,9 @@ see the full physics (equations, derivations, the model's exact assumptions) wit
 - [x] Phase 2c · Lab template on every lab (D-046): panel order; Picture it + Common trap collapsed; one end card everywhere with "Where this leads" and the review line; controls help as an overlay button — **Phase 2 complete**
 - [ ] Phase 3 content work carried from 2c: one-line hints under each control; explanations ≤ 3 short paragraphs; "Try:" boxes → missions; Flatland onto the template
 - [x] Phase 3a · Missions (D-047): Spacetime ×3, Entropy box ×3, 1 g voyage ×3, Talking to Mars ×2 (15 across six labs)
-- [ ] Phase 3a (cont.) · Missions for the remaining labs: Mission clocks, Expanding universe, Cosmic horizons, Timeline, Black holes evaporate, Earth's energy budget, Field Ocean, Wormholes, Time loops, Janus, Boot, Quantum ×2
+- [x] Phase 3a (cont.) batch 1 · Missions (D-047): Mission clocks, Expanding universe, Cosmic horizons, Boot, Black holes evaporate, Earth's energy budget ×2 each (27 across 12 labs). Janus and Timeline deliberately have none: nothing to steer, so a mission would pass on arrival
+- [x] Phase 3a batch 2 · Field Ocean ×2, Wormholes ×2, Time loops ×2, Two Films ×1 (34 across 16 labs)
+- [x] Phase 3a batch 3 · Delayed choice ×2, Frozen universe ×2 — **3a complete: 38 missions across 18 labs**
 - [ ] Phase 3 · Roll out: framings on all 20 stops; tokens and three emphasis levels; sim scaling + readout bars; missions for every lab (rewrite the "not a wall you hit" reveal)
 - [ ] Phase 4 · Return loop: passport (#passport), review sheet, challenge links, teacher mode level 1, print worksheets. Guess counter and analytics wait for the domain move (static until then)
 

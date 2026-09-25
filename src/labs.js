@@ -44,6 +44,8 @@
     predict: { q: "You pluck the <b>massive</b> field at one spot and let go. What does the ripple do?",
       options: ["Splits in two and flies apart at light speed", "Stays centred and vibrates, spreading only slowly", "Disappears almost at once"], answer: 1,
       explain: "Splitting and racing away is what the <i>massless</i> field does. The mass term lets a ripple oscillate in place — and a ripple that stays put and vibrates is exactly what a particle at rest is. Try <b>Pluck one spot</b> to see both." },
+    applySetup(o) { Object.assign(FO, o); if (FO.lanes) { FO.lanes[1].m = FO.m; FO.lanes.forEach(L => launch(L, FO.mode)); } },
+    state() { const vg = m => Math.sin(0.25) / omegaLat(0.25, m); return { mode: FO.mode, m: FO.m, ratio: vg(FO.m) / vg(0) }; },   // read-only, for missions (ratio: the travelling ripple's speed vs the massless one's)
     id: "field", title: "The Field Ocean", eyebrow: "Lab · particles as ripples", tier: "mainstream", tags: ["ESTABLISHED"],
     enter() { if (!FO.lanes) { FO.lanes = [kgLane(0), kgLane(FO.m)]; FO.lanes.forEach(L => launch(L, FO.mode)); } },
     controls() {
@@ -328,6 +330,8 @@
     predict: { q: "Two films start from <b>exactly</b> the same frame — same shape, same rate of change in every direction. You press play. Do they stay identical?",
       options: ["Yes — same start, same future", "They drift apart, but only through rounding errors", "They genuinely diverge"], answer: 2,
       explain: "Both films are exact solutions — no rounding is involved. With two time directions, even a perfect snapshot of 'now' isn't enough data to fix the future (Craig &amp; Weinstein, 2009). In our one-time universe, it is." },
+    applySetup(o) { Object.assign(TF, o); },
+    state() { return { t: TF.t, reveal: TF.reveal }; },   // read-only, for missions
     id: "films", title: "Two Films", eyebrow: "Lab · prediction with two times", tier: "frontier", tags: ["ESTABLISHED", "SPECULATIVE"],
     controls() {
       return `<button class="btn primary" id="tf-play">${TF.play ? "Pause" : TF.t > 0 ? "Continue" : "Predict ▶"}</button>

@@ -32,7 +32,7 @@
   function rng(seed) { return () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
   const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
   const ease = x => x < 0.5 ? 2 * x * x : 1 - (-2 * x + 2) ** 2 / 2;
-  const dot = (c, x, y, r, col) => { c.fillStyle = col; c.beginPath(); c.arc(x, y, r, 0, TAU); c.fill(); };
+  const dot = (c, x, y, r, col) => { if (!(r > 0)) return; c.fillStyle = col; c.beginPath(); c.arc(x, y, r, 0, TAU); c.fill(); };
   const glow = (c, x, y, r, col, blur) => { c.shadowColor = col; c.shadowBlur = blur; dot(c, x, y, r, col); c.shadowBlur = 0; };
   const R1 = rng(11), P1 = Array.from({ length: 110 }, () => ({ u: R1(), v: R1(), dm: R1() < 0.35, k: Math.floor(R1() * 3), o: R1() * TAU, q: R1() }));
   const R2 = rng(29), SPARK = Array.from({ length: 70 }, () => ({ a: R2() * TAU, f: R2(), s: 0.6 + R2() * 0.8 }));
@@ -166,7 +166,7 @@
     const cvs = [...document.querySelectorAll("canvas[data-st]")], still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches, t0 = performance.now();
     const frame = now => {
       if (!cvs.length || !document.body.contains(cvs[0])) return;
-      const t = still ? 5.2 : (now - t0) / 1000, dpr = window.devicePixelRatio || 1;
+      const t = still ? 5.2 : Math.max(0, now - t0) / 1000, dpr = window.devicePixelRatio || 1;
       cvs.forEach(cv => { const w = cv.clientWidth, h = cv.clientHeight; if (!w) return;
         if (cv.width !== Math.round(w * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
         const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.fillStyle = "#0c0f16"; c.fillRect(0, 0, w, h);

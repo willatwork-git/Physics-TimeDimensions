@@ -45,5 +45,7 @@ Drop `tools/checks/NN-name.sh` in (NN sets the order). Contract:
   `Chrono.lab.def(id).tick(dt)` and `Chrono.missions.tick(def, dt)` directly.
 - `progress.js` reads localStorage when it loads — set state in a probe via `Chrono.progress.*` after `load`,
   not by writing localStorage.
+- Browser errors carry the route that was showing and two stack frames. Chrome runs with `--allow-file-access-from-files`; without it, errors from `file://` scripts arrive as an opaque "Script error." with no detail.
+- Some faults are timing-dependent (an animation still running just after you leave a page). If a check fails intermittently, run it a few times with `--only`: the route in the error says where to look.
 - Chrome path: `$CHROME` if set, else the macOS default. Without Chrome, browser checks warn and skip.
 - The window is 1440×900; lab canvases need the page wider than ~500 px to size at all.
