@@ -84,11 +84,12 @@ see the full physics (equations, derivations, the model's exact assumptions) wit
 - [ ] Phase 1 check: five first-time visitors on Clock Lab (spec's visitor checks)
 - [x] Phase 2a · Top bar: Home · Tours · Explore mega-menu · Guide with the mode switch; Learn / Workbench naming (D-045)
 - [x] Phase 2b · Home in five blocks with the live hero light clock; no sidebar (D-045)
-- [ ] Phase 2c · Lab template on every lab: right-column order (setup · question · mission · explanation ≤ 3 paragraphs · Picture it + Common trap collapsed · end card · sources); inline control hints replacing "The controls" table (full text in a popover); threads → "Where this leads" on each end card
+- [x] Phase 2c · Lab template on every lab (D-046): panel order; Picture it + Common trap collapsed; one end card everywhere with "Where this leads" and the review line; controls help as an overlay button — **Phase 2 complete**
+- [ ] Phase 3 content work carried from 2c: one-line hints under each control; explanations ≤ 3 short paragraphs; "Try:" boxes → missions; Flatland onto the template
 - [ ] Phase 3 · Roll out: framings on all 20 stops; tokens and three emphasis levels; sim scaling + readout bars; missions for every lab (rewrite the "not a wall you hit" reveal)
 - [ ] Phase 4 · Return loop: passport (#passport), review sheet, challenge links, teacher mode level 1, print worksheets. Guess counter and analytics wait for the domain move (static until then)
 
-- [ ] **Stars forge the elements** (Cosmos, `src/stars.js`, D-046 reserved) — IN PROGRESS, fit in between UX phases
+- [ ] **Stars forge the elements** (Cosmos, `src/stars.js`, D-047 reserved) — IN PROGRESS, fit in between UX phases
   - [x] Scene 1 drawing: onion star + countdown of burning stages (25 Sun masses; WHW 2002 times: H 6.7 Myr · He 0.84 Myr · C 522 yr · Ne 0.89 yr · O 0.40 yr · Si ~2 days · collapse < 1 s)
   - [ ] Scene 2: periodic table of origins, Z 1–92, rounded shares after Johnson (2019) / Kobayashi et al. (2020); sources: Big Bang · cosmic rays · exploding massive stars · exploding white dwarfs · ageing giant stars · colliding neutron stars (site split CONTESTED) · made by people (Tc, Pm) · decay chains (Po–Ac, Pa); cosmic-time steps: 3 min → ~200 Myr → ~500 Myr → ~1 Gyr → Sun forms 9.2 Gyr → today; click an element for its story (H, Li, C, O, Fe, Tc, Eu, Au, Pb, U)
   - [ ] register (predict: where does core fusion stop? → iron), aside with the entropy strip (one fusion → ~20 million sunlight photons → ~400 million infrared from Earth), Picture it / Common trap ("the Sun will make gold") / quiz question

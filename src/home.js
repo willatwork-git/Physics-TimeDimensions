@@ -25,6 +25,13 @@
   const TOTAL = ["atlas", "bench", "concepts", "review", "story", ...SCALES.flatMap(s => s.labs.map(l => l[0])), "sure"];
 
   /* Threads a view belongs to, rendered for its aside. key: "clocks", "flatland/7", … */
+  /* "Where this leads" (UX spec §6): the next stop along each thread this view is on (or the one before, at a thread's end); up to three. */
+  Chrono.leadsFor = key => {
+    const out = [];
+    THREADS.forEach(t => { const i = t.stops.findIndex(x => x[0] === key); if (i < 0) return; const p = t.stops[i + 1] || t.stops[i - 1];
+      if (p && !out.some(o => o[0] === p[0])) out.push([p[0], p[1], SCALE_NAME[p[2]], t.name]); });
+    return out.slice(0, 3);
+  };
   Chrono.threadsFor = key => {
     const on = THREADS.filter(t => t.stops.some(s => s[0] === key));
     if (!on.length) return "";

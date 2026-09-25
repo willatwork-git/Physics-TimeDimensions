@@ -156,7 +156,8 @@
   Chrono.stickFor = key => {
     if (QB[key]) P.revSeed(key);                          // met the lab → its question joins the review queue
     const pic = PIC[key], trap = TRAP[key];
-    return (pic ? `<div class="picture"><b>Picture it</b> ${TG("ANALOGY")}<p>${pic[0]}</p><p class="meta">Where it breaks: ${pic[1]}</p></div>` : "") +
+    const teaser = t => { const w = t.split(/[.:;—]/)[0]; return w.length > 64 ? w.slice(0, 62).replace(/\s\S*$/, "") + "…" : w; };
+    return (pic ? `<details class="picture"><summary><b>Picture it</b> ${TG("ANALOGY")} <span>${teaser(pic[0])}</span></summary><p>${pic[0]}</p><p class="meta">Where it breaks: ${pic[1]}</p></details>` : "") +
       (trap ? `<details class="trap"><summary><b>Common trap</b><span>${trap[0]}</span></summary>
         <p class="meta">Why it's tempting: ${trap[1]}</p><p>${trap[2]} ${TG(trap[3])}</p></details>` : "");
   };
@@ -230,5 +231,10 @@
       <p><b>Review</b>: questions from labs you've explored come back after 1, 3, 7, 16, 35 and 80 days. Get one right and it waits longer; miss it and it's back tomorrow.</p>
       <p class="meta">Remembering is a skill of practice, not of reading: trying to recall something is what makes it last (the 'testing effect').</p>`
   });
+  Chrono.reviewLine = key => {                               // for the end card: when this lab's question comes back
+    const r = QB[key] && P.rev(key); if (!r) return "";
+    const d = Math.max(1, Math.ceil((r.due - Date.now()) / 864e5));
+    return `A quick question about this comes back in ${d} day${d > 1 ? "s" : ""} — see Guide › Quizzes and review.`;
+  };
   Chrono.reviewDue = () => P.revDue().filter(k => QB[k]).length;
 })();

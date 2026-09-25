@@ -229,6 +229,7 @@
     "flatland/7": [null, "In the block picture every moment is equally there, and nothing marks one of them as 'now'. That's why 'now' is a puzzle."]
   };
   Chrono.introFor = key => TEXT[key] && TEXT[key][0] ? `<p class="intro">${TEXT[key][0]}</p>` : "";
+  Chrono.rememberText = key => TEXT[key] && TEXT[key][1] || "";
   Chrono.rememberFor = key => TEXT[key] && TEXT[key][1] ? `<p class="remember"><b>Remember</b>${TEXT[key][1]}</p>` : "";
 
   Chrono.guideFor = key => {

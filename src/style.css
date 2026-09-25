@@ -725,3 +725,20 @@ body.onhome #aside { display: none; }
 .btn.ghost { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
 @media (max-width: 900px) { #hero-cv { height: 270px; } }
 @media (max-width: 600px) { .hero-ctl { flex-wrap: wrap; } .hero-ctl input { flex: 1 1 100%; order: 3; } }
+
+/* ---------- Lab template, UX spec §6 (D-046) ---------- */
+details.picture { padding: 8px 14px; }
+details.picture summary { cursor: pointer; list-style: none; font-size: 14px; }
+details.picture summary::-webkit-details-marker { display: none; }
+details.picture summary span { color: var(--text); }
+details.picture summary::after { content: " ▸"; color: var(--muted); }
+details.picture[open] summary::after { content: " ▾"; }
+#ctl-pop { margin: 0 12px 8px; padding: 10px 14px; border-radius: 10px; background: var(--panel2); border: 1px solid var(--line); max-height: 45vh; overflow-y: auto; }
+#ctl-pop .guide { margin: 0; border: 0; padding: 0; background: none; }
+#ctl-pop .guide summary { display: none; }
+.btn.ctlhelp { border-style: dashed; color: var(--muted); }
+#aside .endcard a.btn.primary { display: block; text-decoration: none; color: var(--accent); padding: 9px 12px; font-size: 14px; }
+.endcard .ec-go a i { font-style: normal; font: 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+.endcard .ec-rev { margin: 10px 0 0; }
+#ctl-pop { position: absolute; top: 8px; left: 12px; right: 12px; z-index: 20; margin: 0; box-shadow: 0 12px 30px rgba(0,0,0,.5); }
+#ctl-pop[hidden] { display: none; }

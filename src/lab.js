@@ -92,7 +92,14 @@
     }));
   }
   Chrono.lab = {
-    rebuild() { if (active) { $("#lab-controls").innerHTML = active.controls ? active.controls() : ""; if (active.wire) active.wire(); renderLabAside(active); } },
+    rebuild() {
+      if (!active) return;
+      const help = Chrono.guideFor ? Chrono.guideFor(active.id) : "", pop = $("#ctl-pop");
+      $("#lab-controls").innerHTML = (active.controls ? active.controls() : "") + (help ? `<button class="btn ctlhelp" data-ctlhelp aria-expanded="false" title="What each control does">ⓘ What the controls do</button>` : "");
+      if (pop) { pop.hidden = true; pop.innerHTML = help; }
+      const b = $("#lab-controls [data-ctlhelp]"); if (b && pop) b.onclick = () => { pop.hidden = !pop.hidden; b.setAttribute("aria-expanded", !pop.hidden); };
+      if (active.wire) active.wire(); renderLabAside(active);
+    },
     register(def) {
       labs[def.id] = def;
       Chrono.views = Chrono.views || {};
@@ -185,13 +192,22 @@
     q("[data-pagain]").forEach(b => b.onclick = () => { Chrono.progress.setPred(key, {}); rerender(); });
   };
   /* End card at a tour stop: what you just saw, its limit, the handoff, and one primary action (UX spec §6). */
-  function endCard({ stop, next, i, n }) {
-    return `<div class="endcard"><div class="eyebrow">What you just saw · stop ${i + 1} of ${n}</div>
-      <p class="ec-take">${stop.takeaway} ${(stop.tags || []).map(t => `<span class="tag ${t}">${Chrono.TAGS[t]}</span>`).join(" ")}</p>
-      ${stop.limit ? `<p class="meta">Limit: ${stop.limit}</p>` : ""}
-      ${stop.handoff ? `<p class="ec-hand">${stop.handoff}</p>` : ""}
-      <button class="btn primary" data-tour-next>${next ? `Next: ${next.q} →` : "Finish the tour ✓"}</button>
-      ${stop.go ? `<div class="ec-go"><span class="eyebrow">Go deeper</span>${stop.go.map(([h, t]) => `<a href="${h}">${t} →</a>`).join("")}</div>` : ""}</div>`;
+  /* One end card for every lab (UX spec §6). In a tour: the stop's takeaway, limit, handoff and Next. Otherwise: the
+     lab's Remember line and its next question. Both: "Where this leads" (the threads) and when the review question returns. */
+  function endCard(def, st) {
+    const leads = Chrono.leadsFor ? Chrono.leadsFor(def.id) : [], rl = Chrono.reviewLine ? Chrono.reviewLine(def.id) : "";
+    const take = st ? st.stop.takeaway : Chrono.rememberText ? Chrono.rememberText(def.id) : "";
+    if (!st && !take && !def.next && !leads.length) return "";
+    const TG = t => `<span class="tag ${t}">${Chrono.TAGS[t]}</span>`;
+    return `<div class="endcard"><div class="eyebrow">What you just saw${st ? ` · stop ${st.i + 1} of ${st.n}` : ""}</div>
+      ${take ? `<p class="ec-take">${take} ${st ? (st.stop.tags || []).map(TG).join(" ") : ""}</p>` : ""}
+      ${st && st.stop.limit ? `<p class="meta">Limit: ${st.stop.limit}</p>` : ""}
+      ${st && st.stop.handoff ? `<p class="ec-hand">${st.stop.handoff}</p>` : !st && def.next ? `<p class="ec-hand">${def.next.q}</p>` : ""}
+      ${st ? `<button class="btn primary" data-tour-next>${st.next ? `Next: ${st.next.q} →` : "Finish the tour ✓"}</button>`
+        : def.next ? `<a class="btn primary ec-next" href="${def.next.href}">Next: ${def.next.label} →</a>` : ""}
+      ${st && st.stop.go ? `<div class="ec-go"><span class="eyebrow">Go deeper</span>${st.stop.go.map(([h, t]) => `<a href="${h}">${t} →</a>`).join("")}</div>` : ""}
+      ${leads.length ? `<div class="ec-go"><span class="eyebrow">Where this leads</span>${leads.map(([k, n, sc, th]) => `<a href="#${k}" title="${th}"><i>${sc}</i> ${n} →</a>`).join("")}</div>` : ""}
+      ${rl ? `<p class="meta ec-rev">🔁 ${rl}</p>` : ""}</div>`;
   }
   function renderLabAside(def) {
     const tier = def.tier || "mainstream", st = lockState(def), waiting = st !== "free", fr = framing(def);
@@ -207,14 +223,10 @@
       ${Chrono.introFor ? Chrono.introFor(def.id) : ""}
       ${!above ? predictCard(def) : ""}
       ${!waiting && def.kind !== "doc" && Chrono.missions ? Chrono.missions.card(def) : ""}
-      ${waiting && Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
       ${waiting ? "" : typeof def.aside === "function" ? def.aside() : (def.aside || "")}
-      ${!waiting && Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
-      ${waiting || !Chrono.rememberFor || fr.st ? "" : Chrono.rememberFor(def.id)}
       ${waiting || !Chrono.stickFor ? "" : Chrono.stickFor(def.id)}
       ${waiting || !Chrono.keyIdeas ? "" : Chrono.keyIdeas(def.id)}
-      ${waiting || !Chrono.threadsFor ? "" : Chrono.threadsFor(def.id)}
-      ${fr.st ? (waiting ? "" : endCard(fr.st)) : def.next ? `<a class="nextq" href="${def.next.href}"><span class="eyebrow">Next question</span><span class="nq">${def.next.q}</span><span class="hgo">${def.next.label} →</span></a>` : ""}
+      ${waiting ? "" : def.kind === "doc" ? (fr.st ? endCard(def, fr.st) : def.next ? `<a class="nextq" href="${def.next.href}"><span class="eyebrow">Next question</span><span class="nq">${def.next.q}</span><span class="hgo">${def.next.label} →</span></a>` : "") : endCard(def, fr.st)}
       ${def.sources ? `<p class="caveat">Sources: ${def.sources}</p>` : ""}`;
     document.querySelectorAll("#aside [data-hole]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goHole(a.dataset.hole); });
     document.querySelectorAll("#aside [data-view-link]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goView(a.dataset.viewLink); });
