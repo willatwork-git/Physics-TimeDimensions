@@ -16,9 +16,9 @@ const drawn = () => {                                         // null when no la
 };
 window.addEventListener("load", () => {
   const views = new Set([...document.querySelectorAll("header [data-view]")].map(b => b.dataset.view));
-  ["concepts/quantum", "concepts/timetravel", "review/puzzle", "review/zoom", "review/time", "atlas/H5", ...[1, 2, 3, 4, 5, 6, 7].map(n => "flatland/" + n)].forEach(v => views.add(v));   // deep routes
+  ["concepts/quantum", "concepts/timetravel", "review/puzzle", "review/zoom", "review/time", "atlas/H5", "worksheet/puzzle", "worksheet/time", ...[1, 2, 3, 4, 5, 6, 7].map(n => "flatland/" + n)].forEach(v => views.add(v));   // deep routes
   Object.entries(Chrono.STOPS || {}).forEach(([id, T]) => { views.add("review/" + id); T.stops.forEach(s => views.add(s.href.slice(1))); });
-  const list = [...views], blank = []; let i = 0;
+  const list = [...views], blank = [], moved = []; let i = 0;
   let retried = false;
   const step = () => {
     if (i > 0 && drawn() === 0) {                            // a resize just cleared it? look once more before calling it blank
@@ -26,8 +26,10 @@ window.addEventListener("load", () => {
       blank.push(list[i - 1]);
     }
     retried = false;
+    const v0 = list[i - 1] && list[i - 1].split("/")[0], btn = v0 && document.querySelector(`header button[data-view="${v0}"]`), hidden = btn && btn.dataset.tier && !Chrono.shows(btn.dataset.tier);   // Workbench-only views are meant to redirect in Learn
+    if (i > 0 && !hidden && decodeURIComponent(location.hash.slice(1)).split("/")[0] !== v0) moved.push(`${list[i - 1]} → ${location.hash}`);   // redirected elsewhere
     if (i < list.length) { location.hash = list[i++]; setTimeout(step, 350); return; }
-    const out = document.createElement("pre"); out.id = "RES"; out.textContent = JSON.stringify({ views: list.length, errors: __E, blank }); document.body.appendChild(out);
+    const out = document.createElement("pre"); out.id = "RES"; out.textContent = JSON.stringify({ views: list.length, errors: __E, blank, moved }); document.body.appendChild(out);
   };
   step();
 });

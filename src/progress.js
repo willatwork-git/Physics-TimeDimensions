@@ -17,6 +17,9 @@
     lastAt: () => typeof d.lastAt === "number" ? d.lastAt : null,     // when the visitor was last in a lab (the 14-day recap)
     clearLast() { delete d.last; save(); },
 
+    /* the class this browser joined from a teacher's link (4c): { name, t (tour id) | l (lab ids), m (missions count), at } */
+    cls: () => d.cls && typeof d.cls === "object" ? d.cls : null,
+    setCls(c) { if (c) d.cls = c; else delete d.cls; save(); },
     pred: id => d.pred[id] || {},
     preds: () => Object.assign({}, d.pred),                          // every prediction key → { guess, checked } (the passport's record)
     /* Save / load the whole passport as a file: moving device, or storage cleared. No accounts, nothing sent. */

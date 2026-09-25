@@ -127,13 +127,29 @@ built-in guide — or press **?** — Concepts, quizzes, and the Learn / Workben
   you were right.
 - **Missions** — short, optional goals inside a lab (e.g. make the moving clock tick a third as fast; send the
   travelling twin home 10 years younger; run the gas backwards; reach Andromeda within a working life), with a
-  live progress bar, a hint and "Show me". Fifteen so far, across six labs.
+  live progress bar, a hint and "Show me". 38 across 18 labs; circles on each card show which are done, and
+  any can be picked or replayed.
 - **Picture it and Common trap** — each lab has one everyday analogy (and where it breaks) and one common
   misconception, with what the lab shows instead.
 - **Quizzes and review** — a short quiz at the end of each tour, and questions from labs you've explored
   that come back after a day, three days, a week and longer, to check what stuck.
 - **Glossary** — dotted-underlined terms show a plain definition on hover or tap.
-- **Progress** — ✓ marks on what you've seen, and "continue where you left off" (kept in your browser).
+- **Readouts and hints** — each sim has a bar of up to three big labelled numbers; in Learn mode each slider
+  shows a one-line hint until you've used it.
+- **Your passport** — a thin progress bar in the header opens it: a dated stamp for each tour you finish,
+  every lab by scale with its missions, your prediction record (the ones that surprised you link back), and
+  review questions due. Save it to a file and load it on another device — no accounts.
+- **Challenge a friend** — after a reveal, share a link carrying only the question and your guess; your friend
+  sees "A friend guessed …" before making theirs, and both guesses after.
+- **Progress** — ✓ marks on what you've seen, and "continue where you left off" (kept in your browser). Back
+  after a couple of weeks mid-tour? A quick recap of the stops you've done.
+
+**For teachers** *(Guide menu)*
+- **Class links** — pick a tour or a set of labs; students join from the link in their own browser, follow
+  the route, and hand back a short completion code (stops, missions, predictions right). Paste the codes into
+  the checker to see who got how far. No sign-in; nothing about students is sent anywhere.
+- **Printable worksheets** — one page per tour with each stop's prediction question, for classes without a
+  device each.
 
 **◌ Workbench** *(Workbench mode)*
 - **Exploratory ideas** — this project's own challenges to mainstream physics, and your hypotheses, in one place.

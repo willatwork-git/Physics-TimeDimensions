@@ -894,3 +894,35 @@ body.onhome .home2 { margin-inline: auto; }
 /* challenge links (4b) */
 .pfriend { margin: 0 0 8px; padding: 8px 10px; border-radius: var(--radius-s); background: color-mix(in srgb, var(--accent) 10%, transparent); font-size: 14px; }
 .pshare { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 8px; }
+
+/* ===== Phase 4c · teacher mode ===== */
+#classbar { padding: 8px 20px; background: color-mix(in srgb, var(--t-con) 8%, var(--bg)); border-bottom: 1px solid color-mix(in srgb, var(--t-con) 30%, transparent); font-size: 14px; }
+#classbar[hidden] { display: none; }
+#classbar .cb-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+#classbar .cb-name { font-weight: 600; } #classbar .cb-what { color: var(--text-2); }
+#classbar .cb-labs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+#classbar .cb-labs a { font-size: 13px; padding: 3px 9px; border-radius: 999px; background: rgba(255,255,255,0.04); color: var(--text-2); text-decoration: none; }
+#classbar .cb-labs a.seen { color: var(--text); background: color-mix(in srgb, var(--t-est) 14%, transparent); }
+#classbar .cb-code { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 8px; }
+#classbar .cb-code code { font: 600 20px var(--mono); letter-spacing: .04em; padding: 4px 10px; border-radius: var(--radius-s); background: var(--surface-2); color: var(--text); }
+.teach .tform { display: flex; flex-direction: column; gap: 10px; max-width: 760px; }
+.teach label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+.teach label.tch { flex-direction: row; align-items: center; gap: 8px; }
+.teach input[type="text"], .teach textarea { padding: 8px 10px; border-radius: var(--radius-s); border: 1px solid var(--line); background: var(--surface-1); color: var(--text); font: 14px var(--sans); }
+.teach textarea { font-family: var(--mono); }
+.teach fieldset { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; } .teach legend { font-size: 14px; margin-bottom: 4px; }
+.teach .tlabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; padding: 10px 0 0 24px; }
+.teach .tlabs[hidden] { display: none; }
+.teach .tlink { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; } .teach .tlink input { flex: 1 1 320px; font-family: var(--mono); font-size: 12px; }
+.ctable { border-collapse: collapse; font-size: 14px; margin: 8px 0; } .ctable th, .ctable td { text-align: left; padding: 6px 12px 6px 0; border-bottom: 1px solid var(--line); }
+.ctable th { font: 12px var(--mono); color: var(--text-3); } .ctable tr.bad td { color: var(--t-spe); }
+.worksheet .ws-q { margin: 18px 0; break-inside: avoid; } .worksheet ul { list-style: none; padding-left: 8px; margin: 6px 0; } .worksheet li { margin: 3px 0; }
+.worksheet .ws-why { margin: 8px 0 2px; font-size: 13px; color: var(--text-3); }
+.worksheet .ws-lines { height: 58px; background: repeating-linear-gradient(transparent 0 27px, var(--line) 27px 28px); } .worksheet .ws-lines.short { height: 30px; }
+@media print {
+  header, #aside, #classbar, #tourbar, #filters, .noprint, #lab-readouts { display: none !important; }
+  html, body, main, #stage, #doc { background: #fff !important; color: #000 !important; height: auto !important; overflow: visible !important; display: block !important; }
+  .worksheet, .worksheet * { color: #000 !important; } .worksheet .eyebrow, .worksheet .meta, .worksheet .ws-why { color: #444 !important; }
+  .worksheet .ws-lines { background: repeating-linear-gradient(transparent 0 27px, #999 27px 28px) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+.teach label.tch .meta { margin: 0; display: inline; } .teach fieldset { gap: 2px; }

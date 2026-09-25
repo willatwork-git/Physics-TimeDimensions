@@ -392,7 +392,7 @@
   function route() {
     const [v0, arg] = decodeURIComponent(location.hash.slice(1)).split("/");
     const btn = document.querySelector(`header button[data-view="${v0}"]`);
-    const known = btn || v0 === "home";
+    const known = btn || v0 === "home" || !!(Chrono.views && Chrono.views[v0]);   // registered views without a menu button too (e.g. #worksheet/…)
     const v = !v0 ? "home" : known && (!btn || !btn.dataset.tier || Chrono.shows(btn.dataset.tier)) ? v0 : "atlas";
     if (v0 && v !== v0) history.replaceState(null, "", "#atlas");
     let sel = null;

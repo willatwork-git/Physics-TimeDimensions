@@ -106,7 +106,10 @@
   window.addEventListener("hashchange", () => setTimeout(update, 60));
   window.addEventListener("load", () => setTimeout(update, 60));
 
-  Chrono.passport = { update, predRecord, missionCount, explored };
+  /* One prediction's outcome: null if it has no question or wasn't answered; else { right } (skips count as not made). */
+  const predResult = key => { const g = P().pred(key), info = predInfo(key);
+    return !info || info.Q.answer === undefined || g.guess === undefined || g.guess < 0 ? null : { right: g.guess === info.Q.answer }; };
+  Chrono.passport = { update, predRecord, missionCount, explored, predInfo, predResult };
   Chrono.lab.register({
     id: "passport", kind: "doc", title: "Your passport", eyebrow: "Progress", tier: "none",
     page, wire,
