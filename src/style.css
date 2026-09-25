@@ -632,3 +632,12 @@ button.info:hover, button.info:focus-visible { background: var(--accent); color:
 #lab-predict:empty { display: none; }
 #lab-predict { padding: 10px 12px 0; }
 #lab-predict .predict { margin: 0; }
+.proutes { margin-top: 8px; font-size: 12px; color: var(--muted); }
+.proutes .linkish { color: var(--accent); }
+
+/* ---------- Tour stop end card (D-043, UX spec §6) ---------- */
+.endcard { margin: 18px 0 8px; padding: 14px 16px; border-radius: 10px; background: color-mix(in srgb, var(--accent) 7%, var(--panel2)); border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line)); }
+.endcard .ec-take { font-size: 15px; font-weight: 600; margin: 6px 0; }
+.endcard .ec-hand { margin: 10px 0 12px; font-style: italic; color: var(--text); }
+.endcard .btn.primary { width: 100%; padding: 9px 12px; font-size: 14px; white-space: normal; text-align: left; }
+.endcard .ec-go { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; font-size: 13px; }

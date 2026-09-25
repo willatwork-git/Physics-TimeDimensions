@@ -7,36 +7,7 @@
   const $ = s => document.querySelector(s);
   const P = Chrono.progress;
 
-  /* q = the stop's question · where = shown on Home · see = the Home teaser (no spoilers) · say = the tour-bar instruction */
-  const TOURS = {
-    puzzle: { name: "The puzzle of time", blurb: "If you want the big question: why is there one time, and only one? From 'do clocks agree?' to 'is it a law of nature?'", stops: [
-      { href: "#clocks", where: "Clock Lab", q: "Do clocks agree?", see: "Two perfect clocks — and a surprise when one of them moves.", say: "Two perfect clocks, one moving. Push the speed up and count the ticks." },
-      { href: "#river", where: "The River", q: "Does gravity change time too?", see: "A black hole drawn as space flowing inward. Can light swim out?", say: "Near a black hole, space flows inward. Hover close to the horizon and read the clock rate." },
-      { href: "#spacetime", where: "Spacetime", q: "Is there one 'now' for everyone?", see: "Two lamps flash together — or do they?", say: "Two lamps flash at the same moment for you. Set a speed and see whether they still do for someone moving." },
-      { href: "#flatland/7", where: "Flatland", q: "So what is 'now'?", see: "A whole history stacked into one block.", say: "Stack every moment into one block. 'Now' becomes a slice — and nothing in the block says which one." },
-      { href: "#entropy", where: "Entropy box", q: "Why does time only run one way?", see: "A gas spreads out. Can you make it gather back?", say: "Remove the partition, let the gas spread, then reverse every velocity. Then try the nudge." },
-      { href: "#films", where: "Two Films", q: "Why only one time direction?", see: "Two identical starting frames. Watch what happens next.", say: "Give a universe two time directions and see what happens to predicting the future." },
-      { href: "#atlas/H5", where: "The Atlas", q: "So is one time dimension a law of nature?", see: "Everyone who has tried to answer it — and how far they got.", say: "Strong constraints, no settled answer. Here is everyone who has tried — click any of them." }
-    ] },
-    time: { name: "Is time travel possible?", blurb: "If you'd like the question everyone asks first: into the future, into the past — what the physics actually allows.", stops: [
-      { href: "#clocks", where: "Clock Lab", q: "Can you travel into the future?", see: "Yes — every moving clock does it. By how much?", say: "Push the moving clock towards light speed. Every tick it skips is a step into the future." },
-      { href: "#voyage", where: "The 1 g voyage", q: "How far into the future could you go?", see: "The galaxy's centre in 20 years — 26,000 on Earth.", say: "Fly to the centre of the galaxy. Then tick 'Compare with Newton'." },
-      { href: "#spacetime", where: "Spacetime", q: "Why can't you just come back?", see: "Light cones, and a twin who turns round.", say: "Switch to Twin paradox. The traveller's 'now' jumps at the turnaround." },
-      { href: "#river", where: "The River", q: "Could a black hole be a shortcut?", see: "Space flowing in faster than light can swim out.", say: "Fire light out from just outside and just inside the horizon." },
-      { href: "#wormhole", where: "Wormholes", q: "Can you cross a wormhole?", see: "Einstein and Rosen's bridge between two universes.", say: "Fire light inward, then watch the bridge open and close." },
-      { href: "#loops", where: "Time loops", q: "Could you loop back into your own past?", see: "A spinning universe where light cones tip over.", say: "Slide past the critical radius and walk the circle." },
-      { href: "#concepts/timetravel", where: "Concept", q: "So — is time travel possible?", see: "Forward, backward, paradoxes — the verdict.", say: "The verdict, with the paradoxes and Hawking's party for time travellers." }
-    ] },
-    zoom: { name: "From the ISS to the edge of the universe", blurb: "If you'd rather start with astronauts and spacecraft — then zoom out to the whole cosmos.", stops: [
-      { href: "#missions", where: "Mission clocks", q: "Does space travel make you younger?", see: "Clocks on the ISS, on GPS satellites, on the Moon.", say: "Pick ISS, then GPS, then Moon base. Which effect wins at each?" },
-      { href: "#mars", where: "Talking to Mars", q: "What does 'now' mean on Mars?", see: "A question and answer that take the best part of an hour.", say: "Press Farthest, then send a message. Watch it cross the spacetime diagram." },
-      { href: "#voyage", where: "The 1 g voyage", q: "How far could you go in a lifetime?", see: "The centre of the galaxy — by your own clock.", say: "Fly to Proxima, then the centre of the galaxy. Watch the two clocks pull apart." },
-      { href: "#expand", where: "Expanding universe", q: "Is everything flying away from us?", see: "Stand on any galaxy and look around.", say: "Click a few different galaxies. Then try the presets — and H₀ = 73." },
-      { href: "#horizons", where: "Cosmic horizons", q: "How far can we ever see?", see: "46 billion light-years — and a horizon no message can cross.", say: "Drag the galaxy outward. Then switch to ordinary distance and time." },
-      { href: "#janus", where: "The Janus point", q: "Where does time's arrow come from?", see: "A swarm of stars run forwards and backwards.", say: "Watch both panels from the Janus point: structure grows both ways." },
-      { href: "#boot", where: "Boot a Universe", q: "Why three space dimensions and one time?", see: "Boot other universes and watch them fail.", say: "Boot (4, 1), (2, 1) and (3, 2). Then try Orbits in n dimensions." }
-    ] }
-  };
+  const TOURS = Chrono.STOPS;                             // the tours and their stops live in stops.js (D-043)
   const SCALES = [
     { id: "quantum", name: "Quantum", sub: "The very small", col: "#5ee0e6", labs: [["delayed", "Delayed choice"], ["frozen", "The frozen universe"]] },
     { id: "voyages", name: "Voyages", sub: "People and spacecraft", col: "var(--c-lens)", labs: [["missions", "Mission clocks"], ["mars", "Talking to Mars"], ["voyage", "The 1 g voyage"], ["energy", "Earth's energy budget"]] },
@@ -65,6 +36,14 @@
   const cur = () => TOURS[P.tourId()] || TOURS.puzzle;
   function startTour(i, id) { P.setTour(i, id); P.visit("tour:" + id); Chrono.nav(TOURS[id].stops[i].href); }
   Chrono.startTour = startTour;
+  /* The stop this view is, if a tour is running and we're on its current stop: { tourId, i, stop, next } */
+  Chrono.stopFor = () => {
+    const i = P.tour(), id = P.tourId(), T = TOURS[id];
+    if (i === null || !T || !T.stops[i] || location.hash !== T.stops[i].href) return null;
+    return { tourId: id, i, stop: T.stops[i], next: T.stops[i + 1] || null, n: T.stops.length };
+  };
+  Chrono.tourNext = () => { const i = P.tour(), id = P.tourId(), T = TOURS[id]; if (i === null) return;
+    if (i >= T.stops.length - 1) { P.finishTour(); Chrono.nav("#review/" + id); } else startTour(i + 1, id); };
   Chrono.tourList = () => ["puzzle", "zoom", "time"].map(id => ({ id, name: TOURS[id].name }));
   Chrono.tourStops = id => TOURS[id] ? TOURS[id].stops.map(s => s.href.slice(1)) : [];
   Chrono.tour = {
@@ -89,9 +68,9 @@
       bar.querySelectorAll("[data-tb]").forEach(b => b.onclick = () => {
         const a = b.dataset.tb;
         if (a === "prev") startTour(i - 1, id);
-        else if (a === "next") { if (last) { P.finishTour(); Chrono.nav("#review/" + id); } else startTour(i + 1, id); }
+        else if (a === "next") Chrono.tourNext();
         else if (a === "resume") Chrono.nav(s.href);
-        else if (a === "leave") { P.setTour(null); Chrono.tour.renderBar(); }
+        else if (a === "leave") { P.setTour(null); Chrono.tour.renderBar(); if (Chrono.lab && Chrono.lab.rebuild) Chrono.lab.rebuild(); }   // the lab drops its stop framing
       });
     }
   };
@@ -109,7 +88,7 @@
           <span class="tp-body"><span class="tp-num">${NUM[k]}${k !== "puzzle" && !P.seen("tour:" + k) ? ' <em class="tp-new">New</em>' : ""}${P.tourDone(k) ? ' <em class="tp-done">✓ done</em>' : ""}</span>
           <span class="tp-name">${t.name}</span><span class="tp-blurb">${t.blurb}</span></span></button>`).join("")}</div>
       <div class="th-head">
-        <div><h2>${ICON[id]} ${T.name}</h2><p>Seven stops, about 20 minutes. No physics background needed.</p></div>
+        <div><h2>${ICON[id]} ${T.name}</h2><p>${["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"][T.stops.length] || T.stops.length} stops, about ${Math.max(10, Math.round(T.stops.length * 3 / 5) * 5)} minutes. No physics background needed.</p></div>
         <div class="th-go"><button class="btn primary big" data-go-tour="${mine ? running : 0}" data-tour-id="${id}">${mine ? `▶ Resume at stop ${running + 1}` : done ? "▶ Take it again" : "▶ Start the tour"}</button>
           ${done && !mine ? `<span class="meta">✓ You've completed this tour${P.quiz(id) ? ` · quiz best ${P.quiz(id).best} of ${P.quiz(id).n}` : ""} · <a href="#review/${id}">${P.quiz(id) ? "Retake" : "Take"} the quiz →</a></span>` : ""}</div>
       </div>

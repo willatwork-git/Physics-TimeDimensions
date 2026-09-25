@@ -42,6 +42,7 @@ Now a free public learning tool with a life of its own: four scales (Quantum · 
 | `DESIGN.md` | Visual language + physics fidelity rules |
 | `decisions.md` | Decision records |
 | `todo.md` | Tasks |
+| `stop-plans.md` | The 20 tour stops: question, setup, prediction, takeaway, handoff (UX spec Phase 0) |
 | `sources.md` | References with confidence tags |
 | `reviews/` | All reviews: `reviews.md` (external AI reviews, adopted / rejected), `learner-review.md`, the 2026-09-25 teaching and text reviews, and the UX, flow & stickiness design spec |
 | `learning.md` | Will's questions, intuitions, aha moments |

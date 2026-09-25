@@ -106,7 +106,7 @@
     const tb = half - v * D, ta = half + v * D;
     ctx.setLineDash([4, 5]); g.line(...P(half, D), ...P(tb, 0), g.alpha(C.orange, 0.7), 1); g.line(...P(half, D), ...P(ta, 0), g.alpha(C.orange, 0.7), 1); ctx.setLineDash([]);
     g.line(...P(tb, 0), ...P(ta, 0), C.pink, 5);
-    const [jx, jy] = P((tb + ta) / 2, 0); g.label(`jump: ${(ta - tb).toFixed(1)} yr`, jx + 10, jy + 4, C.pink, 11);
+    const [jx, jy] = P((tb + ta) / 2, 0); g.label(`'now' swings: ${(ta - tb).toFixed(1)} yr`, jx + 10, jy + 4, C.pink, 11);
     g.label("Earth", ...P(T, 0).map((q, i) => q + (i ? -8 : -18)), C.accent, 11);
     const [sx, sy] = P(half, D); g.label(`star, ${D} ly`, sx + 8, sy + 4, C.orange, 11);
     const [ex, ey] = P(tc, 0), [qx, qy] = P(tc, trav(tc));
@@ -170,6 +170,7 @@
     predict: { q: "Two lamps, far apart, flash at <b>exactly the same moment</b> for you. Someone flies past at high speed. For them, do the flashes still happen together?",
       options: ["Yes — 'the same moment' is the same for everyone", "No — for them one flash comes first", "Only if they fly exactly between the lamps"], answer: 1,
       explain: "Relativity has no single 'now' shared by everyone: each observer's line of simultaneity tilts with their speed. For events too far apart for any signal to connect them, different observers can even disagree about which came first. Events A and B start out as your two lamps — set the speed and read the table." },
+    applySetup(o) { Object.assign(SP, o); SP.twinT = 0; SP.view = SP.viewTarget = 0; SP.pbView = SP.pbTarget = 0; },
     id: "spacetime", title: "Spacetime diagram", eyebrow: "Lab · whose 'now'?", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {
       return `<button class="btn ${SP.mode === "now" ? "primary" : ""}" id="sp-now">Whose 'now'?</button>
@@ -241,8 +242,8 @@
       <p class="meta">Model assumption: special relativity in flat spacetime; one space dimension drawn; units where light travels one unit of distance per unit of time, so light rays run at 45°. <span class="tag ESTABLISHED">Established</span></p>` : `
       <p>One twin stays on Earth. The other flies to a star and back at a steady speed. When they meet again, the traveller is <b>younger</b> — not an illusion, but the same effect measured in the Clock Lab.</p>
       <div class="try"><b>Try:</b> speed 0.80 c, distance 4 light-years. The Earth twin ages 10 years, the traveller 6. Then push the speed to 0.99.</div>
-      <p><b>Isn't motion relative?</b> Only one twin <i>turns around</i>. The dashed lines are the traveller's 'now' just before and just after the turn: in that instant their 'now' swings across the <b style="color:var(--c-lens)">pink</b> stretch of Earth's history.</p>
-      <p>Add it up from the traveller's side: Earth's clock runs slow on both legs, plus the jump — and the total is exactly Earth's own elapsed time. Every observer's accounts agree.</p>
+      <p><b>Isn't motion relative?</b> Only one twin <i>turns around</i>. The dashed lines are the traveller's 'now' just before and just after the turn. Changing direction means changing frame, and with it which Earth events count as happening 'now': that assignment swings across the <b style="color:var(--c-lens)">pink</b> stretch of Earth's history. Nothing happens on Earth; it's the traveller's bookkeeping that changes.</p>
+      <p>What nobody can dispute is the reunion: the traveller is younger. Add it up from the traveller's side — Earth's clock runs slow on both legs, plus the swing — and the total is exactly Earth's own elapsed time. Every observer's accounts agree.</p>
       <p class="meta">Tested: atomic clocks flown round the world (Hafele–Keating, 1971), fast-moving muons that live longer, and the daily GPS corrections. Model: special relativity, flat spacetime, an instant turnaround. <span class="tag ESTABLISHED">Established</span></p>`,
     next: { q: "If every observer slices spacetime into 'nows' differently, what is 'now' at all?", href: "#flatland/7", label: "Flatland · Time as a slice" },
     sources: "A. Einstein (1905); H. Minkowski, 'Space and Time' (1908); J. C. Hafele & R. E. Keating, Science 177 (1972)."

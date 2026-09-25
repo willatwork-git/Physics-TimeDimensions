@@ -116,6 +116,7 @@
       q: "Mars is at its farthest from Earth, on the far side of the Sun. You radio a rover a question. How long until you hear its answer?",
       options: ["About 40 seconds", "About 40 minutes", "About 4 hours"], answer: 1,
       explain: "Radio travels at light speed: about 21 minutes each way at Mars's farthest, so a question-and-answer takes about three-quarters of an hour. At its closest, about 7 minutes. (And right behind the Sun, the Sun's glare blocks the signal: missions pause commands for about two weeks.)" },
+    applySetup(o) { if (o.far) { const b = document.querySelector("#tm-far"); if (b) b.click(); } },
     id: "mars", title: "Talking to Mars", eyebrow: "Voyages · what does 'now' mean across space?", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {
       return `<button class="btn primary" id="tm-send">Send a message to the rover</button>
@@ -212,6 +213,7 @@
       q: "A ship accelerates at a steady 1 g — the push of Earth's gravity — then turns and brakes at 1 g. How long does the crew, by their own clocks, take to reach the centre of our galaxy, 26,000 light-years away?",
       options: ["About 26,000 years", "About 20 years", "It can't be done — nothing gets that far that fast"], answer: 1,
       explain: "About 20 years by the crew's clocks. Nothing passes light speed, but the ship's clocks slow more and more as it approaches it (the twin paradox again), so a ship accelerating steadily can cross huge distances within a crew's lifetime. On Earth, 26,000 years pass. The catch is fuel: even a perfect matter–antimatter rocket would need about 700 million tonnes of fuel for each tonne of ship." },
+    applySetup(o) { if (o.dest) VY.dest = DEST.find(d => d.id === o.dest) || VY.dest; VY.p = 0; VY.play = true; },
     id: "voyage", title: "The 1 g voyage", eyebrow: "Voyages · how far in a lifetime?", tier: "mainstream", tags: ["ESTABLISHED", "SPECULATIVE"],
     controls() {
       return DEST.map(d => `<button class="btn ${VY.dest.id === d.id ? "primary" : ""}" data-dest="${d.id}">${d.n}</button>`).join("") +
@@ -252,6 +254,7 @@
       g.label("SHIP'S CLOCK", bx, y, C.pink, 10); g.label("EARTH'S CLOCK", bx + (B.w - 28) / 2, y, C.accent, 10);
       y += 26; g.text(fmtYears(now.tau), bx, y, C.pink, 20); g.text(fmtYears(now.t), bx + (B.w - 28) / 2, y, C.accent, 20);
       y += 20; g.label(`of ${fmtYears(tr.tau)}`, bx, y, C.muted, 10); g.label(`of ${fmtYears(tr.T)}`, bx + (B.w - 28) / 2, y, C.muted, 10);
+      y += 18; g.label(`There and back (the same trip in reverse): ship ${fmtYears(2 * tr.tau)} · Earth ${fmtYears(2 * tr.T)}`, bx, y, C.amber, 11, "left", "Inter, system-ui, sans-serif");
       y += 30; g.label("SPEED NOW", bx, y, C.muted, 10); g.bar(bx, y + 6, B.w - 28, 6, now.v, C.amber);
       y += 28; g.text(fmtV(now.v), bx, y, C.text, 14); g.label(`top speed ${fmtV(tr.vmax)} · clocks slowed up to ${fmtBig(tr.gmax)}×`, bx, y + 18, C.muted, 10);
       y += 48; g.label("FUEL, EVEN FOR A PERFECT PHOTON ROCKET", bx, y, C.muted, 10);

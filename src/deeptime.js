@@ -108,7 +108,7 @@
   });
 
   /* =====================================================================
-     COSMIC TIMELINE — from the first instant to the last black hole
+     COSMIC TIMELINE — from the Planck-time boundary to the last black hole
      ===================================================================== */
   const EVENTS = [
     { t: 5.4e-44, n: "Planck time", tag: "SPECULATIVE", d: "The earliest moment today's physics can describe, even in principle. Before it we'd need quantum gravity, which we don't have. Any account of 'before' is speculative." },
@@ -142,10 +142,11 @@
   function when(t) { return t < 1 ? `${sci(t, 0)} s after the Big Bang` : t === TODAY_S ? "now" : `${dur(t)} after the Big Bang`; }
 
   Chrono.lab.register({
-    predict: { q: "Lay out cosmic time in powers of ten, from the first instant physics can describe to the last black hole evaporating. Where does 'today' fall?",
+    predict: { q: "Lay out cosmic time in powers of ten, from the Planck time — where today's physics stops being reliable — to the last black hole evaporating. Where does 'today' fall on that chart?",
       options: ["Near the very end: we're latecomers", "Near the very beginning", "A little under halfway along"], answer: 2,
-      explain: "About 40% of the way along. On an ordinary clock we're at the very start: 13.8 billion years out of 10¹⁰⁰. But as many powers of ten passed before us (from 10⁻⁴⁴ of a second to 10¹⁷ seconds) as there are still to come before the last black holes are gone." },
-    id: "timeline", title: "Cosmic timeline", eyebrow: "Cosmos · from the first instant to the last black hole", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED", "SPECULATIVE"],
+      explain: "About 40% of the way across this chart. That's a position on a logarithmic scale whose endpoints we chose — not a fraction of the universe's lifetime. On an ordinary clock we're at the very start: 13.8 billion years out of 10¹⁰⁰. But as many powers of ten lie between the Planck time (10⁻⁴⁴ s) and today (10¹⁷ s) as between today and the last black holes." },
+    applySetup(o) { Object.assign(TL, o); },
+    id: "timeline", title: "Cosmic timeline", eyebrow: "Cosmos · from the Planck time to the last black hole", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED", "SPECULATIVE"],
     controls() {
       return `<button class="btn ${TL.mode === "log" ? "primary" : ""}" data-tl="log">Powers of ten</button>
         <button class="btn ${TL.mode === "lin" ? "primary" : ""}" data-tl="lin">Ordinary time: the story so far</button>
@@ -214,7 +215,7 @@
       g.label("Times: published values (Planck 2018; far future from Adams & Laughlin 1997).", A.x + 14, A.y + A.h - 12, C.muted, 10);
     },
     aside: () => `
-      <p>Everything from the first instant physics can describe to the last black hole, on one line. The trick is <b>powers of ten</b>: each tick is ten times longer than the one before, so a trillionth of a second and a trillion years both fit.</p>
+      <p>Everything from the Planck-time boundary, where today's physics stops being reliable, to the last black hole, on one line. The trick is <b>powers of ten</b>: each tick is ten times longer than the one before, so a trillionth of a second and a trillion years both fit.</p>
       <div class="try"><b>Try:</b> step through with <b>Later →</b> and read how sure we are of each. Then switch to <b>Ordinary time</b>: on a one-year calendar of the universe so far, the Sun forms in early September, and modern humans turn up about ${Math.round(3e5 * YR / TODAY_S * 365 * 1440)} minutes before midnight on 31 December.</div>
       <p><b>The arrow on the largest scale.</b> Early on, things happened fast and the universe was astonishingly smooth: low entropy. Everything since, from stars to life, has been that order running down. Far in the future there's almost nothing left to happen.</p>
       <p><b>How sure?</b> The first three minutes onwards are <span class="tag ESTABLISHED">Established</span>: the predicted helium and the cosmic microwave background match what we measure. Inflation is <span class="tag CONTESTED">Contested</span>. Before the Planck time, everything is <span class="tag SPECULATIVE">Speculative</span>. The far future is a projection of today's physics: sure physics, but nobody can check it.</p>

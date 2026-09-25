@@ -103,9 +103,10 @@
           if (!canvas) initCanvas();
           $("#lab").style.display = "flex"; active = def; resize(); Chrono.motion.reset();
           if (def.enter) def.enter(G);
-          if (lockState(def) !== "free" && def.predict.setup) def.predict.setup();
+          const fresh = lockState(def) !== "free" || !!framing(def).st;   // a tour stop always starts from its setup
+          if (fresh) setUp(def);
           Chrono.lab.rebuild();
-          if (lockState(def) !== "free" && def.predict.setup) def.predict.setup();   // some setups press a control, so run again once controls exist
+          if (fresh) setUp(def);                                         // some setups press a control, so run again once controls exist
           cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(frame);
         },
         hide() { if (active === def) { active = null; cancelAnimationFrame(raf); } applyLock(null); }
@@ -117,13 +118,27 @@
      def.predict = { q, options: [...], answer: index, explain, setup? }. States:
        locked  — no guess yet: sim paused on the question's setup, blurred (so no readout gives it away), controls off
        guessed — guess made: still locked; "Run it" unlocks
-       free    — ran it, skipped ("Just show me"), or no prediction: normal sandbox.
+       free    — ran it, chose a route without guessing ("Read the explanation first" / "Explore freely"), or no
+                 prediction: normal sandbox at the question's setup, explanation open. Nothing is held back.
      setup() puts the lab in the exact state the question describes (e.g. Clock Lab at 0.87 c).
      On phones the card sits above the sim, not below it. */
   const NARROW = "(max-width: 900px) and (orientation: portrait), (max-width: 600px)";
+  /* Framing (D-043): arriving through a tour stop, the lab takes that stop's question, setup and guess key
+     (lab:tour:stop); otherwise its own. stop.predict === null means no guess at that stop. */
+  function framing(def) {
+    const st = def && Chrono.stopFor ? Chrono.stopFor() : null;
+    const P = st && st.stop.predict !== undefined ? st.stop.predict : def && def.predict;
+    return { st, P, key: st ? `${def.id}:${st.tourId}:${st.i}` : def && def.id };
+  }
+  function setUp(def) {                                   // put the lab in the state its question describes
+    const { st, P } = framing(def);
+    if (st && st.stop.setup && def.applySetup) def.applySetup(st.stop.setup);
+    else if (P && P.setup) P.setup();
+  }
   function lockState(def) {
-    if (!def || !def.predict) return "free";
-    const g = Chrono.progress.pred(def.id);
+    const { P, key } = framing(def);
+    if (!def || !P) return "free";
+    const g = Chrono.progress.pred(key);
     return g.guess === undefined ? "locked" : g.guess >= 0 && !g.checked ? "guessed" : "free";
   }
   function applyLock(def) {
@@ -135,12 +150,12 @@
       : `<div class="veil-msg"><button class="btn primary big" data-pcheck>▶ Run it</button><span>See if you were right.</span></div>`;
   }
   /* Shared with Flatland: Chrono.predictCard(key, p) renders the card; Chrono.wirePredict(key, rerender) wires it. */
-  function predictCard(def) { return Chrono.predictCard(def.id, def.predict, "▶ Run it"); }
+  function predictCard(def) { const f = framing(def); return f.P ? Chrono.predictCard(f.key, f.P, "▶ Run it") : ""; }
   Chrono.predictCard = function (key, p, run) {
     const g = Chrono.progress.pred(key);
     if (g.guess === undefined) return `<div class="predict"><div class="eyebrow">Predict first</div><p>${p.q}</p>
       <div class="popts">${p.options.map((o, i) => `<button class="btn" data-guess="${i}">${o}</button>`).join("")}</div>
-      <button class="linkish" data-guess="-1">Just show me</button></div>`;
+      <div class="proutes"><span>Or, without guessing:</span> <button class="linkish" data-guess="-1" data-read>Read the explanation first</button> · <button class="linkish" data-guess="-1">Explore freely</button></div></div>`;
     if (g.guess < 0) return "";
     const right = g.guess === p.answer;
     return `<div class="predict">${!g.checked
@@ -149,13 +164,26 @@
   }
   Chrono.wirePredict = function (key, rerender) {
     const W = "#aside, #lab-predict, #lab-veil", q = s => document.querySelectorAll(W.split(", ").map(w => `${w} ${s}`).join(", "));
-    q("[data-guess]").forEach(b => b.onclick = () => { Chrono.progress.setPred(key, { guess: +b.dataset.guess }); rerender(); });
+    q("[data-guess]").forEach(b => b.onclick = () => {
+      const read = b.hasAttribute("data-read");
+      Chrono.progress.setPred(key, { guess: +b.dataset.guess }); rerender();
+      if (read) { const t = document.querySelector("#aside .intro") || document.querySelector("#aside"); t.scrollIntoView({ behavior: "smooth", block: "start" }); }   // reading route: straight to the explanation, sim unlocked
+    });
     q("[data-pcheck]").forEach(b => b.onclick = () => { Chrono.progress.setPred(key, Object.assign(Chrono.progress.pred(key), { checked: true })); rerender(); });
     q("[data-pagain]").forEach(b => b.onclick = () => { Chrono.progress.setPred(key, {}); rerender(); });
   };
+  /* End card at a tour stop: what you just saw, its limit, the handoff, and one primary action (UX spec §6). */
+  function endCard({ stop, next, i, n }) {
+    return `<div class="endcard"><div class="eyebrow">What you just saw · stop ${i + 1} of ${n}</div>
+      <p class="ec-take">${stop.takeaway} ${(stop.tags || []).map(t => `<span class="tag ${t}">${Chrono.TAGS[t]}</span>`).join(" ")}</p>
+      ${stop.limit ? `<p class="meta">Limit: ${stop.limit}</p>` : ""}
+      ${stop.handoff ? `<p class="ec-hand">${stop.handoff}</p>` : ""}
+      <button class="btn primary" data-tour-next>${next ? `Next: ${next.q} →` : "Finish: a quick quiz ✓"}</button>
+      ${stop.go ? `<div class="ec-go"><span class="eyebrow">Go deeper</span>${stop.go.map(([h, t]) => `<a href="${h}">${t} →</a>`).join("")}</div>` : ""}</div>`;
+  }
   function renderLabAside(def) {
-    const tier = def.tier || "mainstream", st = lockState(def), waiting = st !== "free";
-    if (st !== "free" && def.lastLock === "free" && def.predict.setup) def.predict.setup();   // "Ask me again": back to the question's setup
+    const tier = def.tier || "mainstream", st = lockState(def), waiting = st !== "free", fr = framing(def);
+    if (st !== "free" && def.lastLock === "free") setUp(def);   // "Ask me again": back to the question's setup
     def.lastLock = st;
     const above = waiting && def.kind !== "doc" && window.matchMedia(NARROW).matches;   // phones: the card goes above the sim
     const lp = $("#lab-predict"); if (lp) lp.innerHTML = above ? predictCard(def) : "";
@@ -165,20 +193,21 @@
       <div class="pillrow">${Chrono.tierPill(tier)} ${(def.tags || []).map(t => `<span class="tag ${t}">${Chrono.TAGS[t]}</span>`).join(" ")}</div>
       ${tier === "exploratory" ? Chrono.expBanner() : ""}
       ${Chrono.introFor ? Chrono.introFor(def.id) : ""}
-      ${def.predict && !above ? predictCard(def) : ""}
+      ${!above ? predictCard(def) : ""}
       ${waiting && Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
       ${waiting ? "" : typeof def.aside === "function" ? def.aside() : (def.aside || "")}
       ${!waiting && Chrono.guideFor ? Chrono.guideFor(def.id) : ""}
-      ${waiting || !Chrono.rememberFor ? "" : Chrono.rememberFor(def.id)}
+      ${waiting || !Chrono.rememberFor || fr.st ? "" : Chrono.rememberFor(def.id)}
       ${waiting || !Chrono.stickFor ? "" : Chrono.stickFor(def.id)}
       ${waiting || !Chrono.keyIdeas ? "" : Chrono.keyIdeas(def.id)}
       ${waiting || !Chrono.threadsFor ? "" : Chrono.threadsFor(def.id)}
-      ${def.next ? `<a class="nextq" href="${def.next.href}"><span class="eyebrow">Next question</span><span class="nq">${def.next.q}</span><span class="hgo">${def.next.label} →</span></a>` : ""}
+      ${fr.st ? (waiting ? "" : endCard(fr.st)) : def.next ? `<a class="nextq" href="${def.next.href}"><span class="eyebrow">Next question</span><span class="nq">${def.next.q}</span><span class="hgo">${def.next.label} →</span></a>` : ""}
       ${def.sources ? `<p class="caveat">Sources: ${def.sources}</p>` : ""}`;
     document.querySelectorAll("#aside [data-hole]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goHole(a.dataset.hole); });
     document.querySelectorAll("#aside [data-view-link]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goView(a.dataset.viewLink); });
     if (def.kind !== "doc") applyLock(def);
-    Chrono.wirePredict(def.id, () => renderLabAside(def));
+    Chrono.wirePredict(fr.key, () => renderLabAside(def));
+    document.querySelectorAll("#aside [data-tour-next]").forEach(b => b.onclick = () => Chrono.tourNext && Chrono.tourNext());
     if (def.wireAside) def.wireAside();
   }
 })();

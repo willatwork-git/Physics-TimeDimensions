@@ -125,6 +125,7 @@
       q: "A perfect clock moves past you at 0.87 of light speed. For every 2 ticks of your clock, how many does it make?",
       options: ["2 — a clock is a clock", "About 1 — it runs at half speed", "About 4 — motion speeds it up"], answer: 1,
       explain: "At 0.87 c the slowing factor γ is about 2, so the moving clock ticks about once for every two of yours. Set the slider to 0.87 and count. Not a fault in the clock: every process on board — atoms, heartbeats — slows the same way." },
+    applySetup(o) { Object.assign(CL, o); CL.T = 0; CL.trail = []; },
     id: "clocks", title: "Clock Lab", eyebrow: "Lab · why clocks disagree", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {
       return `<button class="btn ${CL.mode === "light" ? "primary" : ""}" id="cl-light">Light clock</button>
@@ -173,6 +174,7 @@
     });
     const by = H - pad - foot + 20, bw = Math.min(320, W - pad * 2);
     g.text(`γ = ${gamma.toFixed(3)}  —  ${narrow ? "" : "the moving clock "}ticks ${gamma.toFixed(2)}× slower`, pad, by + 10, C.text, 14);
+    g.label(`In your frame: 1 year on the moving clock = ${gamma < 10 ? gamma.toFixed(1) : Math.round(gamma)} years on yours`, narrow ? pad : pad + 340, narrow ? by + 26 : by + 34, C.amber, narrow ? 10 : 12, "left", "Inter, system-ui, sans-serif");
     g.label("MOTION THROUGH SPACE", pad, by + 38, C.muted, 10); g.bar(pad, by + 44, bw, 8, CL.v, C.amber);
     g.label("MOTION THROUGH TIME (clock rate)", pad, by + 70, C.muted, 10); g.bar(pad, by + 76, bw, 8, vert, C.teal);
     if (narrow) g.label("One budget: faster through space = slower through time.", pad, by + 104, C.muted, 10);

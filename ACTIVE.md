@@ -1,11 +1,9 @@
 # ACTIVE
 
-**Focus:** the UX spec roadmap (D-042, `reviews/Chronoscope — UX, Flow & Stickiness Design Spec.md`, phases in `todo.md`). **P0 done:** predict-first is now honest — labs stay paused and blurred on the question's exact setup until the visitor guesses and presses Run it; the side panel holds back the explanation; on phones the question sits above the sim. New headline: *"Two perfect clocks. One is moving. They disagree."*
+**Focus:** UX spec Phase 1 (D-042/D-043). **1a done:** the signed-off stop plans are now `src/stops.js` — 20 stops, and every lab is framed by the stop you arrive from: the stop's question, setup and guess key (`lab:tour:stop`), then an end card with takeaway, limit, handoff and one Next button. Tour 2 is six stops, ending at the Cosmic timeline. Tour 3 readouts built (Clock Lab years; voyage there-and-back: 39.5 ship years, 52,004 Earth years).
 
-**Next:** Phase 0 — draft plans for all 21 tour stops for Will to edit. Then Phase 1 (Clock Lab prototype). Stars lab (`src/stars.js`, D-043) fitted in between; scene 1 drawn, not yet loaded.
+**Next:** 1b missions (`src/missions.js`, two for Clock Lab) · 1c quick wins (Continue card, resume-tour chip) · then Phase 2 (four-item top bar, home cut to five blocks). Stars lab (`src/stars.js`, now D-044) fitted in between.
 
-**Positioning:** the app is a lens over time — time the central theme, not a limit (CLAUDE.md).
+**State:** 36 routes pass in Learn, Lab and school edition, with no errors and **no blank lab canvases** (new check, after a render-loop name clash). Assets at `?v=44`. Uncommitted: all of Phase 1a, SOL review fixes, headline.
 
-**State:** 21 canvas labs + Flatland, story page, three tours with quizzes, Workbench. 36 routes pass headless checks in Learn, Lab and school edition. Assets at `?v=42`. Uncommitted: the P0 fix, headline, reviews/ references.
-
-**Open decisions later:** illustration style for the story page; guess counter and analytics at the domain move.
+**Suggested:** once pushed, SOL could spot-check the live app — its sign-off covered the plan, not the live changes.

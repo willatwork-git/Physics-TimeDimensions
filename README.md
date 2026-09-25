@@ -116,7 +116,7 @@ quizzes and the tours. ⌂ Home is always one click away, and each side panel st
 
 **Learning aids**
 - **Three guided tours** — *The puzzle of time* (seven stops from "Do clocks agree?" to "Is one time
-  dimension a law of nature?"), *From the ISS to the edge of the universe*, and *Is time travel possible?*
+  dimension a law of nature?"), *From the ISS to the edge of the universe* (six stops, out to the Cosmic timeline), and *Is time travel possible?*
   (from clocks that disagree to wormholes and time loops).
 - **Threads** — each lab links to the same question at the other scales (clocks, 'now', the arrow, 3 + 1).
 - **Concepts** — ⓘ markers give a short "why" on hover or tap; the Concepts pages (under Explore) tell the full
@@ -124,7 +124,8 @@ quizzes and the tours. ⌂ Home is always one click away, and each side panel st
   time, time travel, holography, two-time physics — plus
   links to other free sites that explore each idea well.
 - **Predict first** — each lab asks for your guess first and stays paused, and hidden, until you've made it
-  (or chosen "Just show me"); then "Run it" shows whether you were right.
+  — or chosen to read the explanation first, or explore freely; nothing is held back. "Run it" shows whether
+  you were right.
 - **Picture it and Common trap** — each lab has one everyday analogy (and where it breaks) and one common
   misconception, with what the lab shows instead.
 - **Quizzes and review** — a short quiz at the end of each tour, and questions from labs you've explored
@@ -201,6 +202,7 @@ src/
   quantum.js        Delayed choice, The frozen universe
   timetravel.js     Wormholes, Time loops
   deeptime.js       Black holes evaporate, Cosmic timeline, Earth's energy budget
+  stops.js          the three tours' stops: question, setup, prediction, takeaway, handoff
   story.js          How it all fits together (the comic strip)
   voyages.js        Mission clocks, Talking to Mars, The 1 g voyage
   cosmos.js         Expanding universe, Cosmic horizons, Boot a Universe, The Janus point
