@@ -7,3 +7,5 @@
 **State:** 36 routes pass in Learn, Lab and school edition, with no errors and **no blank lab canvases** (new check, after a render-loop name clash). Assets at `?v=61`. Uncommitted: all of Phase 1a, SOL review fixes, headline.
 
 **SOL live spot-check (2026-09-26):** passed on the core; four fixes adopted and built — overlay offers all three starts, tour "done" needs every stop visited, Clock Lab example matches the stop, quiz labelled optional. Assets at `?v=61`.
+
+**How to resume:** read this file, then `todo.md` (UX spec roadmap section) and the latest entries in `decisions.md` (D-042 onward). Check health with `tools/regress.sh` (one command; see `tools/README.md`). Bump `?v=` in `index.html` with every shipped change.

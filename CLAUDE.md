@@ -13,15 +13,15 @@ Now a free public learning tool with a life of its own: four scales (Quantum · 
 - Move order: DNS at registrar first → `CNAME` file + Pages custom domain → update og:url / og:image and README links. A CNAME before DNS works breaks the live site.
 - Will commits and pushes; Claude only offers.
 
-## Working rules
-- Propose before executing any multi-step change. Will reviews; Claude builds.
-- No sub-agents without asking Will first.
-- Keep `ACTIVE.md` current — **replace, never append**. Archive finished material to `/archive`.
-- Keep this file under ~60 lines.
-- The GitHub repo is public: anything committed is published.
-- External review: ChatGPT ("SOL") reviews plans and spot-checks the live site. Judge each point on its merits, log adopted/rejected in `reviews/reviews.md`; Will arbitrates.
-- UX work follows `reviews/Chronoscope — UX, Flow & Stickiness Design Spec.md` (D-042); tour content lives in `src/stops.js`, from `stop-plans.md`.
-- Tests: headless Chrome runs no animation frames under simulated time — test frame-driven logic by stepping labs (`Chrono.lab.def(id)`); the regression also fails on blank lab canvases.
+## Ways of working
+- **Roles.** Will sets direction, decides, and clears the path ahead; Claude proposes, builds, tests and records. No sub-agents without asking Will first.
+- **Two kinds of change.** Housekeeping (`tools/`, tests, doc hygiene, refactors a visitor can't see): do it, tell Will in a line. Product (anything a visitor sees, physics content, UX): propose first. UX follows the UX spec (D-042); tour content lives in `src/stops.js`, from `stop-plans.md`.
+- **Healthy = `tools/regress.sh` passes.** Run it after each change set. The harness is Claude's to own: when a bug slips past it, adding the check is part of the fix (see `tools/README.md`).
+- **Done means:** regress passes · `?v=` bumped if `src/` changed · decision logged if one was made · ACTIVE.md true · README updated if a visible feature changed · new claims traced in `sources.md`.
+- **Evidence.** Physics numbers come from the labs' own formulas, never estimates. Mission targets are reachable and never met at any starting setup. Text probes first; screenshots for visual questions.
+- **Review (optional).** ChatGPT ("SOL") can review plans or spot-check the live site. Claude may suggest one when outside eyes would help. Judge each point on its merits, log it in `reviews/reviews.md`; Will arbitrates.
+- **Sessions.** Staying in a long session is fine; a fresh session per big piece of work is cheaper and preferred. Keep ACTIVE.md true as you go (**replace, never append**; finished material to `/archive`), so `/handover` is quick whenever Will switches.
+- Keep this file under ~60 lines. The GitHub repo is public: anything committed is published.
 
 ## Physics integrity (non-negotiable)
 - Every on-screen claim carries a tag: **ESTABLISHED / CONTESTED / SPECULATIVE / ANALOGY / HYPOTHESIS** — tag claims, not papers. Loose ideas are welcome; they must be labelled, and should say what they predict and what would kill them.

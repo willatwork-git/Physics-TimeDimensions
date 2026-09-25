@@ -1,0 +1,9 @@
+#!/bin/bash
+# Chronoscope pre-commit. Enable once per clone:  git config core.hooksPath tools/hooks
+# A failing regression blocks the commit. Doc gaps only warn. Bypass in an emergency: git commit --no-verify
+REPO="$(git rev-parse --show-toplevel)"
+staged=$(git diff --cached --name-only)
+echo "$staged" | grep -q '^src/' && ! echo "$staged" | grep -q '^ACTIVE.md$' && echo "! pre-commit: src/ changed but ACTIVE.md isn't staged — is the current focus still right?"
+echo "$staged" | grep -q '^src/' && ! echo "$staged" | grep -q '^README.md$' && echo "! pre-commit: src/ changed — does README.md still describe the features? (warning only)"
+echo "$staged" | grep -qE '^(src/|index.html)' || exit 0     # docs-only commit: skip the browser run
+"$REPO/tools/regress.sh" || { echo "✗ pre-commit: regression failed — commit blocked. Detail: tools/last-run.log"; exit 1; }
