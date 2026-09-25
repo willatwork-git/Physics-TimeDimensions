@@ -17,7 +17,7 @@ AI session's context. Exit code 1 if anything failed.
 |---|---|
 | `10-syntax` | Every `src/*.js` parses (`node --check`) |
 | `20-version` | Every `src/` link in `index.html` carries the same `?v=N`; fails if `src/` changed since the last commit but `?v=` didn't move (prints the fix) |
-| `30-views` | Every `header [data-view]`, tour stop and tour quiz loads in Learn, Workbench (`?mode=lab`) and school edition (`?edition=school`) with no JS errors and no blank lab canvas |
+| `30-views` | Every `header [data-view]`, tour stop, tour quiz and Flatland chapter loads in Learn, Workbench (`?mode=lab`) and school edition (`?edition=school`) with no JS errors and no blank lab canvas |
 | `40-labs` | Every lab's `tick` + `draw` steps without error; every lab has `readouts()` giving up to 3 `[label, value]` pairs with real values; every mission in `Chrono.MISSIONS` is **not** passed on arrival and **does** complete via "Show me", then advances; mission circles (one per mission, filled when done, each reopens its mission); Try boxes hidden until a lab's missions are done; every slider matches a guide row (control hints — a WARN names any that don't) |
 
 **Pre-commit hook** (`tools/hooks/pre-commit`, enable once per clone: `git config core.hooksPath tools/hooks`):
@@ -41,8 +41,12 @@ Drop `tools/checks/NN-name.sh` in (NN sets the order). Contract:
 - Prove the check can fail before trusting it: break the thing once, watch it go red, restore.
 
 ## Quirks
-- **Headless Chrome runs no animation frames under virtual time.** Frame-driven logic is tested by calling
+- **Headless Chrome runs no animation frames under virtual time** (timers do run). The views probe therefore
+  replaces `requestAnimationFrame` with a 16 ms timer, so the app's real frame loops draw. Without that, every canvas
+  stays transparent and a blank check passes on nothing (it did, until 2026-09-25). The labs probe instead steps
   `Chrono.lab.def(id).tick(dt)` and `Chrono.missions.tick(def, dt)` directly.
+- A canvas looks empty for a moment after a resize clears it; the blank check looks twice (400 ms apart) before failing.
+  Only painted pixels count (alpha > 0 and not the stage colour).
 - `progress.js` reads localStorage when it loads — set state in a probe via `Chrono.progress.*` after `load`,
   not by writing localStorage.
 - Browser errors carry the route that was showing and two stack frames. Chrome runs with `--allow-file-access-from-files`; without it, errors from `file://` scripts arrive as an opaque "Script error." with no detail.

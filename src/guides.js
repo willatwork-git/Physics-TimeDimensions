@@ -226,6 +226,12 @@
       "The bridge is real mathematics, but it pinches shut too fast for anything to cross — and real black holes don't have one."],
     loops: ["A universe where all the matter rotates. Watch what that does to light cones — and to the past.",
       "Einstein's equations allow time loops in spinning universes — ours isn't one, and nobody knows if nature forbids them."],
+    "flatland/1": [null, "A Flatlander sees only a line: edges and shades along one dimension. Everything he knows about shapes, he works out from that line."],
+    "flatland/2": [null, "A Square never sees the Sphere, only the slice where it meets his plane: a point, a circle that grows and shrinks, then nothing. One object, met one slice at a time."],
+    "flatland/3": [null, "Each new dimension doubles the shape and joins every corner to its copy — a rule you can follow into dimensions you can't picture."],
+    "flatland/4": [null, "A 4D ball passing through our space would look like a sphere that appears from nowhere, grows, shrinks and vanishes — exactly how the Sphere looked to A Square."],
+    "flatland/5": [null, "Tilting the slice through a 4D cone gives spheres, ellipsoids, paraboloids and hyperboloids — the 3D cousins of the circles, ellipses, parabolas and hyperbolas you get from an ordinary cone."],
+    "flatland/6": [null, "What we'd see of a tesseract depends on how it meets our space: corner-first it starts as a small tetrahedron, face-first as a cube. The shape never changes; only the slice does."],
     "flatland/7": [null, "In the block picture every moment is equally there, and nothing marks one of them as 'now'. That's why 'now' is a puzzle."]
   };
   Chrono.introFor = key => TEXT[key] && TEXT[key][0] ? `<p class="intro">${TEXT[key][0]}</p>` : "";

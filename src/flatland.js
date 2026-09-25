@@ -5,7 +5,7 @@
   const F = Chrono.flatland = {};
   const TAU = Math.PI * 2;
   const C = {
-    bg: "#0b0d12", panel: "#12151d", line: "#232836", text: "#e6e8ee", muted: "#8a90a2",
+    bg: "#151924", panel: "#12151d", line: "#232836", text: "#e6e8ee", muted: "#8a90a2",
     accent: "#7cc4ff", pink: "#e36bd0", violet: "#9b8cff", teal: "#4fd1a5", amber: "#f2c94c", orange: "#ff7a59"
   };
   let canvas, ctx, W = 0, H = 0, raf = 0, active = false, chapter = 0, last = 0;
@@ -73,9 +73,9 @@
   function label(txt, x, y, color = C.muted, size = 11, align = "left", font = "JetBrains Mono, monospace") {
     ctx.fillStyle = color; ctx.font = `${size}px ${font}`; ctx.textAlign = align; ctx.fillText(txt, x, y);
   }
-  function panel(x, y, w, h, title) {
-    ctx.strokeStyle = C.line; ctx.lineWidth = 1; ctx.strokeRect(x + .5, y + .5, w - 1, h - 1);
-    if (title) label(title.toUpperCase(), x + 12, y + 20, C.muted, 10);
+  function panel(x, y, w, h, title) {                     // a surface, not a border (3b), same as the labs
+    ctx.fillStyle = "rgba(255,255,255,0.025)"; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, 10) : ctx.rect(x, y, w, h); ctx.fill();
+    if (title) label(Chrono.capsTitle ? Chrono.capsTitle(title) : title.toUpperCase(), x + 12, y + 20, C.muted, 10);
   }
   function poly(pts, map, fill, stroke, lw = 1.5) {
     ctx.beginPath();
@@ -741,25 +741,46 @@
       <h2>${ch.title}</h2>
       <div class="pillrow"><span class="tag ANALOGY">Analogy</span> <span class="tag ESTABLISHED">Established geometry</span></div>
       ${pred ? Chrono.predictCard(pkey, pred) : ""}
-      ${Chrono.guideFor ? Chrono.guideFor(pkey) : ""}
       ${body}
-      ${waiting ? "" : Chrono.rememberFor ? Chrono.rememberFor(pkey) : ""}
       ${waiting ? "" : Chrono.stickFor ? Chrono.stickFor(pkey) : ""}
-      ${Chrono.keyIdeas ? Chrono.keyIdeas("flatland/" + (chapter + 1)) : ""}
-      ${Chrono.threadsFor ? Chrono.threadsFor("flatland/" + (chapter + 1)) : ""}
-      <div class="row" style="justify-content:space-between">
-        <button class="btn" data-step="-1" ${chapter === 0 ? "disabled" : ""}>← Previous</button>
-        ${chapter < CH.length - 1 ? `<button class="btn primary" data-step="1">Next: ${SHORT[chapter + 1]} →</button>` : `<a class="btn primary" href="#films">Next: Two Films →</a>`}
-      </div>
+      ${Chrono.keyIdeas ? Chrono.keyIdeas(pkey) : ""}
+      ${waiting || !Chrono.endCard ? "" : Chrono.endCard({ id: pkey, next: chapter < CH.length - 1
+        ? { q: HOOK[chapter + 1], href: "#flatland/" + (chapter + 2), label: `chapter ${chapter + 2}, ${SHORT[chapter + 1]}` }
+        : { q: "Flatland showed time as one slice through a block. What if there were two time directions?", href: "#films", label: "Two Films" } }, Chrono.stopFor ? Chrono.stopFor() : null)}
+      ${chapter > 0 ? `<p class="meta"><button class="linkish" data-step="-1">← Previous chapter: ${SHORT[chapter - 1]}</button></p>` : ""}
       <p class="caveat">Sources: E. A. Abbott, <i>Flatland</i> (1884, public domain) · C. Sagan, <i>Cosmos</i> ep. 10 (1980) · TED-Ed, "Exploring other dimensions" (Rosenthal &amp; Zaidan) · 4D visualisation video (YouTube): <a href="https://www.youtube.com/watch?v=4URVJ3D8e8k" target="_blank">youtube.com/watch?v=4URVJ3D8e8k</a>.</p>`;
     document.querySelectorAll("#aside [data-step]").forEach(b => b.onclick = () => go(chapter + +b.dataset.step));
+    document.querySelectorAll("#aside [data-tour-next]").forEach(b => b.onclick = () => Chrono.tourNext && Chrono.tourNext());
     if (pred) Chrono.wirePredict(pkey, renderAside);
     $("#aside [data-contents]").onclick = () => { introOpen = !introOpen; renderSteps(); renderIntro(); };
     document.querySelectorAll("[data-rev]").forEach(b => b.onclick = () => { st.reveal[b.dataset.rev] = true; renderAside(); });
     document.querySelectorAll("#aside [data-hole]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goHole(a.dataset.hole); });
     document.querySelectorAll("#aside [data-view-link]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goView(a.dataset.viewLink); });
   }
-  function buildControls() { $("#fl-controls").innerHTML = CH[chapter].controls(); CH[chapter].wire(); }
+  function buildControls() {
+    const key = "flatland/" + (chapter + 1), help = Chrono.guideFor ? Chrono.guideFor(key) : "", pop = $("#fl-pop");
+    $("#fl-controls").innerHTML = CH[chapter].controls() + (help ? `<button class="btn ctlhelp" data-ctlhelp aria-expanded="false" title="What each control does">ⓘ What the controls do</button>` : "");
+    if (pop) { pop.hidden = true; pop.innerHTML = help; }
+    const b = $("#fl-controls [data-ctlhelp]"); if (b && pop) b.onclick = () => { pop.hidden = !pop.hidden; b.setAttribute("aria-expanded", !pop.hidden); };
+    CH[chapter].wire();
+    if (Chrono.controlHints) Chrono.controlHints({ id: key }, "#fl-controls");
+  }
+  /* Readout bar (3b), only where a chapter has a headline number that doesn't give a prediction away. */
+  const READ = {
+    1: () => { const z = st.sphereZ, R = st.sphereR, r = Math.abs(z) < R ? Math.sqrt(R * R - z * z) : 0;
+      return [["Sphere's height above the plane", z.toFixed(2)], ["What A Square sees", r > 0 ? `a circle, radius ${r.toFixed(2)}` : "nothing"]]; },
+    4: () => [["Tilt of the slice", `${Math.round(st.coneTh)}°`], ["The slice is", coneShape(st.coneTh)]],
+    6: () => [["'Now'", st.now.toFixed(2)]]
+  };
+  let roHTML = "", roT = 0;
+  function readouts() {
+    const el = $("#fl-readouts"); if (!el) return;
+    const pred = PREDICT[chapter + 1], waiting = pred && Chrono.progress.pred("flatland/" + (chapter + 1)).guess === undefined;
+    const r = !waiting && READ[chapter] ? READ[chapter]() : null;
+    const html = r ? r.map(([k, v]) => `<div class="ro"><b>${v}</b><span>${k}</span></div>`).join("") : "";
+    if (html !== roHTML) { roHTML = html; el.innerHTML = html; el.hidden = !html; }
+  }
+  F.readouts = () => READ[chapter] ? READ[chapter]() : null;   // for the regression
   const clampCh = i => Math.max(0, Math.min(CH.length - 1, Number.isInteger(i) ? i : 0));
   /* Chapter changes go through the URL (#flatland/3) so chapters can be linked to and Back works. */
   function go(i) { Chrono.nav("#flatland/" + (clampCh(i) + 1)); }
@@ -777,6 +798,7 @@
     CH[chapter].tick(Chrono.motion.dt(dt));
     ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
     CH[chapter].draw();
+    if (ts - roT > 100) { roT = ts; readouts(); }
     raf = requestAnimationFrame(frame);
   }
   function pointer(e) {
@@ -813,7 +835,8 @@
     if (!canvas) initCanvas();
     const firstVisit = !CH.some((c, i) => seenCh(i));
     introOpen = firstVisit && !/^#flatland\/\d/.test(location.hash);
-    active = true; resize(); Chrono.motion.reset(); buildControls(); renderAside(); renderSteps(); renderIntro();
+    document.body.dataset.scale = "labs";                   // the Physics glow on the stage
+    active = true; resize(); Chrono.motion.reset(); buildControls(); renderAside(); renderSteps(); renderIntro(); readouts();
     if (!introOpen) Chrono.progress.visit("flatland/" + (chapter + 1));
     cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(frame);
   };

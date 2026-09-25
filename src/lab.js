@@ -89,15 +89,16 @@
   /* Control hints (UX 3c): each control is matched by name to its row in guides.js. Sliders get the row's first sentence
      as a grey line underneath — in Learn mode, until that slider is first moved (remembered in this browser). Every
      matched control also gets the full row as its tooltip. Workbench mode keeps the toolbar compact. */
+  Chrono.controlHints = (def, box) => controlHints(def, box);
   const HINT_KEY = "chronoscope.hintsUsed.v1";
   const hintsUsed = () => { try { return JSON.parse(localStorage.getItem(HINT_KEY)) || {}; } catch (e) { return {}; } };
-  function controlHints(def) {
+  function controlHints(def, box = "#lab-controls") {
     const rows = Chrono.guideRows ? Chrono.guideRows(def.id) : []; if (!rows.length) return;
     const norm = t => String(t).toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
     const parts = k => String(k).split(/,|\/| or /).map(norm).filter(q => q.length >= 3);   // "Matter, Dark energy" names two controls
     const find = t => { const n = norm(t).slice(0, 14); return n.length < 3 ? null : rows.find(([k]) => k && parts(k).some(q => q.startsWith(n) || n.startsWith(q.slice(0, 14)))); };
     const learn = !Chrono.mode || Chrono.mode() !== "lab", used = hintsUsed(), shown = new Set();
-    document.querySelectorAll("#lab-controls label.ctl").forEach(lb => {
+    document.querySelectorAll(`${box} label.ctl`).forEach(lb => {
       const input = lb.querySelector('input[type="range"]'); if (!input) return;
       const row = find([...lb.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join(" ")); if (!row) return;
       lb.title = row[1]; const key = def.id + ":" + row[0];
@@ -106,7 +107,7 @@
       const h = document.createElement("small"); h.className = "hint"; h.textContent = row[1].split(/(?<=\.)\s/)[0]; lb.appendChild(h); lb.classList.add("has-hint");
       input.addEventListener("input", () => { const u = hintsUsed(); u[key] = 1; try { localStorage.setItem(HINT_KEY, JSON.stringify(u)); } catch (e) { } h.remove(); lb.classList.remove("has-hint"); }, { once: true });
     });
-    document.querySelectorAll("#lab-controls .btn:not([data-ctlhelp])").forEach(b => { if (b.title) return; const row = find(b.textContent); if (row) b.title = row[1]; });
+    document.querySelectorAll(`${box} .btn:not([data-ctlhelp])`).forEach(b => { if (b.title) return; const row = find(b.textContent); if (row) b.title = row[1]; });
   }
   function frame(ts) {
     if (!active) return;
@@ -246,6 +247,7 @@
       ${leads.length ? `<div class="ec-go"><span class="eyebrow">Where this leads</span>${leads.map(([k, n, sc, th]) => `<a href="#${k}" title="${th}"><i>${sc}</i> ${n} →</a>`).join("")}</div>` : ""}
       ${rl ? `<p class="meta ec-rev">🔁 ${rl}</p>` : ""}</div>`;
   }
+  Chrono.endCard = endCard;                                // Flatland's chapters use the same end card
   function renderLabAside(def) {
     const tier = def.tier || "mainstream", st = lockState(def), waiting = st !== "free", fr = framing(def);
     if (st !== "free" && def.lastLock === "free") setUp(def);   // "Ask me again": back to the question's setup
