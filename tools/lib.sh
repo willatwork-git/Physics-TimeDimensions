@@ -34,3 +34,6 @@ fail() { echo "FAIL $*"; }
 log()  { echo "$*" >> "$LOG"; }
 # Read a field from probe JSON: jget "$json" errors  → array items joined by " | " (empty if none), or the scalar.
 jget() { node -e 'const v=JSON.parse(process.argv[1])[process.argv[2]];process.stdout.write(Array.isArray(v)?v.join(" | "):String(v??""))' "$1" "$2"; }
+# Short form of a probe list for the screen: the first item (usually the root cause) with file paths trimmed to
+# the file name, plus "(+N more — see log)". Empty if the list is empty. The full list is in the log.
+jfirst() { node -e 'const v=JSON.parse(process.argv[1])[process.argv[2]]||[];if(!v.length)process.exit();const t=s=>String(s).replace(/file:\/\/\S*\/([^\/\s?]+)(\?v=\d+)?/g,"$1").slice(0,300);process.stdout.write(t(v[0])+(v.length>1?` (+${v.length-1} more — see log)`:""))' "$1" "$2"; }

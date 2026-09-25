@@ -5,8 +5,8 @@ try { localStorage.clear(); } catch (e) { }
 const drawn = () => {                                         // null when no lab canvas is showing
   const c = document.querySelector("#lab-canvas"), lab = document.querySelector("#lab");
   if (!c || !lab || lab.style.display !== "flex" || !c.width) return null;
-  const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data; let n = 0;
-  for (let i = 0; i < d.length; i += 4 * 37) if (Math.abs(d[i] - 11) + Math.abs(d[i + 1] - 13) + Math.abs(d[i + 2] - 18) > 30) n++;
+  const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data, bg = [1, 3, 5].map(k => parseInt(Chrono.C.bg.substr(k, 2), 16)); let n = 0;   // pixels that differ from the stage colour
+  for (let i = 0; i < d.length; i += 4 * 37) if (Math.abs(d[i] - bg[0]) + Math.abs(d[i + 1] - bg[1]) + Math.abs(d[i + 2] - bg[2]) > 30) n++;
   return n;
 };
 window.addEventListener("load", () => {

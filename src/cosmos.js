@@ -51,6 +51,8 @@
       explain: "Space itself is stretching, everywhere at once. From <i>any</i> galaxy, the others recede with speed proportional to distance (Hubble's law), so every galaxy looks like the centre and none is. Click any galaxy in the lab to stand on it." },
     applySetup(o) { Object.assign(EX, o, { preset: null, t: 0.02, play: true }); exSolve(); },
     state() { if (!EX.S) exSolve(); return { m: EX.m, l: EX.l, H0: EX.H0, fate: EX.S.fate, age: EX.S.t0 ? EX.S.t0 * GYR(EX.H0) : null }; },   // read-only, for missions
+    readouts() { if (!EX.S) exSolve(); const S = EX.S, gy = GYR(EX.H0);
+      return [["Age today", S.t0 !== null ? `${(S.t0 * gy).toFixed(2)} bn yr` : "never reaches today"], ["Time shown", `${(EX.t * gy).toFixed(2)} bn yr`], ["Expansion rate then", `${(Hat(S, EX.t) * EX.H0).toFixed(1)} km/s/Mpc`]]; },
     id: "expand", title: "Expanding universe", eyebrow: "Cosmos · is everything flying away from us?", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     enter() { if (!EX.S) exSolve(); },
     controls() {
@@ -98,8 +100,7 @@
       const cur = P(EX.t, a); g.line(cur[0], py, cur[0], py + ph, g.alpha(C.pink, 0.6)); g.dot(...cur, 4, C.pink);
       g.label("time →", px + pw, py + ph + 14, C.muted, 9, "right"); g.label("size", px - 34, py + 8, C.muted, 9);
       const x0 = B.x + 14; let y = py + ph + 38;
-      if (S.t0 !== null) { g.text(`Age today: ${(S.t0 * gy).toFixed(2)} billion years`, x0, y, C.text, 13); y += 20; }
-      else { g.text("This universe never grows to today's size.", x0, y, C.pink, 13); y += 20; }
+      if (S.t0 === null) { g.text("This universe never grows to today's size.", x0, y, C.pink, 13); y += 20; }
       g.label(`Future: ${S.fate}.`, x0, y, C.muted, 11, "left", "Inter, sans-serif"); y += 18;
       const q = EX.m / 2 - EX.l;
       g.label(`Expansion ${S.t0 !== null ? (q < 0 ? "is speeding up today (dark energy wins)" : "is slowing down today (gravity wins)") : ""}`, x0, y, C.muted, 11, "left", "Inter, sans-serif"); y += 22;
@@ -143,6 +144,8 @@
       const T = HZ.T, gy = T.gy, e0 = T.eta0 * gy, eEm = e0 - HZ.chi;
       return { chi: HZ.chi, horizon: T.etaInf * gy - e0, reach: HZ.chi < T.etaInf * gy - e0, tE: eEm > T.etaLS * gy ? T.tOfEta(eEm / gy) * gy : null };
     },
+    readouts() { const s = this.state(), t = s.tE;
+      return [["Galaxy, today", `${s.chi} bn ly`], ["Its light set out, after the Big Bang", t === null ? "before the first light" : t < 1 ? `${Math.round(t * 1000)} Myr` : `${t.toFixed(2)} bn yr`], ["A message today reaches it", s.reach ? "Yes" : "Never"]]; },
     id: "horizons", title: "Cosmic horizons", eyebrow: "Cosmos · how far can we ever see?", tier: "mainstream", tags: ["ESTABLISHED"],
     enter() { if (!HZ.T) HZ.T = hzTables(); },
     controls() {
@@ -270,6 +273,10 @@
       explain: "With gravity falling off as 1/r³ or faster, a circular orbit is balanced on a knife-edge: the slightest nudge sends the planet spiralling in or flying off. Only with three space dimensions (or fewer) are orbits — and, similarly, atoms — stable. Switch to Orbits mode and slide the number of dimensions." },
     applySetup(o) { if (o.boot) { BT.mode = "boot"; boot(...o.boot); } if (o.on) { BT.mode = "orbit"; BT.on = o.on; orbReset(); } },
     state() { const o = BT.orb || {}; return { mode: BT.mode, n: BT.n, m: BT.m, read: BT.shown >= BT.log.length, on: BT.on, dead: !!o.dead, t: o.t || 0 }; },   // read-only, for missions
+    readouts() {
+      if (BT.mode === "orbit") { const o = BT.orb || {}; return [["Space dimensions n", BT.on.toFixed(2)], ["Gravity falls as", `1/r^${(BT.on - 1).toFixed(2)}`], ["Orbit", o.dead ? "lost" : `holding · ${Math.round(o.t || 0)}`]]; }
+      const last = BT.log[BT.log.length - 1] || [], done = BT.shown >= BT.log.length;
+      return [["Universe", `${BT.n} space + ${BT.m} time`], ["Boots with observers?", !done ? "checking…" : last[1] === OK ? "Yes" : last[1] === WARN ? "Barely" : "No"]]; },
     id: "boot", title: "Boot a Universe", eyebrow: "Cosmos · why 3 + 1?", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     enter() { if (!BT.log.length) boot(3, 1); if (!BT.orb) orbReset(); },
     controls() {
@@ -328,7 +335,6 @@
         if (BT.orb.dead) g.text(`The planet ${BT.orb.dead}.`, A.x + 14, A.y + A.h - 16, C.orange, 13);
         g.panel(B.x, B.y, B.w, B.h, "What decides it");
         const x0 = B.x + 14; let y = B.y + 50, k = BT.on - 1;
-        g.text(`Gravity falls as 1/r^${k.toFixed(2)}`, x0, y, C.text, 14); y += 26;
         const st = BT.on < 3.995 ? ["Stable: nudged orbits wobble but stay bounded.", C.teal] : BT.on < 4.005 ? ["Knife-edge: n = 4 is the borderline.", C.amber] : ["Unstable: any nudge grows until the planet falls in or escapes.", C.orange];
         g.text(st[0], x0, y, st[1], 12); y += 26;
         ["A circular orbit is stable only if gravity weakens more slowly", "than 1/r³ — that is, for fewer than 4 space dimensions.", "", "At exactly n = 3 orbits close into ellipses (Kepler).", "At other n < 4 they wobble in rosettes, but stay put."].forEach(t => { g.label(t, x0, y, C.muted, 11, "left", "Inter, sans-serif"); y += 15; });
@@ -395,6 +401,7 @@
     predict: { q: "A swarm of stars starts almost evenly spread out. Run time forward and gravity pulls it into clumps and clusters. Now run time <b>backwards</b> from the same moment. What happens?",
       options: ["It spreads out perfectly evenly", "It clumps into clusters too", "It freezes in place"], answer: 1,
       explain: "It clumps too. The starting moment is a 'Janus point' — the most uniform, least structured moment in the swarm's history — and structure grows away from it in <i>both</i> directions. Observers on either side would each see their past pointing back towards it. Barbour, Koslowski and Mercati propose that the Big Bang could be such a point, with time's arrow pointing away from it on both sides." },
+    readouts() { return [["Time from the Janus point, both ways", (Math.floor(JN.k) * JN.every * JN.h).toFixed(2)]]; },
     id: "janus", title: "The Janus point", eyebrow: "Cosmos · an arrow of time from gravity", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     enter() { if (!JN.snaps) jnRun(); },
     controls() {
@@ -417,7 +424,6 @@
         for (let i = 0; i < JN.N; i++) g.dot(x0 + hw / 2 + (sn.x[2 * i] - sn.cx) * s, y0 + hh / 2 - (sn.x[2 * i + 1] - sn.cy) * s, 2.4, col);
         g.label(lab, x0 + 8, y0 + 16, col, 10);
       });
-      g.label(`time from the Janus point: ${(k * JN.every * JN.h).toFixed(2)} (both ways)`, A.x + 14, A.y + A.h - 12, C.muted, 10);
 
       g.panel(B.x, B.y, B.w, B.h, "Size and structure through the whole history");
       const px = B.x + 36, pw = B.w - 56, n = F.length, rows = [["size (spread of the swarm)", "I", C.accent], ["complexity (clumpiness)", "C", C.amber]];

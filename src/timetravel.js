@@ -22,6 +22,7 @@
       explain: "No. The bridge's throat opens and closes again so quickly that not even light can get from one side to the other — anything that tries ends up in the black hole. Real black holes, formed from collapsing stars, don't even have the second universe. Wormholes you could cross would need 'exotic' matter with negative energy, which isn't known to exist in the amounts needed." },
     applySetup(o) { if (o.fire) { const r = ray(...o.fire); if (r) WH.rays.push(r); } if (o.V !== undefined) { WH.V = o.V; WH.play = false; } },
     state() { return { V: WH.V, throat: throat(WH.V), sing: WH.rays.some(r => r.fate === "sing") }; },   // read-only, for missions
+    readouts() { return [["Slice at time V", WH.V.toFixed(2)], ["Throat radius", `${throat(Math.abs(WH.V)).toFixed(2)} × horizon`], ["Rays fired", WH.rays.length]]; },
     id: "wormhole", title: "Wormholes", eyebrow: "Physics · can you cross the bridge?", tier: "mainstream", tags: ["ESTABLISHED", "SPECULATIVE"],
     controls() {
       return `<span class="ctl">Click in our universe (right) to fire light:</span>
@@ -72,7 +73,6 @@
       if (rt > 0.02) { ctx.strokeStyle = g.alpha(C.violet, 0.5); ctx.beginPath(); ctx.ellipse(cx, cy, 6, rt * 0.28 * Hh / 2, 0, 0, TAU); ctx.stroke(); }
       g.label("our universe", cx + W / 2 - 4, cy - Hh / 2 - 8, C.accent, 10, "right"); g.label("the other universe", cx - W / 2 + 4, cy - Hh / 2 - 8, C.muted, 10);
       const x0 = B.x + 14; let y = cy + Hh / 2 + 34;
-      g.text(`Throat radius: ${rt.toFixed(2)} × the horizon radius`, x0, y, C.text, 13); y += 22;
       y += g.wrap(Math.abs(WH.V) < 0.02 ? "Widest at this moment — yet light entering now still can't get through." : Math.abs(WH.V) > 0.97 ? "Pinched shut: the throat has become the singularity." : WH.V > 0 ? "Closing. It will pinch shut before anything reaches the far side." : "Opening — this half of the history lies in the white hole's past.", x0, y, B.w - 28, 16, C.muted, 12);
       g.label("Model: eternal Schwarzschild black hole, exact.", x0, B.y + B.h - 14, C.muted, 10);
     },
@@ -100,6 +100,7 @@
       explain: "Yes, in that universe. Its rotation tips light cones over as you go outwards; beyond a critical distance they tip so far that simply circling round, always slower than light, is a path into your own past. It's an exact solution of Einstein's equations (Gödel, 1949). But our universe isn't spinning measurably — and it expands, which Gödel's doesn't." },
     applySetup(o) { Object.assign(GD, o); },
     state() { return { rr: GD.rr, loop: GD.rr > RC, walked: GD.walk >= 1, P: GD.P, Rc: 0.1984 * GD.P }; },   // read-only, for missions
+    readouts() { return [["Your distance", `${(GD.rr / RC).toFixed(2)} × critical`], ["Circle is a time loop", GD.rr > RC ? "Yes" : "No"], ["Loops begin at", `${(0.1984 * GD.P).toFixed(1)} bn ly`]]; },
     id: "loops", title: "Time loops", eyebrow: "Physics · can you meet your past self?", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     controls() {
       return `<label class="ctl">Your distance from the centre <input type="range" id="gd-r" min="5" max="160" value="${Math.round(GD.rr / RC * 100)}"><output id="gd-ro">${(GD.rr / RC).toFixed(2)} × critical</output></label>

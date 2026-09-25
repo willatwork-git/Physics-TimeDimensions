@@ -18,7 +18,7 @@ AI session's context. Exit code 1 if anything failed.
 | `10-syntax` | Every `src/*.js` parses (`node --check`) |
 | `20-version` | Every `src/` link in `index.html` carries the same `?v=N`; fails if `src/` changed since the last commit but `?v=` didn't move (prints the fix) |
 | `30-views` | Every `header [data-view]`, tour stop and tour quiz loads in Learn, Workbench (`?mode=lab`) and school edition (`?edition=school`) with no JS errors and no blank lab canvas |
-| `40-labs` | Every lab's `tick` + `draw` steps without error; every mission in `Chrono.MISSIONS` is **not** passed on arrival and **does** complete via "Show me", then advances |
+| `40-labs` | Every lab's `tick` + `draw` steps without error; every lab has `readouts()` giving up to 3 `[label, value]` pairs with real values; every mission in `Chrono.MISSIONS` is **not** passed on arrival and **does** complete via "Show me", then advances |
 
 **Pre-commit hook** (`tools/hooks/pre-commit`, enable once per clone: `git config core.hooksPath tools/hooks`):
 if `src/` or `index.html` is staged it runs the regression and a failure blocks the commit. Doc gaps (src/
@@ -26,7 +26,7 @@ changed but ACTIVE.md or README.md not staged) only warn. Emergency bypass: `git
 
 ## Known gaps — not checked yet
 - Flatland engine internals (`#flatland` views load, but the step logic isn't driven)
-- Visual layout: overlaps, text overflow, contrast. Phone widths (only 1440×900 is rendered)
+- Visual layout: overlaps, text overflow, contrast. Phone widths: headless Chrome won't go below ~485 px, so a "390 px" screenshot is a cropped wider page — for a true phone view, load the app in a 390 px `<iframe>`
 - Predict-first flow (lock → guess → reveal), tour completion and Continue card state
 - Physics values against `sources.md` — correctness of numbers is still by review
 - `src/stars.js` (not loaded yet)

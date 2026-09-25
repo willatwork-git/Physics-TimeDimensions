@@ -34,6 +34,7 @@
       explain: "Two effects pull opposite ways: higher up, in weaker gravity, clocks run <i>faster</i>; moving fast, they run <i>slower</i>. At the ISS's low, fast orbit, speed wins — about 25 microseconds a day, 4.5 milliseconds over six months. For GPS satellites, higher up, gravity wins. On the Moon, clocks gain about 56 µs a day — which is why a lunar time standard is being set up." },
     applySetup(o) { Object.assign(MC, { m: null, moon: false }, o); },
     state() { const R = mcRates(); return { alt: MC.alt, days: MC.days, moon: MC.moon, net: R.net, total: R.net * MC.days }; },   // read-only, for missions
+    readouts() { const R = mcRates(), tot = R.net * MC.days; return [["Net clock rate", `${R.net >= 0 ? "+" : "−"}${Math.abs(R.net).toFixed(2)} µs/day`], [`Over ${MC.days} days`, `${tot >= 0 ? "+" : "−"}${fmtT(tot)}`], ["Altitude", `${Math.round(MC.alt).toLocaleString("en-AU")} km`]]; },
     id: "missions", title: "Mission clocks", eyebrow: "Voyages · how much younger does space make you?", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {
       return MISSIONS.map(m => `<button class="btn ${MC.m && MC.m.id === m.id ? "primary" : ""}" data-mission="${m.id}">${m.n.split(" · ")[0].replace(" (ISS, 340 days)", "")}</button>`).join("") +
@@ -127,6 +128,7 @@
       const d = distAU(TM.day), m = TM.msgs.length ? TM.msgs[1] : null;
       return { dist: d, near: (d - (R_MARS - 1)) / 2, oneWay: d * LT_AU_MIN, answered: !!m && TM.clock >= m.t1, roundTrip: m ? m.t1 : null };
     },
+    readouts() { const d = distAU(TM.day), ow = d * LT_AU_MIN; return [["Earth–Mars", `${(d * AU / 1e9).toFixed(0)} million km`], ["Light, one way", `${ow.toFixed(1)} min`], ["Question and answer", `${(2 * ow).toFixed(1)} min`]]; },
     id: "mars", title: "Talking to Mars", eyebrow: "Voyages · what does 'now' mean across space?", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {
       return `<button class="btn primary" id="tm-send">Send a message to the rover</button>
@@ -155,7 +157,6 @@
       g.dot(...M, 5, C.orange); g.label("Mars", M[0] + 9, M[1] + 4, C.orange, 11);
       TM.msgs.forEach(q => { if (TM.clock < q.t0 || TM.clock > q.t1) return; const f = (TM.clock - q.t0) / (q.t1 - q.t0), [a, b] = q.from === "E" ? [E, M] : [M, E];
         ctx.shadowColor = C.teal; ctx.shadowBlur = 12; g.dot(a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, 4, C.teal); ctx.shadowBlur = 0; });
-      g.text(`Earth–Mars: ${(dAU * AU / 1e9).toFixed(0)} million km · light takes ${oneWay.toFixed(1)} minutes`, A.x + 14, A.y + A.h - 16, C.text, 12);
       if (cj < 3) g.text("The Sun is almost in line: solar conjunction — radio contact pauses for about two weeks.", A.x + 14, A.y + A.h - 34, C.pink, 12);
 
       g.panel(B.x, B.y, B.w, B.h, "The conversation, as a spacetime diagram");
@@ -225,6 +226,7 @@
       explain: "About 20 years by the crew's clocks. Nothing passes light speed, but the ship's clocks slow more and more as it approaches it (the twin paradox again), so a ship accelerating steadily can cross huge distances within a crew's lifetime. On Earth, 26,000 years pass. The catch is fuel: even a perfect matter–antimatter rocket would need about 700 million tonnes of fuel for each tonne of ship." },
     applySetup(o) { if (o.dest) VY.dest = DEST.find(d => d.id === o.dest) || VY.dest; if (o.gs) VY.gs = o.gs; VY.p = 0; VY.play = true; },
     state() { const tr = trip(); return { dest: VY.dest.id, gs: VY.gs, tau: tr.tau, T: tr.T }; },   // read-only, for missions
+    readouts() { const tr = trip(); return [["Ship's clock", fmtYears(tr.tau)], ["Earth's clock", fmtYears(tr.T)], ["Top speed", fmtV(tr.vmax)]]; },
     id: "voyage", title: "The 1 g voyage", eyebrow: "Voyages · how far in a lifetime?", tier: "mainstream", tags: ["ESTABLISHED", "SPECULATIVE"],
     controls() {
       return DEST.map(d => `<button class="btn ${VY.dest.id === d.id ? "primary" : ""}" data-dest="${d.id}">${d.n}</button>`).join("") +

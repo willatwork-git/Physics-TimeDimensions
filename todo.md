@@ -90,6 +90,11 @@ see the full physics (equations, derivations, the model's exact assumptions) wit
 - [x] Phase 3a (cont.) batch 1 · Missions (D-047): Mission clocks, Expanding universe, Cosmic horizons, Boot, Black holes evaporate, Earth's energy budget ×2 each (27 across 12 labs). Janus and Timeline deliberately have none: nothing to steer, so a mission would pass on arrival
 - [x] Phase 3a batch 2 · Field Ocean ×2, Wormholes ×2, Time loops ×2, Two Films ×1 (34 across 16 labs)
 - [x] Phase 3a batch 3 · Delayed choice ×2, Frozen universe ×2 — **3a complete: 38 missions across 18 labs**
+- [x] Phase 3b-1 · Visual system: spec tokens in `:root` (old names kept as aliases), three levels — stage (brightest surface, borderless canvas panels via `g.panel`, soft glow in the lab's scale colour via `Chrono.scaleOf`), content (16 px, cards told apart by surface), chrome (12 px grey). Focus ring, 44 px touch targets, reduced-motion CSS, Shift+arrow big slider steps
+- [x] Phase 3b-2 · Readout bars on all 20 labs: `#lab-readouts` under the canvas, ≤ 3 big labelled numbers from each lab's `readouts()`, hidden while a lab is locked for a guess. Headline lines removed from the canvas; labels on drawn objects kept. Panel titles now keep physics symbols' case (`Chrono.capsTitle`: "0.87 c", "t =", γ). Regression requires readouts() on every lab
+- [ ] Phase 3c · Trim the canvas info panels that still repeat bar numbers in sentences (Horizons, 1 g voyage, Hawking, Energy, Mission clocks)
+- [ ] Phase 3b-3 · Sims fill their zone (Clock Lab mirrors to ~55–60% of height, tick timing unchanged); trails and pulses where missing
+- [ ] Phase 3d · Phone: canvas labels run off the edge at 390 px (Expanding universe "you are here…", "arrows: …")
 - [ ] Phase 3 · Roll out: framings on all 20 stops; tokens and three emphasis levels; sim scaling + readout bars; missions for every lab (rewrite the "not a wall you hit" reveal)
 - [ ] Phase 4 · Return loop: passport (#passport), review sheet, challenge links, teacher mode level 1, print worksheets. Guess counter and analytics wait for the domain move (static until then)
 

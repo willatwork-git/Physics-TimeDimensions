@@ -3,10 +3,14 @@
   const $ = s => document.querySelector(s);
   const TAU = Math.PI * 2;
   const C = {
-    bg: "#0b0d12", panel: "#12151d", line: "#232836", text: "#e6e8ee", muted: "#8a90a2",
+    bg: "#151924", panel: "#12151d", line: "#232836", text: "#e6e8ee", muted: "#8a90a2",
     accent: "#7cc4ff", pink: "#e36bd0", violet: "#9b8cff", teal: "#4fd1a5", amber: "#f2c94c", orange: "#ff7a59", hyp: "#7cc4ff"
   };
   Chrono.C = C;
+  /* Panel titles in capitals — but physics symbols keep their case: a unit after a number ("0.87 c") and a variable
+     before "=" ("t = 2", "m = 0.18") stay lowercase, and Greek is never touched (capital gamma Γ is a different symbol). */
+  Chrono.capsTitle = t => String(t).replace(/(\d )([a-z])\b/g, "$1\u0001$2").replace(/\b([a-z])( ?=)/g, "\u0001$1$2")
+    .replace(/\u0001(.)|[a-z]/g, (m, keep) => keep !== undefined ? keep : m.toUpperCase());
 
   /* ---------- shared UI ---------- */
   Chrono.expBanner = user => `<div class="exp-banner"><b>◌ Exploratory</b> — ${user ? "a visitor's hypothesis" : "this project's own thinking — deliberately challenging the mainstream"}. Not mainstream physics; shown to invite testing, not belief.</div>`;
@@ -33,7 +37,8 @@
     alpha(hex, a) { const n = parseInt(hex.slice(1), 16); return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`; },
     label(txt, x, y, color = C.muted, size = 11, align = "left", font = "JetBrains Mono, monospace") { ctx.fillStyle = color; ctx.font = `${size}px ${font}`; ctx.textAlign = align; ctx.fillText(txt, x, y); },
     text(txt, x, y, color = C.text, size = 13, align = "left") { G.label(txt, x, y, color, size, align, "Inter, system-ui, sans-serif"); },
-    panel(x, y, w, h, title) { ctx.strokeStyle = C.line; ctx.lineWidth = 1; ctx.strokeRect(x + .5, y + .5, w - 1, h - 1); if (title) G.label(title.toUpperCase(), x + 12, y + 20, C.muted, 10); },
+    panel(x, y, w, h, title) { ctx.fillStyle = "rgba(255,255,255,0.025)"; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, 10) : ctx.rect(x, y, w, h); ctx.fill();   // a surface, not a border (3b)
+      if (title) G.label(Chrono.capsTitle(title), x + 12, y + 20, C.muted, 10); },
     line(x1, y1, x2, y2, color = C.line, w = 1) { ctx.strokeStyle = color; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); ctx.lineWidth = 1; },
     dot(x, y, r, color) { if (!(r > 0)) return; ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill(); },
     ring(x, y, r, color, w = 1, dash) { if (!(r > 0)) return; ctx.strokeStyle = color; ctx.lineWidth = w; if (dash) ctx.setLineDash(dash); ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.stroke(); ctx.setLineDash([]); ctx.lineWidth = 1; },
@@ -72,6 +77,15 @@
     W = Math.max(300, r.width); H = Math.max(300, r.height);
     canvas.width = W * dpr; canvas.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
+  /* Readout bar (UX spec 3b): up to three big labelled numbers under the canvas, from def.readouts() → [[label, value], …].
+     Hidden until the lab is free, so a number can't give away the prediction. Refreshed ~10× a second, written only on change. */
+  let roT = 0, roHTML = "";
+  function readouts() {
+    const el = $("#lab-readouts"); if (!el) return;
+    const r = active && active.readouts && lockState(active) === "free" ? active.readouts() : null;
+    const html = r ? r.slice(0, 3).map(([k, v]) => `<div class="ro"><b>${v}</b><span>${k}</span></div>`).join("") : "";
+    if (html !== roHTML) { roHTML = html; el.innerHTML = html; el.hidden = !html; }
+  }
   function frame(ts) {
     if (!active) return;
     const dt = Math.min(0.05, (ts - (last || ts)) / 1000); last = ts;
@@ -80,6 +94,7 @@
     G.ctx = ctx; G.W = W; G.H = H;
     active.draw(G);
     if (Chrono.missions && lockState(active) === "free") Chrono.missions.tick(active, dt);
+    if (ts - roT > 100) { roT = ts; readouts(); }
     raf = requestAnimationFrame(frame);
   }
   function pos(e) { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
@@ -98,18 +113,18 @@
       $("#lab-controls").innerHTML = (active.controls ? active.controls() : "") + (help ? `<button class="btn ctlhelp" data-ctlhelp aria-expanded="false" title="What each control does">ⓘ What the controls do</button>` : "");
       if (pop) { pop.hidden = true; pop.innerHTML = help; }
       const b = $("#lab-controls [data-ctlhelp]"); if (b && pop) b.onclick = () => { pop.hidden = !pop.hidden; b.setAttribute("aria-expanded", !pop.hidden); };
-      if (active.wire) active.wire(); renderLabAside(active);
+      if (active.wire) active.wire(); renderLabAside(active); readouts();
     },
     register(def) {
       labs[def.id] = def;
       Chrono.views = Chrono.views || {};
       Chrono.views[def.id] = def.kind === "doc" ? {
-        show() { $("#doc").style.display = "block"; $("#doc").innerHTML = def.page(); if (def.wire) def.wire(); renderLabAside(def); },
+        show() { document.body.dataset.scale = ""; $("#doc").style.display = "block"; $("#doc").innerHTML = def.page(); if (def.wire) def.wire(); renderLabAside(def); },
         hide() { }
       } : {
         show() {
           if (!canvas) initCanvas();
-          $("#lab").style.display = "flex"; active = def; resize(); Chrono.motion.reset();
+          document.body.dataset.scale = Chrono.scaleOf ? Chrono.scaleOf(def.id) : ""; $("#lab").style.display = "flex"; active = def; resize(); Chrono.motion.reset();
           if (def.enter) def.enter(G);
           const fresh = lockState(def) !== "free" || !!framing(def).st;   // a tour stop always starts from its setup
           if (fresh) setUp(def);
@@ -237,3 +252,11 @@
     if (def.wireAside) def.wireAside();
   }
 })();
+/* Shift + arrow keys move any slider in big steps (a tenth of its range); plain arrows keep the fine step. */
+document.addEventListener("keydown", e => {
+  const t = e.target, dir = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[e.key];
+  if (!e.shiftKey || !dir || !t.matches || !t.matches('input[type="range"]')) return;
+  e.preventDefault();
+  const step = +t.step || 1, big = Math.max(step, Math.round((+t.max - +t.min) / 10 / step) * step);
+  t.value = +t.value + dir * big; t.dispatchEvent(new Event("input", { bubbles: true }));
+});

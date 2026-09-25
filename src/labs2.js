@@ -115,9 +115,6 @@
     g.panel(B.x, B.y, B.w, B.h, "Who ages how much?");
     const x0 = B.x + 14; let y = B.y + 50;
     g.text(`Speed ${v.toFixed(2)} c · star ${D} light-years away · γ = ${ga.toFixed(3)}`, x0, y, C.text, 12);
-    y += 30; g.text(`Earth twin ages ${T.toFixed(2)} years`, x0, y, C.accent, 15);
-    y += 24; g.text(`Traveller ages ${(T / ga).toFixed(2)} years`, x0, y, C.orange, 15);
-    y += 22; g.label(`Difference: ${(T - T / ga).toFixed(2)} years`, x0, y, C.muted, 12);
     y += 32; g.label(`RIGHT NOW (Earth frame t = ${tc.toFixed(1)} yr)`, x0, y, C.muted, 10);
     y += 20; g.text(`Earth twin's clock ${tc.toFixed(1)} · traveller's clock ${(tc / ga).toFixed(1)}`, x0, y, C.text, 12);
     y += 30; g.label("Dots on each path: one per " + (step === 1 ? "year" : step + " years") + " of that twin's own time.", x0, y, C.muted, 11, "left", "Inter, sans-serif");
@@ -175,6 +172,13 @@
       const A = SP.events.find(e => e.id === "A"), B = SP.events.find(e => e.id === "B"), g = gam(SP.twinV), T = 2 * SP.twinD / SP.twinV;
       return { mode: SP.mode, v: SP.v, simul: Math.abs(A.t - B.t) < 0.1, aFirst: boost(A.t, A.x, SP.v)[0] < boost(B.t, B.x, SP.v)[0] - 0.1,
         twinDiff: T - T / g, pbV: SP.pbV, fits: PB.pole / (2 * gam(SP.pbV)) < PB.barn / 2 };
+    },
+    readouts() {                                           // headline numbers for the readout bar (3b)
+      if (SP.mode === "twins") { const ga = gam(SP.twinV), T = 2 * SP.twinD / SP.twinV;
+        return [["Earth twin ages", `${T.toFixed(2)} yr`], ["Traveller ages", `${(T / ga).toFixed(2)} yr`], ["Difference", `${(T - T / ga).toFixed(2)} yr`]]; }
+      if (SP.mode === "barn") { const ga = gam(SP.pbV), len = PB.pole / ga;
+        return [["Pole speed", `${SP.pbV.toFixed(2)} c`], ["Pole length, barn's frame", `${len.toFixed(2)} (barn 4)`], ["Fits in the barn's frame", len < PB.barn ? "Yes" : "No"]]; }
+      return [["Your speed", `${SP.v.toFixed(2)} c`], ["γ", gam(SP.v).toFixed(3)]];
     },
     id: "spacetime", title: "Spacetime diagram", eyebrow: "Lab · whose 'now'?", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {
@@ -333,6 +337,7 @@
       if (o.reverse !== undefined) EB.auto = o.reverse === "nudge";   // reverse (or nudge, then reverse) as soon as the gas has spread
     },
     state() { const m = EB.x ? measure() : { left: 1 }; return { open: !EB.part, left: m.left, last: EB.last || null }; },   // read-only, for missions
+    readouts() { const m = EB.x ? measure() : { left: 1, S: 0 }; return [["Discs in the left half", `${Math.round(m.left * 100)}%`], ["Entropy", `${Math.round(m.S * 100)}% of max`]]; },
     id: "entropy", title: "Entropy box", eyebrow: "Lab · why time runs one way", tier: "mainstream", tags: ["ESTABLISHED"],
     enter() { if (!EB.x) ebReset(); },
     controls() {
@@ -390,7 +395,6 @@
 
       g.panel(B.x, B.y, B.w, B.h, "Entropy");
       const x0 = B.x + 14;
-      g.text(`${(m.left * 100).toFixed(0)}% of discs in the left half`, x0, B.y + 50, C.text, 14);
       g.label("ENTROPY (coarse-grained)", x0, B.y + 78, C.muted, 10); g.bar(x0, B.y + 84, B.w - 28, 8, m.S, C.amber);
       const gx = x0, gy = B.y + 110, gw = B.w - 28, gh = Math.max(50, B.h - 196);
       ctx.strokeStyle = C.line; ctx.strokeRect(gx, gy, gw, gh);

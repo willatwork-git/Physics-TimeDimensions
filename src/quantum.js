@@ -30,6 +30,8 @@
       explain: "The results match the set-up at the moment of detection: second beam splitter in → interference; out → each photon shows up on the detector for one arm. That's been done with real single photons (2007). But nothing travels back in time: the pattern only appears when you sort the records afterwards, so no signal reaches the past. The lesson is subtler — don't picture the photon as having taken one path before it's measured." },
     applySetup(o) { Object.assign(DC, o); },
     state() { return { mode: DC.mode, pIn: pD1(true, DC.phi), inD2: DC.counts.in[1], filled: DC.fr.filter(b => b[0] + b[1] >= 5).length / BINS }; },   // read-only, for missions
+    readouts() { const [a, b] = DC.counts.in, n = a + b;
+      return [["Second splitter", { in: "In", out: "Out", random: "Decided late" }[DC.mode]], ["Phase φ", `${(DC.phi / Math.PI).toFixed(2)}π`], ["Detector 1, splitter in", n ? `${Math.round(a / n * 100)}% of ${n}` : "—"]]; },
     id: "delayed", title: "Delayed choice", eyebrow: "Quantum · when is a photon's path decided?", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     controls() {
       return `<span class="ctl">Second beam splitter:</span>
@@ -135,6 +137,7 @@
       explain: "Yes. The universe as a whole is frozen, but its parts are correlated (entangled): whenever the clock reads 3, the spin points one way; when it reads 4, another. Anything inside that uses the clock sees the spin turn — time appears from the correlation. Remove the entanglement and the spin looks the same at every clock reading: no time at all. This is the Page–Wootters idea (1983), demonstrated in miniature with photons (2014)." },
     applySetup(o) { Object.assign(FZ, o); if (o.evolve) FZ.check = { o: globalOverlap(), age: 0 }; },
     state() { return { ent: FZ.ent, play: FZ.play, k: FZ.k, cos: Math.cos(spinAt(FZ.k)), overlap: FZ.check ? FZ.check.o : null }; },   // read-only, for missions
+    readouts() { return [["Clock reads", FZ.k], ["Spin up the page", `${Math.round(Math.cos(spinAt(FZ.k) / 2) ** 2 * 100)}%`], ["Clock and spin", FZ.ent ? "Entangled" : "Not entangled"]]; },
     id: "frozen", title: "The frozen universe", eyebrow: "Quantum · time from entanglement", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     controls() {
       return `<button class="btn ${FZ.ent ? "primary" : ""}" id="fz-ent">Entangled (clock ↔ spin)</button><button class="btn ${!FZ.ent ? "primary" : ""}" id="fz-prod">Not entangled</button>

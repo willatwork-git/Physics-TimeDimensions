@@ -9,11 +9,12 @@
 
   const TOURS = Chrono.STOPS;                             // the tours and their stops live in stops.js (D-043)
   const SCALES = [
-    { id: "quantum", name: "Quantum", sub: "The very small", col: "#5ee0e6", labs: [["delayed", "Delayed choice"], ["frozen", "The frozen universe"]] },
-    { id: "voyages", name: "Voyages", sub: "People and spacecraft", col: "var(--c-lens)", labs: [["missions", "Mission clocks"], ["mars", "Talking to Mars"], ["voyage", "The 1 g voyage"], ["energy", "Earth's energy budget"]] },
-    { id: "labs", name: "Physics", sub: "The laws underneath", col: "var(--t-est)", labs: [["flatland", "Flatland"], ["field", "Field Ocean"], ["clocks", "Clock Lab"], ["spacetime", "Spacetime"], ["river", "River"], ["hawking", "Black holes evaporate"], ["entropy", "Entropy box"], ["films", "Two Films"], ["wormhole", "Wormholes"], ["loops", "Time loops"]] },
-    { id: "cosmos", name: "Cosmos", sub: "The universe as a whole", col: "var(--simple, #9b8cff)", labs: [["timeline", "Cosmic timeline"], ["expand", "Expanding universe"], ["horizons", "Cosmic horizons"], ["boot", "Boot a Universe"], ["janus", "The Janus point"]] }
+    { id: "quantum", name: "Quantum", sub: "The very small", col: "var(--quantum)", labs: [["delayed", "Delayed choice"], ["frozen", "The frozen universe"]] },
+    { id: "voyages", name: "Voyages", sub: "People and spacecraft", col: "var(--voyages)", labs: [["missions", "Mission clocks"], ["mars", "Talking to Mars"], ["voyage", "The 1 g voyage"], ["energy", "Earth's energy budget"]] },
+    { id: "labs", name: "Physics", sub: "The laws underneath", col: "var(--physics)", labs: [["flatland", "Flatland"], ["field", "Field Ocean"], ["clocks", "Clock Lab"], ["spacetime", "Spacetime"], ["river", "River"], ["hawking", "Black holes evaporate"], ["entropy", "Entropy box"], ["films", "Two Films"], ["wormhole", "Wormholes"], ["loops", "Time loops"]] },
+    { id: "cosmos", name: "Cosmos", sub: "The universe as a whole", col: "var(--cosmos)", labs: [["timeline", "Cosmic timeline"], ["expand", "Expanding universe"], ["horizons", "Cosmic horizons"], ["boot", "Boot a Universe"], ["janus", "The Janus point"]] }
   ];
+  Chrono.scaleOf = id => (SCALES.find(s => s.labs.some(l => l[0] === id)) || {}).id || "";   // which scale a lab belongs to (its stage glow colour)
   /* Threads: [view key, label, scale] — scale V (voyages), P (physics), C (cosmos), A (atlas). */
   const THREADS = [
     { id: "clock", icon: "⏱", name: "Clocks disagree", stops: [["frozen", "A clock in a frozen universe", "Q"], ["missions", "Mission clocks", "V"], ["clocks", "Clock Lab", "P"], ["spacetime", "Twin paradox", "P"], ["river", "Clocks near a black hole", "P"], ["expand", "Cosmic clocks (redshift)", "C"]] },

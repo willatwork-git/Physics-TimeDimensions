@@ -46,6 +46,8 @@
       explain: "Splitting and racing away is what the <i>massless</i> field does. The mass term lets a ripple oscillate in place — and a ripple that stays put and vibrates is exactly what a particle at rest is. Try <b>Pluck one spot</b> to see both." },
     applySetup(o) { Object.assign(FO, o); if (FO.lanes) { FO.lanes[1].m = FO.m; FO.lanes.forEach(L => launch(L, FO.mode)); } },
     state() { const vg = m => Math.sin(0.25) / omegaLat(0.25, m); return { mode: FO.mode, m: FO.m, ratio: vg(FO.m) / vg(0) }; },   // read-only, for missions (ratio: the travelling ripple's speed vs the massless one's)
+    readouts() { const L = FO.lanes && FO.lanes[1], v = !L ? 0 : FO.mode === "rest" ? (L.m > 0 ? 0 : Math.min(1, L.vHalf || 0)) : Math.min(1, L.v);
+      return [["Mass", FO.m.toFixed(2)], ["Massive ripple's speed", `${v.toFixed(2)} c`], ["Its clock rate", `${Math.round(100 * Math.sqrt(Math.max(0, 1 - v * v)))}%`]]; },
     id: "field", title: "The Field Ocean", eyebrow: "Lab · particles as ripples", tier: "mainstream", tags: ["ESTABLISHED"],
     enter() { if (!FO.lanes) { FO.lanes = [kgLane(0), kgLane(FO.m)]; FO.lanes.forEach(L => launch(L, FO.mode)); } },
     controls() {
@@ -130,6 +132,12 @@
       explain: "At 0.87 c the slowing factor γ is about 2, so the moving clock ticks about once for every two of yours. Set the slider to 0.87 and count. Not a fault in the clock: every process on board — atoms, heartbeats — slows the same way." },
     applySetup(o) { Object.assign(CL, o); CL.T = 0; CL.trail = []; },
     state() { const o = orbitShift(CL.alt); return { mode: CL.mode, v: CL.v, gamma: 1 / Math.sqrt(1 - CL.v * CL.v), alt: CL.alt, net: o.net }; },   // read-only, for missions
+    readouts() {                                           // headline numbers for the readout bar (3b)
+      if (CL.mode === "light") { const vert = Math.sqrt(1 - CL.v * CL.v), n = k => `${k} tick${k === 1 ? "" : "s"}`;
+        return [["Clock at rest", n(Math.floor(CL.T / 0.6))], ["Moving clock", n(Math.floor(CL.T * vert / 0.6))], ["γ · time stretch", (1 / vert).toFixed(3)]]; }
+      const o = orbitShift(CL.alt);
+      return [["Altitude", `${CL.alt.toLocaleString("en-AU")} km`], ["Net clock gain", `${o.net >= 0 ? "+" : ""}${o.net.toFixed(2)} µs/day`], ["Orbital speed", CL.alt >= 100 ? `${(o.v / 1000).toFixed(2)} km/s` : "—"]];
+    },
     id: "clocks", title: "Clock Lab", eyebrow: "Lab · why clocks disagree", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {
       return `<button class="btn ${CL.mode === "light" ? "primary" : ""}" id="cl-light">Light clock</button>
@@ -189,12 +197,12 @@
       }
       g.line(cx - 30, top, cx + 30, top, C.muted, 3); g.line(cx - 30, bot, cx + 30, bot, C.muted, 3);
       g.ctx.shadowColor = C.amber; g.ctx.shadowBlur = 14; g.dot(cx, yN, 5, C.amber); g.ctx.shadowBlur = 0;
-      g.text(`${k === 0 ? restTicks : movTicks} tick${(k === 0 ? restTicks : movTicks) === 1 ? "" : "s"}`, x0 + pw / 2, y0 + ph - tape - 16, C.text, 16, "center");
+      if (CL.hero) g.text(`${k === 0 ? restTicks : movTicks} tick${(k === 0 ? restTicks : movTicks) === 1 ? "" : "s"}`, x0 + pw / 2, y0 + ph - tape - 16, C.text, 16, "center");
       const ty = y0 + ph - 10, step = (pw - 40) / CYC;
       for (let i = 0; i < CYC; i++) g.line(x0 + 20 + i * step + step / 2, ty - 10, x0 + 20 + i * step + step / 2, ty, i < shown[k] ? (k === 0 ? C.teal : C.amber) : "rgba(255,255,255,0.08)", 3);
     });
     const by = H - pad - foot + 20, bw = Math.min(320, W - pad * 2);
-    g.text(`γ = ${gamma.toFixed(3)}  —  ${narrow ? "" : "the moving clock "}ticks ${gamma.toFixed(2)}× slower`, pad, by + 10, C.text, 14);
+    if (CL.hero) g.text(`γ = ${gamma.toFixed(3)}  —  ${narrow ? "" : "the moving clock "}ticks ${gamma.toFixed(2)}× slower`, pad, by + 10, C.text, 14);
     if (CL.hero) return;                                   // the hero shows only the clocks and γ
     g.label(`In your frame: 1 year on the moving clock = ${gamma < 10 ? gamma.toFixed(1) : Math.round(gamma)} years on yours`, narrow ? pad : pad + 340, narrow ? by + 26 : by + 34, C.amber, narrow ? 10 : 12, "left", "Inter, system-ui, sans-serif");
     g.label("MOTION THROUGH SPACE", pad, by + 38, C.muted, 10); g.bar(pad, by + 44, bw, 8, CL.v, C.amber);
@@ -230,7 +238,6 @@
     });
     const km = Math.abs(o.net) * 1e-6 * c / 1000;
     g.text(CL.alt < 100 ? "On the ground: no difference (by definition)." : `Uncorrected, ${tall ? "positions" : "a navigation system"} would drift ~${km.toFixed(1)} km per day.`, bx, y0 + top + 3 * gap + 10, C.muted, 12);
-    if (CL.alt >= 100) g.text(`Orbital speed: ${(o.v / 1000).toFixed(2)} km/s`, bx, y0 + top + 3 * gap + 32, C.muted, 12);
   }
 
   /* =====================================================================
@@ -248,6 +255,7 @@
       const climb = Math.max(0, ...RV.flashes.filter(f => f.r0 > 1 && f.r0 < 1.2 && !f.esc).map(f => Math.max(0, ...f.pts.filter(p => !p.dead).map(p => Math.hypot(p.x, p.y)))));
       return { escMin: esc.length ? Math.min(...esc) : Infinity, climb, innerFell: RV.log.some(f => f.r0 < 1 && !f.esc), innerLive: RV.flashes.some(f => f.r0 < 1) };
     },
+    readouts() { const done = RV.log; return [["Flashes fired", done.length + RV.flashes.length], ["Got out", done.filter(f => f.esc).length], ["Swept in", done.filter(f => !f.esc).length]]; },
     id: "river", title: "The River", eyebrow: "Lab · time and space near a black hole", tier: "mainstream", tags: ["ESTABLISHED"],
     enter() { if (!RV.dots) RV.dots = Array.from({ length: 520 }, () => ({ a: Math.random() * TAU, r: 0.3 + Math.random() * 5 })); },
     controls() {
@@ -332,6 +340,7 @@
       explain: "Both films are exact solutions — no rounding is involved. With two time directions, even a perfect snapshot of 'now' isn't enough data to fix the future (Craig &amp; Weinstein, 2009). In our one-time universe, it is." },
     applySetup(o) { Object.assign(TF, o); },
     state() { return { t: TF.t, reveal: TF.reveal }; },   // read-only, for missions
+    readouts() { return [["Time played", TF.t.toFixed(2)], ["Largest difference between the films", TF.reveal ? "—" : (TF.d || 0).toFixed(3)]]; },
     id: "films", title: "Two Films", eyebrow: "Lab · prediction with two times", tier: "frontier", tags: ["ESTABLISHED", "SPECULATIVE"],
     controls() {
       return `<button class="btn primary" id="tf-play">${TF.play ? "Pause" : TF.t > 0 ? "Continue" : "Predict ▶"}</button>
@@ -363,7 +372,7 @@
         g.text(W < 760 ? "Same shape and rates of change in t and s." : "Film A (blue) and Film B (pink) have identical shape, identical rate of change in t, and identical rate of change in s here.", pad + 20, pad + topH - 16, C.muted, 12);
         plot(pad, pad * 2 + topH, W - pad * 2, topH, `The prediction at t = ${TF.t.toFixed(2)} (still at s = 0)`, TF.t, 0);
         let d = 0; for (let i = 0; i <= 120; i++) { const x = i / 120 * TAU; d = Math.max(d, Math.abs(uB(x, TF.t, 0) - uA(x, TF.t))); }
-        g.text(`Largest difference between the films: ${d.toFixed(3)}`, pad + 20, H - pad - 16, d > 0.05 ? C.pink : C.muted, 13);
+        TF.d = d;
       } else {
         const tall = H > W * 1.05, hw = tall ? W - pad * 2 : (W - pad * 3) / 2, hh = tall ? (H - pad * 3) / 2 : H - pad * 2;
         [["Film A — every s looks the same", (x, s) => uA(x, TF.t)], ["Film B — it was different away from s = 0 all along", (x, s) => uB(x, TF.t, s)]].forEach(([title, f], k) => {
