@@ -14,6 +14,7 @@
     seen: key => !!d.seen[key],
     last: () => typeof d.last === "string" ? d.last : null,
     setLast(hash) { if (d.last !== hash) { d.last = hash; save(); } },
+    clearLast() { delete d.last; save(); },
 
     pred: id => d.pred[id] || {},
     setPred(id, p) { d.pred[id] = p; save(); },

@@ -10,12 +10,12 @@
 
   Chrono.MISSIONS = {
     clocks: [
-      { id: "half", title: "Make the moving clock tick half as fast as yours",
-        hint: "Light clock mode: drag the speed up and watch γ. You're after γ = 2.",
-        check: s => s.mode === "light" && Math.abs(s.gamma - 2) < 0.05,
-        near: s => s.mode === "light" ? 1 - Math.min(1, Math.abs(s.gamma - 2)) : 0, hold: 1500,
-        reveal: "That's about 0.87 of light speed (exactly √3⁄2 ≈ 0.866). In your frame the moving clock ticks once for every two of yours — and so would any clock riding with it.",
-        tags: ["ESTABLISHED"], show: { mode: "light", v: 0.866 } },
+      { id: "third", title: "Make the moving clock tick a third as fast as yours",
+        hint: "Light clock mode: drag the speed up and watch γ. You're after γ = 3 — faster than any tour starts you.",
+        check: s => s.mode === "light" && Math.abs(s.gamma - 3) < 0.1,
+        near: s => s.mode === "light" ? 1 - Math.min(1, Math.abs(s.gamma - 3) / 2) : 0, hold: 1500,
+        reveal: "That's about 0.94 of light speed (exactly √8⁄3 ≈ 0.943). In your frame the moving clock ticks once for every three of yours — and so would any clock riding with it. Watch the tick tapes: three teal pips for every yellow one.",
+        tags: ["ESTABLISHED"], show: { mode: "light", v: 0.943 } },
       { id: "cancel", title: "In orbit: find the height where the two effects cancel",
         hint: "Switch to Clocks in orbit (GPS). Low orbits run slow (speed wins); high ones run fast (height wins). Somewhere between, the net is zero. The arrow keys move the altitude slider in 10 km steps.",
         check: s => s.mode === "gps" && s.alt >= 100 && Math.abs(s.net) < 1,

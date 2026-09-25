@@ -105,10 +105,10 @@
     /* UX spec §5: five blocks — Continue · Hero · Pick a tour · Four scales · Go deeper. No sidebar on Home. */
     return `
       <div class="docwrap home home2">
-        ${running ? `<div class="contcard"><div class="eyebrow">Continue</div>
+        ${running ? `<div class="contcard"><button class="cc-x" data-cc-x="tour" title="Leave the tour. Stops you've visited stay recorded; resume any time from the Tours menu.">Not now ×</button><div class="eyebrow">Continue</div>
           <p><b>Tour ${TOUR_NUM[rid]} · stop ${t + 1} of ${TOURS[rid].stops.length}:</b> ${TOURS[rid].stops[t].q} <span class="meta">— ${TOURS[rid].stops[t].where}</span></p>
           <button class="btn primary big" data-go-tour="${t}" data-tour-id="${rid}">▶ Continue the tour</button></div>`
-          : lastName ? `<div class="contcard"><div class="eyebrow">Continue</div><p>Where you left off: <b>${lastName}</b></p><a class="btn primary" href="${last}">Continue →</a></div>` : ""}
+          : lastName ? `<div class="contcard"><button class="cc-x" data-cc-x="last" title="Hide this">Not now ×</button><div class="eyebrow">Continue</div><p>Where you left off: <b>${lastName}</b></p><a class="btn primary" href="${last}">Continue →</a></div>` : ""}
         ${Chrono.reviewDue && Chrono.reviewDue() ? `<a class="continue revdue" href="#review">🔁 <b>${Chrono.reviewDue()} question${Chrono.reviewDue() > 1 ? "s" : ""} ready</b> · about a minute →</a>` : ""}
         <section class="hero">
           <div class="hero-text">
@@ -170,10 +170,11 @@
     wire() {
       document.querySelectorAll("[data-go-tour]").forEach(b => b.onclick = () => startTour(+b.dataset.goTour, b.dataset.tourId));
       runHero();
+      document.querySelectorAll("[data-cc-x]").forEach(b => b.onclick = () => { if (b.dataset.ccX === "tour") P.setTour(null); P.clearLast(); Chrono.tour.renderBar(); $("#doc").innerHTML = page(); this.wire(); });
     },
     aside: () => `
       <p>Everything here is labelled by how sure physicists are — you'll see these tags on every page.</p>
-      <p><b>Learn</b> mode (the default) shows physics as physicists hold and debate it, plus published ideas from the fringe — every claim tagged.${Chrono.maxLevel >= 3 ? ` <b>◌ Workbench</b> mode adds: this project's own exploratory ideas, your hypotheses and the Dimension Map. Switch top right.` : ""}</p>
+      <p><b>Learn</b> mode (the default) shows physics as physicists hold and debate it, plus published ideas from the fringe — every claim tagged.${Chrono.maxLevel >= 3 ? ` <b>◌ Workbench</b> mode adds: this project's own exploratory ideas, your hypotheses and the Dimension Map. Switch in the Guide menu.` : ""}</p>
       ${Chrono.tierLegend()}
       <p class="meta">Press <b>?</b> any time for the Guide. Every view has its own link — share the address bar.</p>`
   });

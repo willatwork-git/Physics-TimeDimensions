@@ -160,20 +160,36 @@
   function drawLightClock(g, st) {
     const CL = st || CL_LAB;
     const { W, H } = g, pad = 16, narrow = W < 640, foot = CL.hero ? 34 : narrow ? 140 : 120, pw = (W - pad * 3) / 2, ph = H - pad * 2 - foot;
-    const Lpx = Math.min(ph * 0.55, 260), gamma = 1 / Math.sqrt(1 - CL.v * CL.v), vert = Math.sqrt(1 - CL.v * CL.v);
+    const gamma = 1 / Math.sqrt(1 - CL.v * CL.v), vert = Math.sqrt(1 - CL.v * CL.v);
+    /* Display scale only — the physics is unchanged (light at c, zig-zag angle set by v). A short clock and a quick
+       beat put many ticks on screen; the view follows the moving clock so its light path streams out behind it and
+       never resets; a tick tape (one pip per tick, restarting every 20 rest ticks) shows the rates pull apart. */
+    const tape = 22, room = ph - 34 - tape - 44, Lpx = Math.max(34, Math.min(pw * 0.14, room * 0.8)), cpx = Lpx / 0.3, tickT = 2 * Lpx / cpx;
+    const restTicks = Math.floor(CL.T / tickT), movTicks = Math.floor(CL.T * vert / tickT), CYC = 20, epoch = Math.floor(restTicks / CYC) * CYC;
+    const shown = [restTicks - epoch, movTicks - Math.floor(epoch * vert)];
     [0, 1].forEach(k => {
       const x0 = pad + k * (pw + pad), y0 = pad;
       g.panel(x0, y0, pw, ph, CL.hero && narrow ? (k === 0 ? "At rest" : `Moving · ${CL.v.toFixed(2)} c`) : k === 0 ? "Clock at rest (next to you)" : `Clock moving at ${CL.v.toFixed(2)} c`);
-      const top = y0 + (ph - Lpx) / 2 + 10, bot = top + Lpx;
-      const speed = k === 0 ? 1 : vert, t = CL.T * speed, ph2 = t % 2, yN = ph2 < 1 ? bot - ph2 * Lpx : top + (ph2 - 1) * Lpx;
+      const top = y0 + 34 + (room - Lpx) / 2, bot = top + Lpx;
+      const u = (CL.T * (k === 0 ? 1 : vert) * cpx / Lpx) % 2, yN = u < 1 ? bot - u * Lpx : top + (u - 1) * Lpx;
       let cx;
       if (k === 0) cx = x0 + pw / 2;
-      else { const span = pw - 80, travel = (CL.T * CL.v * Lpx) % span; cx = x0 + 40 + travel; if (CL.trail.length && cx < CL.trail[CL.trail.length - 1][0]) CL.trail = []; CL.trail.push([cx, yN]); if (CL.trail.length > 400) CL.trail.shift(); }
-      g.line(cx - 34, top, cx + 34, top, C.muted, 3); g.line(cx - 34, bot, cx + 34, bot, C.muted, 3);
-      if (k === 1 && CL.trail.length > 1) { const ctx = g.ctx; ctx.strokeStyle = g.alpha(C.amber, 0.45); ctx.beginPath(); CL.trail.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.stroke(); }
+      else {
+        cx = x0 + pw - 44;                                  // the view travels with the moving clock
+        const d = CL.T * CL.v, last = CL.trail[CL.trail.length - 1];   // trail in physics units (distance in light-seconds, height 0–1), so a resize just rescales it
+        if (!last || d < last[0]) CL.trail = [];
+        CL.trail.push([d, (yN - top) / Lpx]);
+        while (CL.trail.length > 1 && (d - CL.trail[0][0]) * cpx > pw - 60) CL.trail.shift();
+        if (CL.trail.length > 2400) CL.trail.shift();
+        if (CL.trail.length > 1) { const ctx = g.ctx; ctx.save(); ctx.beginPath(); ctx.rect(x0 + 1, y0 + 1, pw - 2, ph - 2); ctx.clip();
+          ctx.strokeStyle = g.alpha(C.amber, 0.5); ctx.lineWidth = 1.5; ctx.beginPath();
+          CL.trail.forEach((q, i) => { const x = cx - (d - q[0]) * cpx, y = top + q[1] * Lpx; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.stroke(); ctx.restore(); ctx.lineWidth = 1; }
+      }
+      g.line(cx - 30, top, cx + 30, top, C.muted, 3); g.line(cx - 30, bot, cx + 30, bot, C.muted, 3);
       g.ctx.shadowColor = C.amber; g.ctx.shadowBlur = 14; g.dot(cx, yN, 5, C.amber); g.ctx.shadowBlur = 0;
-      const ticks = Math.floor(t / 2);
-      g.text(`${ticks} ticks`, x0 + pw / 2, y0 + ph - 18, C.text, 16, "center");
+      g.text(`${k === 0 ? restTicks : movTicks} tick${(k === 0 ? restTicks : movTicks) === 1 ? "" : "s"}`, x0 + pw / 2, y0 + ph - tape - 16, C.text, 16, "center");
+      const ty = y0 + ph - 10, step = (pw - 40) / CYC;
+      for (let i = 0; i < CYC; i++) g.line(x0 + 20 + i * step + step / 2, ty - 10, x0 + 20 + i * step + step / 2, ty, i < shown[k] ? (k === 0 ? C.teal : C.amber) : "rgba(255,255,255,0.08)", 3);
     });
     const by = H - pad - foot + 20, bw = Math.min(320, W - pad * 2);
     g.text(`γ = ${gamma.toFixed(3)}  —  ${narrow ? "" : "the moving clock "}ticks ${gamma.toFixed(2)}× slower`, pad, by + 10, C.text, 14);

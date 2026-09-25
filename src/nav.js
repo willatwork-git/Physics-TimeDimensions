@@ -60,7 +60,10 @@
       g.classList.toggle("active", !!cur);
       top.innerHTML = `<span class="nt-name">${top.dataset.name}${cur ? ` <b>· ${cur.firstChild.textContent.trim()}</b>` : ""}</span><span class="nt-chev" aria-hidden="true"><svg viewBox="0 0 12 12" width="12" height="12"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
       const seen = [...menu.querySelectorAll("button[data-view]")].filter(b => b.style.display !== "none"), done = seen.filter(b => b.classList.contains("seen")).length;
-      top.title = `${done} of ${seen.length} explored`;
+      if (seen.length) top.title = `${done} of ${seen.length} explored`;
+      else if (g.classList.contains("g-tours") && Chrono.progress) { const i = Chrono.progress.tour(), T = Chrono.STOPS && Chrono.STOPS[Chrono.progress.tourId()];
+        top.title = i !== null && T ? `On ${T.name}: stop ${i + 1} of ${T.stops.length}` : "Three guided tours"; }
+      else top.removeAttribute("title");
     });
   };
 })();

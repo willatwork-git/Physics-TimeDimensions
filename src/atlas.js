@@ -61,7 +61,8 @@
   function renderAtlas() {
     const host = $("#atlas");
     host.innerHTML = `<div class="atlas-hint">The map is wide — swipe sideways to explore it, or tap a hole in the list below.</div>`;
-    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: "xMidYMid meet" }, host);
+    const vw = Chrono.shows("exploratory") ? W : XEXP - 22;   // Learn mode has no exploratory column: crop it so the map draws larger
+    const svg = el("svg", { viewBox: `0 0 ${vw} ${H}`, preserveAspectRatio: "xMidYMid meet" }, host);
     const defs = el("defs", {}, svg);
     const glow = el("filter", { id: "glow", x: "-100%", y: "-100%", width: "300%", height: "300%" }, defs);
     el("feGaussianBlur", { stdDeviation: "6", result: "b" }, glow);
@@ -169,7 +170,7 @@
     document.querySelectorAll("#atlas .idea").forEach(n => { n.classList.toggle("dim", !!f && !f.ideas.has(n.dataset.idea)); n.classList.toggle("hot", !!f && f.ideas.has(n.dataset.idea)); });
     document.querySelectorAll("#atlas .arc").forEach(n => {
       const on = f && f.ideas.has(n.dataset.idea) && f.holes.has(n.dataset.hole);
-      n.style.opacity = f ? (on ? .95 : .03) : .16;
+      n.style.opacity = f ? (on ? .95 : .05) : .3;
       n.style.strokeWidth = on ? 2 : 1.2;
     });
   }
@@ -213,7 +214,7 @@
       <h2>Why does our universe have exactly one time dimension?</h2>
       <p>Nobody knows for sure — and that's one of the holes in physics' account of time. Think of that account as a map with holes in it: places where the theories don't add up. The ${visHoles().length} glowing nodes along the top are those <b>holes</b>. Every dot below is someone's <b>attempt</b> to fill one, placed by year and coloured by approach.</p>
       <p>Hover a hole to see who has tried to fill it${Chrono.mode() === "learn" ? " — names appear as you hover" : ""}. Click anything to read the detail.</p>
-      ${Chrono.mode() === "learn" && Chrono.maxLevel >= 3 ? `<p class="meta">Want the raw version — this project's own challenges to the mainstream, your own hypotheses, every label? Switch to <b>Lab</b> (top right).</p>` : ""}
+      ${Chrono.mode() === "learn" && Chrono.maxLevel >= 3 ? `<p class="meta">Want the raw version — this project's own challenges to the mainstream, your own hypotheses, every label? Switch to <b>◌ Workbench</b> in the Guide menu (top right).</p>` : ""}
       <h3>Who attacks which hole</h3>
       <div class="bars">${bars}</div>
       <p class="meta" style="margin-top:8px">Colour shows the approach (the "camp"): some add more time or dimensions, some argue time is less fundamental than it looks, some look to the cosmos. Notice where "more time" and "less time" aim at the same hole — two opposite repairs for one crack.</p>
@@ -344,7 +345,7 @@
     wire() { document.querySelectorAll("[data-hyp2]").forEach(b => b.onclick = () => Chrono.hypAction(b.dataset.hyp2)); },
     aside: () => `<p><b>◌ Workbench mode</b> is the place for ideas that aren't mainstream physics yet.</p>
       <p>Here you'll find this project's own exploratory ideas and your hypotheses, the Dimension Map, and the tools to add, export and share ideas.</p>
-      <p class="meta">Everything here carries the <span class="tag HYPOTHESIS">Hypothesis</span> tag. Switch back to Learn (top right) for physics as physicists hold and debate it.</p>`
+      <p class="meta">Everything here carries the <span class="tag HYPOTHESIS">Hypothesis</span> tag. Switch back to Learn in the Guide menu (top right) for physics as physicists hold and debate it.</p>`
   });
 
   /* ---------- views ---------- */
