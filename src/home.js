@@ -34,7 +34,7 @@
 
   /* ---------- tour bar ---------- */
   const cur = () => TOURS[P.tourId()] || TOURS.puzzle;
-  function startTour(i, id) { P.setTour(i, id); P.visit("tour:" + id); Chrono.nav(TOURS[id].stops[i].href); }
+  function startTour(i, id) { P.setTour(i, id); P.visit("tour:" + id); P.tourVisit(id, i); Chrono.nav(TOURS[id].stops[i].href); }
   Chrono.startTour = startTour;
   /* The stop this view is, if a tour is running and we're on its current stop: { tourId, i, stop, next } */
   Chrono.stopFor = () => {
@@ -43,7 +43,7 @@
     return { tourId: id, i, stop: T.stops[i], next: T.stops[i + 1] || null, n: T.stops.length };
   };
   Chrono.tourNext = () => { const i = P.tour(), id = P.tourId(), T = TOURS[id]; if (i === null) return;
-    if (i >= T.stops.length - 1) { P.finishTour(); Chrono.nav("#review/" + id); } else startTour(i + 1, id); };
+    if (i >= T.stops.length - 1) { P.finishTour(T.stops.length); Chrono.nav("#review/" + id); } else startTour(i + 1, id); };
   Chrono.tourList = () => ["puzzle", "zoom", "time"].map(id => ({ id, name: TOURS[id].name }));
   Chrono.tourStops = id => TOURS[id] ? TOURS[id].stops.map(s => s.href.slice(1)) : [];
   Chrono.tour = {
@@ -58,7 +58,7 @@
         <span class="tb-q"><b>${s.q}</b> <span class="meta">${s.say}</span></span>
         <span class="tb-btns">
           <button class="btn" data-tb="prev" ${i === 0 ? "disabled" : ""}>←</button>
-          <button class="btn primary" data-tb="next">${last ? "Finish: a quick quiz ✓" : `Next: ${S[i + 1].q} →`}</button>
+          <button class="btn primary" data-tb="next">${last ? "Finish the tour ✓" : `Next: ${S[i + 1].q} →`}</button>
           <button class="btn" data-tb="leave" title="Leave the tour (you can resume from Home)">×</button>
         </span>` : `
         <span class="tb-step">Tour paused</span>
@@ -90,9 +90,10 @@
       <div class="th-head">
         <div><h2>${ICON[id]} ${T.name}</h2><p>${["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"][T.stops.length] || T.stops.length} stops, about ${Math.max(10, Math.round(T.stops.length * 3 / 5) * 5)} minutes. No physics background needed.</p></div>
         <div class="th-go"><button class="btn primary big" data-go-tour="${mine ? running : 0}" data-tour-id="${id}">${mine ? `▶ Resume at stop ${running + 1}` : done ? "▶ Take it again" : "▶ Start the tour"}</button>
+          ${!done && !mine && P.tourFinale(id) ? `<span class="meta">You reached the finale · ${P.tourVisited(id).length} of ${T.stops.length} stops visited</span>` : ""}
           ${done && !mine ? `<span class="meta">✓ You've completed this tour${P.quiz(id) ? ` · quiz best ${P.quiz(id).best} of ${P.quiz(id).n}` : ""} · <a href="#review/${id}">${P.quiz(id) ? "Retake" : "Take"} the quiz →</a></span>` : ""}</div>
       </div>
-      <ol class="itinerary">${T.stops.map((s, i) => { const st = done && !mine ? "done" : mine && i < running ? "done" : mine && running === i ? "here" : "";
+      <ol class="itinerary">${T.stops.map((s, i) => { const vis = P.tourVisited(id), st = mine && running === i ? "here" : vis.includes(i) ? "done" : "";
         return `<li class="${st}"><button data-go-tour="${i}" data-tour-id="${id}" title="Go to stop ${i + 1}"><span class="it-dot">${st === "done" ? "✓" : i + 1}</span><span class="it-q">${s.q}</span><span class="it-see">${s.see}</span><span class="it-where">${s.where}</span></button></li>`; }).join("")}</ol>
     </section>`;
   }

@@ -146,7 +146,8 @@
     if (wrap) wrap.classList.toggle("locked", on);
     const ctl = $("#lab-controls"); if (ctl) { ctl.classList.toggle("locked", on); ctl.inert = on; }
     if (veil) veil.innerHTML = !on ? "" : st === "locked"
-      ? `<div class="veil-msg"><b>Make your guess first</b><span>The answer is in here — it opens when you've guessed.</span></div>`
+      ? `<div class="veil-msg"><b>Guess first — or skip it</b><span>Pick an answer in the question ${window.matchMedia(NARROW).matches ? "above" : "on the right"}, or go straight in:</span>
+          <span class="veil-routes"><button class="btn" data-guess="-1" data-read>Read the explanation first</button><button class="btn" data-guess="-1">Explore freely</button></span></div>`
       : `<div class="veil-msg"><button class="btn primary big" data-pcheck>▶ Run it</button><span>See if you were right.</span></div>`;
   }
   /* Shared with Flatland: Chrono.predictCard(key, p) renders the card; Chrono.wirePredict(key, rerender) wires it. */
@@ -178,7 +179,7 @@
       <p class="ec-take">${stop.takeaway} ${(stop.tags || []).map(t => `<span class="tag ${t}">${Chrono.TAGS[t]}</span>`).join(" ")}</p>
       ${stop.limit ? `<p class="meta">Limit: ${stop.limit}</p>` : ""}
       ${stop.handoff ? `<p class="ec-hand">${stop.handoff}</p>` : ""}
-      <button class="btn primary" data-tour-next>${next ? `Next: ${next.q} →` : "Finish: a quick quiz ✓"}</button>
+      <button class="btn primary" data-tour-next>${next ? `Next: ${next.q} →` : "Finish the tour ✓"}</button>
       ${stop.go ? `<div class="ec-go"><span class="eyebrow">Go deeper</span>${stop.go.map(([h, t]) => `<a href="${h}">${t} →</a>`).join("")}</div>` : ""}</div>`;
   }
   function renderLabAside(def) {

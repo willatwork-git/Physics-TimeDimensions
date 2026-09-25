@@ -23,7 +23,14 @@
     tourId: () => typeof d.tourId === "string" ? d.tourId : "puzzle",
     setTour(i, id) { d.tour = i; if (id) d.tourId = id; save(); },
     tourDone: id => !!(d.done && d.done[id || "puzzle"]) || (!id || id === "puzzle") && !!d.tourDone,
-    finishTour() { const id = Chrono.progress.tourId(); d.done = d.done || {}; d.done[id] = true; d.tour = null; save(); },
+    /* d.tv[tourId] = stop indices visited in that tour. A tour is "done" only when every stop was visited;
+       jumping to the last stop and finishing just records reaching the finale (d.fin). */
+    tourVisit(id, i) { d.tv = d.tv || {}; const a = d.tv[id] || (d.tv[id] = []); if (!a.includes(i)) { a.push(i); save(); } },
+    tourVisited: id => (d.tv && d.tv[id]) || [],
+    tourFinale: id => !!(d.fin && d.fin[id]),
+    finishTour(n) { const id = Chrono.progress.tourId(), all = n && Chrono.progress.tourVisited(id).length >= n;
+      if (all) { d.done = d.done || {}; d.done[id] = true; } else { d.fin = d.fin || {}; d.fin[id] = true; }
+      d.tour = null; save(); return all; },
 
     /* review (D-037): d.rev[key] = { lv, due } — due is a timestamp; a right answer moves up the ladder */
     rev: k => d.rev[k] || null,

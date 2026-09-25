@@ -641,3 +641,4 @@ button.info:hover, button.info:focus-visible { background: var(--accent); color:
 .endcard .ec-hand { margin: 10px 0 12px; font-style: italic; color: var(--text); }
 .endcard .btn.primary { width: 100%; padding: 9px 12px; font-size: 14px; white-space: normal; text-align: left; }
 .endcard .ec-go { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; font-size: 13px; }
+.veil-routes { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 4px; }

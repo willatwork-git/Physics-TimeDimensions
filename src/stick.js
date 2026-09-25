@@ -188,7 +188,7 @@
       return `<div class="docwrap quiz">
         <div class="eyebrow">Tour quiz · ${T.name}</div>
         <h1>What stuck?</h1>
-        <p class="lede">${P.tourDone(T.id) ? "Tour complete. " : ""}${ks.length} questions, one from each stop: a few minutes. Trying to remember is what makes it stick, so guess before you look back.</p>
+        <p class="lede">${P.tourDone(T.id) ? "Tour complete. " : P.tourFinale(T.id) ? "You've reached the end of the tour. " : ""}Optional: ${ks.length} questions, one from each stop — a few minutes. Trying to remember is what makes it stick, so guess before you look back.</p>
         ${best ? `<p class="meta">Your best so far: ${best.best} of ${best.n}.</p>` : ""}
         ${ks.map((k, i) => card(k, i + 1, picks[k])).join("")}
         ${n === ks.length ? `<div class="qscore"><h2>${sc} of ${ks.length}</h2><p>${sc === ks.length ? "Every one. " : ""}These questions come back for review over the coming days, each one waiting longer as you get it right.</p>

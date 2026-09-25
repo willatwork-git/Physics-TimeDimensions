@@ -6,4 +6,4 @@
 
 **State:** 36 routes pass in Learn, Lab and school edition, with no errors and **no blank lab canvases** (new check, after a render-loop name clash). Assets at `?v=44`. Uncommitted: all of Phase 1a, SOL review fixes, headline.
 
-**Suggested:** once pushed, SOL could spot-check the live app — its sign-off covered the plan, not the live changes.
+**SOL live spot-check (2026-09-26):** passed on the core; four fixes adopted and built — overlay offers all three starts, tour "done" needs every stop visited, Clock Lab example matches the stop, quiz labelled optional. Assets at `?v=46`.
