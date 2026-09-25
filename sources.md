@@ -175,6 +175,7 @@ Added 2026-09-25 from Claude's recall. All ☐ until checked against the primary
 - **Lens** Sagan, C. (1977). *The Dragons of Eden* — the cosmic calendar. ☐
 - **E** Schrödinger, E. (1944). *What is Life?* — life feeds on 'negative entropy'. Penrose, R. (1989). *The Emperor's New Mind*, ch. 7 — the Sun as a low-entropy source. ☐
 - **E** Kleidon, A. (2009). "Nonequilibrium thermodynamics and maximum entropy production in the Earth system." *Naturwissenschaften* 96, 653 — Earth's entropy export ≈ 1 W m⁻² K⁻¹. ☐
+- **E** (Snowball episodes) / **C** (details) Hoffman, P. F., Kaufman, A. J., Halverson, G. P. & Schrag, D. P. (1998). "A Neoproterozoic Snowball Earth." *Science* 281, 1342 — near-global glaciations, escaped as volcanic CO₂ built up over millions of years. Used in the Earth's energy budget mission reveal (D-047). ☐
 - **E** Loeb, N. G. et al. (2021). "Satellite and ocean data reveal marked increase in Earth's heating rate." *Geophys. Res. Lett.* 48, e2021GL093047 — imbalance ≈ 1 W m⁻² (CERES). ☐
 - **E** Rindler, W. (1961). "Length contraction paradox." *Am. J. Phys.* 29, 365; Taylor, E. F. & Wheeler, J. A., *Spacetime Physics* (2nd ed., 1992) — pole and barn. Tao, T. (2026) spacetime diagram applet — equal-interval hyperbolae (see landscape-2026-09-25.md). ☐
 
