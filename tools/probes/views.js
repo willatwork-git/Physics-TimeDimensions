@@ -16,7 +16,7 @@ const drawn = () => {                                         // null when no la
 };
 window.addEventListener("load", () => {
   const views = new Set([...document.querySelectorAll("header [data-view]")].map(b => b.dataset.view));
-  ["concepts/quantum", "concepts/timetravel", "review/puzzle", "review/zoom", "review/time", "atlas/H5", "worksheet/puzzle", "worksheet/time", ...[1, 2, 3, 4, 5, 6, 7].map(n => "flatland/" + n)].forEach(v => views.add(v));   // deep routes
+  ["concepts/quantum", "concepts/timetravel", "concepts/radiation", "concepts/entropy", "review/puzzle", "review/zoom", "review/time", "atlas/H5", "worksheet/puzzle", "worksheet/time", ...[1, 2, 3, 4, 5, 6, 7].map(n => "flatland/" + n)].forEach(v => views.add(v));   // deep routes
   Object.entries(Chrono.STOPS || {}).forEach(([id, T]) => { views.add("review/" + id); T.stops.forEach(s => views.add(s.href.slice(1))); });
   const list = [...views], blank = [], moved = []; let i = 0;
   let retried = false;

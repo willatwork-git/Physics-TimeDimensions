@@ -58,6 +58,8 @@ Priority: credibility before launch; build what unlocks structure (Quantum scale
 - [x] The lab pattern written (DESIGN.md, D-054)
 - [ ] Phase 5 · Lab pattern: controls take 3+ rows at 1440 px in delayed, frozen, voyage, spacetime, hawking, wormhole, expand (regression warns) — trim or regroup
 - [x] Entropy/complexity thread (D-055): arrow-of-time concept section; complexity line in the Entropy box; star-formation curve + "Cosmic noon" on the timeline; Stars "Sun forms" moment and mission; gold trap reworded. Will to read the new concept text (`src/concepts.js`) and the Entropy box paragraph (`src/labs2.js`)
+- [x] D-056: "Is entropy a thing?" (Entropy page), new concept page "Radiation: the beginning and the end", entropy wording sweep. Will to read both (`src/concepts.js`)
+- [ ] Proposed: a maths layer ("The maths behind this") — see chat 2026-09-26; awaiting Will's go
 - [ ] Verify every ☐ citation · light theme · teacher notes · keyboard Atlas · tidy public review/learning files
 - [ ] Phone: canvas labels overlap in 10 labs (delayed, frozen, missions, mars, energy, field, wormhole, loops, timeline, horizons — mostly the model footnote hitting the text above). `35-phone` warns; make it fail once they're fixed
 - [ ] Hosting (D-053): a clean public copy syncs to a Cloudflare site; this repo keeps the notes. Settle what's copied and whether this repo goes private — note that git history keeps anything already pushed
