@@ -43,7 +43,7 @@ Now a free public learning tool with a life of its own: four scales (Quantum · 
 |---|---|
 | `ACTIVE.md` | Current focus (always read) |
 | `spec.md` | What each panel shows and teaches |
-| `DESIGN.md` | Visual language + physics fidelity rules |
+| `DESIGN.md` | Visual language, physics fidelity, and **the lab pattern** every new lab follows |
 | `decisions.md` | Decision records |
 | `todo.md` | Tasks |
 | `stop-plans.md` | The 20 tour stops: question, setup, prediction, takeaway, handoff (UX spec Phase 0) |

@@ -45,12 +45,12 @@
       ["Earlier / Later, or click an event", "Selects an event: when it happened, how sure we are, and where it falls on a one-year calendar."]
     ],
     stars: [
-      ["Inside a star, Where the elements came from", "Two scenes: the burning stages of one massive star, and the periodic table coloured by where each element was made."],
-      ["Stage", "Steps through the star's burning stages, from hydrogen to the final collapse. Each is far shorter than the one before."],
-      ["Play the countdown", "Runs the stages in order, ending in the collapse."],
-      ["Cosmic time", "Steps through cosmic history. Only the sources that had made anything by then are coloured in."],
-      ["Star size", "Picks one star and lights up the elements its own core can make in its normal life. Off shows every source."],
-      ["Tap an element", "Shows its sources, share by share, its story, and a picture of its atom: electrons in their shells, not to scale."]
+      ["One star, Generations", "Two views of the same engine: one star's whole life, or every generation of stars over cosmic time."],
+      ["Star mass", "How heavy the star is, from a red dwarf to 25 Suns. It decides how far fusion gets, how long the star lives and how it ends."],
+      ["Play its life, Play history", "Runs the star's life (bigger stars run faster: they live faster), or cosmic history from the Big Bang to today."],
+      ["Cosmic time", "Steps through cosmic history. Only what had been made by then is coloured in."],
+      ["What am I made of?", "Lights up the elements in your body, coloured by where they were made."],
+      ["Tap an element", "Shows where it came from, share by share, and its story."]
     ],
     energy: [
       ["Earth today, No greenhouse, Snowball Earth", "Presets for how much sunlight is reflected and how much infrared the greenhouse layer absorbs."],

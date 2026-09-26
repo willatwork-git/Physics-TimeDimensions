@@ -74,3 +74,19 @@ Chronoscope becomes one "app" window. Keep each panel self-contained (own canvas
 - Top bar: ⌂ Home · Tours · Explore (mega-menu) · Guide (with the mode switch). Never a row of buttons; new pages go into Explore's columns or its bottom row.
 - Every side panel starts with a breadcrumb. Home has no sidebar.
 - Predict-first is honest (D-042): a lab stays paused and blurred on the question's setup until the visitor guesses, reads, or explores. Nothing is ever locked behind a guess or a mission.
+
+## The lab pattern (D-054) — every lab follows it
+What makes a lab feel like Chronoscope. Written after reworking Stars; the regression checks what it can (marked ✓).
+1. **One question** a visitor could ask ("Where did the iron in my blood come from?"). The prediction asks it before anything moves.
+2. **Cause | effect on one stage.** Two panels: what you change, and what it does. The visitor *sees* the effect happen — Stars' products fly from the core to their tiles — rather than reading about it.
+3. **One main control per mode; at most three modes, as buttons.** A mode is a new lens on the same story (One star / Generations; Light clock / GPS), never a second lab glued on.
+4. **Controls on one row at 1440 px; two at most** (✓ warns). Presets as buttons, one main slider, one Play.
+5. **Readout bar:** up to three big labelled numbers (✓); a headline number isn't repeated as canvas text.
+6. **Colour carries data, consistently.** One solid colour per category, the same in every panel (a stage's shell = its tiles; a kind of star in the sky = its source in the table). No tile striped with many colours: detail comes on tap.
+7. **Motion:** moving data shows cause and effect; decoration is calm at rest and wakes on hover; reduced motion is honoured. Pictures say "a picture, not to scale" and carry ANALOGY.
+8. **Canvas text:** a panel title, short labels on drawn things, one footnote line. Explanations belong in the side panel. Nothing runs off the edge or overlaps at 390 px (✓).
+9. **Tap for detail, in place** (an element's story and share bar under the table) — no pop-ups.
+10. **Make it personal when the physics allows:** a "you" moment ("What am I made of?") is remembered where a fact isn't.
+11. **Missions:** two to four; each reachable, none met on arrival (✓), each reveal says something new.
+12. **Plumbing:** `predict` (with its setup), `state()` + `applySetup`, `readouts()` (✓), a guide row per control (✓), model assumption, tags, sources.
+13. **Phones:** panels stack; give the data panel the height it needs so it never collapses (✓ via overlaps).

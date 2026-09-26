@@ -7,10 +7,12 @@ window.addEventListener("load", () => setTimeout(async () => {
   const labs = [...new Set([...document.querySelectorAll("header [data-view]")].map(b => b.dataset.view))]
     .filter(id => { const d = Chrono.lab.def(id); return d && d.kind !== "doc"; });
   labs.forEach(id => Chrono.progress.setPred(id, { guess: -1 }));   // skip the predict lock ("Explore freely")
-  let sliders = 0, hinted = 0; const noHint = [], tries = [], picks = [], ro = [], stepErr = [], arrival = [], unfinished = []; let missions = 0;
+  let sliders = 0, hinted = 0; const rows = []; const noHint = [], tries = [], picks = [], ro = [], stepErr = [], arrival = [], unfinished = []; let missions = 0;
   for (const id of labs) {                                    // physics + drawing, stepped
     location.hash = "#" + id; await W(250);
     const d = Chrono.lab.def(id), cv = $("#lab-canvas");
+    const tops = new Set([...document.querySelectorAll("#lab-controls > *")].filter(e => e.offsetParent).map(e => Math.round(e.getBoundingClientRect().top / 8)));   // the lab pattern: controls on one row at desktop width
+    if (tops.size > 2) rows.push(`${id} (${tops.size} rows)`);
     document.querySelectorAll("#lab-controls label.ctl").forEach(lb => { if (lb.querySelector('input[type="range"]')) { sliders++; if (lb.querySelector(".hint")) hinted++; else if (!lb.title) noHint.push(`${id}: "${lb.textContent.trim().slice(0, 40)}"`); } });
     try { for (let k = 0; k < 40; k++) { if (d.tick) d.tick(0.05); if (d.draw) Chrono.lab.drawOn(cv, g => d.draw(g)); } }
     catch (e) { stepErr.push(`${id}: ${e.message}`); }
@@ -40,5 +42,5 @@ window.addEventListener("load", () => setTimeout(async () => {
       if (!t || $("#aside .mission.done") || t.textContent !== Chrono.MISSIONS[id][0].title) picks.push(`${id}: picking circle 1 didn't reopen "${Chrono.MISSIONS[id][0].title}"`); }
   }
   const out = document.createElement("pre"); out.id = "RES";
-  out.textContent = JSON.stringify({ tries, sliders, hinted, noHint, picks, labs: labs.length, readouts: ro.length, noReadouts: labs.filter(l => !ro.includes(l)), errors: __E, stepErr, missions, arrival, unfinished }); document.body.appendChild(out);
+  out.textContent = JSON.stringify({ rows, tries, sliders, hinted, noHint, picks, labs: labs.length, readouts: ro.length, noReadouts: labs.filter(l => !ro.includes(l)), errors: __E, stepErr, missions, arrival, unfinished }); document.body.appendChild(out);
 }, 400));

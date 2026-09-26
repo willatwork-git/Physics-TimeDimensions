@@ -14,6 +14,7 @@ if [ -n "$e$s" ]; then fail "labs stepping: ${e:+errors $e  }${s:+step errors $s
 if [ -n "$nr" ]; then fail "readouts: no readout bar (every lab needs readouts(), UX spec 3b): $nr"; else pass "readouts: all $labs labs give up to 3 labelled numbers"; fi
 a=$(jfirst "$res" arrival); u=$(jfirst "$res" unfinished)
 [ -n "$a" ] && fail "missions: passed on arrival (breaks the mission rule): $a"
+rw=$(get rows); [ -n "$rw" ] && warn "lab pattern: controls take more than two rows at 1440 px (DESIGN.md → The lab pattern) — $rw"
 nh=$(get noHint)
 if [ -n "$nh" ]; then warn "control hints: $(get hinted) of $(get sliders) sliders hinted; no guide row for: $nh"; else pass "control hints: $(get hinted) of $(get sliders) sliders show a hint (Learn mode)"; fi
 tr=$(jfirst "$res" tries); if [ -n "$tr" ]; then fail "try boxes: $tr"; else pass "try boxes: hidden until a lab's missions are done, then shown"; fi

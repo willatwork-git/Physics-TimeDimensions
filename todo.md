@@ -54,6 +54,9 @@ Priority: credibility before launch; build what unlocks structure (Quantum scale
 - [x] Nav reorganised (⌂ Home, Guide menu, breadcrumb) · show-only Filter menu in both modes · ◌ Workbench for Lab · home text B
 - [ ] Will: check the new home text (`src/home.js`) and the Exploratory ideas page
 ### Phase 5 — Launch readiness
+- [x] Stars reworked as an engine (D-054): One star / Generations, elements flying to their tiles, white dwarf vs explosion, What am I made of?; atom removed; arrow-of-time concept links back. Will to review the new text in `src/stars.js` and the concept section in `src/concepts.js`
+- [x] The lab pattern written (DESIGN.md, D-054)
+- [ ] Phase 5 · Lab pattern: controls take 3+ rows at 1440 px in delayed, frozen, voyage, spacetime, hawking, wormhole, expand (regression warns) — trim or regroup
 - [ ] Verify every ☐ citation · light theme · teacher notes · keyboard Atlas · tidy public review/learning files
 - [ ] Phone: canvas labels overlap in 10 labs (delayed, frozen, missions, mars, energy, field, wormhole, loops, timeline, horizons — mostly the model footnote hitting the text above). `35-phone` warns; make it fail once they're fixed
 - [ ] Hosting (D-053): a clean public copy syncs to a Cloudflare site; this repo keeps the notes. Settle what's copied and whether this repo goes private — note that git history keeps anything already pushed

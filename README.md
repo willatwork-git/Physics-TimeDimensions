@@ -98,8 +98,10 @@ built-in guide — or press **?** — Concepts, quizzes, and the Learn / Workben
 **Cosmos** — the universe as a whole
 - **Cosmic timeline** — from the first instant physics can describe to the last black hole, in powers of
   ten, every event tagged by how sure we are; plus the universe so far as a one-year calendar.
-- **Stars forge the elements** — inside a massive star as it burns down to iron, then the periodic table coloured
-  by where each element was made, filling in across cosmic time. A star-size slider shows why our Sun can't make iron.
+- **Stars forge the elements** — a star is an engine, not a light bulb. Pick a star's mass and play its life:
+  each burning stage sends the elements it makes flying to the periodic table; the Sun ends as a white dwarf,
+  big stars explode and scatter everything. Then watch generations of stars fill the table over cosmic time —
+  and press *What am I made of?* (about 90% of your mass was made in stars).
 - **Expanding universe** — stand on any galaxy; change matter and dark energy; age and fate.
 - **Cosmic horizons** — how far we can see (46 billion light-years) and how far our signals can reach.
 - **Boot a Universe** — try other numbers of space and time dimensions and watch what breaks.

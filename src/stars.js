@@ -1,8 +1,10 @@
-/* Chronoscope — Stars forge the elements (D-048), Cosmos.
-   Scene 1 · Inside a massive star: the burning stages of a 25-Sun-mass star, each far shorter than the last
-   (published model values: Woosley, Heger & Weaver 2002), drawn as an onion of shells and a countdown.
-   Scene 2 · Where each element came from: the periodic table coloured by origin, filling in as cosmic time
-   passes (rounded shares after Johnson 2019 and Kobayashi, Karakas & Lugaro 2020). Data, not computed. */
+/* Chronoscope — Stars forge the elements (D-048, reworked D-054), Cosmos. A star is an engine, not a light bulb:
+   fuel goes in, light and new elements come out. Mode "One star": pick a star's mass and play its life — the core
+   burns stage after stage (published stage times: Woosley, Heger & Weaver 2002), each stage's products fly to their
+   tiles on the periodic table, and the star ends as a white dwarf or explodes, scattering what it made. How far the
+   engine runs depends on mass. Mode "Generations": cosmic time, stars living and dying, the table filling in by
+   source (rounded shares after Johnson 2019 and Kobayashi, Karakas & Lugaro 2020). The moving pictures are
+   pictures (ANALOGY); which star makes what, and every share, is data. */
 (function () {
   const $ = s => document.querySelector(s);
   const C = Chrono.C, TAU = Math.PI * 2, YR = 3.156e7;
@@ -27,46 +29,6 @@
     if (yr < 1e6) return `${+(yr / 1e3).toPrecision(2)} thousand years`;
     return `${+(yr / 1e6).toPrecision(2)} million years`;
   }
-
-  function drawStar(g) {
-    const { ctx } = g, { A, B } = g.split(0.5), i = Math.min(6, Math.floor(ST.s)), done = i >= 6, f = ST.s - i;
-    g.panel(A.x, A.y, A.w, A.h, "Inside a star of 25 Sun masses (not to scale)");
-    const cx = A.x + A.w / 2, cy = A.y + A.h * 0.46, R = Math.min(A.w, A.h) * 0.36;
-    if (!done) {
-      const n = i + 1;                                     // envelope + one shell of ash per finished stage
-      for (let k = 0; k <= n; k++) { const r = R * Math.pow(0.72, k); g.dot(cx, cy, r, g.alpha(SHELL[Math.min(k, SHELL.length - 1)], k ? 0.55 : 0.35)); }
-      const rc = R * Math.pow(0.72, n + 0.6), pulse = 1 + 0.08 * Math.sin(performance.now() / 180);
-      ctx.shadowColor = STAGES[i].col; ctx.shadowBlur = 25; g.dot(cx, cy, rc * pulse, "#fff3c4"); ctx.shadowBlur = 0;
-      g.label(`core: ${STAGES[i].f.toLowerCase()} burning`, cx, cy + R + 22, STAGES[i].col, 11, "center");
-    } else {
-      const q = Math.min(1, f * 2 + 0.3);
-      ctx.shadowColor = "#fff"; ctx.shadowBlur = 50; g.dot(cx, cy, R * (0.25 + q * 0.6), g.alpha("#ffffff", 1 - q * 0.6)); ctx.shadowBlur = 0;
-      for (let k = 0; k < 60; k++) { const a = k / 60 * TAU, r = R * (0.4 + q * 0.75); g.dot(cx + Math.cos(a) * r, cy + Math.sin(a) * r, 2, g.alpha(SHELL[1 + k % 6], 0.9)); }
-      g.label("the core collapses in under a second — the star explodes", cx, cy + R + 22, C.text, 11, "center");
-    }
-    if (cy + R + 40 < A.y + A.h - 14) g.label("outer layers: hydrogen", A.x + 14, A.y + A.h - 14, C.muted, 10);   // short stacked panel (phones): no room
-
-    g.panel(B.x, B.y, B.w, B.h, "The countdown: each stage far shorter than the last");
-    const x0 = B.x + 14, bw = B.w - 28, lmax = Math.log10(6.7e6 * YR), tight = B.h < 340;   // tight: the readout bar carries the "Now" line
-    const row = tight ? Math.max(16, (B.h - 64) / 7) : Math.min(40, (B.h - 150) / 7), fs = tight ? 10 : 11;
-    let y = B.y + (tight ? 40 : 48);
-    STAGES.concat([{ f: "Core collapse", a: "", yr: 0.5 / YR, col: "#ffffff" }]).forEach((s, k) => {
-      const on = k === i, len = Math.max(0.02, Math.log10(s.yr * YR) / lmax), d = dur(s.yr).replace("0.5 seconds", "under a second");
-      ctx.font = `${fs}px Inter, system-ui, sans-serif`; let t = `${s.f}${s.a ? " → " + s.a : ""}`;
-      const dw = (ctx.font = `${fs}px JetBrains Mono, monospace`, ctx.measureText(d).width);
-      ctx.font = `${fs}px Inter, system-ui, sans-serif`; if (ctx.measureText(t).width + dw + 12 > bw) t = s.f;   // no room for the products: fuel only
-      g.label(t, x0, y, on ? C.text : C.muted, fs, "left", "Inter, system-ui, sans-serif");
-      g.label(d, x0 + bw, y, on ? s.col : C.muted, fs, "right");
-      g.bar(x0, y + (tight ? 3 : 5), bw * len, tight ? 3 : 6, 1, g.alpha(s.col, on ? 1 : 0.35)); y += row;
-    });
-    y += 6;
-    if (!tight && !done) {
-      const s = STAGES[i];
-      y += g.wrap(`Now: ${s.f.toLowerCase()} burning at about ${s.T < 0.1 ? Math.round(s.T * 1000) + " million" : s.T.toFixed(1) + " billion"} degrees, making ${s.a.toLowerCase()}. It lasts ${dur(s.yr)}${i ? ` — about ${Math.round(STAGES[i - 1].yr / s.yr).toLocaleString("en-AU")} times shorter than the stage before` : ""}.`, x0, y, bw, 15, C.text, 12) + 6;
-    } else if (!tight) y += g.wrap("Iron is where fusion stops paying: fusing it takes energy instead of giving it. With nothing left to hold it up, the core collapses and the star explodes, scattering everything it made.", x0, y, bw, 15, C.text, 12) + 6;
-    g.label("Model: published stage times for a 25-Sun-mass star.", x0, B.y + B.h - 14, C.muted, 10);
-  }
-
   /* ---------- scene 2: where each element came from ---------- */
   /* Sources, by letter. Shares below are in tenths, rounded, after Johnson (2019) and Kobayashi et al. (2020). */
   const SRC = {
@@ -114,29 +76,6 @@
     { t: "Today", on: "bmndwgcp" }
   ];
   Object.assign(ST, { step: 5, sel: 26, tiles: [], clock: 0, from: 5, lit: 1 });   // from, lit: the step before a change and how far the new tiles have faded in
-  /* Electrons per shell in the ground state: fill subshells in the usual order (1s 2s 2p 3s 3p 4s 3d …), then apply the
-     measured exceptions, where one or two electrons sit in a different shell ([element, from shell, to shell, count]). */
-  const ORDER = [[1, 2], [2, 2], [2, 6], [3, 2], [3, 6], [4, 2], [3, 10], [4, 6], [5, 2], [4, 10], [5, 6], [6, 2], [4, 14], [5, 10], [6, 6], [7, 2], [5, 14], [6, 10]];
-  const EXC = [[24, 4, 3, 1], [29, 4, 3, 1], [41, 5, 4, 1], [42, 5, 4, 1], [44, 5, 4, 1], [45, 5, 4, 1], [46, 5, 4, 2], [47, 5, 4, 1],
-    [57, 4, 5, 1], [58, 4, 5, 1], [64, 4, 5, 1], [78, 6, 5, 1], [79, 6, 5, 1], [89, 5, 6, 1], [90, 5, 6, 2], [91, 5, 6, 1], [92, 5, 6, 1]];
-  function shells(z) {
-    const n = [0, 0, 0, 0, 0, 0, 0]; let left = z;
-    for (const [sh, cap] of ORDER) { const k = Math.min(cap, left); n[sh - 1] += k; left -= k; if (!left) break; }
-    EXC.forEach(([e, a, b, k]) => { if (e === z) { n[a - 1] -= k; n[b - 1] += k; } });
-    return n.filter(x => x > 0);
-  }
-  /* A picture of the atom, not to scale (ANALOGY): nucleus, shell rings, electrons circling — outer shells slower. */
-  function drawAtom(g, el, cx, cy, R) {
-    const sh = shells(el.z), col = SRC[main(el)].col, t = ST.clock, nucl = Math.max(4, R * 0.09);
-    sh.forEach((ne, k) => {
-      const r = nucl + (R - nucl) * (k + 1) / sh.length, w = 0.9 / Math.pow(k + 1, 0.7) * (k % 2 ? -1 : 1);
-      g.ring(cx, cy, r, g.alpha(col, 0.18), 1);
-      for (let e = 0; e < ne; e++) { const a = t * w + e / ne * TAU + k * 0.7;
-        g.dot(cx + Math.cos(a) * r, cy + Math.sin(a) * r, Math.max(1.6, R * 0.028), g.alpha(col, 0.95)); }
-    });
-    g.ctx.shadowColor = col; g.ctx.shadowBlur = 18 * (1 + 0.15 * Math.sin(t * 2.2)); g.dot(cx, cy, nucl, "#fff3c4"); g.ctx.shadowBlur = 0;
-    return sh;
-  }
   const has = (el, on) => Object.keys(el.sh).some(s => on.includes(s));
   const main = el => Object.keys(el.sh).sort((a, b) => el.sh[b] - el.sh[a])[0];
 
@@ -166,112 +105,229 @@
       note: "From about 10 Suns up, fusion runs all the way to iron, and no further." },
     { m: 25, n: "25 Suns", k: "a very massive star", z: IRON, reach: "iron", life: "about 7.5 million years", end: "an explosion that leaves a neutron star or a black hole", col: "#7cc4ff",
       note: "Bigger stars burn faster and die younger, but they still stop at iron." }];
-  ST.star = 0;
-  function drawTable(g) {
-    const { A, B, stacked } = g.split(0.66), on = TIMES[ST.step].on, was = TIMES[ST.from].on;
-    if (stacked) { const d = A.h - ((A.w - 24) / 18 * 9.6 + 60); if (d > 0) { A.h -= d; B.y -= d; B.h += d; } }   // phones: the table takes only the height it needs
-    const star = STARS[ST.star];
-    g.panel(A.x, A.y, A.w, A.h, star ? `What a star of ${star.n} makes in its core` : `Where the elements came from · ${TIMES[ST.step].t}`);
-    const s = Math.min((A.w - 24) / 18, (A.h - 44) / 9.6), x0 = A.x + (A.w - s * 18) / 2, y0 = A.y + 32;
+  /* ---------- a star's life, as an engine: fuel in, light and new elements out ---------- */
+  /* Which burning stage first makes each element (rounded; stages as in STAGES): helium from hydrogen; carbon, nitrogen
+     and oxygen from helium; neon to aluminium from carbon; silicon to calcium from oxygen; the iron group from silicon. */
+  const stageOf = z => z === 2 ? 0 : z <= 8 ? 1 : z <= 13 ? 2 : z <= 20 ? 4 : 5;
+  const STAGE_COL = ["#8fd3ff", "#ffd35a", "#ffb347", "#ff7a59", "#e36bd0", "#9b8cff"];   // ash colour of each stage: its shell and its tiles
+  const lifeOf = star => {                                                          // stages this star burns, and how it ends
+    const n = star.m < 0.5 ? 1 : star.m < 8 ? 2 : star.m < 10 ? 3 : 6;
+    return { n, end: star.m < 0.5 ? "none" : star.m < 10 ? "dwarf" : "boom", secs: star.m < 0.5 ? 5 : star.m < 2 ? 3.2 : star.m < 10 ? 2.4 : 1.4 };   // bigger stars play faster: they live faster
+  };
+  const BODY = { 8: 65, 6: 18, 1: 10, 7: 3, 20: 1.5, 15: 1, 19: 0.4, 16: 0.3, 11: 0.2, 17: 0.2, 12: 0.1, 26: 0.01 };   // % of a human body's mass
+  Object.assign(ST, { mode: "star", star: 2, p: 0, play: false, lit: {}, fly: [], nuc: [], light: [], burst: [], sky: [], you: false, pulse: {}, geo: null, hp: 0, lit2: 1 });
+  delete ST.scene;
+  const heaviest = () => Math.max(1, ...Object.keys(ST.lit).map(Number));
+  function resetLife() { Object.assign(ST, { p: 0, lit: { 1: 1 }, fly: [], burst: [], pulse: {} }); seedCore(0); }
+  function seedCore(i) { ST.nuc = Array.from({ length: 12 }, () => ({ a: Math.random() * TAU, r: Math.random(), c: i, w: 0.6 + Math.random() })); }
+  const tileOf = z => ST.tiles.find(t => t.z === z);
+  function launch(z, from, col, delay = 0) {                                       // an element flies from the star to its tile
+    const t = tileOf(z); if (!t || !from) return;
+    ST.fly.push({ z, x0: from[0], y0: from[1], x1: t.x + t.w / 2, y1: t.y + t.w / 2, t: -delay, col });
+  }
+
+  /* ---------- the stage: one star (left) and the table it fills (right) ---------- */
+  function drawEngine(g, A) {
+    const { ctx } = g, star = STARS[ST.star], L = lifeOf(star), i = Math.min(L.n - 1, Math.floor(ST.p)), dying = ST.p >= L.n, d = dying ? Math.min(1, ST.p - L.n) : 0;
+    g.panel(A.x, A.y, A.w, A.h, `The engine · ${star.n}, ${star.k}`);
+    const cx = A.x + A.w / 2, cy = A.y + A.h * 0.47, R = Math.min(A.w, A.h) * (0.2 + 0.035 * Math.sqrt(star.m)), core = R * 0.34;
+    ST.geo = { cx, cy, R };
+    if (!dying || L.end === "none") {
+      ctx.save(); ctx.beginPath(); ctx.rect(A.x, A.y + 26, A.w, A.h - 26); ctx.clip();   // light streaks stay inside the panel, clear of its title
+      ST.light.forEach(f => { g.ctx.globalAlpha = Math.max(0, 1 - f.r / 1.9); g.line(cx + Math.cos(f.a) * R * f.r, cy + Math.sin(f.a) * R * f.r, cx + Math.cos(f.a) * R * (f.r + 0.12), cy + Math.sin(f.a) * R * (f.r + 0.12), "#ffe9a8", 2); });
+      g.ctx.globalAlpha = 1; ctx.restore();
+      ctx.shadowColor = star.col; ctx.shadowBlur = 30; g.dot(cx, cy, R, g.alpha(star.col, 0.28)); ctx.shadowBlur = 0;   // the envelope: still mostly hydrogen
+      for (let k = Math.floor(Math.min(ST.p, L.n)); k >= 1; k--) g.dot(cx, cy, core + (R - core) * 0.62 * (k / Math.max(2, L.n)), g.alpha(STAGE_COL[k - 1], 0.5));   // one shell of ash per finished stage
+      ctx.shadowColor = STAGE_COL[i]; ctx.shadowBlur = 20; g.dot(cx, cy, core, "#fff3c4"); ctx.shadowBlur = 0;
+      const fuel = i ? STAGE_COL[i - 1] : "#cfe3ff";                                  // this stage burns the last one's ash; a flash makes this stage's
+      ST.nuc.forEach(n => { const r = core * 0.82 * Math.sqrt(n.r); if (n.big > 0) { ctx.shadowColor = "#ffffff"; ctx.shadowBlur = 12; } g.dot(cx + Math.cos(n.a) * r, cy + Math.sin(n.a) * r, n.big > 0 ? 4.5 : 3, n.big > 0 ? STAGE_COL[i] : fuel); ctx.shadowBlur = 0; });
+      g.label(L.end === "none" && ST.p >= 0.95 ? "still burning: no red dwarf has finished yet" : `burning ${STAGES[i].f.toLowerCase()} → making ${STAGES[i].a.toLowerCase()}`, cx, cy + R + 24, STAGE_COL[i], 11, "center");
+    } else if (L.end === "dwarf") {                                                  // outer layers drift away; a white dwarf is left
+      g.ring(cx, cy, R * (1 + d * 1.4), g.alpha(star.col, 0.5 * (1 - d)), 3);
+      g.ring(cx, cy, R * (0.8 + d * 1.1), g.alpha("#4fd1a5", 0.4 * (1 - d)), 2);
+      ctx.shadowColor = "#ffffff"; ctx.shadowBlur = 16; g.dot(cx, cy, Math.max(4, core * (1 - d * 0.7)), "#ffffff"); ctx.shadowBlur = 0;
+      g.label("the outer layers drift off · a white dwarf is left", cx, cy + R + 24, C.text, 11, "center");
+    } else {                                                                         // the core collapses, the star explodes
+      ctx.shadowColor = "#ffffff"; ctx.shadowBlur = 60 * (1 - d); g.dot(cx, cy, R * (0.3 + d * 0.9), g.alpha("#ffffff", 0.9 * (1 - d))); ctx.shadowBlur = 0;
+      g.dot(cx, cy, 3, "#cfe3ff");
+      g.label(`it explodes · ${star.end.replace("an explosion that ", "")}`, cx, cy + R + 24, C.text, 11, "center");
+    }
+    g.label("a picture, not to scale", A.x + 14, A.y + A.h - 14, C.muted, 10);
+  }
+  function drawSky(g, A) {
+    const on = TIMES[ST.step].on;
+    g.panel(A.x, A.y, A.w, A.h, `Generations of stars · ${TIMES[ST.step].t.split(":")[0]}`);
+    ST.geo = { x: A.x, y: A.y, w: A.w, h: A.h };
+    if (ST.step === 0) { const cx = A.x + A.w / 2, cy = A.y + A.h / 2, q = 0.5 + 0.5 * Math.sin(ST.clock * 2);
+      g.ctx.shadowColor = "#8fd3ff"; g.ctx.shadowBlur = 40; g.dot(cx, cy, 18 + 6 * q, g.alpha("#cfe3ff", 0.6)); g.ctx.shadowBlur = 0;
+      g.label("no stars yet: only what the Big Bang made", cx, cy + 50, C.muted, 11, "center"); }
+    FIELD.forEach(([u, v, b]) => g.dot(A.x + 12 + u * (A.w - 24), A.y + 34 + v * (A.h - 110), 1, g.alpha("#cfe3ff", 0.12 + 0.18 * b * (0.6 + 0.4 * Math.sin(ST.clock * 1.3 + u * 40)))));   // the sky
+    ST.sky.forEach(s => { const age = s.t / s.life, x = A.x + 20 + s.x * (A.w - 40), y = A.y + 40 + s.y * (A.h - 120);
+      if (age < 1) { g.ctx.shadowColor = s.col; g.ctx.shadowBlur = 14; g.dot(x, y, s.r * (0.5 + 0.5 * Math.min(1, age * 4)) * (1 + 0.12 * Math.sin(ST.clock * 5 + s.x * 20)), s.col); g.ctx.shadowBlur = 0; }
+      else { const q = Math.min(1, (age - 1) * 2.5); g.ctx.shadowColor = s.col; g.ctx.shadowBlur = 20 * (1 - q); g.dot(x, y, s.r * 1.6 * (1 - q), "#ffffff"); g.ctx.shadowBlur = 0; g.ring(x, y, s.r + q * 30, g.alpha(s.col, 1 - q), 2.5); } });
+    if (ST.step > 0) {                                                                // key: each kind of star, in its tile colour
+      const keys = [["m", "big stars explode"], ["g", "giant stars puff out"], ["w", "white dwarfs explode"], ["n", "neutron stars collide"]].filter(([k]) => on.includes(k));
+      keys.forEach(([k, n], j) => { const kx = A.x + 14 + (j % 2) * (A.w - 28) / 2, ky = A.y + A.h - 44 + Math.floor(j / 2) * 16; g.dot(kx + 4, ky - 4, 4, SKY_COL[k]); g.label(n, kx + 14, ky, C.muted, 10, "left", "Inter, system-ui, sans-serif"); });
+      g.label("dying stars scatter what they made", A.x + 14, A.y + A.h - 10 + (keys.length > 2 ? 4 : -12), C.muted, 10);
+    }
+  }
+  function drawTable(g, B) {
+    const star = STARS[ST.star], hist = ST.mode === "history", on = TIMES[ST.step].on, was = TIMES[ST.from].on;
+    g.panel(B.x, B.y, B.w, B.h, ST.you ? "What you are made of" : hist ? "What had been made by then" : `What ${star.n === "1 Sun" ? "our Sun" : "this star"} makes`);
+    const s = Math.max(12, Math.min((B.w - 24) / 18, (B.h - 190) / 9.6)), x0 = B.x + (B.w - s * 18) / 2, y0 = B.y + 34;
     ST.tiles = [];
     EL.forEach(el => {
-      const [r, c] = cell(el.z), x = x0 + c * s, y = y0 + r * s, w = s - 2, made = star && star.z.includes(el.z), lit = made || (!star && has(el, on));
-      g.ctx.fillStyle = "#1b2030"; g.ctx.fillRect(x, y, w, w);
-      if (star) { g.ctx.globalAlpha = 0.22; }                         // star mode: the source colours stay faintly underneath
-      if (lit && !star) { let yy = y + w;                             // stacked bars: each active source's share, bottom up; new shares grow in
-        Object.keys(el.sh).forEach(k => { if (!on.includes(k)) return; const h = w * el.sh[k] * (was.includes(k) ? 1 : ST.lit); yy -= h; g.ctx.fillStyle = g.alpha(SRC[k].col, 0.85); g.ctx.fillRect(x, yy, w, h); }); }
-      if (star && !made && has(el, on)) { let yy = y + w; Object.keys(el.sh).forEach(k => { if (!on.includes(k)) return; const h = w * el.sh[k]; yy -= h; g.ctx.fillStyle = SRC[k].col; g.ctx.fillRect(x, yy, w, h); }); }
-      g.ctx.globalAlpha = 1;
-      if (made) { g.ctx.shadowColor = star.col; g.ctx.shadowBlur = 10 + 4 * Math.sin(ST.clock * 2.2 + el.z); g.ctx.fillStyle = star.col; g.ctx.fillRect(x, y, w, w); g.ctx.shadowBlur = 0; }
-      if (el.z === ST.sel) { g.ctx.shadowColor = "#ffffff"; g.ctx.shadowBlur = 8 + 4 * Math.sin(ST.clock * 2.2); g.ctx.strokeStyle = "#ffffff"; g.ctx.lineWidth = 2; g.ctx.strokeRect(x - 1, y - 1, w + 2, w + 2); g.ctx.lineWidth = 1; g.ctx.shadowBlur = 0; }
-      g.label(el.sym, x + w / 2, y + w * 0.66, lit ? "#0d1017" : C.muted, Math.max(8, Math.floor(s * 0.42)), "center", "Inter, system-ui, sans-serif");
+      const [r, c] = cell(el.z), x = x0 + c * s, y = y0 + r * s, w = s - 2, ctx = g.ctx;
+      let fill = null, a = 1;
+      if (ST.you) { fill = BODY[el.z] ? SRC[main(el)].col : null; }
+      else if (hist) { if (has(el, on)) { fill = SRC[Object.keys(el.sh).filter(k => on.includes(k)).sort((a, b) => el.sh[b] - el.sh[a])[0]].col; /* the biggest source active by then */ a = Object.keys(el.sh).some(k => on.includes(k) && !was.includes(k)) ? ST.lit2 : 1; } }
+      else if (ST.lit[el.z]) fill = el.z === 1 ? "#3a6ea5" : STAGE_COL[stageOf(el.z)];
+      ctx.fillStyle = "#1b2030"; ctx.fillRect(x, y, w, w);
+      if (fill) { const pu = ST.pulse[el.z] || 0; ctx.globalAlpha = a; if (pu > 0) { ctx.shadowColor = fill; ctx.shadowBlur = 18 * pu; } ctx.fillStyle = fill; ctx.fillRect(x, y, w, w); ctx.shadowBlur = 0; ctx.globalAlpha = 1; }
+      if (el.z === ST.sel && !ST.you) { ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 2; ctx.strokeRect(x - 1, y - 1, w + 2, w + 2); ctx.lineWidth = 1; }
+      g.label(el.sym, x + w / 2, y + w * 0.66, fill ? "#0d1017" : g.alpha(C.muted, 0.7), Math.max(8, Math.floor(s * 0.42)), "center", "Inter, system-ui, sans-serif");
       ST.tiles.push({ z: el.z, x, y, w });
     });
-    g.label("Tap an element", A.x + 14, A.y + A.h - 14, C.muted, 10);
-
-    g.panel(B.x, B.y, B.w, B.h, star ? `${star.n}: ${star.k}` : "Sources");
-    const bx = B.x + 14, bw = B.w - 28, lh = B.h < 360 ? 15 : 18, cols = stacked ? 2 : 1;
-    let y = B.y + 42;
-    if (star) {                                                         // the star, drawn by size (square root of mass: a picture, not to scale)
-      const sr = Math.min(26, 5 + 5 * Math.sqrt(star.m)), sx = bx + 28, sy = y + 10;
-      g.ctx.shadowColor = star.col; g.ctx.shadowBlur = 20 + 6 * Math.sin(ST.clock * 1.6); g.dot(sx, sy, sr, star.col); g.ctx.shadowBlur = 0;
-      g.label(`core fusion reaches ${star.reach}`, bx + 66, y + 2, C.text, 11, "left", "Inter, system-ui, sans-serif");
-      g.label(`lives ${star.life}`, bx + 66, y + 18, C.muted, 11, "left", "Inter, system-ui, sans-serif");
-      y += 44; y += g.wrap(`Ends as ${star.end}. ${star.note}`, bx, y, bw, 15, C.text, 12) + 4;
+    let y = y0 + 9.6 * s + 16; const bx = B.x + 14, bw = B.w - 28;
+    if (ST.you) {
+      y += g.wrap("By mass you are about 65% oxygen, 18% carbon, 10% hydrogen, 3% nitrogen, then calcium, phosphorus and a pinch of the rest. The hydrogen is from the Big Bang. Nearly everything else was made in stars.", bx, y, bw, 16, C.text, 13);
+      const by = {}; let tot = 0;                                                     // your mass, by where it was made: body share × each element's source shares
+      Object.entries(BODY).forEach(([z, pc]) => Object.entries(EL[z - 1].sh).forEach(([k, f]) => { by[k] = (by[k] || 0) + pc * f; tot += pc * f; }));
+      y += 14; g.label("YOUR MASS, BY WHERE IT WAS MADE", bx, y, C.muted, 10); y += 8;
+      let xx = bx; const order = Object.keys(by).sort((a, b) => by[b] - by[a]);
+      order.forEach(k => { const w = bw * by[k] / tot; g.ctx.fillStyle = SRC[k].col; g.ctx.fillRect(xx, y, Math.max(1, w - 1), 14); xx += w; });
+      y += 30; y += g.wrap(order.filter(k => by[k] / tot >= 0.02).map(k => `${Math.round(by[k] / tot * 100)}% ${SRC[k].n.toLowerCase()}`).join(" · "), bx, y, bw, 15, C.muted, 11);
     } else {
-    Object.keys(SRC).forEach((k, n) => { const live = on.includes(k), lx = bx + (n % cols) * bw / cols, ly = y + Math.floor(n / cols) * lh;
-      g.ctx.fillStyle = g.alpha(SRC[k].col, live ? 0.9 : 0.2); g.ctx.fillRect(lx, ly - 9, 10, 10);
-      g.label(SRC[k].n, lx + 16, ly, live ? C.text : C.muted, stacked ? 10 : 11, "left", "Inter, system-ui, sans-serif"); });
-    y += Math.ceil(8 / cols) * lh; }
-    const el = EL[ST.sel - 1]; y += 10; const yName = y;
-    g.text(`${el.name} (${el.z})`, bx, y, C.text, 14); y += 20;
-    Object.keys(el.sh).forEach(k => { g.label(`${Math.round(el.sh[k] * 100)}%  ${SRC[k].n.toLowerCase()}`, bx, y, on.includes(k) ? SRC[k].col : C.muted, 11); y += 16; });
-    const story = STORY[el.sym];
-    if (story && y < B.y + B.h - 40) y += 6 + g.wrap(story, bx, y + 6, bw, 15, C.text, 12);
-    const room = B.y + B.h - 44 - (y + 12), R = Math.min(bw / 2 - 4, room / 2 - 14, 150);
-    if (R >= 34) { const sh = drawAtom(g, el, bx + bw / 2, y + 12 + R, R);
-      g.label(`electrons per shell: ${sh.join(" · ")}`, bx + bw / 2, y + 12 + 2 * R + 18, C.muted, 10, "center");
-      g.label("a picture, not to scale", bx + bw / 2, y + 12 + 2 * R + 32, C.muted, 10, "center"); y += 2 * R + 46; }
-    else drawAtom(g, el, bx + bw - 30, yName + 20, 28);              // no room below (phones): a small one beside the name
-    if (y < B.y + B.h - 30) g.label("Data: rounded shares, not computed here.", bx, B.y + B.h - 14, C.muted, 10);   // tight panels: the aside carries it
+      const el = EL[ST.sel - 1]; g.text(`${el.name} (${el.z})`, bx, y, C.text, 14); y += 10;
+      let xx = bx; Object.keys(el.sh).forEach(k => { const w = bw * el.sh[k]; g.ctx.fillStyle = SRC[k].col; g.ctx.fillRect(xx, y, Math.max(1, w - 1), 8); xx += w; });   // where it came from, share by share
+      y += 22; y += g.wrap(Object.keys(el.sh).map(k => `${Math.round(el.sh[k] * 100)}% ${SRC[k].n.toLowerCase()}`).join(" · "), bx, y, bw, 15, C.muted, 11) + 4;
+      if (STORY[el.sym] && y < B.y + B.h - 40) g.wrap(STORY[el.sym], bx, y + 4, bw, 15, C.text, 12);
+    }
+    g.label(ST.you ? "Tap an element for its story" : "Tap an element · shares rounded, not computed here", B.x + 14, B.y + B.h - 14, C.muted, 10);
+  }
+  function drawFlights(g) {
+    ST.fly.forEach(f => { if (f.t < 0 || f.t > 1) return; const e = f.t * f.t * (3 - 2 * f.t), x = f.x0 + (f.x1 - f.x0) * e, y = f.y0 + (f.y1 - f.y0) * e - Math.sin(Math.PI * e) * 40;
+      g.ctx.shadowColor = f.col; g.ctx.shadowBlur = 12; g.dot(x, y, 4, f.col); g.ctx.shadowBlur = 0; });
+    ST.burst.forEach(b => { if (b.t > 1) return; const { cx, cy, R } = ST.geo || {}; if (!cx) return;
+      g.dot(cx + Math.cos(b.a) * R * (0.3 + b.t * b.v), cy + Math.sin(b.a) * R * (0.3 + b.t * b.v), 2.5, g.alpha(b.col, 1 - b.t)); });
+  }
+
+  /* ---------- time passing ---------- */
+  function tickStar(dt) {
+    const star = STARS[ST.star], L = lifeOf(star), before = ST.p;
+    ST.nuc.forEach(n => { n.big = (n.big || 0) - dt; n.a += dt * n.w * 0.8; n.r = Math.min(1, Math.max(0.05, n.r + (Math.random() - 0.5) * dt)); });
+    if (ST.p < L.n) {                                                              // fusion: now and then two nuclei merge into a bigger one
+      if (Math.random() < dt * 3) { ST.nuc[Math.floor(Math.random() * ST.nuc.length)].big = 0.25; }
+      if (Math.random() < dt * 14) ST.light.push({ a: Math.random() * TAU, r: 1 });   // and light leaves the surface
+    }
+    ST.light.forEach(f => f.r += dt * 0.9); ST.light = ST.light.filter(f => f.r < 1.9);
+    if (ST.play) {
+      ST.p = Math.min(L.end === "none" ? 0.96 : L.n + 1, ST.p + dt / L.secs);
+      if (ST.p >= (L.end === "none" ? 0.96 : L.n + 1)) { ST.play = false; Chrono.lab.rebuild(); }
+    }
+    const g = ST.geo; if (!g || !g.cx) return;
+    for (let j = 0; j < L.n; j++) if (before < j + 0.5 && ST.p >= j + 0.5)           // halfway through a stage, what it makes flies to the table
+      star.z.filter(z => stageOf(z) === j && !ST.lit[z]).forEach((z, n) => launch(z, [g.cx, g.cy], STAGE_COL[j], n * 0.12));
+    for (let k = Math.floor(before) + 1; k <= Math.floor(ST.p) && k < L.n; k++) seedCore(k);   // the next stage burns this one's ash
+    if (before < L.n && ST.p >= L.n && L.end === "boom") {                          // the explosion scatters everything
+      for (let k = 0; k < 90; k++) ST.burst.push({ a: Math.random() * TAU, v: 1 + Math.random() * 2.2, t: 0, col: STAGE_COL[k % 6] });
+      Object.keys(ST.lit).forEach(z => ST.pulse[z] = 1.5);
+    }
+    if (before < L.n && ST.p >= L.n && L.end === "dwarf") [6, 7].forEach(z => ST.lit[z] && (ST.pulse[z] = 1.2));   // the drifting layers carry carbon and nitrogen out
+  }
+  const SKY_COL = { m: "#ff7a59", w: "#f2c94c", g: "#9b8cff", n: "#e36bd0" };     // the same colours as their sources in the table
+  const FIELD = Array.from({ length: 70 }, (_, k) => [(k * 0.618034) % 1, (k * 0.381966 * 3.7) % 1, (k * 0.271) % 1]);   // faint background stars
+  function tickSky(dt) {
+    const on = TIMES[ST.step].on, types = Object.keys(SKY_COL).filter(k => on.includes(k));
+    if (ST.step > 0 && types.length && Math.random() < dt * 4.5 && ST.sky.length < 40) {
+      const k = types[Math.floor(Math.random() * types.length)];
+      ST.sky.push({ x: Math.random(), y: Math.random(), r: k === "m" ? 6.5 : 4.5, life: 1.2 + Math.random() * 2.5, t: 0, k, col: SKY_COL[k] });
+    }
+    ST.sky.forEach(s => { const was = s.t < s.life; s.t += dt;
+      if (was && s.t >= s.life && ST.geo && ST.geo.w) {                             // it dies: something it made flies to the table
+        const pick = EL.filter(e => e.sh[s.k] >= 0.3); const e = pick[Math.floor(Math.random() * pick.length)];
+        if (e) launch(e.z, [ST.geo.x + 20 + s.x * (ST.geo.w - 40), ST.geo.y + 40 + s.y * (ST.geo.h - 120)], s.col);
+      } });
+    ST.sky = ST.sky.filter(s => s.t < s.life + 0.4);
+    if (ST.play) { ST.hp += dt; if (ST.hp > 2.6) { ST.hp = 0; if (ST.step < TIMES.length - 1) { ST.from = ST.step; ST.step++; ST.lit2 = 0; const r = $("#st-t"), o = $("#st-to"); if (r) r.value = ST.step; if (o) o.textContent = TIMES[ST.step].t.split(":")[0]; } else { ST.play = false; Chrono.lab.rebuild(); } } }
   }
 
   /* The entropy strip: one helium nucleus made in the Sun's core (26.2 MeV left after neutrinos) leaves the Sun as
      sunlight photons, then leaves Earth as infrared. Mean black-body photon energy 2.70 kT; Earth radiates at 255 K. */
   const MEV = 26.2e6, KB = 8.617e-5, photons = T => MEV / (2.701 * KB * T);
   const mil = n => `${Math.round(n / 1e6)} million`;
-
   Chrono.lab.register({
     id: "stars", title: "Stars forge the elements", eyebrow: "Cosmos · where did everything come from?", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     predict: { q: "A big star fuses light elements into heavier ones in its core, stage after stage. Where does that core fusion stop?",
       options: ["At carbon", "At iron", "At gold", "It never stops: it runs until the fuel is gone"], answer: 1,
       explain: "At iron. Up to iron, each fusion gives energy out, which holds the star up. Fusing iron takes energy in, so the core loses its support, collapses in under a second, and the star explodes. Anything heavier than iron was made another way: in ageing giant stars, or when neutron stars collide.",
-      setup() { Object.assign(ST, { scene: "star", s: 0, play: false }); } },
-    applySetup(o) { Object.assign(ST, o); },
-    state() { return { scene: ST.scene, stage: Math.min(6, Math.floor(ST.s)), step: ST.step, sel: ST.sel, star: STARS[ST.star] ? STARS[ST.star].m : 0 }; },   // read-only, for missions
+      setup() { Object.assign(ST, { mode: "star", star: 6, play: false, you: false }); resetLife(); } },
+    applySetup(o) {
+      Object.assign(ST, o);
+      if (ST.mode === "star" && (o.star !== undefined || o.p !== undefined)) {        // jump into a life: what earlier stages made is already on the table
+        const p = o.p || 0, star = STARS[ST.star]; resetLife(); ST.p = p; ST.play = !!o.play;
+        star.z.filter(z => stageOf(z) < Math.floor(p)).forEach(z => ST.lit[z] = 1); seedCore(Math.min(lifeOf(star).n - 1, Math.floor(p)));
+      }
+      if (o.step !== undefined) { ST.from = ST.step; ST.lit2 = 1; }
+    },
+    state() { const star = STARS[ST.star], L = lifeOf(star);
+      return { mode: ST.mode, mass: star.m, stage: Math.min(L.n - 1, Math.floor(ST.p)), ended: L.end !== "none" && ST.p >= L.n + 1, step: ST.step, sel: ST.sel, you: ST.you }; },   // read-only, for missions
     readouts() {
-      if (ST.scene === "star") { const i = Math.min(6, Math.floor(ST.s)), s = STAGES[i];
-        return i < 6 ? [["Stage lasts", dur(s.yr)], ["Core temperature", s.T < 0.1 ? `${Math.round(s.T * 1000)} million K` : `${s.T.toFixed(1)} billion K`]]
-          : [["Collapse takes", "under a second"], ["Stage", "7 of 7"]]; }
-      const star = STARS[ST.star]; if (star) return [["Star size", star.n], ["Core fusion reaches", star.reach], ["Lives", star.life.replace("about ", "")]];
-      const on = TIMES[ST.step].on, el = EL[ST.sel - 1], k = main(el);
-      return [["Cosmic time", TIMES[ST.step].t.split(":")[0]], ["Elements made so far", `${EL.filter(e => has(e, on)).length} of 92`], [`${el.name}, mostly from`, SRC[k].s]];
+      if (ST.you) return [["Made in stars", "about 90% of you"], ["From the Big Bang", "the hydrogen, about 10%"]];
+      if (ST.mode === "star") { const star = STARS[ST.star]; return [["Star", star.n], ["Lives", star.life.replace("about ", "")], ["Heaviest made so far", EL[heaviest() - 1].name]]; }
+      const on = TIMES[ST.step].on, el = EL[ST.sel - 1];
+      return [["Cosmic time", TIMES[ST.step].t.split(":")[0]], ["Elements made so far", `${EL.filter(e => has(e, on)).length} of 92`], [`${el.name}, mostly from`, SRC[main(el)].s]];
     },
     controls() {
-      const sc = [["star", "Inside a star"], ["table", "Where the elements came from"]].map(([id, n]) => `<button class="btn ${ST.scene === id ? "primary" : ""}" data-st="${id}">${n}</button>`).join("");
-      return sc + (ST.scene === "star"
-        ? `<label class="ctl">Stage <input type="range" id="st-s" min="0" max="6" step="1" value="${Math.min(6, Math.floor(ST.s))}"><output id="st-so">${Math.min(6, Math.floor(ST.s)) + 1} of 7</output></label>
-           <button class="btn" id="st-play">${ST.play ? "❚❚ Pause" : "▶ Play the countdown"}</button>`
-        : `<label class="ctl">Cosmic time <input type="range" id="st-t" min="0" max="5" step="1" value="${ST.step}"><output id="st-to">${TIMES[ST.step].t.split(":")[0]}</output></label>
-           <label class="ctl">Star size <input type="range" id="st-m" min="0" max="6" step="1" value="${ST.star}"><output id="st-mo">${STARS[ST.star] ? STARS[ST.star].n : "off"}</output></label>`);
+      const star = STARS[ST.star], L = lifeOf(star), over = ST.mode === "star" ? ST.p >= (L.end === "none" ? 0.96 : L.n + 1) : ST.step >= TIMES.length - 1;
+      const modes = [["star", "One star"], ["history", "Generations"]].map(([id, n]) => `<button class="btn ${ST.mode === id && !ST.you ? "primary" : ""}" data-st="${id}">${n}</button>`).join("");
+      const main = ST.mode === "star"
+        ? `<label class="ctl">Star mass <input type="range" id="st-m" min="1" max="6" step="1" value="${ST.star}"><output id="st-mo">${star.n}</output></label>`
+        : `<label class="ctl">Cosmic time <input type="range" id="st-t" min="0" max="5" step="1" value="${ST.step}"><output id="st-to">${TIMES[ST.step].t.split(":")[0]}</output></label>`;
+      return modes + main + `<button class="btn" id="st-play">${ST.play ? "❚❚ Pause" : over ? "↺ Again" : ST.mode === "star" ? "▶ Play its life" : "▶ Play history"}</button>
+        <button class="btn ${ST.you ? "primary" : ""}" id="st-you">${ST.you ? "Back to the stars" : "What am I made of?"}</button>`;
     },
     wire() {
-      document.querySelectorAll("[data-st]").forEach(b => b.onclick = () => { ST.scene = b.dataset.st; ST.play = false; Chrono.lab.rebuild(); });
-      const s = $("#st-s"); if (s) s.oninput = e => { ST.s = +e.target.value; ST.play = false; $("#st-so").textContent = `${ST.s + 1} of 7`; };
-      const p = $("#st-play"); if (p) p.onclick = () => { if (!ST.play && ST.s >= 6) ST.s = 0; ST.play = !ST.play; Chrono.lab.rebuild(); };
-      const m = $("#st-m"); if (m) m.oninput = e => { ST.star = +e.target.value; $("#st-mo").textContent = STARS[ST.star] ? STARS[ST.star].n : "off"; };
-      const t = $("#st-t"); if (t) t.oninput = e => { if (+e.target.value !== ST.step) { ST.from = ST.step; ST.lit = 0; } ST.step = +e.target.value; $("#st-to").textContent = TIMES[ST.step].t.split(":")[0]; };
+      document.querySelectorAll("[data-st]").forEach(b => b.onclick = () => { ST.mode = b.dataset.st; ST.play = false; ST.you = false; if (ST.mode === "star") resetLife(); Chrono.lab.rebuild(); });
+      const m = $("#st-m"); if (m) m.oninput = e => { ST.star = +e.target.value; ST.play = false; resetLife(); $("#st-mo").textContent = STARS[ST.star].n; const p = $("#st-play"); if (p) p.textContent = "▶ Play its life"; };
+      const t = $("#st-t"); if (t) t.oninput = e => { const v = +e.target.value; if (v !== ST.step) { ST.from = ST.step; ST.lit2 = 0; } ST.step = v; ST.play = false; $("#st-to").textContent = TIMES[v].t.split(":")[0]; };
+      $("#st-play").onclick = () => {
+        const star = STARS[ST.star], L = lifeOf(star);
+        if (!ST.play && ST.mode === "star" && ST.p >= (L.end === "none" ? 0.96 : L.n + 1)) resetLife();
+        if (!ST.play && ST.mode === "history" && ST.step >= TIMES.length - 1) { ST.from = 0; ST.step = 0; ST.sky = []; ST.hp = 0; }
+        ST.play = !ST.play; ST.you = false; Chrono.lab.rebuild();
+      };
+      $("#st-you").onclick = () => { ST.you = !ST.you; if (ST.you) { ST.mode = "history"; ST.from = ST.step; ST.step = 5; ST.play = false; } Chrono.lab.rebuild(); };
     },
+    enter() { if (!ST.nuc.length) resetLife(); },
     tick(dt) {
-      ST.clock += dt; ST.lit = Math.min(1, ST.lit + dt / 0.7);
-      if (!ST.play) return;
-      ST.s = Math.min(6.99, ST.s + dt * 0.4);
-      const s = $("#st-s"); if (s && +s.value !== Math.min(6, Math.floor(ST.s))) { s.value = Math.min(6, Math.floor(ST.s)); $("#st-so").textContent = `${+s.value + 1} of 7`; }
-      if (ST.s >= 6.99) { ST.play = false; Chrono.lab.rebuild(); }
+      ST.clock += dt; ST.lit2 = Math.min(1, ST.lit2 + dt / 0.7);
+      Object.keys(ST.pulse).forEach(z => { ST.pulse[z] -= dt; if (ST.pulse[z] <= 0) delete ST.pulse[z]; });
+      ST.fly.forEach(f => { const was = f.t; f.t += dt / 0.9; if (was < 1 && f.t >= 1) { if (ST.mode === "star") ST.lit[f.z] = 1; ST.pulse[f.z] = 1; } });
+      ST.fly = ST.fly.filter(f => f.t < 1.05);
+      ST.burst.forEach(b => b.t += dt / 1.6); ST.burst = ST.burst.filter(b => b.t < 1);
+      if (ST.mode === "star") tickStar(dt); else tickSky(dt);
     },
     pointer(type, x, y) {
-      if (type !== "pointerdown" || ST.scene !== "table") return;
-      const t = ST.tiles.find(q => x >= q.x && x <= q.x + q.w && y >= q.y && y <= q.y + q.w); if (t) ST.sel = t.z;
+      if (type !== "pointerdown") return;
+      const t = ST.tiles.find(q => x >= q.x && x <= q.x + q.w && y >= q.y && y <= q.y + q.w); if (!t) return;
+      ST.sel = t.z; if (ST.you) { ST.you = false; Chrono.lab.rebuild(); }
     },
-    draw(g) { if (ST.scene === "star") drawStar(g); else drawTable(g); },
+    draw(g) {
+      const { A, B, stacked } = g.split(0.42);
+      if (stacked) { const need = (B.w - 24) / 18 * 9.6 + 190, d = need - B.h; if (d > 0) { const k = Math.min(d, A.h - 200); A.h -= k; B.y -= k; B.h += k; } }   // phones: the table gets the height it needs
+      if (ST.mode === "star" && !ST.you) drawEngine(g, A); else drawSky(g, A);
+      drawTable(g, B); drawFlights(g);
+    },
     aside: () => `
-      <p>Almost everything around you was made inside stars. The Big Bang left hydrogen, helium and a trace of lithium. Everything else came later, from stars living and dying over billions of years, each generation seeding the next.</p>
-      <p><b>Inside a star.</b> A massive star burns its fuel in stages, each one hotter and far shorter than the last: millions of years of hydrogen, then days of silicon. It stops at iron, because fusing iron takes energy instead of giving it. The core collapses and the star explodes. <span class="tag ESTABLISHED">Established</span></p>
-      <p><b>Our Sun can't make iron.</b> How far a star's fusion gets depends on its mass. A star like the Sun stops at carbon and oxygen and ends as a white dwarf. Only stars of about ten Suns or more burn all the way to iron. Try <b>Star size</b> on the element table. <span class="tag ESTABLISHED">Established</span> (the exact dividing line, 8–10 Suns, <span class="tag CONTESTED">Contested</span>)</p>
+      <p>A star isn't a light bulb. It's an engine: hydrogen goes in, and out come light and <b>new elements</b>. The Big Bang left hydrogen, helium and a trace of lithium. Nearly everything else, from the carbon in you to the iron in your blood, was made inside stars, which then died and scattered it for the next stars. <span class="tag ESTABLISHED">Established</span></p>
+      <p><b>Stars change as they age.</b> A big star burns its fuel in stages, each hotter and far shorter than the last: millions of years of hydrogen, then days of silicon. The ash of one stage is the fuel of the next. It stops at iron, because fusing iron takes energy instead of giving it. The core collapses and the star explodes. <span class="tag ESTABLISHED">Established</span></p>
+      <p><b>Size decides what it can make.</b> A star like the Sun stops at carbon and oxygen and ends as a white dwarf, with most of what it made locked inside. Only stars of about ten Suns or more reach iron, and their explosions scatter everything. Bigger stars also live faster: millions of years, against the Sun's ten billion. <span class="tag ESTABLISHED">Established</span> (the exact dividing line, 8–10 Suns, <span class="tag CONTESTED">Contested</span>)</p>
       <p><b>Heavier than iron.</b> Those come two ways: slowly, inside ageing giant stars, and quickly, when neutron stars collide. In 2017 a collision was seen both in gravitational waves and in light, glowing with new heavy elements. How the fast share splits between collisions and rare kinds of exploding star is still argued over. <span class="tag CONTESTED">Contested</span></p>
+      <p><b>What you're made of.</b> By mass you're about 65% oxygen, 18% carbon and 10% hydrogen, then nitrogen, calcium and phosphorus. The hydrogen is from the Big Bang; nearly all the rest was made in stars. Press <b>What am I made of?</b> <span class="tag ESTABLISHED">Established</span></p>
       <p><b>What this has to do with time.</b> Every fusion in the Sun makes a helium nucleus, and its energy leaves the Sun as about <b>${mil(photons(5772))}</b> photons of sunlight. Earth sends that same energy out again as about <b>${mil(photons(255))}</b> infrared photons. Same energy, many more pieces: entropy going up, one fusion at a time. Stars are how a smooth young universe runs down, and everything that happens here runs on that. <span class="tag ESTABLISHED">Established</span></p>
-      <p class="meta">Model assumption: scene 1 uses published stage times and temperatures for a 25-Sun-mass star (Woosley, Heger & Weaver 2002); the onion isn't to scale. Scene 2's shares are rounded to the nearest 10% after Johnson (2019) and Kobayashi, Karakas & Lugaro (2020); for the Solar System, not computed here. Cosmic-time steps are rounded, and when neutron stars first collided is uncertain. Photon counts use the mean black-body photon energy (2.70 kT). The atom is a picture: electrons drawn as dots on rings, with each shell's real ground-state count; real electrons form clouds, not orbits. <span class="tag ANALOGY">Analogy</span></p>`,
+      <p class="meta">Model assumption: the moving pictures — nuclei merging, elements flying to the table, the star's size — are pictures, not to scale <span class="tag ANALOGY">Analogy</span>. Which stage makes which element is rounded; stage times are for a 25-Sun star (Woosley, Heger & Weaver 2002); the lifetimes and mass thresholds are rounded from stellar models. The table's shares are rounded to the nearest 10% after Johnson (2019) and Kobayashi, Karakas & Lugaro (2020), for the Solar System; not computed here. Cosmic-time steps are rounded, and when neutron stars first collided is uncertain. Body composition after Emsley (2011). Photon counts use the mean black-body photon energy (2.70 kT).</p>`,
     next: { q: "Earth gets sunlight and sends out infrared. So what does it actually take from the Sun?", href: "#energy", label: "Voyages · Earth's energy budget" },
-    sources: "S. E. Woosley, A. Heger & T. A. Weaver, Rev. Mod. Phys. 74, 1015 (2002); J. A. Johnson, Science 363, 474 (2019); C. Kobayashi, A. I. Karakas & M. Lugaro, ApJ 900, 179 (2020); B. P. Abbott et al., Phys. Rev. Lett. 119, 161101 (2017); E. M. Burbidge et al., Rev. Mod. Phys. 29, 547 (1957); A. I. Karakas & J. C. Lattanzio, PASA 31, e030 (2014); G. Laughlin, P. Bodenheimer & F. C. Adams, ApJ 482, 420 (1997)."
+    sources: "S. E. Woosley, A. Heger & T. A. Weaver, Rev. Mod. Phys. 74, 1015 (2002); J. A. Johnson, Science 363, 474 (2019); C. Kobayashi, A. I. Karakas & M. Lugaro, ApJ 900, 179 (2020); B. P. Abbott et al., Phys. Rev. Lett. 119, 161101 (2017); E. M. Burbidge et al., Rev. Mod. Phys. 29, 547 (1957); A. I. Karakas & J. C. Lattanzio, PASA 31, e030 (2014); G. Laughlin, P. Bodenheimer & F. C. Adams, ApJ 482, 420 (1997); J. Emsley, Nature's Building Blocks, 2nd ed., OUP (2011)."
   });
 })();
