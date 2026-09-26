@@ -268,6 +268,20 @@
     t: 0, removedAt: 0, revTarget: null, back: 0, nudged: false, hold: 0, msg: "", hist: [], lnF: null, Smax: 1, Smin: 0 };
 
   function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  /* Complexity (D-055): how much you'd need to say to describe the pattern. Coarse-grain the discs onto a 16 × 8 grid,
+     smooth over neighbouring cells, sort each cell into empty / even / crowded, and count the runs of the same level
+     along each row — a simple stand-in for the compressed size used by Aaronson, Carroll & Ouellette (2014).
+     All on one side: few runs. Evenly spread: fewer still. In between, while the gas pours across: more. */
+  function complexity() {
+    const GX = 16, GY = 8, g = Array.from({ length: GY }, () => new Array(GX).fill(0)), even = EB.N / (GX * GY);
+    for (let i = 0; i < EB.N; i++) { const x = Math.max(0, Math.min(GX - 1, Math.floor(EB.x[2 * i] / (2 * L) * GX))), y = Math.max(0, Math.min(GY - 1, Math.floor(EB.x[2 * i + 1] / L * GY))); g[y][x]++; }
+    let n = 0;
+    for (let y = 0; y < GY; y++) { let prev = null; for (let x = 0; x < GX; x++) { let s = 0, c = 0;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const yy = y + dy, xx = x + dx; if (yy >= 0 && yy < GY && xx >= 0 && xx < GX) { s += g[yy][xx]; c++; } }
+      const q = Math.max(0, Math.min(2, Math.round(s / c / even))); if (q !== prev) n++; prev = q; } }
+    return n;
+  }
+  const CX_LO = 8, CX_HI = 36, cxFrac = v => Math.max(0, Math.min(1, (v - CX_LO) / (CX_HI - CX_LO)));
   function lnW(counts) { return EB.lnF[EB.N] - counts.reduce((a, n) => a + EB.lnF[n], 0); }
   function ebReset() {
     const N = EB.N, R = rng(7), cols = 15, rows = 16, sx = (L - EB.sig) / cols, sy = (L - EB.sig) / rows, v0 = 0.004 * L;
@@ -279,7 +293,7 @@
       EB.x[2 * i] = x; EB.x[2 * i + 1] = y; EB.xp[2 * i] = x - Math.round(sp * Math.cos(a)); EB.xp[2 * i + 1] = y - Math.round(sp * Math.sin(a));
       EB.col[i] = x / L;
     }
-    EB.part = true; EB.t = 0; EB.removedAt = 0; EB.revTarget = null; EB.back = 0; EB.nudged = false; EB.hold = 0; EB.hist = []; EB.msg = "";
+    EB.part = true; EB.t = 0; EB.removedAt = 0; EB.revTarget = null; EB.back = 0; EB.nudged = false; EB.hold = 0; EB.hist = []; EB.chist = []; EB.cx = null; EB.msg = "";
     if (!EB.lnF) { EB.lnF = new Float64Array(N + 1); for (let n = 1; n <= N; n++) EB.lnF[n] = EB.lnF[n - 1] + Math.log(n); }
     const even = Array.from({ length: 32 }, (_, i) => Math.floor(N / 32) + (i < N % 32 ? 1 : 0));
     const left = Array.from({ length: 32 }, (_, i) => (i % 8) < 4 ? N / 16 : 0);   // all discs spread evenly over the left half's 16 cells (N = 240)
@@ -337,7 +351,7 @@
       if (o.reverse !== undefined) EB.auto = o.reverse === "nudge";   // reverse (or nudge, then reverse) as soon as the gas has spread
     },
     state() { const m = EB.x ? measure() : { left: 1 }; return { open: !EB.part, left: m.left, last: EB.last || null }; },   // read-only, for missions
-    readouts() { const m = EB.x ? measure() : { left: 1, S: 0 }; return [["Discs in the left half", `${Math.round(m.left * 100)}%`], ["Entropy · packed 0 → spread 100", Math.round(Math.max(0, Math.min(1, m.S)) * 100)]]; },
+    readouts() { const m = EB.x ? measure() : { left: 1, S: 0 }; return [["Discs in the left half", `${Math.round(m.left * 100)}%`], ["Entropy · packed 0 → spread 100", Math.round(Math.max(0, Math.min(1, m.S)) * 100)], ["Complexity · pattern count", EB.cx === null ? "—" : Math.round(EB.cx)]]; },
     id: "entropy", title: "Entropy box", eyebrow: "Lab · why time runs one way", tier: "mainstream", tags: ["ESTABLISHED"],
     enter() { if (!EB.x) ebReset(); },
     controls() {
@@ -372,6 +386,7 @@
         }
       }
       const m = measure(); EB.hist.push(m.S); if (EB.hist.length > 700) EB.hist.shift();
+      const c = complexity(); EB.cx = EB.cx === null ? c : EB.cx + (c - EB.cx) * 0.08; EB.chist.push(EB.cx); if (EB.chist.length > 700) EB.chist.shift();   // smoothed over about a second
       if (wasSpread !== spread()) Chrono.lab.rebuild();
     },
     draw(g) {
@@ -400,6 +415,8 @@
       ctx.strokeStyle = C.line; ctx.strokeRect(gx, gy, gw, gh);
       g.label("max", gx + gw - 4, gy + 12, C.muted, 9, "right"); g.label("time →", gx + gw - 4, gy + gh + 14, C.muted, 9, "right");
       if (EB.hist.length > 1) { ctx.strokeStyle = C.amber; ctx.lineWidth = 1.5; ctx.beginPath(); EB.hist.forEach((v, i) => { const X = gx + i / 699 * gw, Y = gy + gh - Math.max(0, Math.min(1, v)) * (gh - 4); i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); }); ctx.stroke(); ctx.lineWidth = 1; }
+      if (EB.chist.length > 1) { ctx.strokeStyle = C.teal; ctx.lineWidth = 1.5; ctx.beginPath(); EB.chist.forEach((v, i) => { const X = gx + i / 699 * gw, Y = gy + gh - cxFrac(v) * (gh - 4); i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); }); ctx.stroke(); ctx.lineWidth = 1; }
+      g.label("— complexity", gx + gw, B.y + 78, C.teal, 10, "right"); g.label("— entropy", gx + gw - 96, B.y + 78, C.amber, 10, "right");   // key beside the bar, clear of the lines: entropy only climbs; complexity rises, then falls
       const ly = gy + gh + 34;
       g.label("S = ln W: the number of ways to arrange the discs", x0, ly, C.muted, 10, "left", "Inter, sans-serif");
       g.label("among the 32 cells that give these counts.", x0, ly + 14, C.muted, 10, "left", "Inter, sans-serif");
@@ -411,6 +428,7 @@
       <div class="try"><b>Try:</b> <b>Remove the partition</b> and let the gas run until the reverse buttons light up (a few seconds). Press <b>Reverse every velocity</b>: every collision replays backwards and the gas gathers itself back into the left half. Then <b>Reset</b>, and try <b>Nudge one disc, then reverse</b>.</div>
       <p><b>What it shows</b> <span class="tag ESTABLISHED">Established</span>: un-mixing is allowed by the laws but needs a perfectly exact starting point. A disturbance of one part in a million, amplified by collision after collision, destroys it. Real gases have around 10²³ molecules — the one-way-ness becomes overwhelming.</p>
       <p><b>What it doesn't show:</b> why the universe started in the ordered, low-entropy state that let everything spread since. That is hole <a href="#" data-hole="H3">H3</a> — and still open.</p>
+      <p><b>Entropy climbs; complexity rises and falls.</b> Watch the teal line. With every disc on one side, the pattern is simple to describe. Evenly spread, it's simpler still. In between, while the gas pours across in streams and eddies, it takes the most describing. Entropy only ever goes up, but interesting structure lives in the middle. The universe is the same: stars, planets and life belong to its middle age, between a smooth start and a thin, even end. <span class="tag ESTABLISHED">Established</span> for entropy; how best to measure complexity is still argued over <span class="tag CONTESTED">Contested</span>. <a href="#concepts/arrow">More in The arrow of time</a>.</p>
       <p class="meta">Model assumption: 240 soft discs in two dimensions under Newton's laws, computed in whole numbers so that reversal is exact rather than approximate (Levesque &amp; Verlet, 1993). Entropy is coarse-grained over an 8 × 4 grid.</p>`,
     next: { q: "Almost all the laws run the same both ways — the one known exception is far too small to explain the arrow. So why did the universe start out so ordered?", href: "#atlas/H3", label: "Atlas · hole H3" },
     sources: "L. Boltzmann (1877); J. Loschmidt (1876); D. Levesque & L. Verlet, 'Molecular dynamics and time reversibility', J. Stat. Phys. 72, 519 (1993)."

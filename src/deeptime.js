@@ -126,6 +126,7 @@
     { t: 3.8e5 * YR, n: "Atoms; the CMB", tag: "ESTABLISHED", d: "Electrons join nuclei to make atoms and the universe turns transparent. The light released then is the cosmic microwave background, the oldest light we can see." },
     { t: 1.5e8 * YR, n: "First stars", tag: "CONTESTED", d: "The first stars light up, probably 100 to 200 million years in. The exact timing is still being measured." },
     { t: 2.9e8 * YR, n: "Earliest galaxies seen", tag: "ESTABLISHED", d: "The James Webb Space Telescope has seen galaxies as they were about 300 million years after the Big Bang (2024–25). They're brighter and more numerous than many models expected." },
+    { t: 3.5e9 * YR, n: "Cosmic noon", tag: "ESTABLISHED", d: "Stars were being born fastest about 10 billion years ago, roughly ten times faster than today. Fresh, smooth gas was everywhere and gravity was gathering it quickly. Since then star-making has been winding down: the easy gas is used up and the rest is spread thinner. The white water of the arrow of time is behind us." },
     { t: 7.7e9 * YR, n: "Expansion speeds up", tag: "ESTABLISHED", d: "Dark energy starts to dominate and the expansion begins to accelerate. What dark energy is remains unknown, and recent surveys (DESI, 2024–25) hint it may be changing (contested)." },
     { t: 9.23e9 * YR, n: "Sun and Earth", tag: "ESTABLISHED", d: "The Sun and Earth form, 4.57 billion years ago. Dated from meteorites." },
     { t: 13.8e9 * YR, n: "Today", tag: "ESTABLISHED", d: "13.8 billion years after the Big Bang (from the Planck satellite's measurements, assuming the standard model of cosmology)." },
@@ -136,7 +137,16 @@
     { t: 1e100 * YR, n: "Largest black holes gone", tag: "ESTABLISHED", d: "The biggest black holes, billions of times the Sun's mass, take around 10¹⁰⁰ years. Then a dark era: a cold, dilute universe with almost nothing left to happen. A projection from today's physics." }
   ];
   const TODAY_S = 13.8e9 * YR, LO = -44, HI = 108;
-  const TL = { mode: "log", sel: 12, geo: [], btns: [], ay: 0 };
+  /* Cosmic star-formation rate, Madau & Dickinson (2014): ψ(z) ∝ (1+z)^2.7 / (1 + ((1+z)/2.9)^5.6), turned into time with
+     a flat ΛCDM universe (H₀ = 67.4, Ωm = 0.315; radiation ignored — negligible after the first million years). [t in Gyr, ψ/peak]. */
+  const SFR = (() => {
+    const tH = 977.8 / 67.4, Om = 0.315, OL = 0.685, pts = []; let t = 0, a = 1e-4;
+    const psi = z => Math.pow(1 + z, 2.7) / (1 + Math.pow((1 + z) / 2.9, 5.6));
+    while (a < 1) { const da = a * 0.002, am = a + da / 2; t += da / (am * Math.sqrt(Om / am ** 3 + OL)) * tH; a += da; if (1 / a - 1 < 20) pts.push([t, psi(1 / a - 1)]); }
+    const top = Math.max(...pts.map(p => p[1])); return pts.filter((p, k) => k % 4 === 0).map(([tt, v]) => [tt, v / top]);
+  })();
+  const TODAY = () => EVENTS.findIndex(e => e.n === "Today");   // looked up by name, so adding an event can't move it
+  const TL = { mode: "log", sel: 13, geo: [], btns: [], ay: 0 };
   function calendar(t) {                                   // the universe so far, squeezed into one year
     const day = t / TODAY_S * 365, MON = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], LEN = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     if (day >= 364) { const s = (365 - day) * 86400; return s < 1 ? "the last instant of 31 December" : s < 60 ? `${Math.round(s)} seconds before midnight on 31 December` : `${Math.round(s / 60)} minutes before midnight on 31 December`; }
@@ -159,7 +169,7 @@
         <button class="btn" id="tl-prev">← Earlier</button><button class="btn" id="tl-next">Later →</button><span class="ctl">Click any event</span>`;
     },
     wire() {
-      document.querySelectorAll("[data-tl]").forEach(b => b.onclick = () => { TL.mode = b.dataset.tl; if (TL.mode === "lin" && EVENTS[TL.sel].t > 20e9 * YR) TL.sel = 12; Chrono.lab.rebuild(); });
+      document.querySelectorAll("[data-tl]").forEach(b => b.onclick = () => { TL.mode = b.dataset.tl; if (TL.mode === "lin" && EVENTS[TL.sel].t > 20e9 * YR) TL.sel = TODAY(); Chrono.lab.rebuild(); });
       $("#tl-prev").onclick = () => { TL.sel = Math.max(0, TL.sel - 1); };
       $("#tl-next").onclick = () => { TL.sel = Math.min(EVENTS.length - 1, TL.sel + 1); };
     },
@@ -184,6 +194,13 @@
       const X = t => lin ? ax + Math.min(1, t / LMAX) * aw : ax + (Math.log10(t) - LO) / (HI - LO) * aw;
       g.line(ax, ay, ax + aw, ay, C.muted, 1.5);
       const narrow = aw < 520;
+      if (lin) {                                                                        // how fast new stars were being born (Madau & Dickinson 2014): the white water
+        const hh = Math.max(40, (ay - A.y - 60) * 0.55);
+        ctx.beginPath(); ctx.moveTo(X(SFR[0][0] * 1e9 * YR), ay); SFR.forEach(([t, f]) => ctx.lineTo(X(t * 1e9 * YR), ay - f * hh)); ctx.lineTo(X(13.8e9 * YR), ay); ctx.closePath();
+        ctx.fillStyle = g.alpha(C.amber, 0.1); ctx.fill();
+        ctx.beginPath(); SFR.forEach(([t, f], k) => { const x = X(t * 1e9 * YR), y = ay - f * hh; k ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.strokeStyle = g.alpha(C.amber, 0.55); ctx.lineWidth = 1.5; ctx.stroke(); ctx.lineWidth = 1;
+        g.label("new stars being born, per year (measured)", X(6.5e9 * YR), ay - hh * 0.62, g.alpha(C.amber, 0.85), 10, "left");
+      }
       if (lin) { for (let b = 0; b <= 20; b += narrow ? 10 : 5) { const x = X(b * 1e9 * YR); g.line(x, ay - 4, x, ay + 4, C.muted); g.label(b ? `${b} billion yr` : "0", x, ay + 18, C.muted, 9, b === 20 ? "right" : "center"); } }
       else for (let e = -40; e <= 100; e += narrow ? 40 : 20) { const x = X(10 ** e); g.line(x, ay - 4, x, ay + 4, C.muted); g.label(`10${sup(e)} s`, x, ay + 18, C.muted, 9, "center"); }
       if (!lin && !narrow) { const xs = X(1), xy = X(YR * 1e9); g.label("1 second", xs, ay + 32, g.alpha(C.muted, 0.7), 9, "center"); g.label("a billion years", xy, ay + 32, g.alpha(C.muted, 0.7), 9, "center"); }

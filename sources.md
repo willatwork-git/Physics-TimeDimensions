@@ -190,6 +190,8 @@ Added 2026-09-26 from Claude's recall. All ☐ until checked against the primary
 - **E** (overall) / **C** (neutron-capture site split) Johnson, J. A. (2019). "Populating the periodic table: nucleosynthesis of the elements." *Science* 363, 474 — origin shares by element. ☐
 - **E** / **C** Kobayashi, C., Karakas, A. I. & Lugaro, M. (2020). "The origin of elements from carbon to uranium." *ApJ* 900, 179. ☐
 - **E** Emsley, J. (2011). *Nature's Building Blocks: An A–Z Guide to the Elements*, 2nd ed., Oxford University Press — composition of the human body by mass (O 65%, C 18%, H 10%, N 3% …). Used in the Stars lab's "What am I made of?" (D-054). ☐
+- **E** Madau, P. & Dickinson, M. (2014). "Cosmic Star-Formation History." *Annu. Rev. Astron. Astrophys.* 52, 415 — the star-formation rate peaked at z ≈ 2 ("cosmic noon", ~10 billion years ago) and is now roughly ten times lower; fit used for the timeline's curve (D-055). ☐
+- **C** (measure) Aaronson, S., Carroll, S. M. & Ouellette, L. (2014). "Quantifying the Rise and Fall of Complexity in Closed Systems: The Coffee Automaton." arXiv:1405.6903 — entropy rises monotonically while coarse-grained complexity rises then falls; the Entropy box's complexity line uses a simpler run-count version of their coarse-graining (D-055). ☐
 - **E** Burbidge, E. M., Burbidge, G. R., Fowler, W. A. & Hoyle, F. (1957). "Synthesis of the elements in stars." *Rev. Mod. Phys.* 29, 547. ☐
 - **E** Abbott, B. P. et al. (2017). "GW170817: observation of gravitational waves from a binary neutron star inspiral." *Phys. Rev. Lett.* 119, 161101 — with the kilonova seen in light. ☐
 - **E** Lithium problem: old halo stars show ~3× less lithium than Big Bang predictions (Fields, B. D. (2011). *Annu. Rev. Nucl. Part. Sci.* 61, 47). ☐

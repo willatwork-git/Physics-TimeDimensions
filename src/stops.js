@@ -67,7 +67,7 @@
         say: "Step through the events with ◀ ▶, then switch to Ordinary time.", look: "'you are here' on the axis, and the one-year calendar",
         takeaway: "Today sits about 40% across this powers-of-ten chart — a place on a chart with chosen endpoints, not a share of the universe's life. On an ordinary clock the story has barely begun.", tags: ["ESTABLISHED"],
         limit: "Published times, not computed; the far future assumes today's physics holds.", handoff: "",
-        go: [["#janus", "Where does time's arrow come from? · The Janus point"], ["#boot", "Why three space dimensions and one time? · Boot a Universe"]], setup: { mode: "log", sel: 12 } }
+        go: [["#janus", "Where does time's arrow come from? · The Janus point"], ["#boot", "Why three space dimensions and one time? · Boot a Universe"]], setup: { mode: "log", sel: 13 } }
     ] },
     time: { name: "Is time travel possible?", blurb: "If you'd like the question everyone asks first: into the future, into the past — what the physics actually allows.", stops: [
       { href: "#clocks", where: "Clock Lab", q: "Can you travel into the future?", see: "Yes — every moving clock does it. By how much?",

@@ -86,7 +86,7 @@
     C: "Built from helium in ageing stars. About half was puffed out gently by giant stars, half blown out by exploding ones.",
     O: "Mostly from massive stars, scattered when they explode. By mass, the most common element in you.",
     Fe: "Where fusion stops paying. Most came from exploding white dwarfs, the rest from massive stars. The iron in your blood is older than the Sun.",
-    Au: "Too heavy for any star's core. Most came from colliding neutron stars: in 2017 one was seen in gravitational waves and in light.",
+    Au: "No star can make it by burning. Most came from colliding neutron stars — in 2017 one was seen in gravitational waves and in light — and rare kinds of collapsing star may have made some too.",
     Pb: "Mostly built slowly inside ageing giant stars, over thousands of years."
   };
   /* One star's own core, over its normal life: which elements its fusion reaches, by starting mass. Mass thresholds
@@ -141,7 +141,7 @@
       ctx.shadowColor = STAGE_COL[i]; ctx.shadowBlur = 20; g.dot(cx, cy, core, "#fff3c4"); ctx.shadowBlur = 0;
       const fuel = i ? STAGE_COL[i - 1] : "#cfe3ff";                                  // this stage burns the last one's ash; a flash makes this stage's
       ST.nuc.forEach(n => { const r = core * 0.82 * Math.sqrt(n.r); if (n.big > 0) { ctx.shadowColor = "#ffffff"; ctx.shadowBlur = 12; } g.dot(cx + Math.cos(n.a) * r, cy + Math.sin(n.a) * r, n.big > 0 ? 4.5 : 3, n.big > 0 ? STAGE_COL[i] : fuel); ctx.shadowBlur = 0; });
-      g.label(L.end === "none" && ST.p >= 0.95 ? "still burning: no red dwarf has finished yet" : `burning ${STAGES[i].f.toLowerCase()} → making ${STAGES[i].a.toLowerCase()}`, cx, cy + R + 24, STAGE_COL[i], 11, "center");
+      g.label(L.end === "none" && ST.p >= 0.95 ? "still burning: no red dwarf has finished yet" : `burning ${STAGES[i].f.toLowerCase()} → making ${STAGES[i].a.toLowerCase()}${star.m === 25 ? ` · lasts ${dur(STAGES[i].yr)}` : ""}`, cx, cy + R + 24, STAGE_COL[i], 11, "center");
     } else if (L.end === "dwarf") {                                                  // outer layers drift away; a white dwarf is left
       g.ring(cx, cy, R * (1 + d * 1.4), g.alpha(star.col, 0.5 * (1 - d)), 3);
       g.ring(cx, cy, R * (0.8 + d * 1.1), g.alpha("#4fd1a5", 0.4 * (1 - d)), 2);
@@ -165,6 +165,13 @@
     ST.sky.forEach(s => { const age = s.t / s.life, x = A.x + 20 + s.x * (A.w - 40), y = A.y + 40 + s.y * (A.h - 120);
       if (age < 1) { g.ctx.shadowColor = s.col; g.ctx.shadowBlur = 14; g.dot(x, y, s.r * (0.5 + 0.5 * Math.min(1, age * 4)) * (1 + 0.12 * Math.sin(ST.clock * 5 + s.x * 20)), s.col); g.ctx.shadowBlur = 0; }
       else { const q = Math.min(1, (age - 1) * 2.5); g.ctx.shadowColor = s.col; g.ctx.shadowBlur = 20 * (1 - q); g.dot(x, y, s.r * 1.6 * (1 - q), "#ffffff"); g.ctx.shadowBlur = 0; g.ring(x, y, s.r + q * 30, g.alpha(s.col, 1 - q), 2.5); } });
+    if (ST.step === 4) {                                                              // the Sun forms, out of what earlier stars made
+      const sx = A.x + A.w / 2, sy = A.y + A.h * 0.42, q = 0.5 + 0.5 * Math.sin(ST.clock * 1.5);
+      for (let k = 0; k < 3; k++) g.ring(sx, sy, 14 + k * 9 + q * 2, g.alpha("#ffd35a", 0.35 - k * 0.1), 1.5);
+      g.ctx.shadowColor = "#ffd35a"; g.ctx.shadowBlur = 22; g.dot(sx, sy, 8, "#fff3c4"); g.ctx.shadowBlur = 0;
+      g.ctx.fillStyle = g.alpha("#12151d", 0.85); g.ctx.fillRect(A.x + 8, sy + 34, A.w - 16, 60);   // a backing, so drifting stars don't cross the words
+      g.wrap("The Sun and Earth form from gas that earlier stars enriched. By now a 25-Sun star could have lived and died more than a thousand times over.", A.x + 16, sy + 50, A.w - 32, 15, C.text, 12);
+    }
     if (ST.step > 0) {                                                                // key: each kind of star, in its tile colour
       const keys = [["m", "big stars explode"], ["g", "giant stars puff out"], ["w", "white dwarfs explode"], ["n", "neutron stars collide"]].filter(([k]) => on.includes(k));
       keys.forEach(([k, n], j) => { const kx = A.x + 14 + (j % 2) * (A.w - 28) / 2, ky = A.y + A.h - 44 + Math.floor(j / 2) * 16; g.dot(kx + 4, ky - 4, 4, SKY_COL[k]); g.label(n, kx + 14, ky, C.muted, 10, "left", "Inter, system-ui, sans-serif"); });

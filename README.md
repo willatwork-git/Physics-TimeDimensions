@@ -83,6 +83,7 @@ built-in guide — or press **?** — Concepts, quizzes, and the Learn / Workben
   drawn exactly.
 - **Entropy box** — a gas spreads out and never gathers back. Reverse every velocity (exactly — the
   arithmetic is integer) and it does; nudge one disc by a millionth first and it doesn't.
+  A second line tracks complexity: it rises while the gas pours across, then falls — entropy only climbs.
 - **River** — a black hole pictured as space flowing inward (the Gullstrand–Painlevé "river model").
   Fire light and see where it can escape.
 - **Black holes evaporate** — Hawking radiation: black holes glow, heat up as they shrink, and vanish.
@@ -98,6 +99,7 @@ built-in guide — or press **?** — Concepts, quizzes, and the Learn / Workben
 **Cosmos** — the universe as a whole
 - **Cosmic timeline** — from the first instant physics can describe to the last black hole, in powers of
   ten, every event tagged by how sure we are; plus the universe so far as a one-year calendar.
+  On the ordinary clock, the measured rate of star birth: it peaked about 10 billion years ago ("cosmic noon").
 - **Stars forge the elements** — a star is an engine, not a light bulb. Pick a star's mass and play its life:
   each burning stage sends the elements it makes flying to the periodic table; the Sun ends as a white dwarf,
   big stars explode and scatter everything. Then watch generations of stars fill the table over cosmic time —
