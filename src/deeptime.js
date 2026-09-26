@@ -47,7 +47,7 @@
       options: ["Colder, like a coal burning down", "Hotter, and it radiates faster and faster", "Its temperature stays the same"], answer: 1,
       explain: "Hotter. A black hole's temperature goes as one over its mass, so as it shrinks it heats up, radiates faster, and shrinks faster still. It ends in a final flash. A black hole with the Sun's mass is colder than the cosmic background (60 billionths of a degree), so real ones aren't shrinking yet." },
     applySetup(o) { Object.assign(HK, o); if (o.M0) { HK.f = 0; HK.parts = []; } },
-    state() { return { M0: HK.M0, f: HK.f, T: hawkT(HK.M0), page: PAGE_F }; },   // read-only, for missions
+    state() { return { M0: HK.M0, f: HK.f, T: hawkT(HK.M0), life: life(HK.M0) / YR, page: PAGE_F }; },   // read-only, for missions and the maths page's checks
     readouts() { const M = HK.M0 * Math.cbrt(Math.max(0, 1 - HK.f)); return HK.f >= 1 ? [["Through its life", "100%"], ["Black hole", "gone"]] : [["Through its life", `${Math.round(HK.f * 100)}%`], ["Temperature", `${sci(hawkT(M), 2)} K`], ["Time left", dur(life(M))]]; },
     id: "hawking", title: "Black holes evaporate", eyebrow: "Physics · do black holes last forever?", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED"],
     controls() {
@@ -262,7 +262,7 @@
       options: ["Almost none: oceans, air and life store it", "About half", "Almost exactly all of it"], answer: 2,
       explain: "Almost all of it: if Earth kept much, it would heat up fast. (The small imbalance measured today, well under 1%, is what's warming the planet.) So what Earth gets from the Sun isn't really energy. It's low entropy: each photon of sunlight that's absorbed leaves again as about 20 photons of infrared." },
     applySetup(o) { Object.assign(EN, o); },
-    state() { return { A: EN.A, eps: EN.eps, Tc: budget().Ts - 273.15 }; },   // read-only, for missions
+    state() { const E = budget(); return { A: EN.A, eps: EN.eps, Tc: E.Ts - 273.15, Ts: E.Ts, Te: E.Te }; },   // read-only, for missions and the maths page's checks
     readouts() { const E = budget(); return [["Average surface", cel(E.Ts)], ["Radiating to space", `${Math.round(E.Te)} K`], ["Sunlight reflected", `${Math.round(EN.A * 100)}%`]]; },
     id: "energy", title: "Earth's energy budget", eyebrow: "Voyages · what keeps time's arrow running here?", tier: "mainstream", tags: ["ESTABLISHED"],
     controls() {

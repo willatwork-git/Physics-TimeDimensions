@@ -88,5 +88,5 @@ What makes a lab feel like Chronoscope. Written after reworking Stars; the regre
 9. **Tap for detail, in place** (an element's story and share bar under the table) — no pop-ups.
 10. **Make it personal when the physics allows:** a "you" moment ("What am I made of?") is remembered where a fact isn't.
 11. **Missions:** two to four; each reachable, none met on arrival (✓), each reveal says something new.
-12. **Plumbing:** `predict` (with its setup), `state()` + `applySetup`, `readouts()` (✓), a guide row per control (✓), model assumption, tags, sources.
+12. **Plumbing:** `predict` (with its setup), `state()` + `applySetup`, `readouts()` (✓), a guide row per control (✓), model assumption, tags, sources, and an entry in `src/maths.js` — equations, constants, worked examples that the regression checks against the lab's own code (✓, D-057).
 13. **Phones:** panels stack; give the data panel the height it needs so it never collapses (✓ via overlaps).

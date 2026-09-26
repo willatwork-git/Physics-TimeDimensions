@@ -926,3 +926,9 @@ body.onhome .home2 { margin-inline: auto; }
   .worksheet .ws-lines { background: repeating-linear-gradient(transparent 0 27px, #999 27px 28px) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 .teach label.tch .meta { margin: 0; display: inline; } .teach fieldset { gap: 2px; }
+
+/* the maths pages (D-057) */
+.maths .eqs dt { font: 600 17px/1.4 var(--sans); margin-top: 14px; color: var(--text); font-variant-numeric: tabular-nums; }
+.maths .eqs dd { margin: 4px 0 0 0; color: var(--text-2); font-size: 15px; }
+.maths .mt { border-collapse: collapse; margin: 6px 0 10px; font-size: 14px; } .maths .mt td { padding: 6px 16px 6px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.maths .chk { font: 12px var(--mono); color: var(--t-est); margin-left: 8px; }

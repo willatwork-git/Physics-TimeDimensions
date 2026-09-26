@@ -304,7 +304,8 @@
       ${waiting || !Chrono.stickFor ? "" : Chrono.stickFor(def.id)}
       ${waiting || !Chrono.keyIdeas ? "" : Chrono.keyIdeas(def.id)}
       ${waiting ? "" : def.kind === "doc" ? (fr.st ? endCard(def, fr.st) : def.next ? `<a class="nextq" href="${def.next.href}"><span class="eyebrow">Next question</span><span class="nq">${def.next.q}</span><span class="hgo">${def.next.label} →</span></a>` : "") : endCard(def, fr.st)}
-      ${def.sources ? `<p class="caveat">Sources: ${def.sources}</p>` : ""}`;
+      ${def.sources ? `<p class="caveat">Sources: ${def.sources}</p>` : ""}
+      ${Chrono.MATHS && Chrono.MATHS[def.id] ? `<p class="meta mlink"><a href="#maths/${def.id}">∑ The maths behind this lab →</a></p>` : ""}`;
     document.querySelectorAll("#aside [data-hole]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goHole(a.dataset.hole); });
     document.querySelectorAll("#aside [data-view-link]").forEach(a => a.onclick = e => { e.preventDefault(); Chrono.goView(a.dataset.viewLink); });
     if (def.kind !== "doc") applyLock(def);

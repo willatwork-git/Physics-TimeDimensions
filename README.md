@@ -150,6 +150,11 @@ built-in guide — or press **?** — Concepts, quizzes, and the Learn / Workben
 - **Progress** — ✓ marks on what you've seen, and "continue where you left off" (kept in your browser). Back
   after a couple of weeks mid-tour? A quick recap of the stops you've done.
 
+**The maths** *(Guide menu)*
+- **Under the hood** — for each lab: the equations with every symbol defined, the constants and where they come
+  from, what's simplified, where the model breaks, and worked examples. The worked examples are also the app's
+  tests: every change is checked against them. Five labs so far.
+
 **For teachers** *(Guide menu)*
 - **Class links** — pick a tour or a set of labs; students join from the link in their own browser, follow
   the route, and hand back a short completion code (stops, missions, predictions right). Paste the codes into
