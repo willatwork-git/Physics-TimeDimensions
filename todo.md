@@ -60,7 +60,7 @@ Priority: credibility before launch; build what unlocks structure (Quantum scale
 - [x] Entropy/complexity thread (D-055): arrow-of-time concept section; complexity line in the Entropy box; star-formation curve + "Cosmic noon" on the timeline; Stars "Sun forms" moment and mission; gold trap reworded. Will to read the new concept text (`src/concepts.js`) and the Entropy box paragraph (`src/labs2.js`)
 - [x] D-056: "Is entropy a thing?" (Entropy page), new concept page "Radiation: the beginning and the end", entropy wording sweep. Will to read both (`src/concepts.js`)
 - [x] The maths layer, pilot (D-057): 5 labs, 15 worked examples tested by `65-maths`. Will to review the format
-- [ ] The maths layer, rollout: the other 16 labs + Flatland; data labs (Stars, Timeline) say so and cite their tables; then make `65-maths` require an entry for every lab
+- [x] The maths layer, rollout (D-057): all 22 labs incl. Flatland, 56 worked examples; `65-maths` requires an entry for every lab. Found and fixed a Stars bug (jumping mid-stage lost that stage's products)
 - [ ] Verify every ☐ citation · light theme · teacher notes · keyboard Atlas · tidy public review/learning files
 - [ ] Phone: canvas labels overlap in 10 labs (delayed, frozen, missions, mars, energy, field, wormhole, loops, timeline, horizons — mostly the model footnote hitting the text above). `35-phone` warns; make it fail once they're fixed
 - [ ] Hosting (D-053): a clean public copy syncs to a Cloudflare site; this repo keeps the notes. Settle what's copied and whether this repo goes private — note that git history keeps anything already pushed

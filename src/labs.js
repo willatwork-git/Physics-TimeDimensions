@@ -253,6 +253,7 @@
      THE RIVER — Gullstrand–Painlevé "river model": space flows inward at
      v(r) = c·√(rs/r); light moves at c relative to the local flow.
      ===================================================================== */
+  const flowAt = r => Math.sqrt(1 / r), clockAt = r => Math.sqrt(1 - 1 / r);   // r in horizon radii: inflow speed (in c) and a held-still clock's rate
   const RV = { dots: null, flashes: [], cursor: null, eddies: false, T: 0, log: [] };   // log: finished flashes { r0, esc }, for missions
   Chrono.lab.register({
     predict: { q: "A flash of light is fired straight outward from <b>just outside</b> a black hole's horizon. What happens to it?",
@@ -262,7 +263,7 @@
     state() {                                               // read-only, for missions: where flashes started and whether they got out
       const esc = RV.log.concat(RV.flashes).filter(f => f.esc && f.r0 > 1).map(f => f.r0);
       const climb = Math.max(0, ...RV.flashes.filter(f => f.r0 > 1 && f.r0 < 1.2 && !f.esc).map(f => Math.max(0, ...f.pts.filter(p => !p.dead).map(p => Math.hypot(p.x, p.y)))));
-      return { escMin: esc.length ? Math.min(...esc) : Infinity, climb, innerFell: RV.log.some(f => f.r0 < 1 && !f.esc), innerLive: RV.flashes.some(f => f.r0 < 1) };
+      return { escMin: esc.length ? Math.min(...esc) : Infinity, climb, innerFell: RV.log.some(f => f.r0 < 1 && !f.esc), innerLive: RV.flashes.some(f => f.r0 < 1), flowAt, clockAt };
     },
     readouts() { const done = RV.log; return [["Flashes fired", done.length + RV.flashes.length], ["Got out", done.filter(f => f.esc).length], ["Swept in", done.filter(f => !f.esc).length]]; },
     id: "river", title: "The River", eyebrow: "Lab · time and space near a black hole", tier: "mainstream", tags: ["ESTABLISHED"],
@@ -288,7 +289,7 @@
       RV.dots.forEach(d => { const v = cS * Math.sqrt(1 / d.r); d.r -= v * dt * k; if (RV.eddies && Chrono.shows("exploratory")) d.a += dt * 0.3 * Math.sin(d.r * 3 + RV.T) / d.r; if (d.r < 0.08) { d.r = 4 + Math.random() * 1.5; d.a = Math.random() * TAU; } });
       RV.flashes.forEach(f => f.pts.forEach(p => {
         if (p.dead) return;
-        const r = Math.hypot(p.x, p.y), ux = p.x / r, uy = p.y / r, v = cS * Math.sqrt(1 / r);
+        const r = Math.hypot(p.x, p.y), ux = p.x / r, uy = p.y / r, v = cS * flowAt(r);
         p.x += (cS * p.nx - v * ux) * dt * k; p.y += (cS * p.ny - v * uy) * dt * k;
         p.trail.push([p.x, p.y]); if (p.trail.length > 60) p.trail.shift();
         if (r < 0.05 || r > 7) p.dead = true;
@@ -313,7 +314,7 @@
       }));
       if (RV.cursor) {
         const [x, y] = RV.cursor, r = Math.hypot(x - cx, y - cy) / Rs;
-        const txt = r > 1 ? `Here: flow ${Math.sqrt(1 / r).toFixed(2)} c · a clock held still ticks at ${(Math.sqrt(1 - 1 / r) * 100).toFixed(0)}% of a distant clock's rate` : "Inside the horizon: the flow outruns light — nothing can stay still";
+        const txt = r > 1 ? `Here: flow ${flowAt(r).toFixed(2)} c · a clock held still ticks at ${(clockAt(r) * 100).toFixed(0)}% of a distant clock's rate` : "Inside the horizon: the flow outruns light — nothing can stay still";
         g.text(txt, pad + 14, H - pad - 14, C.text, 12);
       }
       g.label("Sideways light-bending simplified; radial motion exact.", W - pad - 14, W < 640 ? pad + 40 : H - pad - 14, C.muted, 10, "right");
@@ -348,7 +349,7 @@
       options: ["Yes — same start, same future", "They drift apart, but only through rounding errors", "They genuinely diverge"], answer: 2,
       explain: "Both films are exact solutions — no rounding is involved. With two time directions, even a perfect snapshot of 'now' isn't enough data to fix the future (Craig &amp; Weinstein, 2009). In our one-time universe, it is." },
     applySetup(o) { Object.assign(TF, o); },
-    state() { return { t: TF.t, reveal: TF.reveal }; },   // read-only, for missions
+    state() { return { t: TF.t, reveal: TF.reveal, uA, uB }; },   // read-only, for missions and the maths page's checks
     readouts() { return [["Time played", TF.t.toFixed(2)], ["Largest difference between the films", TF.reveal ? "—" : (TF.d || 0).toFixed(3)]]; },
     id: "films", title: "Two Films", eyebrow: "Lab · prediction with two times", tier: "frontier", tags: ["ESTABLISHED", "SPECULATIVE"],
     controls() {

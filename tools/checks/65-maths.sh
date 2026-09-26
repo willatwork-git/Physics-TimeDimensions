@@ -7,5 +7,5 @@ res=$(run_page "file://$WORK/maths/index.html" 30000)
 log "maths: $res"
 [ -z "$res" ] && { fail "maths: probe returned nothing (page crashed or timed out)"; exit 0; }
 b=$(jfirst "$res" bad); e=$(jfirst "$res" errors)
-if [ -n "$b$e" ]; then fail "maths: ${b}${e:+ · errors: $e}"; else pass "maths: $(jget "$res" n) worked examples match the labs' own code"; fi
+if [ -n "$b$e" ]; then fail "maths: ${b}${e:+ · errors: $e}"; else pass "maths: every lab ($(jget "$res" labs)) has a page; $(jget "$res" n) worked examples match the labs' own code"; fi
 exit 0

@@ -735,7 +735,11 @@
       options: ["A circle", "A sphere", "A straight line"], answer: 1,
       explain: "A sphere. The Flatlanders lived it as an event in time — a circle appearing, growing, shrinking — but in the block of their whole history it's simply a shape. That's the block-universe picture of time." }
   };
-  F.predictFor = n => PREDICT[n] || null;                  // the passport's prediction record
+  F.predictFor = n => PREDICT[n] || null;
+  /* The exact geometry behind the chapters, named so the maths page's checks can reach it (D-057). */
+  F.fx = { sliceR: (R, z) => Math.abs(z) < R ? Math.sqrt(R * R - z * z) : 0, coneShape: th => coneShape(th),
+    cube: n => { let e = 0; for (let a = 0; a < (1 << n); a++) for (let k = 0; k < n; k++) if ((a ^ (1 << k)) > a) e++; return { v: 1 << n, e }; },
+    tessSlice: (o, d) => dedupe(edgePts(cubeVerts(4), ORIENT[o], d)).length };                  // the passport's prediction record
   function renderAside() {
     const ch = CH[chapter], pkey = "flatland/" + (chapter + 1), pred = PREDICT[chapter + 1];
     const waiting = pred && Chrono.progress.pred(pkey).guess === undefined;
@@ -752,6 +756,7 @@
         ? { q: HOOK[chapter + 1], href: "#flatland/" + (chapter + 2), label: `chapter ${chapter + 2}, ${SHORT[chapter + 1]}` }
         : { q: "Flatland showed time as one slice through a block. What if there were two time directions?", href: "#films", label: "Two Films" } }, Chrono.stopFor ? Chrono.stopFor() : null)}
       ${chapter > 0 ? `<p class="meta"><button class="linkish" data-step="-1">← Previous chapter: ${SHORT[chapter - 1]}</button></p>` : ""}
+      <p class="meta mlink"><a href="#maths/flatland">∑ The maths behind this lab →</a></p>
       <p class="caveat">Sources: E. A. Abbott, <i>Flatland</i> (1884, public domain) · C. Sagan, <i>Cosmos</i> ep. 10 (1980) · TED-Ed, "Exploring other dimensions" (Rosenthal &amp; Zaidan) · 4D visualisation video (YouTube): <a href="https://www.youtube.com/watch?v=4URVJ3D8e8k" target="_blank">youtube.com/watch?v=4URVJ3D8e8k</a>.</p>`;
     document.querySelectorAll("#aside [data-step]").forEach(b => b.onclick = () => go(chapter + +b.dataset.step));
     document.querySelectorAll("#aside [data-tour-next]").forEach(b => b.onclick = () => Chrono.tourNext && Chrono.tourNext());

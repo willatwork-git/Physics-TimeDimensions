@@ -273,12 +273,13 @@
       Object.assign(ST, o);
       if (ST.mode === "star" && (o.star !== undefined || o.p !== undefined)) {        // jump into a life: what earlier stages made is already on the table
         const p = o.p || 0, star = STARS[ST.star]; resetLife(); ST.p = p; ST.play = !!o.play;
-        star.z.filter(z => stageOf(z) < Math.floor(p)).forEach(z => ST.lit[z] = 1); seedCore(Math.min(lifeOf(star).n - 1, Math.floor(p)));
+        star.z.filter(z => stageOf(z) + 0.5 <= p).forEach(z => ST.lit[z] = 1);   // everything whose stage has passed its midpoint (when its products fly) seedCore(Math.min(lifeOf(star).n - 1, Math.floor(p)));
       }
       if (o.step !== undefined) { ST.from = ST.step; ST.lit2 = 1; }
     },
     state() { const star = STARS[ST.star], L = lifeOf(star);
-      return { mode: ST.mode, mass: star.m, stage: Math.min(L.n - 1, Math.floor(ST.p)), ended: L.end !== "none" && ST.p >= L.n + 1, step: ST.step, sel: ST.sel, you: ST.you }; },   // read-only, for missions
+      const by = {}; let tot = 0; Object.entries(BODY).forEach(([z, pc]) => Object.entries(EL[z - 1].sh).forEach(([k, f]) => { by[k] = (by[k] || 0) + pc * f; tot += pc * f; }));
+      return { mode: ST.mode, mass: star.m, stage: Math.min(L.n - 1, Math.floor(ST.p)), ended: L.end !== "none" && ST.p >= L.n + 1, step: ST.step, sel: ST.sel, you: ST.you, bodyStars: 1 - (by.b || 0) / tot }; },   // read-only, for missions
     readouts() {
       if (ST.you) return [["Made in stars", "about 90% of you"], ["From the Big Bang", "the hydrogen, about 10%"]];
       if (ST.mode === "star") { const star = STARS[ST.star]; return [["Star", star.n], ["Lives", star.life.replace("about ", "")], ["Heaviest made so far", EL[heaviest() - 1].name]]; }

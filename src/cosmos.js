@@ -142,7 +142,7 @@
     state() {                                              // read-only, for missions
       if (!HZ.T) HZ.T = hzTables();
       const T = HZ.T, gy = T.gy, e0 = T.eta0 * gy, eEm = e0 - HZ.chi;
-      return { chi: HZ.chi, horizon: T.etaInf * gy - e0, reach: HZ.chi < T.etaInf * gy - e0, tE: eEm > T.etaLS * gy ? T.tOfEta(eEm / gy) * gy : null };
+      return { chi: HZ.chi, horizon: T.etaInf * gy - e0, particle: e0, reach: HZ.chi < T.etaInf * gy - e0, tE: eEm > T.etaLS * gy ? T.tOfEta(eEm / gy) * gy : null };
     },
     readouts() { const s = this.state(), t = s.tE;
       return [["Galaxy, today", `${s.chi} bn ly`], ["Its light set out, after the Big Bang", t === null ? "before the first light" : t < 1 ? `${Math.round(t * 1000)} Myr` : `${t.toFixed(2)} bn yr`], ["A message today reaches it", s.reach ? "Yes" : "Never"]]; },

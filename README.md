@@ -153,7 +153,7 @@ built-in guide — or press **?** — Concepts, quizzes, and the Learn / Workben
 **The maths** *(Guide menu)*
 - **Under the hood** — for each lab: the equations with every symbol defined, the constants and where they come
   from, what's simplified, where the model breaks, and worked examples. The worked examples are also the app's
-  tests: every change is checked against them. Five labs so far.
+  tests: every change is checked against them. Every lab, Flatland included.
 
 **For teachers** *(Guide menu)*
 - **Class links** — pick a tour or a set of labs; students join from the link in their own browser, follow

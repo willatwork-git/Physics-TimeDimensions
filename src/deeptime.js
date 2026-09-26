@@ -161,6 +161,7 @@
       options: ["Near the very end: we're latecomers", "Near the very beginning", "A little under halfway along"], answer: 2,
       explain: "About 40% of the way across this chart. That's a position on a logarithmic scale whose endpoints we chose — not a fraction of the universe's lifetime. On an ordinary clock we're at the very start: 13.8 billion years out of 10¹⁰⁰. But as many powers of ten lie between the Planck time (10⁻⁴⁴ s) and today (10¹⁷ s) as between today and the last black holes." },
     applySetup(o) { Object.assign(TL, o); },
+    state() { const pk = SFR.reduce((b, p) => p[1] > b[1] ? p : b); return { sel: TL.sel, mode: TL.mode, sfrPeak: pk[0], sfrToday: SFR[SFR.length - 1][1] }; },   // read-only, for the maths page's checks
     readouts() { const e = EVENTS[TL.sel]; return [["Event", `${TL.sel + 1} of ${EVENTS.length}`], ["When", when(e.t)]]; },
     id: "timeline", title: "Cosmic timeline", eyebrow: "Cosmos · from the Planck time to the last black hole", tier: "mainstream", tags: ["ESTABLISHED", "CONTESTED", "SPECULATIVE"],
     controls() {

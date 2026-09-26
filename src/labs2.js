@@ -350,7 +350,7 @@
       if (o.open && EB.part) { EB.part = false; EB.removedAt = EB.t; EB.msg = ""; }
       if (o.reverse !== undefined) EB.auto = o.reverse === "nudge";   // reverse (or nudge, then reverse) as soon as the gas has spread
     },
-    state() { const m = EB.x ? measure() : { left: 1 }; return { open: !EB.part, left: m.left, last: EB.last || null }; },   // read-only, for missions
+    state() { const m = EB.x ? measure() : { left: 1 }; return { open: !EB.part, left: m.left, last: EB.last || null, N: EB.N, lnW }; },   // read-only, for missions and the maths page's checks
     readouts() { const m = EB.x ? measure() : { left: 1, S: 0 }; return [["Discs in the left half", `${Math.round(m.left * 100)}%`], ["Entropy · packed 0 → spread 100", Math.round(Math.max(0, Math.min(1, m.S)) * 100)], ["Complexity · pattern count", EB.cx === null ? "—" : Math.round(EB.cx)]]; },
     id: "entropy", title: "Entropy box", eyebrow: "Lab · why time runs one way", tier: "mainstream", tags: ["ESTABLISHED"],
     enter() { if (!EB.x) ebReset(); },
