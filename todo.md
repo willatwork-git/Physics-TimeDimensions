@@ -80,6 +80,14 @@ see the full physics (equations, derivations, the model's exact assumptions) wit
   "view the code" showing the actual JS that runs; export parameters/data; links to the paper and equation number.
 - Related: reviews/review-2026-09-25.md §1.4 "Show me the maths" expander. Existing hooks: every lab's model line.
 
+### Ideas parked from Will's physics questions (2026-09-26) — propose before building
+- **One entropy, two ledgers** — thermal vs gravitational contributions shown as two columns, with the rough numbers (CMB ~10⁸⁹ k, black holes ~10¹⁰⁴ k, maximum ~10¹²³ k; Egan & Lineweaver 2010). Candidate: a section on the Entropy concept page, or a toggle in the Entropy box ("gravity on/off" flips whether smooth is high or low). Also a wording rule: never say "entropy" alone where the two differ.
+- **Coarse-graining: what counts as "the parts"** — Will's like-with-like question. Short concept section.
+- **Negative heat capacity** — "a star losing energy heats up"; Stars Common trap or "Is entropy a thing?".
+- **The entropy we can't write down** — gravitational entropy, Penrose's Weyl curvature hypothesis (CONTESTED); new Atlas hole or concept section.
+- **Could the end be a beginning?** — on the Radiation page (CCC, Page curve, the Past Hypothesis).
+- **Will's Workbench hypothesis "Two halves, one universe"** — HYPOTHESIS tag, holes H6/H3, cousins CPT/Janus/ekpyrotic, test: no primordial B-modes. Claude drafts, Will edits first.
+
 ### Later
 - [x] Concept map → How it all connects (D-040) → replaced by **How it all fits together**, a comic strip (D-041)
 - [ ] Will: read the eight panels and the epilogue (`src/story.js`); illustrations could be replaced by approved artwork if wanted
