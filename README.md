@@ -126,7 +126,8 @@ built-in guide — or press **?** — Concepts, quizzes, and the Learn / Workben
 - **Threads** — each lab links to the same question at the other scales (clocks, 'now', the arrow, 3 + 1).
 - **Concepts** — ⓘ markers give a short "why" on hover or tap; the Concepts pages (under Explore) tell the full
   story with the evidence: why clocks disagree, what 'now' means, the arrow of time, why 3 + 1, quantum
-  time, time travel, holography, two-time physics — plus
+  time, time travel, holography, two-time physics, radiation from the universe's beginning to its end, whether
+  entropy is a "thing" — plus
   links to other free sites that explore each idea well.
 - **Predict first** — each lab asks for your guess first and stays paused, and hidden, until you've made it
   — or chosen to read the explanation first, or explore freely; nothing is held back. "Run it" shows whether

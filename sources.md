@@ -195,6 +195,11 @@ Added 2026-09-26 from Claude's recall. All ☐ until checked against the primary
 - **E** Planck, M. (1900). "Zur Theorie des Gesetzes der Energieverteilung im Normalspectrum." *Verh. Dtsch. Phys. Ges.* 2, 237 — the black-body spectrum; the start of quantum theory. Radiation concept page (D-056). ☐
 - **E** Penzias, A. A. & Wilson, R. W. (1965). "A Measurement of Excess Antenna Temperature at 4080 Mc/s." *ApJ* 142, 419 — discovery of the microwave background. Radiation concept page (D-056). ☐
 - **E** (energy not globally conserved in an expanding universe) / **C** (how to phrase it) Carroll, S. M. (2004). *Spacetime and Geometry*, Addison-Wesley — energy conservation needs time-translation symmetry, which an expanding universe lacks. Radiation concept page (D-056). ☐
+- **E** Kopp, G. & Lean, J. L. (2011). "A new, lower value of total solar irradiance." *Geophys. Res. Lett.* 38, L01706 — S₀ = 1361 W/m². Earth's energy budget maths page (D-057). ☐
+- **E** Pierrehumbert, R. T. (2010). *Principles of Planetary Climate*, Cambridge University Press — the one-layer greenhouse model, 255 K and −18 °C. Earth's energy budget maths page (D-057). ☐
+- **E** Baez, J. & Gibbs, P. "The Relativistic Rocket." Usenet Physics FAQ — constant-proper-acceleration trip formulas. 1 g voyage maths page (D-057). ☐
+- **E** Coxeter, H. S. M. (1973). *Regular Polytopes*, 3rd ed., Dover — hypercube counts and cross-sections. Flatland maths page (D-057). ☐
+- **E** IERS Conventions (2010), IERS Technical Note 36 — Earth's GM = 3.986004418 × 10¹⁴ m³/s². Mission clocks maths page (D-057). ☐
 - **E** Burbidge, E. M., Burbidge, G. R., Fowler, W. A. & Hoyle, F. (1957). "Synthesis of the elements in stars." *Rev. Mod. Phys.* 29, 547. ☐
 - **E** Abbott, B. P. et al. (2017). "GW170817: observation of gravitational waves from a binary neutron star inspiral." *Phys. Rev. Lett.* 119, 161101 — with the kilonova seen in light. ☐
 - **E** Lithium problem: old halo stars show ~3× less lithium than Big Bang predictions (Fields, B. D. (2011). *Annu. Rev. Nucl. Part. Sci.* 61, 47). ☐
